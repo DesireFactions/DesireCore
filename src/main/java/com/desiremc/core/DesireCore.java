@@ -19,6 +19,8 @@ import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
+import com.desiremc.core.listeners.ConnectionListener;
+import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
@@ -44,7 +46,7 @@ public class DesireCore extends JavaPlugin
         saveDefaultConfig();
         saveResource("lang.yml", false);
         saveResource("items.csv", false);
-        
+
         config = new FileHandler(new File(getDataFolder(), "config.yml"));
         lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
         itemHandler = new ItemDb();
@@ -55,13 +57,16 @@ public class DesireCore extends JavaPlugin
         ScoreboardRegistry.initialize();
         EntryRegistry.initialize();
         MenuAPI.initialize();
-
+        ListenerManager.initialize();
+        
+        registerCommands();
+        registerListeners();
+        
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
         }
 
-        registerCommands();
     }
 
     private void registerCommands()
@@ -73,6 +78,12 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new StaffCommand());
         customCommandHandler.registerCommand(new TempBanCommand());
         customCommandHandler.registerCommand(new BanCommand());
+    }
+
+    private void registerListeners()
+    {
+        ListenerManager listenerManager = ListenerManager.getInstace();
+        listenerManager.addListener(new ConnectionListener());
     }
 
     public MongoWrapper getMongoWrapper()
