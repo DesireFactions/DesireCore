@@ -104,6 +104,17 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return session;
     }
 
+    public List<Session> getSessions()
+    {
+        return sessions;
+    }
+    
+    public static boolean endSession(Session s)
+    {
+        instance.save(s);
+        return instance.sessions.remove(s);
+    }
+
     public static SessionHandler getInstance()
     {
         return instance;
