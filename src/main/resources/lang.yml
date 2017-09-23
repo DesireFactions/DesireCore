@@ -116,6 +116,7 @@ enderpearl:
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
+  scoreboard: "&7Gapple Timer"
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
   not_yours: '&7You can''t break blocks in someone else''s faction.'
