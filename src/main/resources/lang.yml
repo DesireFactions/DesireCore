@@ -112,6 +112,7 @@ ticket:
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
+  scoreboard: "&7Enderpearl Timer"
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
