@@ -30,6 +30,8 @@ public class DesireCore extends JavaPlugin
 {
     private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
+    private static String SERVER;
+
     private static DesireCore instance;
 
     private static MongoWrapper mongoWrapper;
@@ -51,6 +53,8 @@ public class DesireCore extends JavaPlugin
         lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
         itemHandler = new ItemDb();
 
+        SERVER = config.getString("SERVER");
+
         mongoWrapper = new MongoWrapper();
 
         PunishmentHandler.initialize();
@@ -58,10 +62,10 @@ public class DesireCore extends JavaPlugin
         EntryRegistry.initialize();
         MenuAPI.initialize();
         ListenerManager.initialize();
-        
+
         registerCommands();
         registerListeners();
-        
+
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
@@ -114,6 +118,11 @@ public class DesireCore extends JavaPlugin
     public static DesireCore getInstance()
     {
         return instance;
+    }
+
+    public static String getCurrentServer()
+    {
+        return SERVER;
     }
 
 }
