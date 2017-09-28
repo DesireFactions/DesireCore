@@ -6,8 +6,12 @@ database:
   database: hcf
 
 tag:
-  time: 25
-  
+  time: 30
+  distance: 10
+
+logout:
+  time: 10
+
 barrier:
   refresh:
     ticks: 2
@@ -52,9 +56,10 @@ pvptimer_attacker_message: '&4&lPVP&r&7 &e<player> &7is currently invincible due
 pvptimer_message: '&4&lPVP&r &7/pvptimer disable'
 pvptimer_disabled: '&4&lPVP&r &7Your pvptimer has been disabled'
 
-combattag_time: '30s'
-combattag_victim_message: '&4&lPVP&r&7 <attacker> has attacked you!'
-combattag_removed_message: '&4&lPVP&r&7 Combat tag removed!'
+combat-tag:
+  removed-message: '&4&lPVP&r&7 Combat tag removed!'
+  victim-message: '&4&lPVP&r&7 <attacker> has attacked you!'
+  time: 30
 
 deathban_player_message: '&4&lPVP&r&7 You died'
 deathban_broadcast: 'Has died'

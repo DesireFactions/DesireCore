@@ -5,6 +5,13 @@ prefix:
 tag:
   active: '&c&lYou are now combat tagged and can not enter spawn.'
   expire: '&c&lYou are no longer combat tagged.'
+  scoreboard: "CombatTimer"
+logout:
+  cancelled: '&c&lYour safe logout has been cancelled.'
+  success: '&c&lYour safe logout has been successful.'
+  pending: '&c&lYour safe logout is pending for {seconds}s.'
+  exists: "&c&lYou have already started to safely logout."
+  started: "&c&lYou have started to safely logout."
 list-header: '&c----------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
 need_selection: '&7You need to make a selection with WorldEdit.'
@@ -142,6 +149,7 @@ punishment:
   found: "[DesireHCF] Found punishment document for: {player}"
   type: "[DesireHCF] Punishment Type: {reason}"
   notfound: "[DesireHCF] Punishment document was not found for: {player}"
+info:
 info:
   header-footer: "&8----------------------------------------------------"
   name: "{player}"
