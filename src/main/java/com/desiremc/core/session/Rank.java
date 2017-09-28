@@ -2,7 +2,10 @@ package com.desiremc.core.session;
 
 import org.bukkit.ChatColor;
 
-public enum Rank {
+import com.desiremc.core.DesireCore;
+
+public enum Rank
+{
 
     GUEST(1, "Guest", "§8§l[§7Guest§8§l]⧫", "", ChatColor.GRAY, ChatColor.GRAY),
     BRIGADIER(2, "Brigadier", "§a⧫§7", "", ChatColor.GRAY, ChatColor.GREEN),
@@ -23,7 +26,8 @@ public enum Rank {
     private final ChatColor color;
     private final ChatColor main;
 
-    Rank(int id, String displayName, String prefix, String suffix, ChatColor color, ChatColor main) {
+    Rank(int id, String displayName, String prefix, String suffix, ChatColor color, ChatColor main)
+    {
         this.id = id;
         this.displayName = displayName;
         this.prefix = prefix;
@@ -32,34 +36,47 @@ public enum Rank {
         this.main = main;
     }
 
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 
-    public String getDisplayName() {
+    public String getDisplayName()
+    {
         return displayName;
     }
 
-    public String getSuffix() {
+    public String getSuffix()
+    {
         return suffix;
     }
 
-    public ChatColor getColor() {
+    public ChatColor getColor()
+    {
         return color;
     }
 
-    public ChatColor getMain() {
+    public ChatColor getMain()
+    {
         return main;
     }
 
-    public String getPrefix() {
+    public String getPrefix()
+    {
         return prefix + " ";
     }
 
-    public static Rank getRank(String value) {
+    public static Rank getRank(String value)
+    {
         for (Rank v : values())
             if (v.name().equalsIgnoreCase(value)) return v;
         return null;
+    }
+
+    public static long getDeathBanTime(Rank rank)
+    {
+        Long lookup = DesireCore.getConfigHandler().getLong("deathban.times." + rank.getDisplayName());
+        return lookup == null ? DesireCore.getConfigHandler().getLong("deathban.times.default") : lookup;
     }
 
 }
