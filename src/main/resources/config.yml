@@ -35,13 +35,9 @@ crowbar:
   frame:
     cost: 1
 
-stack-color: 'RED'
-stacking-radius: 5
-stacking-entity:
-   - 'ZOMBIE'
-   - 'SKELETON'
-   - 'SPIDER'
-   - 'CAVE_SPIDER'
+deathban:
+  times:
+    default: 7200
 
 glass-protected-regions:
    - 'test1'
@@ -50,20 +46,6 @@ glass-protected-regions:
    - 'test4'
 
 unrepairable-lore-line: "&cUnrepairable"
-
-pvptimer_time: '40s'
-pvptimer_attacker_message: '&4&lPVP&r&7 &e<player> &7is currently invincible due to pvp timer'
-pvptimer_message: '&4&lPVP&r &7/pvptimer disable'
-pvptimer_disabled: '&4&lPVP&r &7Your pvptimer has been disabled'
-
-combat-tag:
-  removed-message: '&4&lPVP&r&7 Combat tag removed!'
-  victim-message: '&4&lPVP&r&7 <attacker> has attacked you!'
-  time: 30
-
-deathban_player_message: '&4&lPVP&r&7 You died'
-deathban_broadcast: 'Has died'
-deathban_message: 'ban message'
 
 spawn-mobs: false
 enderchest-disabled: false

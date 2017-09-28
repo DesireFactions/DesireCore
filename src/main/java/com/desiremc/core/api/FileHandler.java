@@ -39,8 +39,7 @@ public class FileHandler
     }
 
     /**
-     * Reloads the {@link}. This resets the file and clears the
-     * history object.
+     * Reloads the {@link}. This resets the file and clears the history object.
      *
      * @param
      */
@@ -63,17 +62,15 @@ public class FileHandler
         key = key.toLowerCase();
         String message = null;
         Object o = history.get(key);
-        if (o != null && o instanceof String)
-        {
-            return (String) o;
-        }
+        if (o != null && o instanceof String) { return (String) o; }
         message = fileConfig.getString(key);
         if (message != null)
         {
             message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
             history.put(key, message);
             return message;
-        } else
+        }
+        else
         {
             return key;
         }
@@ -86,16 +83,31 @@ public class FileHandler
      * @param key
      * @return the value.
      */
-    public double getDouble(String key)
+    public Double getDouble(String key)
     {
         key = key.toLowerCase();
         double value;
         Object o = history.get(key);
-        if (o != null && o instanceof Double)
-        {
-            return (Double) o;
-        }
+        if (o != null && o instanceof Double) { return (Double) o; }
         value = fileConfig.getDouble(key);
+        history.put(key, value);
+        return value;
+    }
+
+    /**
+     * Gets a long value from history or the config. If it does not exist,
+     * returns 0.
+     *
+     * @param key
+     * @return the value.
+     */
+    public Long getLong(String key)
+    {
+        key = key.toLowerCase();
+        long value;
+        Object o = history.get(key);
+        if (o != null && o instanceof Long) { return (Long) o; }
+        value = fileConfig.getLong(key);
         history.put(key, value);
         return value;
     }
@@ -107,15 +119,12 @@ public class FileHandler
      * @param key
      * @return the value.
      */
-    public int getInteger(String key)
+    public Integer getInteger(String key)
     {
         key = key.toLowerCase();
         int value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer)
-        {
-            return (Integer) o;
-        }
+        if (o != null && o instanceof Integer) { return (Integer) o; }
         value = fileConfig.getInt(key);
         history.put(key, value);
         return value;
@@ -133,15 +142,12 @@ public class FileHandler
      * @param key
      * @return the value.
      */
-    public boolean getBoolean(String key)
+    public Boolean getBoolean(String key)
     {
         key = key.toLowerCase();
         boolean value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer)
-        {
-            return (Boolean) o;
-        }
+        if (o != null && o instanceof Integer) { return (Boolean) o; }
         value = fileConfig.getBoolean(key);
         history.put(key, value);
         return value;
@@ -160,10 +166,7 @@ public class FileHandler
     {
         key = key.toLowerCase();
         Object o = history.get(key);
-        if (o != null && o instanceof List<?>)
-        {
-            return (List<String>) o;
-        }
+        if (o != null && o instanceof List<?>) { return (List<String>) o; }
         List<String> list = new LinkedList<>();
         for (String str : fileConfig.getStringList(key))
         {
@@ -184,7 +187,8 @@ public class FileHandler
         try
         {
             fileConfig.save(file);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -198,7 +202,8 @@ public class FileHandler
         try
         {
             fileConfig.save(file);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
