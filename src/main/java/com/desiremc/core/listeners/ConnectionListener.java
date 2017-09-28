@@ -45,17 +45,13 @@ public class ConnectionListener implements Listener
     }
 
     @EventHandler
-    public void logout(PlayerQuitEvent event)
+    public void logout(PlayerQuitEvent e)
     {
-        Session session = SessionHandler.getSession(event.getPlayer());
+        Session session = SessionHandler.getSession(e.getPlayer());
         session.setTotalPlayed(session.getTotalPlayed() + (System.currentTimeMillis() - session.getLastLogin()));
         session.setLastLogin(System.currentTimeMillis());
         SessionHandler.endSession(session);
-    }
 
-    @EventHandler
-    public void onDisconnect(PlayerQuitEvent e)
-    {
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
         e.setQuitMessage(DesireCore.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
