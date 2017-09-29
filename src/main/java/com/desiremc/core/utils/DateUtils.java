@@ -1,7 +1,9 @@
 package com.desiremc.core.utils;
 
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,5 +143,10 @@ public class DateUtils {
             return "now";
         }
         return sb.toString().trim();
+    }
+
+    public static ZoneId getZoneId()
+    {
+        return TimeZone.getTimeZone("EST").toZoneId();
     }
 }
