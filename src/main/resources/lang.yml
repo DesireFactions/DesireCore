@@ -100,6 +100,8 @@ ban:
 koth:
   name_used: '&7That name has already been used.'
   hill_not_found: '&7That hill can''t be found.'
+  not_pending: '&7That hill is not pending.'
+  pending: '&fScheduled the KOTH &b{koth}&f to start in &a{time}&f.'
   create: '&7Created the KOTH region &a{name}.'
   delete: '&7Deleted the KOTH region &a{name}.'
   recreate: '&7Changed the location for the KOTH region &a{name}&7.'
@@ -114,6 +116,8 @@ koth:
   no_capper: '&fNobody is capturing &a{name}&f. Time left is &b{time}&f.'
   add_faction_reward: '&7Faction reward added.'
   add_winner_reward: '&7Winner reward added.'
+  cancel:
+    pending: '&fCancelled the pending KOTH session &b{koth}&f.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
 enderpearl:
