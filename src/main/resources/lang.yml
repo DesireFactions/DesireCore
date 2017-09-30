@@ -39,6 +39,7 @@ crowbar: You have recieved a crowbar.
 item_in_hand: '&7You must have an item in your hand.'
 invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
+potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
