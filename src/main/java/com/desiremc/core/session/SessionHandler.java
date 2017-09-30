@@ -120,4 +120,9 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return instance;
     }
 
+    public static void initialize()
+    {
+        instance = new SessionHandler();
+    }
+    
 }
