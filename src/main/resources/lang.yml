@@ -99,6 +99,7 @@ ban:
   unban_message_target: '&7You have been unbanned by &e{player}&7.'
 koth:
   name_used: '&7That name has already been used.'
+  no_hills: '&7No hills have been made.'
   hill_not_found: '&7That hill can''t be found.'
   not_pending: '&7That hill is not pending.'
   pending: '&fScheduled the KOTH &b{koth}&f to start in &a{time}&f.'

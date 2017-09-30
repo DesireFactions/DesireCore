@@ -24,6 +24,7 @@ import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ItemDb;
 
 public class DesireCore extends JavaPlugin
@@ -62,7 +63,9 @@ public class DesireCore extends JavaPlugin
         EntryRegistry.initialize();
         MenuAPI.initialize();
         ListenerManager.initialize();
-
+        CustomCommandHandler.initialize();
+        SessionHandler.initialize();
+        
         registerCommands();
         registerListeners();
 

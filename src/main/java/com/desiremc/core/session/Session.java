@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
@@ -15,6 +16,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 
+@Entity(value = "sessions", noClassnameStored = true)
 public class Session
 {
 

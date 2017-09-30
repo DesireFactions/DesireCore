@@ -2,6 +2,7 @@ package com.desiremc.core.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -21,7 +22,7 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLogin(final PlayerLoginEvent event)
     {
-        Session session = SessionHandler.getSession(event.getPlayer());
+        Session session = SessionHandler.initializeSession(event.getPlayer(), false);
         Punishment p;
         if ((p = session.isBanned()) != null)
         {
@@ -34,7 +35,7 @@ public class ConnectionListener implements Listener
 
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event)
     {
         SessionHandler.initializeSession(event.getPlayer(), true);
