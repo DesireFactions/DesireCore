@@ -97,6 +97,8 @@ enchantment-limiter:
 #  Use 0 to disable potion
 #  Use other values to limit potion level
 #  Change extended to false to disable extended potions
+#  Disabled-potion-msg decides if a message is sent when a potion is used that is not allowed.
+disabled-potion-msg: true
 potion-limiter:
   SPEED:
     level: -1
