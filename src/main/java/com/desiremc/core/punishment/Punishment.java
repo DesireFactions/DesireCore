@@ -10,7 +10,7 @@ import org.mongodb.morphia.annotations.Indexed;
 public class Punishment {
 
     @Id
-    private int id;
+    private long id;
 
     @Indexed
     private UUID punished;
