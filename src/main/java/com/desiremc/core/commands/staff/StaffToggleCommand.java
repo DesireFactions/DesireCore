@@ -13,7 +13,7 @@ public class StaffToggleCommand extends ValidCommand
 
     public StaffToggleCommand()
     {
-        super("toggle", "toggle staff mode", Rank.ADMIN, new String[] {}, "mode");
+        super("toggle", "toggle staff mode", Rank.ADMIN, new String[]{}, "mode");
         addValidator(new PlayerValidator());
     }
 

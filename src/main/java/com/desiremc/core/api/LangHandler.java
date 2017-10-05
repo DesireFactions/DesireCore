@@ -73,7 +73,10 @@ public class LangHandler extends FileHandler
      */
     public String renderMessage(String string, String... args)
     {
-        if (args.length % 2 != 0) { throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given."); }
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
 
         String message = getString(string);
         for (int i = 0; i < args.length; i += 2)
@@ -82,6 +85,21 @@ public class LangHandler extends FileHandler
         }
 
         return message;
+    }
+
+    public String renderString(String string, String... args)
+    {
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
+
+        for (int i = 0; i < args.length; i += 2)
+        {
+            string = string.replace(args[i], args[i + 1]);
+        }
+
+        return string;
     }
 
     /**

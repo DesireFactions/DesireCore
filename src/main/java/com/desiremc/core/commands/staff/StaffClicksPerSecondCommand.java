@@ -13,7 +13,7 @@ public class StaffClicksPerSecondCommand extends ValidCommand
 
     public StaffClicksPerSecondCommand()
     {
-        super("cps", "starts clicks per second test on player", Rank.ADMIN, new String[] { "target" });
+        super("cps", "starts clicks per second test on player", Rank.ADMIN, new String[]{"target"});
         addParser(new PlayerParser(), "target");
     }
 

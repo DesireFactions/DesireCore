@@ -14,6 +14,10 @@ public class StaffCommand extends ValidBaseCommand
         addSubCommand(new StaffClicksPerSecondCommand());
         addSubCommand(new StaffInvisibilityCommand());
         addSubCommand(new StaffMountCommand());
+        addSubCommand(new StaffChatCommand());
+        addSubCommand(new StaffChatClearCommand());
+        addSubCommand(new StaffChatToggleCommand());
+        addSubCommand(new StaffReportsCommand());
     }
 
 }

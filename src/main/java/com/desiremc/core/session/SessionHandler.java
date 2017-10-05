@@ -36,7 +36,10 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             for (Session s : instance.sessions)
             {
-                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o)) { return s; }
+                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o))
+                {
+                    return s;
+                }
             }
             session = initializeSession(o, false);
         }
@@ -45,10 +48,16 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             String name = (String) o;
             for (Session s : instance.sessions)
             {
-                if (s.getName().equalsIgnoreCase(name)) { return s; }
+                if (s.getName().equalsIgnoreCase(name))
+                {
+                    return s;
+                }
             }
             List<Session> results = instance.createQuery().field("name").equal(name).asList();
-            if (results.size() == 1) { return results.get(0); }
+            if (results.size() == 1)
+            {
+                return results.get(0);
+            }
         }
         else if (o instanceof ConsoleCommandSender)
         {
@@ -87,7 +96,10 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             return null;
         }
-        if (op == null) { return null; }
+        if (op == null)
+        {
+            return null;
+        }
 
         Session session = new Session();
         session.setUniqueId(op.getUniqueId());
@@ -97,7 +109,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         session.setLastLogin(System.currentTimeMillis());
         session.setTotalPlayed(0);
         session.setIp("10.0.0.1");
-        session.setFriends(new ArrayList<UUID>());
+        session.setFriends(new ArrayList<>());
 
         instance.save(session);
 
@@ -108,7 +120,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         return sessions;
     }
-    
+
     public static boolean endSession(Session s)
     {
         instance.save(s);
