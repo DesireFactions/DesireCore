@@ -45,6 +45,11 @@ glass-protected-regions:
    - 'test3'
    - 'test4'
 
+xray-ores:
+  - "DIAMOND_ORE"
+  - "IRON_ORE"
+  - "EMERALD_ORE"
+
 unrepairable-lore-line: "&cUnrepairable"
 
 spawn-mobs: false

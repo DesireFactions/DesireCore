@@ -3,6 +3,12 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.commands.UnbanCommand;
+import com.desiremc.core.commands.WarnCommand;
+import com.desiremc.core.commands.alerts.AlertsCommand;
+import com.desiremc.core.commands.report.ReportCommand;
+import com.desiremc.core.listeners.InventoryListener;
+import com.desiremc.core.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -76,18 +82,24 @@ public class DesireCore extends JavaPlugin
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
+        customCommandHandler.registerCommand(new AlertsCommand());
         customCommandHandler.registerCommand(new FriendsCommand());
+        customCommandHandler.registerCommand(new ReportCommand());
         customCommandHandler.registerCommand(new InfoCommand());
         customCommandHandler.registerCommand(new RankCommand());
         customCommandHandler.registerCommand(new StaffCommand());
         customCommandHandler.registerCommand(new TempBanCommand());
         customCommandHandler.registerCommand(new BanCommand());
+        customCommandHandler.registerCommand(new UnbanCommand());
+        customCommandHandler.registerCommand(new WarnCommand());
     }
 
     private void registerListeners()
     {
         ListenerManager listenerManager = ListenerManager.getInstace();
         listenerManager.addListener(new ConnectionListener());
+        listenerManager.addListener(new PlayerListener());
+        listenerManager.addListener(new InventoryListener());
     }
 
     public MongoWrapper getMongoWrapper()

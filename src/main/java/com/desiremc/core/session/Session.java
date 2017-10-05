@@ -42,14 +42,22 @@ public class Session
 
     private List<UUID> friends;
 
+    @Property("incoming_friend_requests")
     private List<UUID> incomingFriendRequests;
 
+    @Property("outgoing_friend_requests")
     private List<UUID> outgoingFriendRequests;
 
     @Transient
     private List<Punishment> activePunishments;
 
     private int tokens;
+
+    @Property("mentions_enabled")
+    private boolean mentionsEnabled;
+
+    @Property("xray_enabled")
+    private boolean xrayEnabled;
 
     public Session()
     {
@@ -111,7 +119,10 @@ public class Session
         {
             if (p.getType() == Type.BAN)
             {
-                if (!p.isRepealed()) { return p; }
+                if (!p.isRepealed())
+                {
+                    return p;
+                }
             }
         }
         return null;
@@ -121,9 +132,18 @@ public class Session
     {
         for (Punishment p : activePunishments)
         {
-            if (p.getType() == Type.MUTE) { return p; }
+            if (p.getType() == Type.MUTE)
+            {
+                return p;
+            }
         }
         return null;
+    }
+
+    public boolean isStaff()
+    {
+        return rank.equals(Rank.ADMIN) || rank.equals(Rank.DEVELOPER) || rank.equals(Rank.HELPER) || rank.equals(Rank.MODERATOR)
+                || rank.equals(Rank.OWNER);
     }
 
     public List<UUID> getFriends()
@@ -210,7 +230,10 @@ public class Session
     {
         for (String achievement : achievements)
         {
-            if (achievement.equalsIgnoreCase(string)) { return true; }
+            if (achievement.equalsIgnoreCase(string))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -254,6 +277,26 @@ public class Session
             DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add", "{tokens}", tokens + "");
         }
         SessionHandler.getInstance().save(this);
+    }
+
+    public boolean getMentionStatus()
+    {
+        return mentionsEnabled;
+    }
+
+    public boolean getXrayStatus()
+    {
+        return xrayEnabled;
+    }
+
+    public void setMentionStatus(boolean status)
+    {
+        mentionsEnabled = status;
+    }
+
+    public void setXrayStatus(boolean status)
+    {
+        xrayEnabled = status;
     }
 
     public void setTokens(int tokens)

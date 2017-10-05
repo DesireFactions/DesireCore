@@ -12,12 +12,12 @@ public class ListenerManager
 {
 
     private static ListenerManager instance;
-    
+
     private List<Listener> listeners;
 
     public ListenerManager()
     {
-        listeners = new ArrayList<Listener>();
+        listeners = new ArrayList<>();
     }
 
     public List<Listener> getListenerList()

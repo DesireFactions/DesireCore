@@ -17,31 +17,25 @@ public class StaffAPI
     {
         if (STAFF.toggleFreeze(player))
         {
-            LANG.sendRenderMessage(sender, "staff.froze_target", "{target}", player.getDisplayName());
+            LANG.sendRenderMessage(sender, "staff.froze-target", "{player}", player.getDisplayName());
         }
     }
 
     public static void toggleStaffMode(Player sender)
     {
-        if (STAFF.toggleStaffMode(sender))
-        {
-            LANG.sendString(sender, "staff.staff_mode_on");
-            return;
-        }
-
-        LANG.sendString(sender, "staff.staff_mode_off");
+        STAFF.toggleStaffMode(sender);
     }
 
     public static void clicksPerSecondTest(CommandSender sender, Player player)
     {
         if (STAFF.CPSTest(player))
         {
-            LANG.sendRenderMessage(sender, "staff.cps_test_already_running", "{target}", player.getDisplayName());
+            LANG.sendRenderMessage(sender, "staff.cps-already-running", "{player}", player.getDisplayName());
             return;
         }
 
-        STAFF.startCPSTestForPlayer(player);
-        LANG.sendRenderMessage(sender, "staff.cps_test", "{taget}", player.getDisplayName());
+        STAFF.startCPSTestForPlayer((Player) sender, player);
+        LANG.sendRenderMessage(sender, "staff.cps-start", "{player}", player.getDisplayName());
     }
 
     public static void toggleInvisibility(Player player)

@@ -98,6 +98,9 @@ ban:
   tempban_message_target: '&7You have been {duration} banned by &e{player}&7 for &e{reason}&7.'
   permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
   unban_message_target: '&7You have been unbanned by &e{player}&7.'
+warn:
+  warn_issued: "You have warned {player} for {reason}"
+  warned: "You have been warned by {player} for {reason}. The warning expires in {time}"
 koth:
   name_used: '&7That name has already been used.'
   hill_not_found: '&7That hill can''t be found.'
@@ -121,6 +124,49 @@ koth:
     pending: '&fCancelled the pending KOTH session &b{koth}&f.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
+staff:
+  cps-start: "Starting clicks per second test for {player}. Result in 10 seconds."
+  cps-finish: "{player} clicked {amount} per second over 10 seconds."
+  cps-already-running: "There is already a clicks per second test for {player} running."
+  froze-target: "You have frozen {player}"
+  staff-on: "You have toggled staff mode on."
+  staff-off: "You have toggled staff mode off."
+  staff-chat-on: "You are now in staff chat."
+  staff-chat-off: "You have left staff chat."
+  staff-chat-format: "[Staff] {prefix} {name}: {message}"
+  chat-cleared: "You have cleared chat."
+  chat-cleared-all:
+  chat-on: "You have turned chat back on."
+  chat-off: "You have turned chat off."
+report:
+  reported: "You have reported {player} for {reason}"
+  clear: "You have cleared {player}'s reports."
+  inventory:
+    title: "DesireHCF Reports GUI"
+    item:
+      name: "{player}"
+      lore:
+        - "Reported by: {issuer}"
+        - "Reported on: {date}"
+        - "Report Reason: {reason}"
+    next:
+      name: "Next Item"
+      lore:
+        - "Go to the next page!"
+      item: "IRON_BLOCK"
+    back:
+      name: "Next Item"
+      lore:
+        - "Go to the next page!"
+      item: "IRON_BLOCK"
+alerts:
+  mention:
+    on: "You will now receive alerts when mentioned."
+    off: "You will no longer receive alerts when mentioned."
+  xray:
+    on: "You will now receive xray alerts."
+    off: "You will no longer receive xray alerts."
+    message: "{player} has found a vein of {count} {oreName}"
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
