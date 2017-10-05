@@ -13,7 +13,7 @@ import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
 
-@Entity(value = "players", noClassnameStored = true)
+@Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
 {
 
@@ -26,13 +26,13 @@ public class HCFSession
     private int lives;
 
     private Map<String, Integer> kills;
-    
+
     private Map<String, Integer> deaths;
 
     private Map<String, String> settings;
 
     @Transient
-    private HCFSession session;
+    private Session session;
 
     @Transient
     private PVPTimer pvpTimer;
@@ -95,19 +95,23 @@ public class HCFSession
         this.lives += lives;
     }
 
-    public int getKills(String server) {
+    public int getKills(String server)
+    {
         return kills.get(server);
     }
-    
-    public int getDeaths(String server) {
+
+    public int getDeaths(String server)
+    {
         return deaths.get(server);
     }
 
-    public void addKill(String server) {
+    public void addKill(String server)
+    {
         kills.put(server, kills.get(server) + 1);
     }
-    
-    public void addDeaths(String server) {
+
+    public void addDeaths(String server)
+    {
         deaths.put(server, deaths.get(server) + 1);
     }
 
@@ -120,7 +124,7 @@ public class HCFSession
     {
         this.settings = settings;
     }
-    
+
     public int getTokens()
     {
         return session.getTokens();
@@ -166,6 +170,18 @@ public class HCFSession
             run();
         }
 
+    }
+
+    public void setSession(Session session)
+    {
+        this.session = session;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof HCFSession)) { return false; }
+        return ((HCFSession) o).getUniqueId().equals(uuid);
     }
 
 }

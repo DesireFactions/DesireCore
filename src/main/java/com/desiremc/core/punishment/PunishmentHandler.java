@@ -8,7 +8,7 @@ import org.mongodb.morphia.dao.BasicDAO;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment.Type;
 
-public class PunishmentHandler extends BasicDAO<Punishment, Integer>
+public class PunishmentHandler extends BasicDAO<Punishment, Long>
 {
 
     private static PunishmentHandler instance;
