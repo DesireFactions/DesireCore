@@ -37,7 +37,7 @@ public class InventoryListener implements Listener
         if (event.getClick().equals(ClickType.DOUBLE_CLICK))
         {
             ItemStack item = event.getCurrentItem();
-            for (Report report : ReportHandler.getInstance().getAllReports(false))
+            for (Report report : ReportHandler.getInstance().getAllReports(true))
             {
                 Session reported = SessionHandler.getSession(report.getReported());
                 Session issuer = SessionHandler.getSession(report.getIssuer());

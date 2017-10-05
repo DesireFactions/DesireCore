@@ -84,7 +84,7 @@ public class Punishment {
         this.reason = reason;
     }
 
-    public enum Type {
+    public static enum Type {
         MUTE,
         BAN,
         WARN

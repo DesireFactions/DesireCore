@@ -141,6 +141,10 @@ staff:
   chat-off: "You have turned chat off."
 report:
   reported: "You have reported {player} for {reason}"
+  getreport:
+    - "Reported on {date}"
+    - "Reported by {player}"
+    - "Reported for {reason}"
   clear: "You have cleared {player}'s reports."
   inventory:
     title: "DesireHCF Reports GUI"
