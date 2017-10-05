@@ -80,6 +80,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         {
             session = createHCFSession(o);
         }
+        session.setSession(SessionHandler.getSession(o));
         if (cache)
         {
             instance.sessions.add(session);
