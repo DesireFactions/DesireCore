@@ -142,12 +142,6 @@ public class Session
         return null;
     }
 
-    public boolean isStaff()
-    {
-        return rank.equals(Rank.ADMIN) || rank.equals(Rank.DEVELOPER) || rank.equals(Rank.HELPER) || rank.equals(Rank.MODERATOR)
-                || rank.equals(Rank.OWNER);
-    }
-
     public List<UUID> getFriends()
     {
         return friends;
