@@ -16,8 +16,9 @@ public class FriendListCommand extends ValidCommand
 
     public FriendListCommand()
     {
-        super("list", "List all of your friends", Rank.GUEST, new String[]{"target"}, "show");
+        super("list", "List all of your friends", Rank.GUEST, new String[] { "target" }, "show");
         addParser(new PlayerSessionParser(), "target");
+
         addValidator(new PlayerValidator());
         addValidator(new SenderHasFriendsValidator());
     }

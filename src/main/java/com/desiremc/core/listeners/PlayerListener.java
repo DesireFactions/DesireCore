@@ -1,9 +1,9 @@
 package com.desiremc.core.listeners;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -16,9 +16,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.StaffHandler;
 
 public class PlayerListener implements Listener
 {
@@ -50,8 +51,7 @@ public class PlayerListener implements Listener
             event.setCancelled(true);
             for (UUID target : StaffHandler.getInstance().getAllInStaffChat())
             {
-                String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix()
-                        , "{name}", p.getName(), "{message}", event.getMessage());
+                String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event.getMessage());
                 Bukkit.getPlayer(target).sendMessage(message);
             }
         }
@@ -63,7 +63,7 @@ public class PlayerListener implements Listener
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Session session = SessionHandler.getSession(p);
-            if (session.isStaff() && event.getMessage().contains(p.getName()) && session.getMentionStatus())
+            if (session.getRank().isStaff() && event.getMessage().contains(p.getName()) && session.getMentionStatus())
             {
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             }
@@ -76,7 +76,7 @@ public class PlayerListener implements Listener
         Session session = SessionHandler.getSession(event.getPlayer());
         if (!StaffHandler.getInstance().isChatEnabled())
         {
-            if (!session.isStaff())
+            if (!session.getRank().isStaff())
             {
                 event.setCancelled(true);
             }
@@ -91,7 +91,9 @@ public class PlayerListener implements Listener
         String name = StringUtils.capitalize(event.getBlock().getType().name().toLowerCase().replace("_", ""));
 
         if (!DesireCore.getConfigHandler().getStringList("xray-ores").contains(event.getBlock().getType().name()))
+        {
             return;
+        }
 
         Set<Block> vein = getVein(event.getBlock());
 
@@ -99,10 +101,9 @@ public class PlayerListener implements Listener
         {
             Session session = SessionHandler.getSession(player);
 
-            if (session.isStaff() && session.getXrayStatus())
+            if (session.getRank().isStaff() && session.getXrayStatus())
             {
-                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}"
-                        , vein.size() + "", "{oreName}", name);
+                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
             }
         }
     }
@@ -124,9 +125,9 @@ public class PlayerListener implements Listener
                 for (int k = -1; k < 2; k++)
                 {
                     Block relative = block.getRelative(i, j, k);
-                    if ((!vein.contains(relative)) &&
-                            (block.equals(relative)) &&
-                            ((i != 0) || (j != 0) || (k != 0)))
+                    if (!vein.contains(relative) &&
+                            block.equals(relative) &&
+                            (i != 0 || j != 0 || k != 0))
                     {
                         vein.add(relative);
                         getVein(relative, vein);
