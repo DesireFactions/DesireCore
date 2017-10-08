@@ -1,15 +1,13 @@
 package com.desiremc.core.commands.report;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import org.bukkit.command.CommandSender;
 
 public class ReportCreateCommand extends ValidCommand
 {

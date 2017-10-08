@@ -3,16 +3,11 @@ package com.desiremc.core.session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.thread.ClicksPerSecondThread;
-import com.desiremc.core.utils.DateUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -30,6 +25,10 @@ import org.bukkit.util.Vector;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.thread.ClicksPerSecondThread;
+import com.desiremc.core.utils.DateUtils;
 
 public class StaffHandler
 {
@@ -183,7 +182,10 @@ public class StaffHandler
     {
         Boolean frozen = frozenPlayers.get(p.getUniqueId());
 
-        if (frozen == null) return false;
+        if (frozen == null)
+        {
+            return false;
+        }
 
         return frozen;
     }
@@ -214,10 +216,14 @@ public class StaffHandler
         return true;
     }
 
+    @SuppressWarnings("incomplete-switch")
     @EventHandler
     public void playerInteractEntity(PlayerInteractEntityEvent e)
     {
-        if (!inStaffMode(e.getPlayer())) return;
+        if (!inStaffMode(e.getPlayer()))
+        {
+            return;
+        }
 
         e.setCancelled(true);
         if (e.getHand().equals(EquipmentSlot.HAND))
@@ -247,7 +253,10 @@ public class StaffHandler
     @EventHandler
     public void playerInteract(PlayerInteractEvent e)
     {
-        if (!inStaffMode(e.getPlayer())) return;
+        if (!inStaffMode(e.getPlayer()))
+        {
+            return;
+        }
 
         e.setCancelled(true);
         if (e.getItem() != null)
@@ -340,7 +349,9 @@ public class StaffHandler
         UUID playerID = player.getUniqueId();
 
         if (cpsTests.containsKey(playerID))
+        {
             return;
+        }
 
         cpsTests.put(playerID, 0);
         new ClicksPerSecondThread(player, target, this).runTaskTimer(DesireCore.getInstance(), 0, 20);
