@@ -89,8 +89,9 @@ friend:
   no_friends: 'You have currently have no friends.'
   not_friends: 'You are not friends with {player}.'
 enderchest:
-  disabled: '&7enderchest disabled!'
-  enabled: '&7enderchest enabled!'
+  disabled: '&7Disabled enderchests.'
+  enabled: '&7Enabled enderchests.'
+  blocked: '&7Enderchests are currently disabled.'
 ban:
   rank_to_low_error: '&7You may only ban people below your rank.'
   invalid_ban_time_error: '&7Invalid ban time.'
