@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -86,6 +87,24 @@ public class Session
             throw new IllegalStateException("Player is offline.");
         }
         return player;
+    }
+
+    public OfflinePlayer getOfflinePlayer()
+    {
+        if (player != null)
+        {
+            return player;
+        }
+        OfflinePlayer op = Bukkit.getOfflinePlayer(getUniqueId());
+        if (op == null)
+        {
+            return null;
+        }
+        if (op.isOnline())
+        {
+            player = (Player) op;
+        }
+        return op;
     }
 
     public void setPlayer(Player player)
