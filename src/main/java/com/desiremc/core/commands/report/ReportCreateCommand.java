@@ -13,7 +13,7 @@ public class ReportCreateCommand extends ValidCommand
 {
     public ReportCreateCommand()
     {
-        super("create", "Create a new report.", Rank.GUEST, new String[]{"target", "reason"});
+        super("create", "Create a new report.", Rank.GUEST, new String[] { "target", "reason" });
     }
 
     @Override
@@ -31,12 +31,10 @@ public class ReportCreateCommand extends ValidCommand
             }
         }
 
-        ReportHandler.getInstance().submitReport(target.getUniqueId(), session != null ? session.getUniqueId() : DesireCore.getConsoleUUID(),
-                sb.toString().trim());
+        ReportHandler.getInstance().submitReport(target.getUniqueId(), session != null ? session.getUniqueId() : DesireCore.getConsoleUUID(), sb.toString().trim());
 
         LANG.sendRenderMessage(session, "report.reported",
                 "{player}", target.getName(),
                 "{reason}", sb.toString().trim());
     }
 }
-
