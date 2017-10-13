@@ -10,12 +10,11 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import org.bukkit.command.CommandSender;
 
-
 public class ReportGetCommand extends ValidCommand
 {
     public ReportGetCommand()
     {
-        super("get", "Get a players reports.", Rank.GUEST, new String[]{"target"});
+        super("get", "Get a players reports.", Rank.GUEST, new String[] { "target" });
         addParser(new PlayerSessionParser(), "target");
     }
 
@@ -25,14 +24,17 @@ public class ReportGetCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = SessionHandler.getSession(args[0]);
 
-        for(Report report : ReportHandler.getInstance().getAllReports(true))
+        for (Report report : ReportHandler.getInstance().getAllReports(true))
         {
-            if(!report.getReported().equals(target.getUniqueId())) continue;
+            if (!report.getReported().equals(target.getUniqueId()))
+                continue;
 
-            for(String msg : LANG.getStringList("report.getreport"))
+            for (String msg : LANG.getStringList("report.getreport"))
             {
-                session.getPlayer().sendMessage(LANG.renderString(msg, "{date}", DateUtils.formatDateDiff(report.getIssued()),
-                        "{player}", SessionHandler.getSession(report.getIssuer()).getName(), "{reason}", report.getReason()));
+                session.getPlayer().sendMessage(LANG.renderString(msg,
+                        "{date}", DateUtils.formatDateDiff(report.getIssued()),
+                        "{player}", SessionHandler.getSession(report.getIssuer()).getName(),
+                        "{reason}", report.getReason()));
             }
         }
     }

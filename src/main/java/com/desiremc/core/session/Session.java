@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
@@ -40,18 +42,16 @@ public class Session
     @Property("total_played")
     private long totalPlayed;
 
-    private List<String> achievements;
+    private List<Achievement> achievements;
 
-    private List<UUID> friends;
+    @Reference
+    private List<Session> friends;
 
     @Property("incoming_friend_requests")
-    private List<UUID> incomingFriendRequests;
+    private List<Session> incomingFriendRequests;
 
     @Property("outgoing_friend_requests")
-    private List<UUID> outgoingFriendRequests;
-
-    @Transient
-    private List<Punishment> activePunishments;
+    private List<Session> outgoingFriendRequests;
 
     private int tokens;
 
@@ -60,6 +60,12 @@ public class Session
 
     @Property("xray_enabled")
     private boolean xrayEnabled;
+
+    @Transient
+    private List<Punishment> activePunishments;
+
+    @Transient
+    private Player player;
 
     public Session()
     {
@@ -72,7 +78,38 @@ public class Session
 
     public Player getPlayer()
     {
-        return Bukkit.getPlayer(uuid);
+        if (player == null)
+        {
+            player = Bukkit.getPlayer(uuid);
+        }
+        if (player == null || !player.isOnline())
+        {
+            throw new IllegalStateException("Player is offline.");
+        }
+        return player;
+    }
+
+    public OfflinePlayer getOfflinePlayer()
+    {
+        if (player != null)
+        {
+            return player;
+        }
+        OfflinePlayer op = Bukkit.getOfflinePlayer(getUniqueId());
+        if (op == null)
+        {
+            return null;
+        }
+        if (op.isOnline())
+        {
+            player = (Player) op;
+        }
+        return op;
+    }
+
+    public void setPlayer(Player player)
+    {
+        this.player = player;
     }
 
     public UUID getUniqueId()
@@ -142,34 +179,29 @@ public class Session
         return null;
     }
 
-    public List<UUID> getFriends()
+    public List<Session> getFriends()
     {
         return friends;
     }
 
-    public void setFriends(List<UUID> friends)
-    {
-        this.friends = friends;
-    }
-
-    public List<UUID> getIncomingFriendRequests()
+    public List<Session> getIncomingFriendRequests()
     {
         return incomingFriendRequests;
     }
 
-    public void setIncomingFriendRequests(List<UUID> incomingFriendRequests)
-    {
-        this.incomingFriendRequests = incomingFriendRequests;
-    }
-
-    public List<UUID> getOutgoingFriendRequests()
+    public List<Session> getOutgoingFriendRequests()
     {
         return outgoingFriendRequests;
     }
 
-    public void setOutgoingFriendRequests(List<UUID> outgoingFriendRequests)
+    public boolean hasIncomingFriendRequest(Session session)
     {
-        this.outgoingFriendRequests = outgoingFriendRequests;
+        return incomingFriendRequests.contains(session);
+    }
+
+    public boolean hasOutgoingFriendRequest(Session session)
+    {
+        return outgoingFriendRequests.contains(session);
     }
 
     public long getFirstLogin()
@@ -212,21 +244,16 @@ public class Session
         this.ip = ip;
     }
 
-    public List<String> getAchievements()
+    public List<Achievement> getAchievements()
     {
         return achievements;
     }
 
-    public void setAchievements(List<String> achievements)
+    public boolean hasAchievement(Achievement achievement)
     {
-        this.achievements = achievements;
-    }
-
-    public boolean hasAchievement(String string)
-    {
-        for (String achievement : achievements)
+        for (Achievement a : achievements)
         {
-            if (achievement.equalsIgnoreCase(string))
+            if (achievement == a)
             {
                 return true;
             }
@@ -236,9 +263,12 @@ public class Session
 
     public void awardAchievement(Achievement achievement, boolean inform)
     {
-        if (hasAchievement(achievement.getId())) return;
+        if (hasAchievement(achievement))
+        {
+            return;
+        }
 
-        getAchievements().add(achievement.getId());
+        getAchievements().add(achievement);
 
         if (inform)
         {

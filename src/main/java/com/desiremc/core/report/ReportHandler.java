@@ -1,11 +1,11 @@
 package com.desiremc.core.report;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.connection.MongoWrapper;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.mongodb.morphia.dao.BasicDAO;
+
+import com.desiremc.core.DesireCore;
 
 public class ReportHandler extends BasicDAO<Report, Integer>
 {
@@ -39,9 +39,12 @@ public class ReportHandler extends BasicDAO<Report, Integer>
 
     public List<Report> getAllReports(boolean removeResolved)
     {
-        List<Report> reports = MongoWrapper.reportDAO.find().asList();
+        List<Report> reports = find().asList();
 
-        if (removeResolved) reports.removeIf(report -> report.isResolved());
+        if (removeResolved)
+        {
+            reports.removeIf(report -> report.isResolved());
+        }
 
         return reports;
     }

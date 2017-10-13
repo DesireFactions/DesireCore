@@ -3,8 +3,6 @@ package com.desiremc.core.connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportDAO;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -20,7 +18,6 @@ public class MongoWrapper
     private MongoClient mc;
     private Morphia morphia;
     private Datastore datastore;
-    public static ReportDAO reportDAO;
 
     public MongoWrapper()
     {
@@ -35,8 +32,6 @@ public class MongoWrapper
 
         datastore = morphia.createDatastore(mc, config.getString("database.database"));
         datastore.ensureIndexes();
-
-        reportDAO = new ReportDAO(Report.class, datastore);
     }
 
     public MongoClient getMongoClient()

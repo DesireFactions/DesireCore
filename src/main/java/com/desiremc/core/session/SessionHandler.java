@@ -1,6 +1,5 @@
 package com.desiremc.core.session;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
@@ -21,12 +21,15 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     private static SessionHandler instance;
 
     private List<Session> sessions;
+    
+    private List<Session> staff;
 
     public SessionHandler()
     {
         super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
         sessions = new LinkedList<>();
+        staff = new LinkedList<>();
     }
 
     public static Session getSession(Object o)
@@ -68,7 +71,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static Session initializeSession(Object o, boolean cache)
     {
-        Session session = instance.findOne("uuid", o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o);
+        Session session = instance.findOne("uuid", o instanceof Player ? ((Player) o).getUniqueId() : o);
         if (session == null)
         {
             session = createSession(o);
@@ -76,6 +79,10 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         if (cache)
         {
             instance.sessions.add(session);
+            if (session.getRank().isStaff())
+            {
+                instance.staff.add(session);
+            }
         }
         session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
         return session;
@@ -83,33 +90,32 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     private static Session createSession(Object o)
     {
-        OfflinePlayer op;
-        if (o instanceof OfflinePlayer)
+        Player p;
+        if (o instanceof Player)
         {
-            op = (OfflinePlayer) o;
+            p = (Player) o;
         }
         else if (o instanceof UUID)
         {
-            op = Bukkit.getOfflinePlayer((UUID) o);
+            p = Bukkit.getPlayer((UUID) o);
         }
         else
         {
             return null;
         }
-        if (op == null)
+        if (p == null)
         {
             return null;
         }
 
         Session session = new Session();
-        session.setUniqueId(op.getUniqueId());
-        session.setName(op.getName());
+        session.setUniqueId(p.getUniqueId());
+        session.setName(p.getName());
         session.setRank(Rank.GUEST);
         session.setFirstLogin(System.currentTimeMillis());
         session.setLastLogin(System.currentTimeMillis());
         session.setTotalPlayed(0);
-        session.setIp("10.0.0.1");
-        session.setFriends(new ArrayList<>());
+        session.setIp(p.getAddress().getAddress().getHostAddress());
 
         instance.save(session);
 
@@ -119,6 +125,11 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public List<Session> getSessions()
     {
         return sessions;
+    }
+    
+    public List<Session> getStaff()
+    {
+        return staff;
     }
 
     public static boolean endSession(Session s)

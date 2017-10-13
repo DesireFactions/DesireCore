@@ -3,12 +3,6 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
-import com.desiremc.core.commands.UnbanCommand;
-import com.desiremc.core.commands.WarnCommand;
-import com.desiremc.core.commands.alerts.AlertsCommand;
-import com.desiremc.core.commands.report.ReportCommand;
-import com.desiremc.core.listeners.InventoryListener;
-import com.desiremc.core.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -20,17 +14,24 @@ import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.BanCommand;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.TempBanCommand;
+import com.desiremc.core.commands.UnbanCommand;
+import com.desiremc.core.commands.WarnCommand;
+import com.desiremc.core.commands.alerts.AlertsCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.rank.RankCommand;
+import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
 import com.desiremc.core.listeners.ConnectionListener;
+import com.desiremc.core.listeners.InventoryListener;
 import com.desiremc.core.listeners.ListenerManager;
+import com.desiremc.core.listeners.PlayerListener;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.StaffHandler;
 import com.desiremc.core.utils.ItemDb;
 
 public class DesireCore extends JavaPlugin
@@ -71,6 +72,7 @@ public class DesireCore extends JavaPlugin
         ListenerManager.initialize();
         CustomCommandHandler.initialize();
         SessionHandler.initialize();
+        StaffHandler.initialize();
         
         registerCommands();
         registerListeners();

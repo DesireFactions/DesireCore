@@ -250,6 +250,7 @@ public class StaffHandler
         }
     }
 
+    @SuppressWarnings("incomplete-switch")
     @EventHandler
     public void playerInteract(PlayerInteractEvent e)
     {
@@ -443,7 +444,7 @@ public class StaffHandler
             }
 
             skull.setLore(lore);
-            skull.setOwner(reported.getName());
+            skull.setOwningPlayer(reported.getOfflinePlayer());
             item.setItemMeta(skull);
             inv.addItem(item);
         }

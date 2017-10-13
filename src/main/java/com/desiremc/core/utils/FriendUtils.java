@@ -1,62 +1,154 @@
 package com.desiremc.core.utils;
 
-import java.util.UUID;
-
-import com.desiremc.core.session.AchievementManager;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 
-public class FriendUtils {
+public class FriendUtils
+{
 
-    /*
-     * Methods
+    /**
+     * Remove a player's friend
+     * 
+     * @param player
+     * @param target
      */
-
-    public static void addFriend(Session player, UUID target) {
-        player.getFriends().add(target);
-        if (!player.hasAchievement("first_friend")) {
-            player.awardAchievement(AchievementManager.FIRST_FRIEND, true);
-        }
-    }
-
-    public static void removeFriend(Session player, UUID target) {
+    public static void removeFriend(Session player, Session target)
+    {
         player.getFriends().remove(target);
-        saveFriends(player);
+        target.getFriends().remove(player);
+
+        saveRequests(player, target);
     }
 
-    public static void addFriendRequest(Session player, UUID target, boolean incoming) {
-        if (incoming) {
-            player.getIncomingFriendRequests().add(target);
-        } else {
+    /**
+     * Send a new friend request to a player.
+     * 
+     * @param player
+     *            the player sending the request.
+     * @param target
+     *            the player recieving the request.
+     * @param incoming
+     */
+    public static void addFriendRequest(Session player, Session target)
+    {
+        if (target.hasOutgoingFriendRequest(target))
+        {
+            acceptFriendRequest(player, target);
+        }
+        else
+        {
+            target.getIncomingFriendRequests().add(player);
             player.getOutgoingFriendRequests().add(target);
+            saveRequests(player, target);
         }
-        saveFriends(player);
     }
 
-    public static void acceptFriendRequest(Session player, UUID target, boolean incoming) {
+    /**
+     * Accept a friend request from the target player.
+     * 
+     * @param player
+     *            the player accepting the request.
+     * @param target
+     *            the person who originally sent the request.
+     */
+    public static void acceptFriendRequest(Session player, Session target)
+    {
+        player.getIncomingFriendRequests().remove(target);
+        target.getOutgoingFriendRequests().remove(player);
+
         addFriend(player, target);
-        denyFriendRequest(player, target, incoming);
-        saveFriends(player);
+
+        saveRequests(player, target);
     }
 
-    public static void denyFriendRequest(Session player, UUID target, boolean incoming) {
-        if (incoming) {
-            player.getIncomingFriendRequests().remove(target);
-        } else {
-            player.getOutgoingFriendRequests().remove(target);
+    /**
+     * Deny a friend request from the target player.
+     * 
+     * @param player
+     *            the player denying the request.
+     * @param target
+     *            the person who originally sent the request.
+     */
+    public static void denyFriendRequest(Session player, Session target)
+    {
+        player.getIncomingFriendRequests().remove(target);
+        target.getOutgoingFriendRequests().remove(player);
+
+        saveRequests(player, target);
+    }
+
+    /**
+     * Checks if a player has a friend request incoming from another player.
+     * 
+     * @param player
+     *            the person to check.
+     * @param target
+     *            the person who originally sent the request.
+     * @return whether or not there is a pending request between the two.
+     */
+    public static boolean hasRequest(Session player, Session target)
+    {
+        boolean receiving = player.getIncomingFriendRequests().contains(target);
+        boolean sending = target.getOutgoingFriendRequests().contains(player);
+
+        if (receiving && sending)
+        {
+            return true;
+        }
+        else if (receiving ^ sending)
+        {
+            throw new IllegalStateException("Friend requests are out of sync for " + player.getName() + " and " + target.getName() + ".");
+        }
+        else
+        {
+            return false;
         }
     }
 
-    public static boolean hasRequest(Session player, UUID target) {
-        return (player.getIncomingFriendRequests().contains(target));
+    /**
+     * Checks if two players are friends with one another.
+     * 
+     * @param first
+     *            the first player.
+     * @param second
+     *            the second player.
+     * @return whether or not they are friends.
+     */
+    public static boolean areFriends(Session first, Session second)
+    {
+        boolean firstCheck = first.getFriends().contains(second);
+        boolean secondCheck = second.getFriends().contains(first);
+
+        if (firstCheck && secondCheck)
+        {
+            return true;
+        }
+        else if (firstCheck ^ secondCheck)
+        {
+            throw new IllegalStateException("Friends are out of sync for " + first.getName() + " and " + second.getName());
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public static boolean isFriends(Session player, UUID target) {
-        return (player.getFriends().contains(target));
-    }
-
-    private static void saveFriends(Session player) {
+    private static void saveRequests(Session player, Session target)
+    {
         SessionHandler.getInstance().save(player);
+        SessionHandler.getInstance().save(target);
+    }
+
+    private static void addFriend(Session player, Session target)
+    {
+        player.getFriends().add(target);
+        target.getFriends().add(player);
+
+        if (!player.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            player.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
     }
 
 }

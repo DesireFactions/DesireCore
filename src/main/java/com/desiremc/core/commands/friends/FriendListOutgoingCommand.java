@@ -7,16 +7,16 @@ import com.desiremc.core.api.FriendsAPI;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderOutgoingFriendRequestsValidator;
+import com.desiremc.core.validators.SenderHasOutgoingFriendRequestsValidator;
 
 public class FriendListOutgoingCommand extends ValidCommand
 {
 
     public FriendListOutgoingCommand()
     {
-        super("outgoing", "Lists incoming friend requests.", Rank.GUEST, new String[]{});
+        super("outgoing", "Lists incoming friend requests.", Rank.GUEST, new String[] {});
         addValidator(new PlayerValidator());
-        addValidator(new SenderOutgoingFriendRequestsValidator());
+        addValidator(new SenderHasOutgoingFriendRequestsValidator());
     }
 
     @Override
