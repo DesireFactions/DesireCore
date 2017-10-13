@@ -1,6 +1,7 @@
 package com.desiremc.core.commands;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
@@ -18,6 +19,9 @@ import org.bukkit.command.CommandSender;
 
 public class WarnCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
+
     public WarnCommand()
     {
         super("warn", "Warn a user on the server.", Rank.MODERATOR, new String[]{"target", "time", "reason"});

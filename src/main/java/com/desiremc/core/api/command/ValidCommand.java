@@ -9,7 +9,6 @@ import java.util.Map;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.arity.CommandArity;
 import com.desiremc.core.api.command.arity.OptionalCommandArity;
 import com.desiremc.core.api.command.arity.OptionalVariadicCommandArity;
@@ -47,12 +46,9 @@ public abstract class ValidCommand
 
     protected CommandArity commandArity;
 
-    protected static final LangHandler LANG = DesireCore.getLangHandler();
-
     /**
      * @param name
      * @param description
-     * @param permission
      * @param aliases
      */
     public ValidCommand(String name, String description, Rank requiredRank,
@@ -93,7 +89,7 @@ public abstract class ValidCommand
     {
         if (!commandArity.validateArity(args.length, this.args.length))
         {
-            LANG.sendUsageMessage(sender, label, this.args);
+            DesireCore.getLangHandler().sendUsageMessage(sender, label, this.args);
             return;
         }
 

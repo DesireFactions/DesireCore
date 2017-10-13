@@ -1,5 +1,7 @@
 package com.desiremc.core.parsers;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ArgumentParser;
@@ -17,7 +19,7 @@ public class TimeParser implements ArgumentParser
         }
         catch (Exception e)
         {
-            LANG.sendString(sender, "not_time");
+            DesireCore.getLangHandler().sendString(sender, "not_time");
             return null;
         }
     }

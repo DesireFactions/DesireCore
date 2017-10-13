@@ -1,5 +1,7 @@
 package com.desiremc.core.commands;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
@@ -11,6 +13,8 @@ import com.desiremc.core.validators.PlayerIsBannedValidator;
 
 public class UnbanCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public UnbanCommand()
     {

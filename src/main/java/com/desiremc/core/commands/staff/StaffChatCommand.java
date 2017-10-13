@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.staff;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.StaffHandler;
@@ -9,6 +11,8 @@ import org.bukkit.entity.Player;
 
 public class StaffChatCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public StaffChatCommand()
     {

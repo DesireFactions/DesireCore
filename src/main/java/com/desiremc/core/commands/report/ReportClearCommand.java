@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.report;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.report.ReportHandler;
@@ -10,6 +12,9 @@ import org.bukkit.command.CommandSender;
 
 public class ReportClearCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
+
     public ReportClearCommand()
     {
         super("clear", "Clear a players reports", Rank.ADMIN, new String[]{"target"});

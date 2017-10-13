@@ -14,7 +14,7 @@ public enum Achievement
     private String description;
     private int reward;
 
-    private Achievement(String name, String description, int reward)
+    Achievement(String name, String description, int reward)
     {
         this.name = name;
         this.description = description;

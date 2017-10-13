@@ -1,5 +1,6 @@
 package com.desiremc.core.validators;
 
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,7 @@ public class PlayerNotFriendsValidator extends CommandValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        return !FriendUtils.isFriends((Session) arg, ((Player) sender).getUniqueId());
+        return !FriendUtils.areFriends((Session) arg, SessionHandler.getSession(sender));
     }
 
 }

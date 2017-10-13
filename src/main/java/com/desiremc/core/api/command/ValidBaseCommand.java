@@ -2,6 +2,7 @@ package com.desiremc.core.api.command;
 
 import java.util.Arrays;
 
+import com.desiremc.core.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
@@ -12,10 +13,11 @@ import com.desiremc.core.session.SessionHandler;
 public abstract class ValidBaseCommand extends ValidCommand
 {
 
+    private static final LangHandler LANG = DesireCore.getLangHandler();
+
     /**
      * @param name
      * @param description
-     * @param permission
      * @param aliases
      */
     public ValidBaseCommand(String name, String description, Rank requiredRank, String... aliases)

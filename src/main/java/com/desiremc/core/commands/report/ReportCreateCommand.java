@@ -1,5 +1,6 @@
 package com.desiremc.core.commands.report;
 
+import com.desiremc.core.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
@@ -11,6 +12,9 @@ import com.desiremc.core.session.SessionHandler;
 
 public class ReportCreateCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
+
     public ReportCreateCommand()
     {
         super("create", "Create a new report.", Rank.GUEST, new String[] { "target", "reason" });

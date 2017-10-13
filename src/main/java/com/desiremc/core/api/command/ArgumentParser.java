@@ -7,8 +7,6 @@ import com.desiremc.core.api.LangHandler;
 
 public interface ArgumentParser {
     
-    public static final LangHandler LANG = DesireCore.getLangHandler();
-    
     public Object parseArgument(CommandSender sender, String label, String arg);
     
 }

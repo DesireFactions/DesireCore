@@ -1,29 +1,13 @@
-hcfreload: '&cReloaded the config and lang files.'
 prefix:
   text: '&7[&bHCF&7]'
   use: true
-tag:
-  active: '&c&lYou are now combat tagged and can not enter spawn.'
-  expire: '&c&lYou are no longer combat tagged.'
-  scoreboard: "CombatTimer"
-logout:
-  cancelled: '&c&lYour safe logout has been cancelled.'
-  success: '&c&lYour safe logout has been successful.'
-  pending: '&c&lYour safe logout is pending for {seconds}s.'
-  exists: "&c&lYou have already started to safely logout."
-  started: "&c&lYou have started to safely logout."
 list-header: '&c----------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
-need_selection: '&7You need to make a selection with WorldEdit.'
 not_time: '&7Time format used is invalid.'
 never_logged_in: '&7This player has never logged in before.'
 only_players: '&7only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
-faction: Faction &e{faction}
-no_faction: You are not a part of a faction!
 not_banned: '{player} is not banned.'
-trophy_points: Trophy Points &e{points}
-koth_wins: Trophy Points &e{koth}
 no_season_data: Could not find Season data for &e{faction}
 could_not_retrieve: '&6Could not retrieve &7{name}'
 current_koth: Current KOTH $l&e{koth}
@@ -46,25 +30,6 @@ string:
 integer:
   too_large: '&7That number is too large.'
   too_small: '&7That number is too small.'
-region:
-  used_name: '&7That name is already used.'
-  not_found: '&7That region does not exist.'
-  none: '&7No regions exist.'
-  same_name: '&7That is the same name.'
-  create: '&fCreated region &b{name}&f with the material &a{material}&f.'
-  delete: '&fDeleted region &b{name}&f.'
-  list: '&fList of regions: &e{regions}&f.'
-  changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
-pvp:
-  target-protected: '&7That player has pvp disabled'
-  damager-protected: '&7You have pvp disabled.'
-  disabled: '&7You have disabled your pvp protection timer.'
-  kill: '&7{killer}[{killerKills}] has killed {player}[{playerKills}] with a {item}!'
-lives:
-  add: You have added &c{amount}&7 lives to {player}
-  remove: You have removed &c{amount}&7 lives to {player}
-  recieved: '{sender} has given you {amount} lives!'
-  lost: '{sender} has taken {amount} lives from you!'
 set_end:
   exit: '&8[&c&l*&8]&7 You have set end exit!'
   spawn: '&8[&c&l*&8]&7 You have set end spawn!'
@@ -88,10 +53,6 @@ friend:
   no_outgoing: 'You don''t have any outgoing friend requests.'
   no_friends: 'You have currently have no friends.'
   not_friends: 'You are not friends with {player}.'
-enderchest:
-  disabled: '&7Disabled enderchests.'
-  enabled: '&7Enabled enderchests.'
-  blocked: '&7Enderchests are currently disabled.'
 ban:
   rank_to_low_error: '&7You may only ban people below your rank.'
   invalid_ban_time_error: '&7Invalid ban time.'
@@ -126,8 +87,6 @@ koth:
   add_winner_reward: '&7Winner reward added.'
   cancel:
     pending: '&fCancelled the pending KOTH session &b{koth}&f.'
-ticket:
-  open: '&7You have opened a new ticket. Staff will get to it soon.'
 staff:
   cps-start: "Starting clicks per second test for {player}. Result in 10 seconds."
   cps-finish: "{player} clicked {amount} per second over 10 seconds."
@@ -179,16 +138,6 @@ enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
   scoreboard: "&7Enderpearl Timer"
-gapple:
-  ended: '&7You may now use a &5Gapple&7.'
-  message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
-  scoreboard: "&7Gapple Timer"
-crowbar:
-  new_crowbar: '&7You have recieved a crowbar.'
-  not_yours: '&7You can''t break blocks in someone else''s faction.'
-  wrong_block: '&7Only usable on ender portal frames and mob spawners.'
-  not_enough_charges: '&7Your crowbar does not have enough charges for that.'
-  out_of_uses: '&7Your crowbar ran out of uses.'
 tokens:
   add: "&7You have been awarded &e{tokens}&7 tokens!"
   remove: "Your token amount is now {tokens}."

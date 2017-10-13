@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.alerts;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -9,6 +11,8 @@ import org.bukkit.command.CommandSender;
 
 public class AlertsXrayCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public AlertsXrayCommand()
     {

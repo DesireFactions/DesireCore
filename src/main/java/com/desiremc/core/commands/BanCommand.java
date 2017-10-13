@@ -1,5 +1,6 @@
 package com.desiremc.core.commands;
 
+import com.desiremc.core.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
@@ -17,6 +18,8 @@ import com.desiremc.core.validators.SenderOutranksValidator;
 
 public class BanCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public BanCommand()
     {

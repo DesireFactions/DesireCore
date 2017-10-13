@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.report;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.report.Report;
@@ -12,6 +14,9 @@ import org.bukkit.command.CommandSender;
 
 public class ReportGetCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = DesireCore.getLangHandler();
+
     public ReportGetCommand()
     {
         super("get", "Get a players reports.", Rank.GUEST, new String[] { "target" });
