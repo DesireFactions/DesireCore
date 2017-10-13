@@ -3,6 +3,7 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.commands.AchievementCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -97,6 +98,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new BanCommand());
         customCommandHandler.registerCommand(new UnbanCommand());
         customCommandHandler.registerCommand(new WarnCommand());
+        customCommandHandler.registerCommand(new AchievementCommand());
     }
 
     private void registerListeners()

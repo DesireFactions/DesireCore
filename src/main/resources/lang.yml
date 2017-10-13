@@ -111,7 +111,6 @@ report:
   inventory:
     title: "DesireHCF Reports GUI"
     item:
-      name: "{player}"
       lore:
         - "Reported by: {issuer}"
         - "Reported on: {date}"
@@ -168,3 +167,20 @@ info:
   banned: "Banned: {time}"
   muted: "Muted: {time}"
   normal: "Normal"
+agui:
+  open: "You have opened the Achievement GUI."
+  inventory:
+    title: "DesireHCF Achievement GUI"
+    item:
+      lore:
+        - "Description: {desc}"
+    next:
+      name: "Next Item"
+      lore:
+        - "Go to the next page!"
+      item: "IRON_BLOCK"
+    back:
+      name: "Next Item"
+      lore:
+        - "Go to the next page!"
+      item: "IRON_BLOCK"

@@ -42,7 +42,7 @@ public class StaffHandler
     private int numCPSTests;
     private boolean chatEnabled;
 
-    public HashMap<UUID, Integer> pages;
+    private HashMap<UUID, Integer> pages;
 
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
