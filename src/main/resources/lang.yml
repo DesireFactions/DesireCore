@@ -167,6 +167,10 @@ info:
   banned: "Banned: {time}"
   muted: "Muted: {time}"
   normal: "Normal"
+ticket:
+  open: '&7You have opened a new ticket. Staff will get to it soon.'
+tickets:
+  open: "There are {number} tickets open."
 agui:
   open: "You have opened the Achievement GUI."
   inventory:
