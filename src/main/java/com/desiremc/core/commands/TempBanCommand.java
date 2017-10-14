@@ -16,7 +16,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderOutranksValidator;
+import com.desiremc.core.validators.SenderOutranksTargetValidator;
 
 public class TempBanCommand extends ValidCommand
 {
@@ -30,7 +30,7 @@ public class TempBanCommand extends ValidCommand
         addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
-        addValidator(new SenderOutranksValidator(), "target");
+        addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
     @Override

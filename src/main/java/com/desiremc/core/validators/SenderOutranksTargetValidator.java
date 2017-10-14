@@ -9,7 +9,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.SessionUtils;
 
-public class SenderOutranksValidator extends CommandValidator
+public class SenderOutranksTargetValidator extends CommandValidator
 {
 
     @Override
