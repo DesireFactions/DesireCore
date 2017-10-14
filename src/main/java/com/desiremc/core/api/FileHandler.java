@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * @author Michael Ziluck
@@ -30,8 +31,12 @@ public class FileHandler
      *
      * @param file
      */
-    public FileHandler(File file)
+    public FileHandler(File file, JavaPlugin plugin)
     {
+        if (!file.exists())
+        {
+            plugin.saveResource(file.getName(), false);
+        }
         instances.add(this);
         history = new HashMap<>();
         this.file = file;
@@ -62,7 +67,10 @@ public class FileHandler
         key = key.toLowerCase();
         String message = null;
         Object o = history.get(key);
-        if (o != null && o instanceof String) { return (String) o; }
+        if (o != null && o instanceof String)
+        {
+            return (String) o;
+        }
         message = fileConfig.getString(key);
         if (message != null)
         {
@@ -88,7 +96,10 @@ public class FileHandler
         key = key.toLowerCase();
         double value;
         Object o = history.get(key);
-        if (o != null && o instanceof Double) { return (Double) o; }
+        if (o != null && o instanceof Double)
+        {
+            return (Double) o;
+        }
         value = fileConfig.getDouble(key);
         history.put(key, value);
         return value;
@@ -106,7 +117,10 @@ public class FileHandler
         key = key.toLowerCase();
         long value;
         Object o = history.get(key);
-        if (o != null && o instanceof Long) { return (Long) o; }
+        if (o != null && o instanceof Long)
+        {
+            return (Long) o;
+        }
         value = fileConfig.getLong(key);
         history.put(key, value);
         return value;
@@ -124,7 +138,10 @@ public class FileHandler
         key = key.toLowerCase();
         int value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) { return (Integer) o; }
+        if (o != null && o instanceof Integer)
+        {
+            return (Integer) o;
+        }
         value = fileConfig.getInt(key);
         history.put(key, value);
         return value;
@@ -147,7 +164,10 @@ public class FileHandler
         key = key.toLowerCase();
         boolean value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) { return (Boolean) o; }
+        if (o != null && o instanceof Integer)
+        {
+            return (Boolean) o;
+        }
         value = fileConfig.getBoolean(key);
         history.put(key, value);
         return value;
@@ -166,7 +186,10 @@ public class FileHandler
     {
         key = key.toLowerCase();
         Object o = history.get(key);
-        if (o != null && o instanceof List<?>) { return (List<String>) o; }
+        if (o != null && o instanceof List<?>)
+        {
+            return (List<String>) o;
+        }
         List<String> list = new LinkedList<>();
         for (String str : fileConfig.getStringList(key))
         {

@@ -3,7 +3,6 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
-import com.desiremc.core.commands.AchievementCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
+import com.desiremc.core.commands.AchievementCommand;
 import com.desiremc.core.commands.BanCommand;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.TempBanCommand;
@@ -58,8 +58,8 @@ public class DesireCore extends JavaPlugin
         saveResource("lang.yml", false);
         saveResource("items.csv", false);
 
-        config = new FileHandler(new File(getDataFolder(), "config.yml"));
-        lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
+        config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
+        lang = new LangHandler(new File(getDataFolder(), "lang.yml"), this);
         itemHandler = new ItemDb();
 
         SERVER = config.getString("SERVER");

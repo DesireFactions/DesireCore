@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
@@ -24,9 +25,9 @@ public class LangHandler extends FileHandler
      *
      * @param file
      */
-    public LangHandler(File file)
+    public LangHandler(File file, JavaPlugin plugin)
     {
-        super(file);
+        super(file, plugin);
         usePrefix = super.getBoolean("prefix.use");
         if (usePrefix)
         {
@@ -43,6 +44,7 @@ public class LangHandler extends FileHandler
      * @param string
      * @return the formatted string.
      */
+    @Override
     public String getString(String string)
     {
         String str = super.getString(string);
