@@ -53,21 +53,6 @@ public class InventoryListener implements Listener
     }
 
     @EventHandler
-    public void onAchievementClick(InventoryClickEvent event)
-    {
-        if (event.getInventory() == null || event.getClickedInventory() == null || event.getCurrentItem() == null
-                || event.getCurrentItem().getType() == Material.AIR) return;
-        Inventory inv = event.getClickedInventory();
-
-        if (!lang.renderString(inv.getTitle()).equalsIgnoreCase(lang.renderString("agui.inventory.title"))) return;
-
-        if (event.getClick().equals(ClickType.LEFT))
-        {
-
-        }
-    }
-
-    @EventHandler
     public void onReportClickButton(InventoryClickEvent event)
     {
         if (event.getInventory() == null || event.getClickedInventory() == null || event.getCurrentItem() == null
