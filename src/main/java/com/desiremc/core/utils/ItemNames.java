@@ -2,6 +2,7 @@ package com.desiremc.core.utils;
 
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -83,6 +84,10 @@ public class ItemNames
      */
     public static String lookup(ItemStack stack)
     {
+        if (stack == null || stack.getType() == Material.AIR)
+        {
+            return "Fist";
+        }
         if (stack.hasItemMeta())
         {
             ItemMeta meta = stack.getItemMeta();
@@ -90,7 +95,10 @@ public class ItemNames
             {
                 return meta.getDisplayName();
             }
-            else if (meta instanceof BookMeta) { return ((BookMeta) meta).getTitle(); }
+            else if (meta instanceof BookMeta)
+            {
+                return ((BookMeta) meta).getTitle();
+            }
         }
         String result;
         String key = Integer.toString(stack.getTypeId());
