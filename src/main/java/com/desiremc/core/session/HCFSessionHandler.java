@@ -47,12 +47,19 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
      */
     public static HCFSession getHCFSession(Object o)
     {
+        if (o == null)
+        {
+            return null;
+        }
         HCFSession session = null;
         if (o instanceof OfflinePlayer || o instanceof UUID)
         {
             for (HCFSession s : instance.sessions)
             {
-                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o)) { return s; }
+                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o))
+                {
+                    return s;
+                }
             }
             session = initializeHCFSession(o, false);
         }
@@ -61,10 +68,16 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
             String name = (String) o;
             for (HCFSession s : instance.sessions)
             {
-                if (s.getName().equalsIgnoreCase(name)) { return s; }
+                if (s.getName().equalsIgnoreCase(name))
+                {
+                    return s;
+                }
             }
             List<HCFSession> results = instance.createQuery().field("name").equal(name).asList();
-            if (results.size() == 1) { return results.get(0); }
+            if (results.size() == 1)
+            {
+                return results.get(0);
+            }
         }
         else if (o instanceof ConsoleCommandSender)
         {
@@ -109,7 +122,10 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         {
             return null;
         }
-        if (op == null) { return null; }
+        if (op == null)
+        {
+            return null;
+        }
 
         HCFSession session = new HCFSession();
         session.setUniqueId(op.getUniqueId());
