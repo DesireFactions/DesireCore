@@ -16,7 +16,7 @@ public class FriendRemoveCommand extends ValidCommand
 
     public FriendRemoveCommand()
     {
-        super("remove", "Remove a friend.", Rank.GUEST, new String[] { "target" }, "unfriend", "delete");
+        super("remove", "Remove a friend.", Rank.GUEST, new String[] { "target" }, new String[] { "unfriend", "delete" });
         addParser(new PlayerSessionParser(), "target");
 
         addValidator(new PlayerValidator());
