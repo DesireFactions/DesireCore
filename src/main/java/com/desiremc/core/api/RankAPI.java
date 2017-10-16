@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -27,17 +28,21 @@ public class RankAPI
      * @param name
      * @param rank
      */
-    public static void setRank(CommandSender sender, String label, Session taget, Rank rank, boolean display)
+    public static void setRank(CommandSender sender, String label, Session target, Rank rank, boolean display)
     {
-        taget.setRank(rank);
-
-        SessionHandler.getInstance().save(taget);
-        LANG.sendRenderMessage(sender, "rank.set", "{player}", taget.getName(), "{rank}", taget.getRank().getDisplayName());
-
-        if (Bukkit.getPlayer(taget.getUniqueId()) != null && display)
+        if (target.getRank().isStaff() && !rank.isStaff())
         {
-            PlayerUtils.setPrefix(taget.getRank().getPrefix(), Bukkit.getPlayer(taget.getUniqueId()));
-            LANG.sendRenderMessage(Bukkit.getPlayer(taget.getUniqueId()), "rank.inform", "{rank}", taget.getRank().getDisplayName());
+            SessionHandler.getInstance().removeStaff(target.getUniqueId());
+        }
+        target.setRank(rank);
+
+        SessionHandler.getInstance().save(target);
+        LANG.sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
+
+        if (Bukkit.getPlayer(target.getUniqueId()) != null && display)
+        {
+            PlayerUtils.setPrefix(target.getRank().getPrefix(), Bukkit.getPlayer(target.getUniqueId()));
+            LANG.sendRenderMessage(Bukkit.getPlayer(target.getUniqueId()), "rank.inform", "{rank}", target.getRank().getDisplayName());
         }
     }
 

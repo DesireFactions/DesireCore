@@ -27,12 +27,14 @@ public class ReportGetCommand extends ValidCommand
     public void validRun(CommandSender sender, String label, Object... args)
     {
         Session session = SessionHandler.getSession(sender);
-        Session target = SessionHandler.getSession(args[0]);
+        Session target = (Session) args[0];
 
         for (Report report : ReportHandler.getInstance().getAllReports(true))
         {
             if (!report.getReported().equals(target.getUniqueId()))
+            {
                 continue;
+            }
 
             for (String msg : LANG.getStringList("report.getreport"))
             {

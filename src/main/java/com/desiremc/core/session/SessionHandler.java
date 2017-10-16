@@ -1,17 +1,16 @@
 package com.desiremc.core.session;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.RedBlackTree;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
@@ -20,70 +19,72 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     private static SessionHandler instance;
 
-    private List<Session> sessions;
-    
-    private List<Session> staff;
+    private RedBlackTree<UUID, Session> sessions;
+
+    private RedBlackTree<UUID, Session> staff;
 
     public SessionHandler()
     {
         super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
-        sessions = new LinkedList<>();
-        staff = new LinkedList<>();
+        sessions = new RedBlackTree<>();
+        staff = new RedBlackTree<>();
     }
 
-    public static Session getSession(Object o)
+    public static Session getSession(CommandSender sender)
+    {
+        if (sender instanceof Player)
+        {
+            return getSession(sender);
+        }
+        else if (sender instanceof ConsoleCommandSender)
+        {
+            return console;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static Session getSession(UUID uuid)
     {
         Session session = null;
-        if (o instanceof OfflinePlayer || o instanceof UUID)
+
+        if ((session = instance.sessions.get(uuid)) != null)
         {
-            for (Session s : instance.sessions)
-            {
-                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o))
-                {
-                    return s;
-                }
-            }
-            session = initializeSession(o, false);
+            return session;
         }
-        else if (o instanceof String)
-        {
-            String name = (String) o;
-            for (Session s : instance.sessions)
-            {
-                if (s.getName().equalsIgnoreCase(name))
-                {
-                    return s;
-                }
-            }
-            List<Session> results = instance.createQuery().field("name").equal(name).asList();
-            if (results.size() == 1)
-            {
-                return results.get(0);
-            }
-        }
-        else if (o instanceof ConsoleCommandSender)
-        {
-            session = console;
-        }
-        return session;
+        return initializeSession(uuid, false);
     }
 
-    public static Session initializeSession(Object o, boolean cache)
+    public static Session initializeSession(UUID uuid, boolean cache)
     {
-        Session session = instance.findOne("uuid", o instanceof Player ? ((Player) o).getUniqueId() : o);
+        Session session = instance.findOne("uuid", uuid);
         if (session == null)
         {
-            session = createSession(o);
+            session = createSession(uuid);
         }
         if (cache)
         {
-            instance.sessions.add(session);
+            instance.sessions.put(uuid, session);
             if (session.getRank().isStaff())
             {
-                instance.staff.add(session);
+                instance.staff.put(uuid, session);
             }
         }
+        session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
+        return session;
+    }
+
+    public static Session findOfflinePlayerByName(String name)
+    {
+        Session session = instance.findOne("name", name);
+        if (session == null)
+        {
+            return null;
+        }
+
         session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
         return session;
     }
@@ -122,20 +123,27 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return session;
     }
 
-    public List<Session> getSessions()
+    public Iterable<Session> getSessions()
     {
-        return sessions;
+        return sessions.values();
     }
-    
-    public List<Session> getStaff()
+
+    public Iterable<Session> getStaff()
     {
-        return staff;
+        return staff.values();
+    }
+
+    public void removeStaff(UUID uuid)
+    {
+        staff.delete(uuid);
     }
 
     public static boolean endSession(Session s)
     {
         instance.save(s);
-        return instance.sessions.remove(s);
+        instance.sessions.delete(s.getUniqueId());
+        // TODO change this return type
+        return true;
     }
 
     public static SessionHandler getInstance()
@@ -147,5 +155,5 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         instance = new SessionHandler();
     }
-    
+
 }

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
@@ -29,8 +30,6 @@ public class HCFSession
 
     private Map<String, Integer> deaths;
 
-    private Map<String, String> settings;
-
     @Transient
     private Session session;
 
@@ -42,7 +41,6 @@ public class HCFSession
         pvpTimer = new PVPTimer();
         kills = new HashMap<>();
         deaths = new HashMap<>();
-        settings = new HashMap<>();
     }
 
     public Player getPlayer()
@@ -50,6 +48,7 @@ public class HCFSession
         return Bukkit.getPlayer(uuid);
     }
 
+    @IdGetter
     public UUID getUniqueId()
     {
         return uuid;
@@ -115,16 +114,6 @@ public class HCFSession
         deaths.put(server, deaths.get(server) + 1);
     }
 
-    public Map<String, String> getSettings()
-    {
-        return settings;
-    }
-
-    public void setSettings(Map<String, String> settings)
-    {
-        this.settings = settings;
-    }
-
     public int getTokens()
     {
         return session.getTokens();
@@ -180,7 +169,10 @@ public class HCFSession
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof HCFSession)) { return false; }
+        if (!(o instanceof HCFSession))
+        {
+            return false;
+        }
         return ((HCFSession) o).getUniqueId().equals(uuid);
     }
 

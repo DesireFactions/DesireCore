@@ -22,7 +22,7 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLogin(final PlayerLoginEvent event)
     {
-        Session session = SessionHandler.initializeSession(event.getPlayer(), false);
+        Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), false);
         Punishment p;
         if ((p = session.isBanned()) != null)
         {
@@ -38,7 +38,7 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event)
     {
-        SessionHandler.initializeSession(event.getPlayer(), true);
+        SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
         Session session = SessionHandler.getSession(event.getPlayer());
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
@@ -49,7 +49,7 @@ public class ConnectionListener implements Listener
     public void logout(PlayerQuitEvent e)
     {
         Session session = SessionHandler.getSession(e.getPlayer());
-        session.setTotalPlayed(session.getTotalPlayed() + (System.currentTimeMillis() - session.getLastLogin()));
+        session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
         session.setLastLogin(System.currentTimeMillis());
         SessionHandler.endSession(session);
 

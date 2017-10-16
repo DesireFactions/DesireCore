@@ -1,6 +1,5 @@
 package com.desiremc.core.session;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -129,9 +128,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
         HCFSession session = new HCFSession();
         session.setUniqueId(op.getUniqueId());
-        session.setLives(0);
         session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
-        session.setSettings(new HashMap<>());
 
         instance.save(session);
 

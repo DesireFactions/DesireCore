@@ -13,7 +13,7 @@ public class StaffReportsCommand extends ValidCommand
 
     public StaffReportsCommand()
     {
-        super("reports", "Open reports GUI", Rank.HELPER, new String[]{});
+        super("reports", "Open reports GUI", Rank.JRMOD, new String[] {});
         addValidator(new PlayerValidator());
     }
 

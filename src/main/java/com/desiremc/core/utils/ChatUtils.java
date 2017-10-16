@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -83,9 +84,9 @@ public class ChatUtils
         sender.sendMessage(sb.toString() + message);
     }
 
-    public static String getNameWithRankColor(Object o, boolean prefix)
+    public static String getNameWithRankColor(UUID uuid, boolean prefix)
     {
-        Session session = SessionHandler.getSession(o);
+        Session session = SessionHandler.getSession(uuid);
         if (prefix)
         {
             return session.getRank().getMain() + session.getRank().getPrefix() + " " + ChatColor.GRAY + session.getName() + ChatColor.RESET;
