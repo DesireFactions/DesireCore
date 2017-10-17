@@ -1,15 +1,14 @@
 package com.desiremc.core.session;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.RedBlackTree;
 
 public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 {
@@ -18,13 +17,13 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     private static HCFSessionHandler instance;
 
-    private List<HCFSession> sessions;
+    private RedBlackTree<UUID, HCFSession> sessions;
 
     public HCFSessionHandler()
     {
         super(HCFSession.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
-        sessions = new LinkedList<>();
+        sessions = new RedBlackTree<>();
         console = new HCFSession();
     }
 
@@ -33,9 +32,9 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         instance = new HCFSessionHandler();
     }
 
-    public static List<HCFSession> getSessions()
+    public static Iterable<HCFSession> getSessions()
     {
-        return instance.sessions;
+        return instance.sessions.values();
     }
 
     /**
@@ -44,58 +43,51 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
      * @param o
      * @return
      */
-    public static HCFSession getHCFSession(Object o)
+    public static HCFSession getHCFSession(UUID uuid)
     {
-        if (o == null)
+        if (uuid == null)
         {
             return null;
         }
         HCFSession session = null;
-        if (o instanceof OfflinePlayer || o instanceof UUID)
+        if ((session = instance.sessions.get(uuid)) != null)
         {
-            for (HCFSession s : instance.sessions)
-            {
-                if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o))
-                {
-                    return s;
-                }
-            }
-            session = initializeHCFSession(o, false);
+            return session;
         }
-        else if (o instanceof String)
+        else
         {
-            String name = (String) o;
-            for (HCFSession s : instance.sessions)
-            {
-                if (s.getName().equalsIgnoreCase(name))
-                {
-                    return s;
-                }
-            }
-            List<HCFSession> results = instance.createQuery().field("name").equal(name).asList();
-            if (results.size() == 1)
-            {
-                return results.get(0);
-            }
+            return initializeHCFSession(uuid, false);
         }
-        else if (o instanceof ConsoleCommandSender)
-        {
-            session = console;
-        }
-        return session;
+
     }
 
-    public static HCFSession initializeHCFSession(Object o, boolean cache)
+    public static HCFSession getHCFSession(CommandSender sender)
     {
-        HCFSession session = instance.findOne("uuid", o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o);
+        if (sender instanceof OfflinePlayer)
+        {
+            return getHCFSession(((OfflinePlayer) sender).getUniqueId());
+        }
+        else if (sender instanceof ConsoleCommandSender)
+        {
+            return console;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static HCFSession initializeHCFSession(UUID uuid, boolean cache)
+    {
+        HCFSession session = instance.findOne("uuid", uuid);
         if (session == null)
         {
-            session = createHCFSession(o);
+            session = createHCFSession(uuid);
         }
-        session.setSession(SessionHandler.getSession(o));
+        session.setSession(SessionHandler.getSession(uuid));
         if (cache)
         {
-            instance.sessions.add(session);
+            instance.sessions.put(uuid, session);
         }
         return session;
     }
@@ -103,31 +95,16 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
     public static boolean endSession(HCFSession s)
     {
         instance.save(s);
-        return instance.sessions.remove(s);
+        instance.sessions.delete(s.getUniqueId());
+
+        // TODO change this over
+        return true;
     }
 
-    private static HCFSession createHCFSession(Object o)
+    private static HCFSession createHCFSession(UUID uuid)
     {
-        OfflinePlayer op;
-        if (o instanceof OfflinePlayer)
-        {
-            op = (OfflinePlayer) o;
-        }
-        else if (o instanceof UUID)
-        {
-            op = Bukkit.getOfflinePlayer((UUID) o);
-        }
-        else
-        {
-            return null;
-        }
-        if (op == null)
-        {
-            return null;
-        }
-
         HCFSession session = new HCFSession();
-        session.setUniqueId(op.getUniqueId());
+        session.setUniqueId(uuid);
         session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
 
         instance.save(session);
