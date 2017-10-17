@@ -35,7 +35,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         if (sender instanceof Player)
         {
-            return getSession(sender);
+            return getSession(((Player) sender).getUniqueId());
         }
         else if (sender instanceof ConsoleCommandSender)
         {

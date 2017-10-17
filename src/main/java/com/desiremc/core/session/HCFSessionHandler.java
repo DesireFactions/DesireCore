@@ -2,9 +2,9 @@ package com.desiremc.core.session;
 
 import java.util.UUID;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
@@ -63,9 +63,9 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     public static HCFSession getHCFSession(CommandSender sender)
     {
-        if (sender instanceof OfflinePlayer)
+        if (sender instanceof Player)
         {
-            return getHCFSession(((OfflinePlayer) sender).getUniqueId());
+            return getHCFSession(((Player) sender).getUniqueId());
         }
         else if (sender instanceof ConsoleCommandSender)
         {

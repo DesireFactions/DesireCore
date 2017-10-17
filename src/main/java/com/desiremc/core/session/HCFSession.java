@@ -141,14 +141,39 @@ public class HCFSession
 
     public boolean hasDeathBan(String server)
     {
+        return getActiveDeathBan(server) != null;
+    }
+
+    public long getDeathBanEnd(String server)
+    {
+        DeathBan ban = getActiveDeathBan(server);
+        if (ban == null)
+        {
+            throw new IllegalStateException("Player does not have a deathban.");
+        }
+        return ban != null ? ban.getStartTime() : -1;
+    }
+
+    public void revive(String server)
+    {
+        DeathBan ban = getActiveDeathBan(server);
+        if (ban == null)
+        {
+            throw new IllegalStateException("Player does not have a deathban.");
+        }
+        ban.setRevived(true);
+    }
+
+    private DeathBan getActiveDeathBan(String server)
+    {
         for (DeathBan ban : deathBans.get(server))
         {
             if (!ban.revived && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
             {
-                return true;
+                return ban;
             }
         }
-        return false;
+        return null;
     }
 
     public class PVPTimer implements Runnable
@@ -198,9 +223,9 @@ public class HCFSession
             return revived;
         }
 
-        public boolean setRevived()
+        public void setRevived(boolean revived)
         {
-            return revived;
+            this.revived = revived;
         }
 
     }
