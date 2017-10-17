@@ -1,11 +1,13 @@
 package com.desiremc.core.session;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
@@ -22,13 +24,16 @@ public class HCFSession
     private UUID uuid;
 
     @Property("safe_timer")
-    private int safeTimer;
+    private long safeTimer;
 
     private int lives;
 
     private Map<String, Integer> kills;
 
     private Map<String, Integer> deaths;
+
+    @Embedded
+    private Map<String, List<DeathBan>> deathBans;
 
     @Transient
     private Session session;
@@ -41,6 +46,7 @@ public class HCFSession
         pvpTimer = new PVPTimer();
         kills = new HashMap<>();
         deaths = new HashMap<>();
+        deathBans = new HashMap<>();
     }
 
     public Player getPlayer()
@@ -64,7 +70,7 @@ public class HCFSession
         return session.getName();
     }
 
-    public int getSafeTimeLeft()
+    public long getSafeTimeLeft()
     {
         return safeTimer;
     }
@@ -133,8 +139,22 @@ public class HCFSession
         return pvpTimer;
     }
 
+    public boolean hasDeathBan(String server)
+    {
+        for (DeathBan ban : deathBans.get(server))
+        {
+            if (!ban.revived && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class PVPTimer implements Runnable
     {
+
+        private long lastRunTime;
 
         private boolean pause;
 
@@ -143,9 +163,10 @@ public class HCFSession
         {
             if (!pause && safeTimer > 0)
             {
-                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
+                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
             }
-            safeTimer--;
+            safeTimer -= System.currentTimeMillis() - lastRunTime;
+            lastRunTime = System.currentTimeMillis();
         }
 
         public void pause()
@@ -157,6 +178,29 @@ public class HCFSession
         {
             pause = false;
             run();
+        }
+
+    }
+
+    @Embedded
+    public static class DeathBan
+    {
+        private long startTime;
+        private boolean revived;
+
+        public long getStartTime()
+        {
+            return startTime;
+        }
+
+        public boolean isRevived()
+        {
+            return revived;
+        }
+
+        public boolean setRevived()
+        {
+            return revived;
         }
 
     }
