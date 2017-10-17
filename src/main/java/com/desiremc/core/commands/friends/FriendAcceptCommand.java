@@ -26,8 +26,8 @@ public class FriendAcceptCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
+        Session session = SessionHandler.getSession(sender);
 
         FriendsAPI.acceptRequest(session, target);
     }

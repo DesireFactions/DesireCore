@@ -40,6 +40,7 @@ public class StaffHandler
     private List<UUID> hiddenPlayers;
     private List<UUID> staffChat;
     private int numCPSTests;
+    
     private boolean chatEnabled;
 
     private HashMap<UUID, Integer> pages;

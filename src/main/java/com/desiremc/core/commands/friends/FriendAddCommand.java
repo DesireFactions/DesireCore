@@ -16,7 +16,7 @@ public class FriendAddCommand extends ValidCommand
 
     public FriendAddCommand()
     {
-        super("add", "Add a friend.", Rank.GUEST, new String[] { "target" }, "invite", "befriend");
+        super("add", "Add a friend.", Rank.GUEST, new String[] { "target" }, new String[] { "invite", "befriend" });
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new SenderNotFriendsValidator(), "target");

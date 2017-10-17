@@ -1,22 +1,20 @@
 package com.desiremc.core.commands.alerts;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
 
 public class AlertsXrayCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public AlertsXrayCommand()
     {
-        super("xray", "toggle xrays", Rank.ADMIN, new String[]{});
+        super("Xray", "Toggle ore break notifications on and off.", Rank.JRMOD, new String[] {});
         addValidator(new PlayerValidator());
     }
 
@@ -25,15 +23,8 @@ public class AlertsXrayCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
 
-        if (session.getXrayStatus())
-        {
-            session.setXrayStatus(false);
-            LANG.sendRenderMessage(session, "alerts.xray.off");
-        }
-        else
-        {
-            session.setXrayStatus(true);
-            LANG.sendRenderMessage(session, "alerts.xray.on");
-        }
+        session.getSettings().toggleXrayNotifications();
+
+        DesireCore.getLangHandler().sendString(sender, "alerts.xray." + (session.getSettings().hasXrayNotification() ? "on" : "off"));
     }
 }

@@ -45,9 +45,9 @@ public class FriendsAPI
         LANG.sendRenderMessage(sender, "friend.denied_friend_request", "{player}", sender.getName());
     }
 
-    public static void list(Player sender, Session target)
+    public static void list(CommandSender sender, Session session)
     {
-        listPlayers(sender, target.getFriends());
+        listPlayers(sender, session.getFriends());
     }
 
     public static void listIncomming(Player sender)

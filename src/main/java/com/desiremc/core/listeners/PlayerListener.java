@@ -60,12 +60,16 @@ public class PlayerListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onMention(AsyncPlayerChatEvent event)
     {
-        for (Player p : Bukkit.getOnlinePlayers())
+        Session sender = SessionHandler.getSession(event.getPlayer());
+        if (StaffHandler.getInstance().isChatEnabled() || sender.getRank().isStaff())
         {
-            Session session = SessionHandler.getSession(p);
-            if (session.getRank().isStaff() && event.getMessage().contains(p.getName()) && session.getMentionStatus())
+            for (Player p : Bukkit.getOnlinePlayers())
             {
-                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                Session session = SessionHandler.getSession(p);
+                if (session.getRank().isStaff() && event.getMessage().contains(p.getName()) && session.getSettings().hasMentionsEnabled())
+                {
+                    p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                }
             }
         }
     }
@@ -97,11 +101,9 @@ public class PlayerListener implements Listener
 
         Set<Block> vein = getVein(event.getBlock());
 
-        for (Player player : Bukkit.getOnlinePlayers())
+        for (Session session : SessionHandler.getInstance().getStaff())
         {
-            Session session = SessionHandler.getSession(player);
-
-            if (session.getRank().isStaff() && session.getXrayStatus())
+            if (session.getSettings().hasXrayNotification())
             {
                 DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
             }

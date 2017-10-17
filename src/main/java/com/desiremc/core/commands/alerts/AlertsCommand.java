@@ -8,7 +8,7 @@ public class AlertsCommand extends ValidBaseCommand
 
     public AlertsCommand()
     {
-        super("alerts", "alert tools", Rank.ADMIN);
+        super("alerts", "Alert tools", Rank.GUEST);
         addSubCommand(new AlertsMentionCommand());
         addSubCommand(new AlertsXrayCommand());
     }

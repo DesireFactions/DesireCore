@@ -7,8 +7,10 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
@@ -55,11 +57,8 @@ public class Session
 
     private int tokens;
 
-    @Property("mentions_enabled")
-    private boolean mentionsEnabled;
-
-    @Property("xray_enabled")
-    private boolean xrayEnabled;
+    @Embedded
+    private SessionSettings settings;
 
     @Transient
     private List<Punishment> activePunishments;
@@ -74,6 +73,7 @@ public class Session
         incomingFriendRequests = new LinkedList<>();
         outgoingFriendRequests = new LinkedList<>();
         achievements = new LinkedList<>();
+        settings = new SessionSettings();
     }
 
     public Player getPlayer()
@@ -112,6 +112,7 @@ public class Session
         this.player = player;
     }
 
+    @IdGetter
     public UUID getUniqueId()
     {
         return uuid;
@@ -305,28 +306,18 @@ public class Session
         SessionHandler.getInstance().save(this);
     }
 
-    public boolean getMentionStatus()
-    {
-        return mentionsEnabled;
-    }
-
-    public boolean getXrayStatus()
-    {
-        return xrayEnabled;
-    }
-
-    public void setMentionStatus(boolean status)
-    {
-        mentionsEnabled = status;
-    }
-
-    public void setXrayStatus(boolean status)
-    {
-        xrayEnabled = status;
-    }
-
     public void setTokens(int tokens)
     {
         this.tokens = tokens;
+    }
+
+    public SessionSettings getSettings()
+    {
+        return settings;
+    }
+
+    public void setSettings(SessionSettings settings)
+    {
+        this.settings = settings;
     }
 }

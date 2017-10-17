@@ -1,13 +1,14 @@
 package com.desiremc.core.commands.staff;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class StaffChatCommand extends ValidCommand
 {
@@ -16,7 +17,7 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand()
     {
-        super("chat", "Join or leave Staff chat", Rank.HELPER, new String[]{});
+        super("chat", "Join or leave Staff chat", Rank.JRMOD, new String[]{});
         addValidator(new PlayerValidator());
     }
 

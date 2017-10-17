@@ -3,7 +3,6 @@ package com.desiremc.core.validators;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 
 public class PlayerIsBannedValidator extends PlayerValidator
 {
@@ -11,9 +10,12 @@ public class PlayerIsBannedValidator extends PlayerValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        Session session = SessionHandler.getSession(arg);
+        Session session = (Session) arg;
 
-        if (session == null) { return false; }
+        if (session == null)
+        {
+            return false;
+        }
 
         if (session.isBanned() != null)
         {
