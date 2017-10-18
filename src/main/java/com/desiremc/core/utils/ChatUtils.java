@@ -122,7 +122,7 @@ public class ChatUtils
             {
                 errorFolder.mkdir();
             }
-            File file = new File(plugin.getDataFolder() + "/errors/", LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy_HH:mm:ss.SSS")) + ".log");
+            File file = new File(plugin.getDataFolder() + "/errors/", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss.SSS")) + ".log");
             file.createNewFile();
             PrintWriter writer = new PrintWriter(file);
             writer.print(ExceptionUtils.getStackTrace(ex));
