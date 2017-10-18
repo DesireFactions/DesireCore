@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -112,10 +113,16 @@ public class ChatUtils
 
         try
         {
-            File file = new File(plugin.getDataFolder() + File.pathSeparator + "errors", LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss.SSS")));
+            File errorFolder = new File(plugin.getDataFolder() + "/errors/");
+            if (errorFolder != null)
+            {
+                errorFolder.mkdir();
+            }
+            File file = new File(plugin.getDataFolder() + "/errors/", LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy_HH:mm:ss.SSS")) + ".log");
             file.createNewFile();
-            PrintWriter writer = new PrintWriter(new File(plugin.getDataFolder(), "error"));
-            ex.printStackTrace(writer);
+            PrintWriter writer = new PrintWriter(file);
+            writer.print(ExceptionUtils.getStackTrace(ex));
+            writer.flush();
             writer.close();
         }
         catch (IOException e)
