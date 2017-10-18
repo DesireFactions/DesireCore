@@ -19,7 +19,6 @@ koth_start_new: Ending current koth, startin the next
 player_not_found: Player not found.
 arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
-crowbar: You have recieved a crowbar.
 item_in_hand: '&7You must have an item in your hand.'
 invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
@@ -65,28 +64,6 @@ ban:
 warn:
   warn_issued: "You have warned {player} for {reason}"
   warned: "You have been warned by {player} for {reason}. The warning expires in {time}"
-koth:
-  name_used: '&7That name has already been used.'
-  no_hills: '&7No hills have been made.'
-  hill_not_found: '&7That hill can''t be found.'
-  not_pending: '&7That hill is not pending.'
-  pending: '&fScheduled the KOTH &b{koth}&f to start in &a{time}&f.'
-  create: '&7Created the KOTH region &a{name}.'
-  delete: '&7Deleted the KOTH region &a{name}.'
-  recreate: '&7Changed the location for the KOTH region &a{name}&7.'
-  list_format: '&fName: &b{name}&f. Status: &a{schedule}&f.'
-  already_running: '&7That hill is already running.'
-  not_running: '&7That hill is not running.'
-  started: '&fThe KOTH &a{name} &fhas started. Type /koth for more information.'
-  enter: '&fYou have entered &a{name}&f.'
-  leave: '&fYou have left &a{name}&f.'
-  capturing: '&fYou are now capturing point &a{name}&f.'
-  new_capper: '&fSomeone is capturing &a{name}&f. Time left is &b{time}&f.'
-  no_capper: '&fNobody is capturing &a{name}&f. Time left is &b{time}&f.'
-  add_faction_reward: '&7Faction reward added.'
-  add_winner_reward: '&7Winner reward added.'
-  cancel:
-    pending: '&fCancelled the pending KOTH session &b{koth}&f.'
 staff:
   cps-start: "Starting clicks per second test for {player}. Result in 10 seconds."
   cps-finish: "{player} clicked {amount} per second over 10 seconds."

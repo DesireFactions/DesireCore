@@ -8,8 +8,6 @@ logout:
   time: 10
 staff:
   launch_velocity: 5.0
-regions:
-  max-name: 16
 timers:
   pvp:
     time: 1800
