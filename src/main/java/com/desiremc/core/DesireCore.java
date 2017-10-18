@@ -33,6 +33,7 @@ import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 
 public class DesireCore extends JavaPlugin
@@ -74,7 +75,8 @@ public class DesireCore extends JavaPlugin
         CustomCommandHandler.initialize();
         SessionHandler.initialize();
         StaffHandler.initialize();
-        
+        TicketHandler.initialize();
+
         registerCommands();
         registerListeners();
 

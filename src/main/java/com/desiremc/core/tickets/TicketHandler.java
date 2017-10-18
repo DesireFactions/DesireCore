@@ -23,6 +23,9 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     public TicketHandler()
     {
         super(Ticket.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
+
+        instance = this;
+
         tickets = find(createQuery().where("status='OPEN'")).asList();
     }
 
@@ -43,10 +46,13 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
-        for (Session s : SessionHandler.getInstance().getSessions()) {
-            if (s.getRank().getId() >= Rank.MODERATOR.getId()) {
+        for (Session s : SessionHandler.getInstance().getSessions())
+        {
+            if (s.getRank().getId() >= Rank.MODERATOR.getId())
+            {
                 DesireCore.getLangHandler().sendRenderMessage(s, "tickets.open", "{number}", String.valueOf(openTickets));
             }
         }
@@ -72,6 +78,10 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
     public static TicketHandler getInstance()
     {
+        if (instance == null)
+        {
+            initialize();
+        }
         return instance;
     }
 
