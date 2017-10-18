@@ -14,17 +14,36 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
+import org.bukkit.Statistic.Type;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.craftbukkit.v1_12_R1.CraftStatistic;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
+
+import net.amoebaman.util.ArrayWrapper;
+import net.amoebaman.util.Reflection;
+import net.minecraft.server.v1_12_R1.ChatModifier;
+import net.minecraft.server.v1_12_R1.ChatModifier.ChatModifierSerializer;
+import net.minecraft.server.v1_12_R1.ChatTypeAdapterFactory;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_12_R1.PlayerConnection;
 
 /**
  * Represents a formattable message. Such messages can use elements such as
@@ -94,7 +113,7 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public FancyMessage()
     {
-        this((TextualComponent) null);
+        this("");
     }
 
     /**
@@ -139,7 +158,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public FancyMessage color(final ChatColor color)
     {
-        if (!color.isColor()) { throw new IllegalArgumentException(color.name() + " is not a color"); }
+        if (!color.isColor())
+        {
+            throw new IllegalArgumentException(color.name() + " is not a color");
+        }
         latest().color = color;
         dirty = true;
         return this;
@@ -159,7 +181,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     {
         for (final ChatColor style : styles)
         {
-            if (!style.isFormat()) { throw new IllegalArgumentException(style.name() + " is not a style"); }
+            if (!style.isFormat())
+            {
+                throw new IllegalArgumentException(style.name() + " is not a style");
+            }
         }
         latest().styles.addAll(Arrays.asList(styles));
         dirty = true;
@@ -270,6 +295,145 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     }
 
     /**
+     * Set the behavior of the current editing component to display information
+     * about a parameterless statistic when the client hovers over the text.
+     * <p>
+     * Tooltips do not inherit display characteristics, such as color and
+     * styles, from the message component on which they are applied.
+     * </p>
+     *
+     * @param which
+     *            The statistic to display.
+     * @return This builder instance.
+     * @throws IllegalArgumentException
+     *             If the statistic requires a parameter which was not supplied.
+     */
+    public FancyMessage statisticTooltip(final Statistic which)
+    {
+        Type type = which.getType();
+        if (type != Type.UNTYPED)
+        {
+            throw new IllegalArgumentException("That statistic requires an additional " + type + " parameter!");
+        }
+        net.minecraft.server.v1_12_R1.Statistic stat = CraftStatistic.getNMSStatistic(which);
+        return achievementTooltip(stat.name);
+    }
+
+    /**
+     * Set the behavior of the current editing component to display information
+     * about a statistic parameter with a material when the client hovers over
+     * the text.
+     * <p>
+     * Tooltips do not inherit display characteristics, such as color and
+     * styles, from the message component on which they are applied.
+     * </p>
+     *
+     * @param which
+     *            The statistic to display.
+     * @param item
+     *            The sole material parameter to the statistic.
+     * @return This builder instance.
+     * @throws IllegalArgumentException
+     *             If the statistic requires a parameter which was not supplied,
+     *             or was supplied a parameter that was not required.
+     */
+    public FancyMessage statisticTooltip(final Statistic which, Material item)
+    {
+        Type type = which.getType();
+        if (type == Type.UNTYPED)
+        {
+            throw new IllegalArgumentException("That statistic needs no additional parameter!");
+        }
+        if ((type == Type.BLOCK && item.isBlock()) || type == Type.ENTITY)
+        {
+            throw new IllegalArgumentException("Wrong parameter type for that statistic - needs " + type + "!");
+        }
+        net.minecraft.server.v1_12_R1.Statistic craft = CraftStatistic.getMaterialStatistic(which, item);
+        return achievementTooltip(craft.name);
+    }
+
+    /**
+     * Set the behavior of the current editing component to display information
+     * about a statistic parameter with an entity type when the client hovers
+     * over the text.
+     * <p>
+     * Tooltips do not inherit display characteristics, such as color and
+     * styles, from the message component on which they are applied.
+     * </p>
+     *
+     * @param which
+     *            The statistic to display.
+     * @param entity
+     *            The sole entity type parameter to the statistic.
+     * @return This builder instance.
+     * @throws IllegalArgumentException
+     *             If the statistic requires a parameter which was not supplied,
+     *             or was supplied a parameter that was not required.
+     */
+    public FancyMessage statisticTooltip(final Statistic which, EntityType entity)
+    {
+        Type type = which.getType();
+        if (type == Type.UNTYPED)
+        {
+            throw new IllegalArgumentException("That statistic needs no additional parameter!");
+        }
+        if (type != Type.ENTITY)
+        {
+            throw new IllegalArgumentException("Wrong parameter type for that statistic - needs " + type + "!");
+        }
+        net.minecraft.server.v1_12_R1.Statistic stat = CraftStatistic.getEntityStatistic(which, entity);
+        return achievementTooltip(stat.name);
+    }
+
+    /**
+     * Set the behavior of the current editing component to display information
+     * about an item when the client hovers over the text.
+     * <p>
+     * Tooltips do not inherit display characteristics, such as color and
+     * styles, from the message component on which they are applied.
+     * </p>
+     *
+     * @param itemJSON
+     *            A string representing the JSON-serialized NBT data tag of an
+     *            {@link ItemStack}.
+     * @return This builder instance.
+     */
+    public FancyMessage itemTooltip(final String itemJSON)
+    {
+        onHover("show_item", new JsonString(itemJSON)); // Seems a bit hacky,
+                                                        // considering we have a
+                                                        // JSON object as a
+                                                        // parameter
+        return this;
+    }
+
+    /**
+     * Set the behavior of the current editing component to display information
+     * about an item when the client hovers over the text.
+     * <p>
+     * Tooltips do not inherit display characteristics, such as color and
+     * styles, from the message component on which they are applied.
+     * </p>
+     *
+     * @param itemStack
+     *            The stack for which to display information.
+     * @return This builder instance.
+     */
+    public FancyMessage itemTooltip(final ItemStack itemStack)
+    {
+        try
+        {
+            Object nmsItem = Reflection.getMethod(Reflection.getOBCClass("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class).invoke(null, itemStack);
+            return itemTooltip(Reflection.getMethod(Reflection.getNMSClass("ItemStack"), "save", Reflection.getNMSClass("NBTTagCompound")).invoke(nmsItem, Reflection.getNMSClass("NBTTagCompound").newInstance()).toString());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return this;
+        }
+    }
+
+    /**
      * Set the behavior of the current editing component to display raw text
      * when the client hovers over the text.
      * <p>
@@ -357,7 +521,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
             {
                 throw new IllegalArgumentException("The tooltip text cannot have click data.");
             }
-            else if (component.hoverActionData != null && component.hoverActionName != null) { throw new IllegalArgumentException("The tooltip text cannot have a tooltip."); }
+            else if (component.hoverActionData != null && component.hoverActionName != null)
+            {
+                throw new IllegalArgumentException("The tooltip text cannot have a tooltip.");
+            }
         }
         onHover("show_text", text);
         return this;
@@ -399,7 +566,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
                     {
                         throw new IllegalArgumentException("The tooltip text cannot have click data.");
                     }
-                    else if (component.hoverActionData != null && component.hoverActionName != null) { throw new IllegalArgumentException("The tooltip text cannot have a tooltip."); }
+                    else if (component.hoverActionData != null && component.hoverActionName != null)
+                    {
+                        throw new IllegalArgumentException("The tooltip text cannot have a tooltip.");
+                    }
                     if (component.hasText())
                     {
                         result.messageParts.add(component.clone());
@@ -445,54 +615,6 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
     }
 
     /**
-     * Set the behavior of the current editing component to display information
-     * about an item when the client hovers over the text.
-     * <p>
-     * Tooltips do not inherit display characteristics, such as color and
-     * styles, from the message component on which they are applied.
-     * </p>
-     * 
-     * @param itemJSON
-     *            A string representing the JSON-serialized NBT data tag of an
-     *            {@link ItemStack}.
-     * @return This builder instance.
-     */
-    public FancyMessage itemTooltip(final String itemJSON)
-    {
-        onHover("show_item", new JsonString(itemJSON)); // Seems a bit hacky,
-                                                        // considering we have a
-                                                        // JSON object as a
-                                                        // parameter
-        return this;
-    }
-
-    /**
-     * Set the behavior of the current editing component to display information
-     * about an item when the client hovers over the text.
-     * <p>
-     * Tooltips do not inherit display characteristics, such as color and
-     * styles, from the message component on which they are applied.
-     * </p>
-     * 
-     * @param itemStack
-     *            The stack for which to display information.
-     * @return This builder instance.
-     */
-    public FancyMessage itemTooltip(final ItemStack itemStack)
-    {
-        try
-        {
-            Object nmsItem = Reflection.getMethod(Reflection.getOBCClass("inventory.CraftItemStack"), "asNMSCopy", ItemStack.class).invoke(null, itemStack);
-            return itemTooltip(Reflection.getMethod(Reflection.getNMSClass("ItemStack"), "save", Reflection.getNMSClass("NBTTagCompound")).invoke(nmsItem, Reflection.getNMSClass("NBTTagCompound").newInstance()).toString());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return this;
-        }
-    }
-
-    /**
      * If the text is a translatable key, and it has replaceable values, this
      * function can be used to set the replacements that will be used in the
      * message.
@@ -523,14 +645,14 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      * 
      * @return This builder instance.
      */ /*
-        * ------------ public FancyMessage translationReplacements(final
-        * Iterable<? extends CharSequence> replacements){ for(CharSequence str :
-        * replacements){ latest().translationReplacements.add(new
-        * JsonString(str)); }
-        * 
-        * return this; }
-        * 
-        */
+         * ------------ public FancyMessage translationReplacements(final
+         * Iterable<? extends CharSequence> replacements){ for(CharSequence str
+         * : replacements){ latest().translationReplacements.add(new
+         * JsonString(str)); }
+         * 
+         * return this; }
+         * 
+         */
 
     /**
      * If the text is a translatable key, and it has replaceable values, this
@@ -596,7 +718,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public FancyMessage then(final TextualComponent text)
     {
-        if (!latest().hasText()) { throw new IllegalStateException("previous message part has no text"); }
+        if (!latest().hasText())
+        {
+            throw new IllegalStateException("previous message part has no text");
+        }
         messageParts.add(new MessagePart(text));
         dirty = true;
         return this;
@@ -612,7 +737,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public FancyMessage then()
     {
-        if (!latest().hasText()) { throw new IllegalStateException("previous message part has no text"); }
+        if (!latest().hasText())
+        {
+            throw new IllegalStateException("previous message part has no text");
+        }
         messageParts.add(new MessagePart());
         dirty = true;
         return this;
@@ -645,7 +773,10 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
      */
     public String toJSONString()
     {
-        if (!dirty && jsonString != null) { return jsonString; }
+        if (!dirty && jsonString != null)
+        {
+            return jsonString;
+        }
         StringWriter string = new StringWriter();
         JsonWriter json = new JsonWriter(string);
         try
@@ -681,8 +812,28 @@ public class FancyMessage implements JsonRepresentedObject, Cloneable, Iterable<
             sender.sendMessage(toOldMessageFormat());
             return;
         }
-        Player player = (Player) sender;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "tellraw " + player.getName() + " " + jsonString);
+        CraftPlayer player = (CraftPlayer) sender;
+        EntityPlayer ep = player.getHandle();
+        PlayerConnection connection = ep.playerConnection;
+        connection.sendPacket(createChatPacket(jsonString));
+    }
+
+    // The ChatSerializer's instance of Gson
+    private static Gson gson;
+
+    private PacketPlayOutChat createChatPacket(String json)
+    {
+        if (gson == null)
+        {
+            GsonBuilder builder = new GsonBuilder();
+            builder.registerTypeHierarchyAdapter(IChatBaseComponent.class, new ChatSerializer());
+            builder.registerTypeHierarchyAdapter(ChatModifier.class, new ChatModifierSerializer());
+            builder.registerTypeAdapterFactory(new ChatTypeAdapterFactory());
+            gson = builder.create();
+        }
+
+        IChatBaseComponent comp = gson.fromJson(json, IChatBaseComponent.class);
+        return new PacketPlayOutChat(comp);
     }
 
     /**

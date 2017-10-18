@@ -20,3 +20,4 @@ glass-protected-regions:
    - 'test3'
    - 'test4'
 spawn-mobs: false
+SERVER: first

@@ -102,22 +102,34 @@ public class HCFSession
 
     public int getKills(String server)
     {
-        return kills.get(server);
+        Integer save = kills.get(server);
+        if (save == null)
+        {
+            kills.put(server, 0);
+            return 0;
+        }
+        return save;
     }
 
     public int getDeaths(String server)
     {
-        return deaths.get(server);
+        Integer save = deaths.get(server);
+        if (save == null)
+        {
+            deaths.put(server, 0);
+            return 0;
+        }
+        return save;
     }
 
     public void addKill(String server)
     {
-        kills.put(server, kills.get(server) + 1);
+        kills.put(server, getKills(server) + 1);
     }
 
     public void addDeaths(String server)
     {
-        deaths.put(server, deaths.get(server) + 1);
+        deaths.put(server, getDeaths(server) + 1);
     }
 
     public int getTokens()
@@ -166,7 +178,12 @@ public class HCFSession
 
     private DeathBan getActiveDeathBan(String server)
     {
-        for (DeathBan ban : deathBans.get(server))
+        List<DeathBan> bans = deathBans.get(server);
+        if (bans == null)
+        {
+            return null;
+        }
+        for (DeathBan ban : bans)
         {
             if (!ban.revived && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
             {
