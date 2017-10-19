@@ -44,6 +44,9 @@ public class Session
     @Property("total_played")
     private long totalPlayed;
 
+    @Property("auth_code")
+    private String authKey;
+
     private List<Achievement> achievements;
 
     @Reference
@@ -319,5 +322,15 @@ public class Session
     public void setSettings(SessionSettings settings)
     {
         this.settings = settings;
+    }
+
+    public void setAuthKey(String key)
+    {
+        this.authKey = key;
+    }
+
+    public String getAuthkey()
+    {
+        return this.authKey;
     }
 }

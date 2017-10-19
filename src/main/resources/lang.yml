@@ -134,7 +134,6 @@ punishment:
   type: "[DesireHCF] Punishment Type: {reason}"
   notfound: "[DesireHCF] Punishment document was not found for: {player}"
 info:
-info:
   header-footer: "&8----------------------------------------------------"
   name: "{player}"
   uuid: "UUID: {uuid}"
@@ -165,3 +164,9 @@ agui:
       lore:
         - "Go to the next page!"
       item: "IRON_BLOCK"
+auth:
+  setup: "Your Google Auth Code is {code}."
+  must-login: "Please open the Google Authenticator App and do /login <code> in-game with the code."
+  already-auth: "You have already authenticated with Google Authenticator."
+  invalid-code: "Incorrect or expired Authenticator code."
+  authenticated: "Access Granted. Welcome!"

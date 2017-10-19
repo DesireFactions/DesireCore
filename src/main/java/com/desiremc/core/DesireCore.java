@@ -3,6 +3,8 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.commands.auth.AuthLoginCommand;
+import com.desiremc.core.listeners.AuthListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -101,6 +103,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnbanCommand());
         customCommandHandler.registerCommand(new WarnCommand());
         customCommandHandler.registerCommand(new AchievementCommand());
+        customCommandHandler.registerCommand(new AuthLoginCommand());
     }
 
     private void registerListeners()
@@ -109,6 +112,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new PlayerListener());
         listenerManager.addListener(new InventoryListener());
+        listenerManager.addListener(new AuthListener());
     }
 
     public MongoWrapper getMongoWrapper()

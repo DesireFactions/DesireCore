@@ -36,6 +36,12 @@
 			<artifactId>fanciful</artifactId>
 			<version>0.3.5-SNAPSHOT</version>
 		</dependency>
+		<!-- Google Auth API -->
+		<dependency>
+			<groupId>com.warrenstrange</groupId>
+			<artifactId>googleauth</artifactId>
+			<version>1.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
