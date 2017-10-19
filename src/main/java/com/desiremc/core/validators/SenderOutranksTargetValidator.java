@@ -15,10 +15,18 @@ public class SenderOutranksTargetValidator extends CommandValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        Rank senderRank = SessionUtils.getRank(SessionHandler.getSession((Player) sender));
-        Rank targetRank = SessionUtils.getRank((Session) arg);
+        Rank senderRank = SessionUtils.getRank(SessionHandler.getSession(sender));
+        Rank targetRank = SessionUtils.getRank(arg);
 
-        return senderRank.compareTo(targetRank) > 0;
+        if (senderRank.compareTo(targetRank) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            LANG.sendRenderMessage(sender, "sender_doesnt_outrank");
+            return false;
+        }
     }
 
 }

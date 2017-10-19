@@ -5,7 +5,7 @@ list-header: '&c----------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
 not_time: '&7Time format used is invalid.'
 never_logged_in: '&7This player has never logged in before.'
-only_players: '&7only players can run that command.'
+only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 not_banned: '{player} is not banned.'
 no_season_data: Could not find Season data for &e{faction}
@@ -17,6 +17,7 @@ koth_pause: You have resumed the current koth
 koth_end_time: Ends &l&e{time}
 koth_start_new: Ending current koth, startin the next
 player_not_found: Player not found.
+sender_doesnt_outrank: "You must outrank the target player."
 arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
 item_in_hand: '&7You must have an item in your hand.'
