@@ -146,6 +146,10 @@ info:
   normal: "Normal"
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
+  delete: "&7You have deleted ticket #{id}."
+  closed: "&7You have closed ticket #{id}."
+  doesnt-exist: "That ticket ID does not exist."
+  list: "{num}. Opened by: {player} Reason: {reason} ID: {id}"
 tickets:
   open: "There are {number} tickets open."
 agui:
