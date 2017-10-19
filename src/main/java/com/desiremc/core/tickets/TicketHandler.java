@@ -108,7 +108,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
     public static List<Ticket> getAllTickets()
     {
-        return tickets.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(tickets.values());
     }
 
 }
