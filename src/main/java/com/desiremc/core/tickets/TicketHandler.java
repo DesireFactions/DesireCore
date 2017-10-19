@@ -1,22 +1,24 @@
 package com.desiremc.core.tickets;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import java.util.List;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
 
     public static TicketHandler instance;
 
-    private List<Ticket> tickets;
+    private HashMap<Integer, Ticket> tickets;
 
     private int openTickets;
 
@@ -26,7 +28,11 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
         instance = this;
 
-        tickets = find(createQuery().where("status='OPEN'")).asList();
+        List<Ticket> query = find(createQuery().where("status='OPEN'")).asList();
+        for (Ticket t : query)
+        {
+            tickets.put(t.getId(), t);
+        }
     }
 
     public static void openTicket(CommandSender sender, String text)
@@ -34,7 +40,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : DesireCore.getConsoleUUID(), text);
         ticket.setId(instance.getNextId());
         instance.save(ticket);
-        instance.tickets.add(ticket);
+        instance.tickets.put(ticket.getId(), ticket);
     }
 
     public static void closeTicket(CommandSender closer, Ticket ticket, String response)
