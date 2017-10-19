@@ -1,6 +1,7 @@
 package com.desiremc.core.session;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,12 +29,14 @@ public class HCFSession
 
     private int lives;
 
-    private Map<String, Integer> kills;
-
-    private Map<String, Integer> deaths;
-
     @Embedded
     private Map<String, List<DeathBan>> deathBans;
+
+    @Embedded
+    private Map<String, List<Ticker>> kills;
+
+    @Embedded
+    private Map<String, List<Ticker>> deaths;
 
     @Transient
     private Session session;
@@ -47,6 +50,11 @@ public class HCFSession
         kills = new HashMap<>();
         deaths = new HashMap<>();
         deathBans = new HashMap<>();
+    }
+
+    public Rank getRank()
+    {
+        return session.getRank();
     }
 
     public Player getPlayer()
@@ -100,36 +108,74 @@ public class HCFSession
         this.lives += lives;
     }
 
-    public int getKills(String server)
+    public int getTotalKills(String server)
     {
-        Integer save = kills.get(server);
-        if (save == null)
+        List<Ticker> local = kills.get(server);
+        if (local == null)
         {
-            kills.put(server, 0);
+            kills.put(server, new LinkedList<>());
             return 0;
         }
-        return save;
+        int count = 0;
+        for (Ticker ticker : local)
+        {
+            count += ticker.getCount();
+        }
+        return count;
     }
 
-    public int getDeaths(String server)
+    public int getTotalDeaths(String server)
     {
-        Integer save = deaths.get(server);
-        if (save == null)
+        List<Ticker> local = deaths.get(server);
+        if (local == null)
         {
-            deaths.put(server, 0);
+            deaths.put(server, new LinkedList<>());
             return 0;
         }
-        return save;
+        int count = 0;
+        for (Ticker ticker : local)
+        {
+            count += ticker.getCount();
+        }
+        return count;
     }
 
-    public void addKill(String server)
+    public void addKill(String server, UUID victim)
     {
-        kills.put(server, getKills(server) + 1);
+        List<Ticker> local = kills.get(server);
+        if (local == null)
+        {
+            local = new LinkedList<>();
+            kills.put(server, local);
+        }
+        for (Ticker tick : local)
+        {
+            if (tick.getUniqueId().equals(victim))
+            {
+                tick.setCount(tick.getCount());
+                return;
+            }
+        }
+        local.add(new Ticker(victim));
     }
 
-    public void addDeaths(String server)
+    public void addDeaths(String server, UUID killer)
     {
-        deaths.put(server, getDeaths(server) + 1);
+        List<Ticker> local = deaths.get(server);
+        if (local == null)
+        {
+            local = new LinkedList<>();
+            deaths.put(server, local);
+        }
+        for (Ticker tick : local)
+        {
+            if (tick.getUniqueId().equals(killer))
+            {
+                tick.setCount(tick.getCount());
+                return;
+            }
+        }
+        local.add(new Ticker(killer));
     }
 
     public int getTokens()
@@ -224,6 +270,28 @@ public class HCFSession
 
     }
 
+    public void setSession(Session session)
+    {
+        this.session = session;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof HCFSession))
+        {
+            return false;
+        }
+        return ((HCFSession) o).getUniqueId().equals(uuid);
+    }
+
+    public String[] getKillDisplay(String server)
+    {
+        List<Ticker> kills = this.kills.get(server);
+        
+        
+    }
+
     @Embedded
     public static class DeathBan
     {
@@ -247,19 +315,31 @@ public class HCFSession
 
     }
 
-    public void setSession(Session session)
+    @Embedded
+    public static class Ticker
     {
-        this.session = session;
-    }
+        private UUID player;
+        private int count;
 
-    @Override
-    public boolean equals(Object o)
-    {
-        if (!(o instanceof HCFSession))
+        public Ticker(UUID uuid)
         {
-            return false;
+            count = 1;
         }
-        return ((HCFSession) o).getUniqueId().equals(uuid);
+
+        public UUID getUniqueId()
+        {
+            return player;
+        }
+
+        public int getCount()
+        {
+            return count;
+        }
+        
+        public void setCount(int count)
+        {
+            this.count = count;
+        }
     }
 
 }
