@@ -32,7 +32,7 @@ public class AuthListener implements Listener
 
         if (!session.getRank().isStaff()) return;
 
-        if (session.getAuthkey().equalsIgnoreCase("") || session.getAuthkey() == null)
+        if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
             GoogleAuthenticator auth = new GoogleAuthenticator();
             GoogleAuthenticatorKey key = auth.createCredentials();

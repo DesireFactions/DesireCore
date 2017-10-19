@@ -1,7 +1,9 @@
 package com.desiremc.core.tickets;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -16,9 +18,9 @@ import com.desiremc.core.session.SessionHandler;
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
 
-    public static TicketHandler instance;
+    private static TicketHandler instance;
 
-    private HashMap<Integer, Ticket> tickets;
+    public static HashMap<Integer, Ticket> tickets;
 
     private int openTickets;
 
@@ -49,6 +51,14 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
         ticket.setResponse(response);
         ticket.setStatus(Ticket.Status.CLOSED);
+    }
+
+    public static void deleteTicket(CommandSender closer, Ticket ticket, String response)
+    {
+        ticket.setClosed(System.currentTimeMillis());
+        ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
+        ticket.setResponse(response);
+        ticket.setStatus(Ticket.Status.DELETED);
     }
 
     @Override
@@ -89,6 +99,16 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
             initialize();
         }
         return instance;
+    }
+
+    public static Ticket getTicket(int id)
+    {
+        return tickets.get(id);
+    }
+
+    public static List<Ticket> getAllTickets()
+    {
+        return tickets.values().stream().collect(Collectors.toList());
     }
 
 }

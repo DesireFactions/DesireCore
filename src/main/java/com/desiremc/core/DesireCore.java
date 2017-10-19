@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.UUID;
 
 import com.desiremc.core.commands.auth.AuthLoginCommand;
+import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.listeners.AuthListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -104,6 +105,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new WarnCommand());
         customCommandHandler.registerCommand(new AchievementCommand());
         customCommandHandler.registerCommand(new AuthLoginCommand());
+        customCommandHandler.registerCommand(new TicketCommand());
     }
 
     private void registerListeners()
