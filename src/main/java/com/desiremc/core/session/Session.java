@@ -44,7 +44,7 @@ public class Session
     @Property("total_played")
     private long totalPlayed;
 
-    @Property("auth_code")
+    @Property("auth_key")
     private String authKey;
 
     private List<Achievement> achievements;
