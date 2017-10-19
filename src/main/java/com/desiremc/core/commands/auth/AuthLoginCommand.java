@@ -7,6 +7,7 @@ import com.desiremc.core.parsers.IntegerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.validators.PlayerIsAuthBlockedValidator;
 import com.desiremc.core.validators.PlayerValidator;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import org.bukkit.command.CommandSender;
@@ -19,6 +20,7 @@ public class AuthLoginCommand extends ValidCommand
         super("login", "Authenticate with Google Auth.", Rank.JRMOD, new String[]{"code"});
         addParser(new IntegerParser(), "code");
         addValidator(new PlayerValidator());
+        addValidator(new PlayerIsAuthBlockedValidator());
     }
 
     @Override
@@ -26,16 +28,9 @@ public class AuthLoginCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
 
-        if (AuthListener.authBlocked.contains(session.getUniqueId()))
-        {
-            Integer code = Integer.parseInt(args[0] + "");
+        Integer code = Integer.parseInt(args[0] + "");
 
-            playerAuth(session, code);
-        }
-        else
-        {
-            DesireCore.getLangHandler().sendRenderMessage(session, "auth.already-auth");
-        }
+        playerAuth(session, code);
     }
 
     private void playerAuth(Session session, int authCode)
