@@ -41,7 +41,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : DesireCore.getConsoleUUID(), text);
         ticket.setId(instance.getNextId());
         instance.save(ticket);
-        instance.tickets.put(ticket.getId(), ticket);
+        tickets.put(ticket.getId(), ticket);
     }
 
     public static void closeTicket(CommandSender closer, Ticket ticket, String response)
