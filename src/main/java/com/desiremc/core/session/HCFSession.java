@@ -1,5 +1,6 @@
 package com.desiremc.core.session;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.PlayerUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -288,8 +290,18 @@ public class HCFSession
     public String[] getKillDisplay(String server)
     {
         List<Ticker> kills = this.kills.get(server);
-        
-        
+        if (kills == null)
+        {
+            return new String[] {};
+        }
+        Collections.sort(kills);
+        String[] array = new String[kills.size()];
+        int i = 0;
+        for (Ticker tick : kills)
+        {
+            array[i] = PlayerUtils.getName(tick.getUniqueId()) + " x" + tick.getCount();
+        }
+        return array;
     }
 
     @Embedded
@@ -316,7 +328,7 @@ public class HCFSession
     }
 
     @Embedded
-    public static class Ticker
+    public static class Ticker implements Comparable<Ticker>
     {
         private UUID player;
         private int count;
@@ -335,11 +347,18 @@ public class HCFSession
         {
             return count;
         }
-        
+
         public void setCount(int count)
         {
             this.count = count;
         }
+
+        @Override
+        public int compareTo(Ticker tick)
+        {
+            return Integer.compare(count, tick.count);
+        }
+
     }
 
 }

@@ -1,11 +1,9 @@
 package com.desiremc.core.validators;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.SessionUtils;
 
