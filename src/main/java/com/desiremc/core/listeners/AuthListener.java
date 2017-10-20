@@ -7,6 +7,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -24,13 +25,15 @@ public class AuthListener implements Listener
 
     public static List<UUID> authBlocked = new ArrayList<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
     {
+        System.out.println("onJoin(PlayerJoinEvent) called in AuthListener.");
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p.getUniqueId());
 
-        if (!session.getRank().isStaff()) return;
+        if (!session.getRank().isStaff())
+            return;
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
@@ -40,6 +43,15 @@ public class AuthListener implements Listener
             session.setAuthKey(key.getKey());
 
             DesireCore.getLangHandler().sendRenderMessage(session, "auth.setup", "{code}", key.getKey());
+
+            forceAuth(session);
+        }
+        else
+        {
+            if (!session.getIp().equalsIgnoreCase(p.getAddress().getHostName()))
+            {
+                forceAuth(session);
+            }
         }
 
         authBlocked.add(p.getUniqueId());
@@ -63,14 +75,14 @@ public class AuthListener implements Listener
         Player player = event.getPlayer();
         if (authBlocked.contains(player.getUniqueId()))
         {
-            if(!event.getMessage().contains("login"))
+            if (!event.getMessage().contains("login"))
             {
                 event.setCancelled(true);
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event)
     {
         Player player = event.getPlayer();
@@ -98,5 +110,12 @@ public class AuthListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    private void forceAuth(Session session)
+    {
+        authBlocked.add(session.getUniqueId());
+
+        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
     }
 }

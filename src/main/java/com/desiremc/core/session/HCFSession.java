@@ -161,7 +161,7 @@ public class HCFSession
         local.add(new Ticker(victim));
     }
 
-    public void addDeaths(String server, UUID killer)
+    public void addDeath(String server, UUID killer)
     {
         List<Ticker> local = deaths.get(server);
         if (local == null)

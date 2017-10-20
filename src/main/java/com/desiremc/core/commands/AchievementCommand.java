@@ -6,6 +6,9 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.validators.PlayerValidator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -27,13 +30,14 @@ public class AchievementCommand extends ValidCommand
 
     public AchievementCommand()
     {
-        super("achievements", "Open the Achievement GUI", Rank.GUEST, new String[]{});
+        super("achievements", "Open the Achievement GUI", Rank.GUEST, new String[] {});
+        addValidator(new PlayerValidator());
     }
 
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        Session player = (Session) sender;
+        Session player = SessionHandler.getSession(sender);
         openAchievementsGUI(player);
     }
 

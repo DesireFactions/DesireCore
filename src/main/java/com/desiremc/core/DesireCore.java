@@ -41,6 +41,9 @@ import com.desiremc.core.utils.ItemDb;
 
 public class DesireCore extends JavaPlugin
 {
+    
+    public static final boolean DEBUG = false;
+    
     private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     private static String SERVER;

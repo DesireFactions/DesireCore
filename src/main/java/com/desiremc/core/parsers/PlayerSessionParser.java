@@ -19,11 +19,15 @@ public class PlayerSessionParser implements ArgumentParser
     public Session parseArgument(CommandSender sender, String label, String arg)
     {
         Player p = Bukkit.getPlayerExact(arg);
+        Session s;
         if (p == null)
         {
-
+            s = SessionHandler.findOfflinePlayerByName(arg);
         }
-        Session s = SessionHandler.findOfflinePlayerByName(arg);
+        else
+        {
+            s = SessionHandler.getSession(p.getUniqueId());
+        }
         if (s == null)
         {
             LANG.sendString(sender, "player-not-found");
