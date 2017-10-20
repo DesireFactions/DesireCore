@@ -29,6 +29,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(Session.class);
+        
         sessions = new RedBlackTree<>();
         staff = new RedBlackTree<>();
 

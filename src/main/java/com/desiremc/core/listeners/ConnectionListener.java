@@ -48,7 +48,7 @@ public class ConnectionListener implements Listener
             System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
         }
         Player player = event.getPlayer();
-        String ip = player.getAddress().getHostName();
+        String ip = player.getAddress().getAddress().getHostName();
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;

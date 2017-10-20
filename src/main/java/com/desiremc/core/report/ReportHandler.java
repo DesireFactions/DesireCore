@@ -14,6 +14,8 @@ public class ReportHandler extends BasicDAO<Report, Integer>
     public ReportHandler()
     {
         super(Report.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
+        
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(Report.class);
     }
 
     public static void initialize()

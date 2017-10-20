@@ -16,6 +16,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
     public PunishmentHandler()
     {
         super(Punishment.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(Punishment.class);
     }
 
     public static void initialize()

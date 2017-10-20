@@ -31,7 +31,6 @@ public class MongoWrapper
         morphia = new Morphia();
 
         datastore = morphia.createDatastore(mc, config.getString("database.database"));
-        datastore.ensureIndexes();
     }
 
     public MongoClient getMongoClient()

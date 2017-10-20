@@ -81,6 +81,8 @@ public class Session
         outgoingFriendRequests = new LinkedList<>();
         achievements = new LinkedList<>();
         settings = new SessionSettings();
+        ipList = new LinkedList<>();
+        nameList = new LinkedList<>();
     }
 
     public Player getPlayer()

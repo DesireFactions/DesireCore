@@ -82,7 +82,8 @@ public class DesireCore extends JavaPlugin
         SessionHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
-
+        mongoWrapper.getDatastore().ensureIndexes();
+        
         registerCommands();
         registerListeners();
 

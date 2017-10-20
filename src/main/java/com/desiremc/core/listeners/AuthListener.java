@@ -1,10 +1,12 @@
 package com.desiremc.core.listeners;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,13 +18,16 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 
 public class AuthListener implements Listener
 {
 
+    private static GoogleAuthenticator auth = new GoogleAuthenticator();
     public static List<UUID> authBlocked = new ArrayList<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -37,12 +42,17 @@ public class AuthListener implements Listener
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
-            GoogleAuthenticator auth = new GoogleAuthenticator();
-            GoogleAuthenticatorKey key = auth.createCredentials();
+            session.setAuthKey(auth.createCredentials().getKey());
 
-            session.setAuthKey(key.getKey());
+            FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code is ")
+                    .color(ChatColor.WHITE)
+                    .then(session.getAuthkey())
+                    .link(getQRUrl(session.getName(), session.getAuthkey()))
+                    .color(ChatColor.RED)
+                    .then(". Click it for a QR code.")
+                    .color(ChatColor.WHITE);
 
-            DesireCore.getLangHandler().sendRenderMessage(session, "auth.setup", "{code}", key.getKey());
+            message.send(p);
 
             forceAuth(session);
         }
@@ -118,4 +128,24 @@ public class AuthListener implements Listener
 
         DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
     }
+
+    private static final String googleFormat = "https://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=" +
+            "otpauth://totp/%s@%s%%3Fsecret%%3D%s";
+
+    private String getQRUrl(String username, String secret)
+    {
+        if (secret == null)
+        {
+            return null;
+        }
+        try
+        {
+            return String.format(googleFormat, username, URLEncoder.encode("144.217.11.123", "UTF-8"), secret);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            return null;
+        }
+    }
+
 }
