@@ -33,8 +33,10 @@ public class Ticket
      * Used exclusively to make a new Ticket. Should never be used on a
      * non-existing ticket.
      *
-     * @param player the player who opened the ticket
-     * @param text   the text of the ticket
+     * @param player
+     *            the player who opened the ticket
+     * @param text
+     *            the text of the ticket
      */
     public Ticket(UUID player, String text)
     {
@@ -42,6 +44,10 @@ public class Ticket
         this.opened = System.currentTimeMillis();
         this.text = text;
         this.status = Status.OPEN;
+    }
+
+    public Ticket()
+    {
     }
 
     public int getId()

@@ -29,6 +29,8 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
         instance = this;
 
+        tickets = new HashMap<>();
+        
         List<Ticket> query = find(createQuery().where("status='OPEN'")).asList();
         for (Ticket t : query)
         {
