@@ -41,7 +41,7 @@ public abstract class ValidBaseCommand extends ValidCommand
             }
             else
             {
-                sender.sendMessage(DesireCore.getLangHandler().getString("no-permissions"));
+                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             }
         }
     }
