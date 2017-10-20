@@ -47,7 +47,7 @@ public class CustomCommandHandler implements CommandExecutor
             }
             else
             {
-                DesireCore.getLangHandler().sendString(sender, "no-permissions");
+                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             }
         }
         else
