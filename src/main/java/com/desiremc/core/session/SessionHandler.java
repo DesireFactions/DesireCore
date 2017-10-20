@@ -38,9 +38,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     private static void startConsoleSession()
     {
         console = new Session();
-        console.setRank(Rank.OWNER);
-        console.setName("CONSOLE");
-        console.setUniqueId(DesireCore.getConsoleUUID());
+        console.assignConsole();
     }
 
     public static Session getSession(CommandSender sender)
@@ -164,13 +162,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             System.out.println("createSession(UUID) set defaults.");
         }
         Session session = new Session();
-        session.setUniqueId(p.getUniqueId());
-        session.setName(p.getName());
-        session.setRank(Rank.GUEST);
-        session.setFirstLogin(System.currentTimeMillis());
-        session.setLastLogin(System.currentTimeMillis());
-        session.setTotalPlayed(0);
-        session.setIp(p.getAddress().getAddress().getHostAddress());
+        session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
 
         if (DesireCore.DEBUG)
         {
@@ -202,6 +194,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static boolean endSession(Session s)
     {
+        s.setTotalPlayed(s.getTotalPlayed() + System.currentTimeMillis() - s.getLastLogin());
+        s.setLastLogin(System.currentTimeMillis());
         instance.save(s);
         instance.sessions.delete(s.getUniqueId());
         // TODO change this return type

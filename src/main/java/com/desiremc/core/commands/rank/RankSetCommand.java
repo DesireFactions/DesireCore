@@ -48,8 +48,6 @@ public class RankSetCommand extends ValidCommand
             System.out.println("validRun() rank after: " + target.getRank().getDisplayName());
         }
 
-        SessionHandler.getInstance().save(target);
-
         if (DesireCore.DEBUG)
         {
             System.out.println("validRun() query after save: " + SessionHandler.getSession(target.getUniqueId()).getRank().getDisplayName());

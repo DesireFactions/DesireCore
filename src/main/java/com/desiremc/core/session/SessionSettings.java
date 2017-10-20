@@ -12,7 +12,7 @@ public class SessionSettings
 
     @Property("xray_enabled")
     private boolean xrayNotifications;
-
+    
     public boolean hasMentionsEnabled()
     {
         return mentionsEnabled;

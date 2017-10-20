@@ -29,11 +29,15 @@ public class Session
 
     @Indexed
     private String name;
+    
+    private List<String> nameList;
 
     private Rank rank;
 
     @Indexed
     private String ip;
+    
+    private List<String> ipList;
 
     @Property("first_login")
     private long firstLogin;
@@ -120,8 +124,26 @@ public class Session
     {
         return uuid;
     }
+    
+    protected void assignDefaults(UUID uuid, String name, String ip)
+    {
+        this.uuid = uuid;
+        this.name = name;
+        this.rank = Rank.GUEST;
+        this.firstLogin = System.currentTimeMillis();
+        this.lastLogin = System.currentTimeMillis();
+        this.totalPlayed = 0;
+        this.ip = ip;
+    }
+    
+    protected void assignConsole()
+    {
+        this.uuid = DesireCore.getConsoleUUID();
+        this.name = "CONSOLE";
+        this.rank = Rank.OWNER;
+    }
 
-    public void setUniqueId(UUID uuid)
+    protected void setUniqueId(UUID uuid)
     {
         this.uuid = uuid;
     }
@@ -134,6 +156,7 @@ public class Session
     public void setName(String name)
     {
         this.name = name;
+        save();
     }
 
     public Rank getRank()
@@ -144,6 +167,7 @@ public class Session
     public void setRank(Rank rank)
     {
         this.rank = rank;
+        save();
     }
 
     public List<Punishment> getActivePunishments()
@@ -213,17 +237,12 @@ public class Session
         return firstLogin;
     }
 
-    public void setFirstLogin(long firstLogin)
-    {
-        this.firstLogin = firstLogin;
-    }
-
     public long getLastLogin()
     {
         return lastLogin;
     }
 
-    public void setLastLogin(long lastLogin)
+    protected void setLastLogin(long lastLogin)
     {
         this.lastLogin = lastLogin;
     }
@@ -233,7 +252,7 @@ public class Session
         return totalPlayed;
     }
 
-    public void setTotalPlayed(long totalPlayed)
+    protected void setTotalPlayed(long totalPlayed)
     {
         this.totalPlayed = totalPlayed;
     }
@@ -246,6 +265,7 @@ public class Session
     public void setIp(String ip)
     {
         this.ip = ip;
+        save();
     }
 
     public List<Achievement> getAchievements()
@@ -273,6 +293,7 @@ public class Session
         }
 
         getAchievements().add(achievement);
+        save();
 
         if (inform)
         {
@@ -291,7 +312,6 @@ public class Session
         {
             tokens += achievement.getReward();
         }
-        SessionHandler.getInstance().save(this);
     }
 
     public int getTokens()
@@ -302,16 +322,17 @@ public class Session
     public void addTokens(int tokens, boolean notify)
     {
         this.tokens += tokens;
+        save();
         if (notify)
         {
             DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add", "{tokens}", tokens + "");
         }
-        SessionHandler.getInstance().save(this);
     }
 
     public void setTokens(int tokens)
     {
         this.tokens = tokens;
+        save();
     }
 
     public SessionSettings getSettings()
@@ -322,15 +343,33 @@ public class Session
     public void setSettings(SessionSettings settings)
     {
         this.settings = settings;
+        save();
     }
 
     public void setAuthKey(String key)
     {
         this.authKey = key;
+        save();
     }
 
     public String getAuthkey()
     {
         return this.authKey;
     }
+
+    public List<String> getIpList()
+    {
+        return ipList;
+    }
+
+    public List<String> getNameList()
+    {
+        return nameList;
+    }
+    
+    private void save()
+    {
+        SessionHandler.getInstance().save(this);
+    }
+
 }

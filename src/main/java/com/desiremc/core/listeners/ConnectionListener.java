@@ -71,8 +71,6 @@ public class ConnectionListener implements Listener
     public void onLogout(PlayerQuitEvent e)
     {
         Session session = SessionHandler.getSession(e.getPlayer());
-        session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
-        session.setLastLogin(System.currentTimeMillis());
         SessionHandler.endSession(session);
 
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
