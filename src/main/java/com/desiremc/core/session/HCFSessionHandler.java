@@ -23,6 +23,8 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
     {
         super(HCFSession.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(HCFSession.class);
+        
         sessions = new RedBlackTree<>();
         console = new HCFSession();
     }
@@ -34,7 +36,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     public static Iterable<HCFSession> getSessions()
     {
-        return instance.sessions.values();
+        return getInstance().sessions.values();
     }
 
     /**
@@ -50,7 +52,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
             return null;
         }
         HCFSession session = null;
-        if ((session = instance.sessions.get(uuid)) != null)
+        if ((session = getInstance().sessions.get(uuid)) != null)
         {
             return session;
         }
@@ -79,7 +81,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     public static HCFSession initializeHCFSession(UUID uuid, boolean cache)
     {
-        HCFSession session = instance.findOne("uuid", uuid);
+        HCFSession session = getInstance().findOne("uuid", uuid);
         if (session == null)
         {
             session = createHCFSession(uuid);
@@ -87,15 +89,15 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         session.setSession(SessionHandler.getSession(uuid));
         if (cache)
         {
-            instance.sessions.put(uuid, session);
+            getInstance().sessions.put(uuid, session);
         }
         return session;
     }
 
     public static boolean endSession(HCFSession s)
     {
-        instance.save(s);
-        instance.sessions.delete(s.getUniqueId());
+        getInstance().save(s);
+        getInstance().sessions.delete(s.getUniqueId());
 
         // TODO change this over
         return true;
@@ -107,13 +109,17 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         session.setUniqueId(uuid);
         session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
 
-        instance.save(session);
+        getInstance().save(session);
 
         return session;
     }
 
     public static HCFSessionHandler getInstance()
     {
+        if (instance == null)
+        {
+            initialize();
+        }
         return instance;
     }
 

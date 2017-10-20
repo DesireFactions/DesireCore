@@ -10,6 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -40,8 +41,8 @@ public class PlayerListener implements Listener
         StaffHandler.getInstance().handleCPSTest(event);
     }
 
-    @EventHandler
-    public void onStaffChat(AsyncPlayerChatEvent event)
+    @EventHandler(priority=EventPriority.LOW)
+    public void onChat(AsyncPlayerChatEvent event)
     {
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p);
@@ -54,35 +55,20 @@ public class PlayerListener implements Listener
                 String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event.getMessage());
                 Bukkit.getPlayer(target).sendMessage(message);
             }
+            return;
         }
-    }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onMention(AsyncPlayerChatEvent event)
-    {
-        Session sender = SessionHandler.getSession(event.getPlayer());
-        if (StaffHandler.getInstance().isChatEnabled() || sender.getRank().isStaff())
+        if (!StaffHandler.getInstance().isChatEnabled() && !session.getRank().isStaff())
         {
-            for (Player p : Bukkit.getOnlinePlayers())
-            {
-                Session session = SessionHandler.getSession(p);
-                if (session.getRank().isStaff() && event.getMessage().contains(p.getName()) && session.getSettings().hasMentionsEnabled())
-                {
-                    p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                }
-            }
+            event.setCancelled(true);
+            return;
         }
-    }
 
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent event)
-    {
-        Session session = SessionHandler.getSession(event.getPlayer());
-        if (!StaffHandler.getInstance().isChatEnabled())
+        for (Session s : SessionHandler.getInstance().getStaff())
         {
-            if (!session.getRank().isStaff())
+            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings().hasMentionsEnabled())
             {
-                event.setCancelled(true);
+                s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             }
         }
     }

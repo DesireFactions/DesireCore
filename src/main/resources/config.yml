@@ -21,3 +21,6 @@ glass-protected-regions:
    - 'test4'
 spawn-mobs: false
 SERVER: first
+hubs:
+  first: 'localhost:25467'
+  second: 'localhost:25468'

@@ -19,6 +19,7 @@ public class AuthLoginCommand extends ValidCommand
     {
         super("login", "Authenticate with Google Auth.", Rank.JRMOD, new String[]{"code"});
         addParser(new IntegerParser(), "code");
+        
         addValidator(new PlayerValidator());
         addValidator(new PlayerIsAuthBlockedValidator());
     }

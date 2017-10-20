@@ -1,13 +1,16 @@
 package com.desiremc.core.commands.rank;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.core.api.RankAPI;
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.RankParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class RankSetCommand extends ValidCommand
 {
@@ -22,10 +25,41 @@ public class RankSetCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("validRun() called in RankSetCommand.");
+        }
 
         Session target = (Session) args[0];
         Rank rank = (Rank) args[1];
 
-        RankAPI.setRank(sender, label, target, rank);
+        if (target.getRank().isStaff() && !rank.isStaff())
+        {
+            SessionHandler.getInstance().removeStaff(target.getUniqueId());
+        }
+
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("validRun() rank before: " + target.getRank().getDisplayName());
+        }
+        target.setRank(rank);
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("validRun() rank after: " + target.getRank().getDisplayName());
+        }
+
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("validRun() query after save: " + SessionHandler.getSession(target.getUniqueId()).getRank().getDisplayName());
+        }
+
+        PlayerUtils.setPrefix(target.getRank().getPrefix(), Bukkit.getPlayer(target.getUniqueId()));
+
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
+
+        if (Bukkit.getPlayer(target.getUniqueId()) != null)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(Bukkit.getPlayer(target.getUniqueId()), "rank.inform", "{rank}", target.getRank().getDisplayName());
+        }
     }
 }

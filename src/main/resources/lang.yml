@@ -170,8 +170,8 @@ agui:
         - "Go to the next page!"
       item: "IRON_BLOCK"
 auth:
-  setup: "Your Google Auth Code is {code}."
-  must-login: "Please open the Google Authenticator App and do /login <code> in-game with the code."
+  setup: "Your Google Auth Code is {code}. Click it for a QR code."
+  must-login: "Please open your authenticator and use /login <code> in-game with the code."
   already-auth: "You have already authenticated with Google Authenticator."
   invalid-code: "Incorrect or expired Authenticator code."
   authenticated: "Access Granted. Welcome!"

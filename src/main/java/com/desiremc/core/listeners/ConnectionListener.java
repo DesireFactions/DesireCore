@@ -23,6 +23,10 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLogin(final PlayerLoginEvent event)
     {
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
+        }
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), false);
         Punishment p;
         if ((p = session.isBanned()) != null)
@@ -36,18 +40,20 @@ public class ConnectionListener implements Listener
 
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event)
     {
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
+        }
         Player player = event.getPlayer();
-        String ip = player.getAddress().getHostName();
-
-        SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
-        Session session = SessionHandler.getSession(player);
+        String ip = player.getAddress().getAddress().getHostName();
+        Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
         event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + " " + ChatColor.GRAY + event.getPlayer().getName());
-
+        
         if(!session.getIp().equalsIgnoreCase(ip))
         {
             session.getIpList().add(ip);
@@ -65,12 +71,11 @@ public class ConnectionListener implements Listener
     public void onLogout(PlayerQuitEvent e)
     {
         Session session = SessionHandler.getSession(e.getPlayer());
-        session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
-        session.setLastLogin(System.currentTimeMillis());
         SessionHandler.endSession(session);
 
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
         e.setQuitMessage(DesireCore.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
     }
+
 }

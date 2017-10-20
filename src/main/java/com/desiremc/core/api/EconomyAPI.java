@@ -39,14 +39,12 @@ public class EconomyAPI
     {
         Session session = SessionHandler.getSession(uuid);
         session.setTokens(amount);
-        SessionHandler.getInstance().save(session);
     }
 
     public static void setTokens(UUID uuid, int amount, boolean inform)
     {
         Session session = SessionHandler.getSession(uuid);
         session.setTokens(amount);
-        SessionHandler.getInstance().save(session);
         if (inform)
         {
             DesireCore.getLangHandler().sendRenderMessage(session, "tokens.set", "{tokens}", amount + "");

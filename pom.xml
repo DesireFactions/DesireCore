@@ -66,6 +66,7 @@
 								<includes>
 									<include>org.mongodb</include>
 									<include>org.mongodb.morphia</include>
+									<include>com.warrenstrange:googleauth</include>
 								</includes>
 							</artifactSet>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
