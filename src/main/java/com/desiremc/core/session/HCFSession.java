@@ -54,6 +54,12 @@ public class HCFSession
         deathBans = new HashMap<>();
     }
 
+    protected void assignDefault(UUID uuid)
+    {
+        this.uuid = uuid;
+        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time");
+    }
+
     public Rank getRank()
     {
         return session.getRank();
@@ -70,7 +76,7 @@ public class HCFSession
         return uuid;
     }
 
-    public void setUniqueId(UUID uuid)
+    protected void setUniqueId(UUID uuid)
     {
         this.uuid = uuid;
     }
@@ -88,6 +94,7 @@ public class HCFSession
     public void setSafeTimeLeft(int safeTimer)
     {
         this.safeTimer = safeTimer;
+        save();
     }
 
     public int getLives()
@@ -98,16 +105,19 @@ public class HCFSession
     public void setLives(int lives)
     {
         this.lives = lives;
+        save();
     }
 
     public void takeLives(int lives)
     {
         this.lives -= lives;
+        save();
     }
 
     public void addLives(int lives)
     {
         this.lives += lives;
+        save();
     }
 
     public int getTotalKills(String server)
@@ -159,10 +169,20 @@ public class HCFSession
             }
         }
         local.add(new Ticker(victim));
+        save();
     }
 
     public void addDeath(String server, UUID killer)
     {
+        List<DeathBan> bans = deathBans.get(server);
+        if (bans == null)
+        {
+            bans = new LinkedList<>();
+            deathBans.put(server, bans);
+        }
+        bans.add(new DeathBan(System.currentTimeMillis()));
+        save();
+
         List<Ticker> local = deaths.get(server);
         if (local == null)
         {
@@ -178,6 +198,7 @@ public class HCFSession
             }
         }
         local.add(new Ticker(killer));
+        save();
     }
 
     public int getTokens()
@@ -222,6 +243,7 @@ public class HCFSession
             throw new IllegalStateException("Player does not have a deathban.");
         }
         ban.setRevived(true);
+        save();
     }
 
     private DeathBan getActiveDeathBan(String server)
@@ -233,43 +255,12 @@ public class HCFSession
         }
         for (DeathBan ban : bans)
         {
-            if (!ban.revived && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
+            if (!ban.isRevived() && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
             {
                 return ban;
             }
         }
         return null;
-    }
-
-    public class PVPTimer implements Runnable
-    {
-
-        private long lastRunTime;
-
-        private boolean pause;
-
-        @Override
-        public void run()
-        {
-            if (!pause && safeTimer > 0)
-            {
-                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
-            }
-            safeTimer -= System.currentTimeMillis() - lastRunTime;
-            lastRunTime = System.currentTimeMillis();
-        }
-
-        public void pause()
-        {
-            pause = true;
-        }
-
-        public void resume()
-        {
-            pause = false;
-            run();
-        }
-
     }
 
     public void setSession(Session session)
@@ -304,61 +295,40 @@ public class HCFSession
         return array;
     }
 
-    @Embedded
-    public static class DeathBan
+    public class PVPTimer implements Runnable
     {
-        private long startTime;
-        private boolean revived;
 
-        public long getStartTime()
+        private long lastRunTime;
+
+        private boolean pause;
+
+        @Override
+        public void run()
         {
-            return startTime;
+            if (!pause && safeTimer > 0)
+            {
+                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
+            }
+            safeTimer -= System.currentTimeMillis() - lastRunTime;
+            lastRunTime = System.currentTimeMillis();
         }
 
-        public boolean isRevived()
+        public void pause()
         {
-            return revived;
+            pause = true;
         }
 
-        public void setRevived(boolean revived)
+        public void resume()
         {
-            this.revived = revived;
+            pause = false;
+            run();
         }
 
     }
 
-    @Embedded
-    public static class Ticker implements Comparable<Ticker>
+    private void save()
     {
-        private UUID player;
-        private int count;
-
-        public Ticker(UUID uuid)
-        {
-            count = 1;
-        }
-
-        public UUID getUniqueId()
-        {
-            return player;
-        }
-
-        public int getCount()
-        {
-            return count;
-        }
-
-        public void setCount(int count)
-        {
-            this.count = count;
-        }
-
-        @Override
-        public int compareTo(Ticker tick)
-        {
-            return Integer.compare(count, tick.count);
-        }
-
+        HCFSessionHandler.getInstance().save(this);
     }
 
 }

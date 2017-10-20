@@ -22,5 +22,5 @@ glass-protected-regions:
 spawn-mobs: false
 SERVER: first
 hubs:
-  first: 'localhost:25467'
-  second: 'localhost:25468'
+  lobby: 'localhost:25467'
+  lobby2: 'localhost:25468'

@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
+import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.AchievementCommand;
 import com.desiremc.core.commands.BanCommand;
 import com.desiremc.core.commands.InfoCommand;
@@ -82,16 +83,18 @@ public class DesireCore extends JavaPlugin
         SessionHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
+        StatusManager.startPingTask();
         mongoWrapper.getDatastore().ensureIndexes();
         
         registerCommands();
         registerListeners();
 
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
         }
-
     }
 
     private void registerCommands()

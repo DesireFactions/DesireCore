@@ -106,9 +106,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
     private static HCFSession createHCFSession(UUID uuid)
     {
         HCFSession session = new HCFSession();
-        session.setUniqueId(uuid);
-        session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
-
+        session.assignDefault(uuid);
         getInstance().save(session);
 
         return session;

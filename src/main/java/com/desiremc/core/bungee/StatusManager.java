@@ -2,6 +2,7 @@ package com.desiremc.core.bungee;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -64,6 +65,60 @@ public class StatusManager
         servers.put(server, serverStatus);
     }
 
+    public static String getLeastPopulous()
+    {
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("getLeastPopulous() called.");
+        }
+        String leastPopulated = null;
+        ServerStatus leastPopulatedStatus = null;
+        ServerStatus it;
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("getLeastPopulous() servers size is " + servers.size());
+        }
+        for (Entry<String, ServerStatus> server : servers.entrySet())
+        {
+            if (DesireCore.DEBUG)
+            {
+                System.out.println("getLeastPopulous() checking if " + server.getKey() + " is a lobby.");
+            }
+            it = servers.get(server.getKey());
+            if (it != null && it.isOnline())
+            {
+                if (DesireCore.DEBUG)
+                {
+                    System.out.println("getLeastPopulous() it is a lobby.");
+                }
+                if (leastPopulated == null)
+                {
+                    if (DesireCore.DEBUG)
+                    {
+                        System.out.println("getLeastPopulous() it is the least populous lobby.");
+                    }
+                    leastPopulated = server.getKey();
+                    leastPopulatedStatus = it;
+                }
+                else if (it.getOnlinePlayers() < leastPopulatedStatus.getOnlinePlayers())
+                {
+                    if (DesireCore.DEBUG)
+                    {
+                        System.out.println("getLeastPopulous() it is the least populous lobby.");
+                    }
+                    leastPopulated = server.getKey();
+                    leastPopulatedStatus = it;
+                }
+            }
+
+        }
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("getLeastPopulous() returned server " + leastPopulated);
+        }
+        return leastPopulated;
+    }
+    
     public static void startPingTask()
     {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(DesireCore.getInstance(), new Runnable()
