@@ -7,6 +7,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -24,7 +25,7 @@ public class AuthListener implements Listener
 
     public static List<UUID> authBlocked = new ArrayList<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event)
     {
         Player p = event.getPlayer();
@@ -40,11 +41,17 @@ public class AuthListener implements Listener
             session.setAuthKey(key.getKey());
 
             DesireCore.getLangHandler().sendRenderMessage(session, "auth.setup", "{code}", key.getKey());
+
+            forceAuth(session);
+        }
+        else
+        {
+            if (!session.getIp().equalsIgnoreCase(p.getAddress().getHostName()))
+            {
+                forceAuth(session);
+            }
         }
 
-        authBlocked.add(p.getUniqueId());
-
-        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
     }
 
     @EventHandler
@@ -63,7 +70,7 @@ public class AuthListener implements Listener
         Player player = event.getPlayer();
         if (authBlocked.contains(player.getUniqueId()))
         {
-            if(!event.getMessage().contains("login"))
+            if (!event.getMessage().contains("login"))
             {
                 event.setCancelled(true);
             }
@@ -98,5 +105,12 @@ public class AuthListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    private void forceAuth(Session session)
+    {
+        authBlocked.add(session.getUniqueId());
+
+        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
     }
 }

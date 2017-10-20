@@ -30,10 +30,16 @@ public class Session
     @Indexed
     private String name;
 
+    @Property("name_list")
+    private List<String> nameList;
+
     private Rank rank;
 
     @Indexed
     private String ip;
+
+    @Property("ip_list")
+    private List<String> ipList;
 
     @Property("first_login")
     private long firstLogin;
@@ -324,13 +330,33 @@ public class Session
         this.settings = settings;
     }
 
-    public void setAuthKey(String key)
+    public void setAuthKey(String authKey)
     {
-        this.authKey = key;
+        this.authKey = authKey;
     }
 
     public String getAuthkey()
     {
-        return this.authKey;
+        return authKey;
+    }
+
+    public void setNameList(List<String> nameList)
+    {
+        this.nameList = nameList;
+    }
+
+    public List<String> getNameList()
+    {
+        return nameList;
+    }
+
+    public void setIpList(List<String> ipList)
+    {
+        this.ipList = ipList;
+    }
+
+    public List<String> getIpList()
+    {
+        return ipList;
     }
 }

@@ -1,6 +1,7 @@
 package com.desiremc.core.listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,18 +36,33 @@ public class ConnectionListener implements Listener
 
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event)
     {
+        Player player = event.getPlayer();
+        String ip = player.getAddress().getHostName();
+
         SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
-        Session session = SessionHandler.getSession(event.getPlayer());
+        Session session = SessionHandler.getSession(player);
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
         event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + " " + ChatColor.GRAY + event.getPlayer().getName());
+
+        if(!session.getIp().equalsIgnoreCase(ip))
+        {
+            session.getIpList().add(ip);
+            session.setIp(ip);
+        }
+
+        if(!session.getName().equalsIgnoreCase(player.getName()))
+        {
+            session.getNameList().add(player.getName());
+            session.setName(player.getName());
+        }
     }
 
     @EventHandler
-    public void logout(PlayerQuitEvent e)
+    public void onLogout(PlayerQuitEvent e)
     {
         Session session = SessionHandler.getSession(e.getPlayer());
         session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
@@ -57,5 +73,4 @@ public class ConnectionListener implements Listener
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
         e.setQuitMessage(DesireCore.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
     }
-
 }

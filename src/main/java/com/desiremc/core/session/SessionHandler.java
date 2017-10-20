@@ -1,5 +1,6 @@
 package com.desiremc.core.session;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -117,6 +118,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         session.setLastLogin(System.currentTimeMillis());
         session.setTotalPlayed(0);
         session.setIp(p.getAddress().getAddress().getHostAddress());
+        session.setIpList(new ArrayList<>());
+        session.setNameList(new ArrayList<>());
 
         instance.save(session);
 
