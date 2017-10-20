@@ -84,6 +84,7 @@ public class DesireCore extends JavaPlugin
         StaffHandler.initialize();
         TicketHandler.initialize();
         StatusManager.startPingTask();
+        
         mongoWrapper.getDatastore().ensureIndexes();
         
         registerCommands();
@@ -97,6 +98,11 @@ public class DesireCore extends JavaPlugin
         }
     }
 
+    public static ClassLoader getLoader()
+    {
+        return instance.getClassLoader();
+    }
+    
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();

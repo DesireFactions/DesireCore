@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.mongodb.morphia.mapping.DefaultCreator;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
@@ -29,8 +30,17 @@ public class MongoWrapper
 
         mc = new MongoClient(addr, credentials);
         morphia = new Morphia();
-
+        morphia.getMapper().getOptions().setObjectFactory(new DefaultCreator() {
+            @Override
+            protected ClassLoader getClassLoaderForClass()
+            {
+                return DesireCore.getLoader();
+            }
+            
+        });
+        
         datastore = morphia.createDatastore(mc, config.getString("database.database"));
+        
     }
 
     public MongoClient getMongoClient()
