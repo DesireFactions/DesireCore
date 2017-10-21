@@ -1,8 +1,8 @@
 package com.desiremc.core.bungee;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,7 +11,7 @@ import com.desiremc.core.DesireCore;
 
 public class StatusManager
 {
-    public static Map<String, ServerStatus> servers = new HashMap<>();
+    public static Map<String, ServerStatus> servers = new ConcurrentHashMap<>();
 
     private static ServerPingManager spm = new ServerPingManager();
 
@@ -121,7 +121,7 @@ public class StatusManager
     
     public static void startPingTask()
     {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(DesireCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireCore.getInstance(), new Runnable()
         {
             @Override
             public void run()

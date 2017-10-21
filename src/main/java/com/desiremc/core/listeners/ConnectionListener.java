@@ -27,14 +27,15 @@ public class ConnectionListener implements Listener
         {
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
-        Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), false);
-        Punishment p;
-        if ((p = session.isBanned()) != null)
+        Punishment p = SessionHandler.getBan(event.getPlayer().getUniqueId());
+        if (p != null)
         {
-
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
-                    (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n" + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules").replace("{reason}", p.getReason())
-                            .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime())).replace("{issuer}", PlayerUtils.getName(p.getIssuer()).replace("&", "§")));
+                    (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n" + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                            .replace("{reason}", p.getReason())
+                            .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
+                            .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                            .replace("&", "§"));
             return;
         }
 
@@ -53,14 +54,14 @@ public class ConnectionListener implements Listener
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
         event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + " " + ChatColor.GRAY + event.getPlayer().getName());
-        
-        if(!session.getIp().equalsIgnoreCase(ip))
+
+        if (!session.getIp().equalsIgnoreCase(ip))
         {
             session.getIpList().add(ip);
             session.setIp(ip);
         }
 
-        if(!session.getName().equalsIgnoreCase(player.getName()))
+        if (!session.getName().equalsIgnoreCase(player.getName()))
         {
             session.getNameList().add(player.getName());
             session.setName(player.getName());
