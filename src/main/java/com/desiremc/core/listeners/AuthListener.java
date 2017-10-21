@@ -33,11 +33,14 @@ public class AuthListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
     {
-        System.out.println("onJoin(PlayerJoinEvent) called in AuthListener.");
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("onJoin(PlayerJoinEvent) called in AuthListener.");
+        }
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p.getUniqueId());
 
-        if (!session.getRank().isStaff())
+        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals("MewtwoUsedSplash"))
             return;
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))

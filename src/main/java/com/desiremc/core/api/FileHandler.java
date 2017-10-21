@@ -64,7 +64,6 @@ public class FileHandler
      */
     public String getString(String key)
     {
-        key = key.toLowerCase();
         String message = null;
         Object o = history.get(key);
         if (o != null && o instanceof String)
@@ -93,7 +92,6 @@ public class FileHandler
      */
     public Double getDouble(String key)
     {
-        key = key.toLowerCase();
         double value;
         Object o = history.get(key);
         if (o != null && o instanceof Double)
@@ -114,7 +112,6 @@ public class FileHandler
      */
     public Long getLong(String key)
     {
-        key = key.toLowerCase();
         long value;
         Object o = history.get(key);
         if (o != null && o instanceof Long)
@@ -135,7 +132,6 @@ public class FileHandler
      */
     public Integer getInteger(String key)
     {
-        key = key.toLowerCase();
         int value;
         Object o = history.get(key);
         if (o != null && o instanceof Integer)
@@ -161,7 +157,6 @@ public class FileHandler
      */
     public Boolean getBoolean(String key)
     {
-        key = key.toLowerCase();
         boolean value;
         Object o = history.get(key);
         if (o != null && o instanceof Integer)
@@ -184,7 +179,6 @@ public class FileHandler
     @SuppressWarnings("unchecked")
     public List<String> getStringList(String key)
     {
-        key = key.toLowerCase();
         Object o = history.get(key);
         if (o != null && o instanceof List<?>)
         {
@@ -204,7 +198,6 @@ public class FileHandler
 
     public void setString(String key, String value)
     {
-        key = key.toLowerCase();
         fileConfig.set(key, value);
         history.put(key, value);
         try
@@ -219,7 +212,6 @@ public class FileHandler
 
     public void setBoolean(String key, boolean value)
     {
-        key = key.toLowerCase();
         fileConfig.set(key, value);
         history.put(key, value);
         try

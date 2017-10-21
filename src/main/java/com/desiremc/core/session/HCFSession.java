@@ -174,6 +174,7 @@ public class HCFSession
 
     public void addDeath(String server, UUID killer)
     {
+        System.out.println("addDeath() called with server " + server + " and killer " + (killer == null ? "null" : killer.toString()) + ".");
         List<DeathBan> bans = deathBans.get(server);
         if (bans == null)
         {
@@ -183,22 +184,26 @@ public class HCFSession
         bans.add(new DeathBan(System.currentTimeMillis()));
         save();
 
-        List<Ticker> local = deaths.get(server);
-        if (local == null)
+        if (killer != null)
         {
-            local = new LinkedList<>();
-            deaths.put(server, local);
-        }
-        for (Ticker tick : local)
-        {
-            if (tick.getUniqueId().equals(killer))
+            List<Ticker> local = deaths.get(server);
+            if (local == null)
             {
-                tick.setCount(tick.getCount());
-                return;
+                local = new LinkedList<>();
+                deaths.put(server, local);
             }
+            for (Ticker tick : local)
+            {
+                if (tick.getUniqueId().equals(killer))
+                {
+                    tick.setCount(tick.getCount());
+                    save();
+                    return;
+                }
+            }
+            local.add(new Ticker(killer));
+            save();
         }
-        local.add(new Ticker(killer));
-        save();
     }
 
     public int getTokens()
@@ -248,18 +253,23 @@ public class HCFSession
 
     private DeathBan getActiveDeathBan(String server)
     {
+        System.out.println("getActiveDeathBan() called.");
         List<DeathBan> bans = deathBans.get(server);
         if (bans == null)
         {
             return null;
         }
+        System.out.println("getActiveDeathBans() found for target server.");
         for (DeathBan ban : bans)
         {
+            System.out.println("getActiveDeathBans() loop.");
             if (!ban.isRevived() && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
             {
+                System.out.println("getActiveDeathBans() return ban.");
                 return ban;
             }
         }
+        System.out.println("getActiveDeathBans() returned null.");
         return null;
     }
 

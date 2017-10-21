@@ -67,9 +67,13 @@ public class ConnectionListener implements Listener
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onLogout(PlayerQuitEvent e)
     {
+        if (DesireCore.DEBUG)
+        {
+            System.out.println("onLougout(PlayerQuitEvent) called in ConnectionListener.");
+        }
         Session session = SessionHandler.getSession(e.getPlayer());
         SessionHandler.endSession(session);
 

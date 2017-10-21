@@ -77,6 +77,11 @@ public enum Rank
         return getId() < YOUTUBER.getId() && getId() > GUEST.getId();
     }
 
+    public boolean isManager()
+    {
+        return getId() >= ADMIN.getId();
+    }
+    
     public static Rank getRank(String value)
     {
         for (Rank v : values())
