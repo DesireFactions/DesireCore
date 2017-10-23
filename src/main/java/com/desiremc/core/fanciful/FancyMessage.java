@@ -34,9 +34,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 
-import net.amoebaman.util.ArrayWrapper;
-import net.amoebaman.util.Reflection;
-
 /**
  * Represents a formattable message. Such messages can use elements such as
  * colors, formatting codes, hover and click data, and other features provided
