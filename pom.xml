@@ -25,12 +25,6 @@
 			<artifactId>morphia</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		<!-- Fanciful API -->
-		<dependency>
-			<groupId>mkremins</groupId>
-			<artifactId>fanciful</artifactId>
-			<version>0.3.5-SNAPSHOT</version>
-		</dependency>
 		<!-- Google Auth API -->
 		<dependency>
 			<groupId>com.warrenstrange</groupId>
