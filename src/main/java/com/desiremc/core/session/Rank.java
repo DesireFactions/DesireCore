@@ -83,6 +83,10 @@ public enum Rank
     
     public long getDeathBanTime()
     {
+        if (isStaff())
+        {
+            return 0;
+        }
         Long lookup = DesireCore.getConfigHandler().getLong("deathban.times." + getDisplayName().toLowerCase());
         if (lookup == null || lookup == 0)
         {
