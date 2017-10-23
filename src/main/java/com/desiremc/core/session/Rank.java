@@ -11,11 +11,10 @@ public enum Rank
     BRIGADIER(2, "Brigadier", "§a⧫§7", "", ChatColor.GRAY, ChatColor.GREEN),
     COMMODORE(3, "Commodore", "§b⧫§7", "", ChatColor.GRAY, ChatColor.AQUA),
     GRANDMASTER(4, "Grandmaster", "§d⧫§7", "", ChatColor.GRAY, ChatColor.LIGHT_PURPLE),
-    VIP(5, "VIP", "§7§l[§fVIP§7§l]§7", "", ChatColor.GRAY, ChatColor.AQUA),
-    YOUTUBER(6, "YouTuber", "§6§[§eYT§6]§7", "", ChatColor.WHITE, ChatColor.GOLD),
-    JRMOD(7, "Junior Moderator", "§e§l[§bJr.Mod§e§l]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    MODERATOR(8, "Moderator", "§2§l[§aModerator§2§l]§7", "", ChatColor.WHITE, ChatColor.BLUE),
-    SRMOD(7, "Senior Mod", "§e§l[§bSr.Mod§e§l]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    YOUTUBER(5, "YouTuber", "§6§[§eYT§6]§7", "", ChatColor.WHITE, ChatColor.GOLD),
+    JRMOD(6, "Junior_Moderator", "§e§l[§bJr.Mod§e§l]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    MODERATOR(7, "Moderator", "§2§l[§aModerator§2§l]§7", "", ChatColor.WHITE, ChatColor.BLUE),
+    SRMOD(8, "Senior_Mod", "§e§l[§bSr.Mod§e§l]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     ADMIN(9, "Admin", "§4§l[§cAdmin§4§l]§7", "", ChatColor.RED, ChatColor.RED),
     DEVELOPER(10, "Developer", "§5§l[§dDeveloper§5§l]§7", "", ChatColor.LIGHT_PURPLE, ChatColor.RED),
     OWNER(11, "Owner", "§9§l[§bOwner§9§l]§7", "", ChatColor.AQUA, ChatColor.RED);
@@ -82,6 +81,16 @@ public enum Rank
         return getId() >= ADMIN.getId();
     }
     
+    public long getDeathBanTime()
+    {
+        Long lookup = DesireCore.getConfigHandler().getLong("deathban.times." + getDisplayName().toLowerCase());
+        if (lookup == null || lookup == 0)
+        {
+            lookup = DesireCore.getConfigHandler().getLong("deathban.times.default");
+        }
+        return lookup * 60_000;
+    }
+
     public static Rank getRank(String value)
     {
         for (Rank v : values())
@@ -92,12 +101,6 @@ public enum Rank
             }
         }
         return null;
-    }
-
-    public static long getDeathBanTime(Rank rank)
-    {
-        Long lookup = DesireCore.getConfigHandler().getLong("deathban.times." + rank.getDisplayName());
-        return lookup == null ? DesireCore.getConfigHandler().getLong("deathban.times.default") : lookup;
     }
 
 }

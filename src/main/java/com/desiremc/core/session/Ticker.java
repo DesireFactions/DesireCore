@@ -7,12 +7,13 @@ import org.mongodb.morphia.annotations.Embedded;
 @Embedded
 public class Ticker implements Comparable<Ticker>
 {
-    private UUID player;
+    private UUID uuid;
     private int count;
 
     public Ticker(UUID uuid)
     {
         count = 1;
+        this.uuid = uuid;
     }
 
     public Ticker()
@@ -21,7 +22,7 @@ public class Ticker implements Comparable<Ticker>
 
     public UUID getUniqueId()
     {
-        return player;
+        return uuid;
     }
 
     public int getCount()

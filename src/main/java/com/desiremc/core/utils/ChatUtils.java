@@ -90,7 +90,7 @@ public class ChatUtils
         Session session = SessionHandler.getSession(uuid);
         if (prefix)
         {
-            return session.getRank().getMain() + session.getRank().getPrefix() + " " + ChatColor.GRAY + session.getName() + ChatColor.RESET;
+            return session.getRank().getMain() + session.getRank().getPrefix() + ChatColor.GRAY + session.getName() + ChatColor.RESET;
         }
         else
         {

@@ -251,25 +251,26 @@ public class HCFSession
         save();
     }
 
-    private DeathBan getActiveDeathBan(String server)
+    public DeathBan getActiveDeathBan(String server)
     {
         System.out.println("getActiveDeathBan() called.");
+        System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
         List<DeathBan> bans = deathBans.get(server);
         if (bans == null)
         {
             return null;
         }
-        System.out.println("getActiveDeathBans() found for target server.");
+        System.out.println("getActiveDeathBan() found for server " + server + ".");
         for (DeathBan ban : bans)
         {
-            System.out.println("getActiveDeathBans() loop.");
-            if (!ban.isRevived() && ban.getStartTime() + Rank.getDeathBanTime(session.getRank()) > System.currentTimeMillis())
+            System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
+            if (!ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
             {
-                System.out.println("getActiveDeathBans() return ban.");
+                System.out.println("getActiveDeathBan() returned ban.");
                 return ban;
             }
         }
-        System.out.println("getActiveDeathBans() returned null.");
+        System.out.println("getActiveDeathBan() returned null.");
         return null;
     }
 

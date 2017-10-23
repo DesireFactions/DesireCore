@@ -24,3 +24,9 @@ SERVER: first
 hubs:
   lobby: 'localhost:25467'
   lobby2: 'localhost:25468'
+deathban:
+  times:
+    default: 120
+    brigadier: 90
+    commodore: 75
+    grandmaster: 60

@@ -53,7 +53,7 @@ public class ConnectionListener implements Listener
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
-        event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + " " + ChatColor.GRAY + event.getPlayer().getName());
+        event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + ChatColor.GRAY + event.getPlayer().getName());
 
         if (!session.getIp().equalsIgnoreCase(ip))
         {
