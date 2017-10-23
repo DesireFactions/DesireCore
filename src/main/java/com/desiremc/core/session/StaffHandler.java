@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,7 +39,7 @@ public class StaffHandler
     private List<UUID> hiddenPlayers;
     private List<UUID> staffChat;
     private int numCPSTests;
-    
+
     private boolean chatEnabled;
 
     private HashMap<UUID, Integer> pages;
@@ -227,28 +226,27 @@ public class StaffHandler
         }
 
         e.setCancelled(true);
-        if (e.getHand().equals(EquipmentSlot.HAND))
+
+        if (e.getPlayer().getItemInHand() != null)
         {
-            if (e.getPlayer().getInventory().getItemInMainHand() != null)
+            Material type = e.getPlayer().getItemInHand().getType();
+            switch (type)
             {
-                Material type = e.getPlayer().getInventory().getItemInMainHand().getType();
-                switch (type)
-                {
-                    case WATCH:
-                        useClicksPerSecond(e);
-                        break;
-                    case LEASH:
-                        useMount(e);
-                        break;
-                    case BLAZE_ROD:
-                        useFreeze(e);
-                        break;
-                    case CHEST:
-                        useOpenInventory(e);
-                        break;
-                }
+            case WATCH:
+                useClicksPerSecond(e);
+                break;
+            case LEASH:
+                useMount(e);
+                break;
+            case BLAZE_ROD:
+                useFreeze(e);
+                break;
+            case CHEST:
+                useOpenInventory(e);
+                break;
             }
         }
+
     }
 
     @SuppressWarnings("incomplete-switch")
@@ -266,15 +264,15 @@ public class StaffHandler
             Material type = e.getItem().getType();
             switch (type)
             {
-                case COMPASS:
-                    useLaunch(e);
-                    break;
-                case EYE_OF_ENDER:
-                    useTeleport(e);
-                    break;
-                case CLAY:
-                    useInvisibility(e);
-                    break;
+            case COMPASS:
+                useLaunch(e);
+                break;
+            case EYE_OF_ENDER:
+                useTeleport(e);
+                break;
+            case CLAY:
+                useInvisibility(e);
+                break;
             }
         }
     }
@@ -378,7 +376,7 @@ public class StaffHandler
     {
         if (!target.isDead())
         {
-            target.addPassenger(passenger);
+            target.setPassenger(passenger);
         }
     }
 
@@ -445,7 +443,7 @@ public class StaffHandler
             }
 
             skull.setLore(lore);
-            skull.setOwningPlayer(reported.getOfflinePlayer());
+            skull.setOwner(reported.getName());
             item.setItemMeta(skull);
             inv.addItem(item);
         }

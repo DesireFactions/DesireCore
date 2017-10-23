@@ -53,8 +53,10 @@ public class SimpleScoreboard implements Scoreboard
     @Override
     public void activate()
     {
-        if (activated) return;
-        if (handler == null) throw new IllegalArgumentException("Scoreboard handler not set");
+        if (activated)
+            return;
+        if (handler == null)
+            throw new IllegalArgumentException("Scoreboard handler not set");
         activated = true;
         // Set to the custom scoreboard
         holder.setScoreboard(scoreboard);
@@ -73,7 +75,8 @@ public class SimpleScoreboard implements Scoreboard
     @Override
     public void deactivate()
     {
-        if (!activated) return;
+        if (!activated)
+            return;
         activated = false;
         // Set to the main scoreboard
         if (holder.isOnline())
@@ -120,7 +123,8 @@ public class SimpleScoreboard implements Scoreboard
     @Override
     public SimpleScoreboard setUpdateInterval(long updateInterval)
     {
-        if (activated) throw new IllegalStateException("Scoreboard is already activated");
+        if (activated)
+            throw new IllegalStateException("Scoreboard is already activated");
         this.updateInterval = updateInterval;
         return this;
     }
@@ -143,19 +147,22 @@ public class SimpleScoreboard implements Scoreboard
         // Title
         String handlerTitle = handler.getTitle(holder);
         String finalTitle = Strings.format(handlerTitle != null ? handlerTitle : ChatColor.BOLD.toString());
-        if (!objective.getDisplayName().equals(finalTitle)) objective.setDisplayName(Strings.format(finalTitle));
+        if (!objective.getDisplayName().equals(finalTitle))
+            objective.setDisplayName(Strings.format(finalTitle));
 
         // Entries
         List<Entry> passed = handler.getEntries(holder);
         Map<String, Integer> appeared = new HashMap<>();
         Map<FakePlayer, Integer> current = new HashMap<>();
-        if (passed == null) return;
+        if (passed == null)
+            return;
         for (Entry entry : passed)
         {
             // Handle the entry
             String key = entry.getName();
             Integer score = entry.getPosition();
-            if (key.length() > 48) key = key.substring(0, 47);
+            if (key.length() > 48)
+                key = key.substring(0, 47);
             String appearance;
             if (key.length() > 16)
             {
@@ -165,7 +172,8 @@ public class SimpleScoreboard implements Scoreboard
             {
                 appearance = key;
             }
-            if (!appeared.containsKey(appearance)) appeared.put(appearance, -1);
+            if (!appeared.containsKey(appearance))
+                appeared.put(appearance, -1);
             appeared.put(appearance, appeared.get(appearance) + 1);
             // Get fake player
             FakePlayer faker = getFakePlayer(key, appeared.get(appearance));
@@ -187,7 +195,6 @@ public class SimpleScoreboard implements Scoreboard
         }
     }
 
-    @SuppressWarnings("deprecation")
     private FakePlayer getFakePlayer(String text, int offset)
     {
         Team team = null;
@@ -207,8 +214,10 @@ public class SimpleScoreboard implements Scoreboard
             // suffix
             prefix = text.substring(0, 16 - offset);
             name = text.substring(16 - offset);
-            if (name.length() > 16) name = name.substring(0, 16);
-            if (text.length() > 32) suffix = text.substring(32 - offset);
+            if (name.length() > 16)
+                name = name.substring(0, 16);
+            if (text.length() > 32)
+                suffix = text.substring(32 - offset);
             // If teams already exist, use them
             for (Team other : teamCache.rowKeySet())
             {
@@ -374,6 +383,12 @@ public class SimpleScoreboard implements Scoreboard
                     "name='" + name + '\'' +
                     ", team=" + team
                     + '}';
+        }
+
+        @Override
+        public void setBanned(boolean arg0)
+        {
+
         }
 
     }

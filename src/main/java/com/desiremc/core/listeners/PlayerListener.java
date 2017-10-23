@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -21,6 +20,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.utils.StringUtils;
 
 public class PlayerListener implements Listener
 {
@@ -68,7 +68,7 @@ public class PlayerListener implements Listener
         {
             if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings().hasMentionsEnabled())
             {
-                s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
         }
     }

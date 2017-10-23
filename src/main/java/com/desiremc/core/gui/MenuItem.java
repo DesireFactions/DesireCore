@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import com.desiremc.core.utils.NBTEditor;
 
 public abstract class MenuItem extends MenuClickBehavior
 {
@@ -32,18 +31,13 @@ public abstract class MenuItem extends MenuClickBehavior
         this(text, new MaterialData(Material.PAPER));
     }
 
-    public MenuItem(String name, ItemStack is)
+    @SuppressWarnings("deprecation")
+    public MenuItem(String text, ItemStack is)
     {
-        item = is;
-        if (item != null)
-        {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null)
-            {
-                meta.setDisplayName(name);
-                item.setItemMeta(meta);
-            }
-        }
+        this.text = text;
+        this.icon = is.getData();
+        this.quantity = is.getAmount();
+        this.data = is.getData().getData();
     }
 
     public MenuItem(String text, MaterialData icon)
@@ -132,38 +126,22 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         if (item != null)
         {
-            net.minecraft.server.v1_12_R1.ItemStack itemStack = CraftItemStack.asNMSCopy(item);
-            NBTTagCompound tagCompound = itemStack.getTag();
-            if (tagCompound == null)
-            {
-                tagCompound = new NBTTagCompound();
-            }
-            tagCompound.setInt("Unbreakable", 1);
-            tagCompound.setInt("HideFlags", 6);
-            itemStack.setTag(tagCompound);
-            return CraftItemStack.asBukkitCopy(itemStack);
+            return item;
         }
-
-        ItemStack slot = new ItemStack(this.getIcon().getItemType(), this.getQuantity(), this.data);
-        ItemMeta meta = slot.getItemMeta();
+        item = new ItemStack(this.getIcon().getItemType(), this.getQuantity(), this.data);
+        ItemMeta meta = item.getItemMeta();
 
         if (meta != null)
         {
             meta.setDisplayName(this.getText());
             meta.setLore(this.descriptions);
-            slot.setItemMeta(meta);
+            item.setItemMeta(meta);
         }
 
-        net.minecraft.server.v1_12_R1.ItemStack itemStack = CraftItemStack.asNMSCopy(slot);
-        NBTTagCompound tagCompound = itemStack.getTag();
-        if (tagCompound == null)
-        {
-            tagCompound = new NBTTagCompound();
-        }
-        tagCompound.setInt("Unbreakable", 1);
-        tagCompound.setInt("HideFlags", 6);
-        itemStack.setTag(tagCompound);
-        return CraftItemStack.asBukkitCopy(itemStack);
+        item = NBTEditor.setItemTag(item, "Unbreakable", 1);
+        item = NBTEditor.setItemTag(item, "HideFlags", 6);
+
+        return item;
     }
 
     public void setData(short data)

@@ -65,7 +65,10 @@ public final class ArrayWrapper<E>
     @Override
     public boolean equals(Object other)
     {
-        if (!(other instanceof ArrayWrapper)) { return false; }
+        if (!(other instanceof ArrayWrapper))
+        {
+            return false;
+        }
         return Arrays.equals(_array, ((ArrayWrapper) other)._array);
     }
 

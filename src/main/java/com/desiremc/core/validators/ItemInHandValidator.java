@@ -13,7 +13,7 @@ public class ItemInHandValidator extends PlayerValidator {
         }
         
         Player p = (Player) sender;
-        if (p.getInventory().getItemInMainHand() == null) {
+        if (p.getItemInHand() == null) {
             LANG.sendString(sender, "item_in_hand");
             return false;
         }
