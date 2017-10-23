@@ -1,16 +1,13 @@
 package com.desiremc.core.utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -71,11 +68,9 @@ public class Serialization
         return list;
     }
 
-    public static List<String> toString(Inventory inv)
+    public static List<String> toStrings(List<ItemStack> items)
     {
         List<String> result = new ArrayList<>();
-        List<ConfigurationSerializable> items = new ArrayList<>();
-        Collections.addAll(items, inv.getContents());
         for (ConfigurationSerializable cs : items)
         {
             if (cs == null)
@@ -90,11 +85,17 @@ public class Serialization
         return result;
     }
 
-    public static Inventory toInventory(List<String> stringItems, int number, int size, String title)
+    public static String toString(ItemStack item)
     {
-        VaultHolder holder = new VaultHolder(number);
-        Inventory inv = Bukkit.createInventory(holder, size, title);
-        holder.setInventory(inv);
+        if (item == null)
+        {
+            return null;
+        }
+        return new JSONObject(serialize(item)).toString();
+    }
+
+    public static List<ItemStack> toItems(List<String> stringItems)
+    {
         List<ItemStack> contents = new ArrayList<>();
         for (String piece : stringItems)
         {
@@ -107,13 +108,7 @@ public class Serialization
                 contents.add((ItemStack) deserialize(toMap((JSONObject) JSONValue.parse(piece))));
             }
         }
-        ItemStack[] items = new ItemStack[contents.size()];
-        for (int x = 0; x < contents.size(); x++)
-        {
-            items[x] = contents.get(x);
-        }
-        inv.setContents(items);
-        return inv;
+        return contents;
     }
 
     public static Map<String, Object> serialize(ConfigurationSerializable cs)
@@ -219,4 +214,5 @@ public class Serialization
         }
         return number;
     }
+
 }
