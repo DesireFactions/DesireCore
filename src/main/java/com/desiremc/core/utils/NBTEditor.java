@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.primitives.Primitives;
+import com.desiremc.google.common.primitives.Primitives;
 
 public class NBTEditor
 {

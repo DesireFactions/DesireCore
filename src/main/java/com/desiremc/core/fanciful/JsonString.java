@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import com.google.gson.stream.JsonWriter;
+import com.desiremc.google.gson.stream.JsonWriter;
 
 /**
  * Represents a JSON string value. Writes by this object will not write name

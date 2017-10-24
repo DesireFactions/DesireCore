@@ -28,11 +28,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonWriter;
+import com.desiremc.google.gson.JsonArray;
+import com.desiremc.google.gson.JsonElement;
+import com.desiremc.google.gson.JsonObject;
+import com.desiremc.google.gson.JsonParser;
+import com.desiremc.google.gson.stream.JsonWriter;
 
 /**
  * Represents a formattable message. Such messages can use elements such as

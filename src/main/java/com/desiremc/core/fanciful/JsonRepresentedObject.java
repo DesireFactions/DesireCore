@@ -2,7 +2,7 @@ package com.desiremc.core.fanciful;
 
 import java.io.IOException;
 
-import com.google.gson.stream.JsonWriter;
+import com.desiremc.google.gson.stream.JsonWriter;
 
 /**
  * Represents an object that can be serialized to a JSON writer instance.

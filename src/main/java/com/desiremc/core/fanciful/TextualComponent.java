@@ -7,9 +7,9 @@ import java.util.Map;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
+import com.desiremc.google.gson.stream.JsonWriter;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.stream.JsonWriter;
 
 /**
  * Represents a textual component of a message part. This can be used to not

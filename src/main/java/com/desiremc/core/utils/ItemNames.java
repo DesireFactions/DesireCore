@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.google.common.collect.ImmutableMap;
+import com.desiremc.google.common.collect.ImmutableMap;
 
 /**
  * Class to get the displayed name (as the client shows) for an item.
