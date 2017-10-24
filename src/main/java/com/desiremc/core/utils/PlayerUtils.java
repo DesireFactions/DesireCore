@@ -1,5 +1,7 @@
 package com.desiremc.core.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -50,6 +52,21 @@ public class PlayerUtils
     public static void setPrefix(String prefix, Player player)
     {
         player.setPlayerListName(prefix + player.getName());
+    }
+    
+    public static List<Player> getPlayersInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
+            {
+                inRange.add(player);
+            }
+        }
+
+        return inRange;
     }
 
 }
