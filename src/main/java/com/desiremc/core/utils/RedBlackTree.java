@@ -1,5 +1,6 @@
 package com.desiremc.core.utils;
 
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
