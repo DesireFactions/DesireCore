@@ -5,5 +5,6 @@ public enum PVPClass
     DIAMOND,
     ARCHER,
     BARD,
-    ROGUE
+    ROGUE,
+    MINER
 }
