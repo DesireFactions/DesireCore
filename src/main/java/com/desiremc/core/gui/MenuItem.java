@@ -10,8 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.desiremc.core.utils.NBTEditor;
-
 public abstract class MenuItem extends MenuClickBehavior
 {
 
@@ -138,8 +136,9 @@ public abstract class MenuItem extends MenuClickBehavior
             item.setItemMeta(meta);
         }
 
-        item = NBTEditor.setItemTag(item, "Unbreakable", 1);
-        item = NBTEditor.setItemTag(item, "HideFlags", 6);
+        // TODO fix nbt
+        //item = NBTEditor.setItemTag(item, "Unbreakable", 1);
+        //item = NBTEditor.setItemTag(item, "HideFlags", 6);
 
         return item;
     }
