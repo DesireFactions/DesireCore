@@ -158,6 +158,7 @@ public class StaffHandler
         if (inStaffMode(p))
         {
             disableStaffMode(p);
+            return;
         }
 
         enableStaffMode(p);

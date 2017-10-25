@@ -70,7 +70,7 @@ public class PlayerUtils
 
         return inRange;
     }
-    
+
     public static boolean hasEffect(Player player, PotionEffectType type)
     {
         for(PotionEffect effect : player.getActivePotionEffects())
