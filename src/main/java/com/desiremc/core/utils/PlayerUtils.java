@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerUtils
 {
@@ -67,6 +69,16 @@ public class PlayerUtils
         }
 
         return inRange;
+    }
+    
+    public static boolean hasEffect(Player player, PotionEffectType type)
+    {
+        for(PotionEffect effect : player.getActivePotionEffects())
+        {
+            if(effect.getType().equals(type))
+                return true;
+        }
+        return false;
     }
 
 }
