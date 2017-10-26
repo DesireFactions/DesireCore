@@ -1,5 +1,6 @@
 package com.desiremc.core.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -80,7 +81,6 @@ public class ConnectionListener implements Listener
 
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
-        e.setQuitMessage(DesireCore.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
+        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", e.getPlayer().getName()));
     }
-
 }

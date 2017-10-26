@@ -79,7 +79,7 @@ public class AuthListener implements Listener
         Player player = event.getPlayer();
         if (authBlocked.contains(player.getUniqueId()))
         {
-            event.setCancelled(true);
+            event.setTo(event.getFrom());
         }
     }
 

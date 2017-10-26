@@ -175,3 +175,6 @@ auth:
   already-auth: "You have already authenticated with Google Authenticator."
   invalid-code: "Incorrect or expired Authenticator code."
   authenticated: "Access Granted. Welcome!"
+  reset: "You have reset {player}'s auth key. They will get another when they log in next."
+leave:
+  message: "{player} has left the server."

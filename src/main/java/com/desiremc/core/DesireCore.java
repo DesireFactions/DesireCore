@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.UUID;
 
 import com.desiremc.core.commands.auth.AuthLoginCommand;
+import com.desiremc.core.commands.auth.AuthResetKeyCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.listeners.AuthListener;
 import org.bukkit.Bukkit;
@@ -119,6 +120,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new AchievementCommand());
         customCommandHandler.registerCommand(new AuthLoginCommand());
         customCommandHandler.registerCommand(new TicketCommand());
+        customCommandHandler.registerCommand(new AuthResetKeyCommand());
     }
 
     private void registerListeners()
