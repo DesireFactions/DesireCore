@@ -64,6 +64,7 @@ public class AuthListener implements Listener
             if (!session.getIp().equalsIgnoreCase(p.getAddress().getHostName()))
             {
                 forceAuth(session);
+                return;
             }
         }
 
