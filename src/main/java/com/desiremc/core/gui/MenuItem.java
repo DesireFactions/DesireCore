@@ -36,6 +36,10 @@ public abstract class MenuItem extends MenuClickBehavior
         this.icon = is.getData();
         this.quantity = is.getAmount();
         this.data = is.getData().getData();
+        if (is.hasItemMeta() && is.getItemMeta().hasLore())
+        {
+            descriptions = is.getItemMeta().getLore();
+        }
     }
 
     public MenuItem(String text, MaterialData icon)
