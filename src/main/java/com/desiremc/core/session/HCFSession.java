@@ -31,6 +31,8 @@ public class HCFSession
 
     private int lives;
 
+    private int diamonds;
+
     @Embedded
     private Map<String, List<DeathBan>> deathBans;
 
@@ -120,6 +122,23 @@ public class HCFSession
     public void addLives(int lives)
     {
         this.lives += lives;
+        save();
+    }
+
+    public int getDiamonds()
+    {
+        return diamonds;
+    }
+
+    public void setDiamonds(int diamonds)
+    {
+        this.diamonds = diamonds;
+        save();
+    }
+
+    public void addDiamonds(int diamonds)
+    {
+        this.diamonds += diamonds;
         save();
     }
 
@@ -297,7 +316,7 @@ public class HCFSession
         List<Ticker> kills = this.kills.get(server);
         if (kills == null)
         {
-            return new String[] {};
+            return new String[]{};
         }
         Collections.sort(kills);
         String[] array = new String[kills.size()];

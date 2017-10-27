@@ -1,5 +1,6 @@
 package com.desiremc.core;
 
+<<<<<<< HEAD
 import java.io.File;
 import java.util.UUID;
 
@@ -20,6 +21,7 @@ import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.commands.WarnCommand;
 import com.desiremc.core.commands.alerts.AlertsCommand;
 import com.desiremc.core.commands.auth.AuthLoginCommand;
+import com.desiremc.core.commands.auth.AuthResetKeyCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
@@ -39,12 +41,19 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
-    
+
     public static final boolean DEBUG = false;
-    
+
     private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     private static String SERVER;
@@ -84,14 +93,14 @@ public class DesireCore extends JavaPlugin
         StaffHandler.initialize();
         TicketHandler.initialize();
         StatusManager.startPingTask();
-        
+
         mongoWrapper.getDatastore().ensureIndexes();
-        
+
         registerCommands();
         registerListeners();
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        
+
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
@@ -102,7 +111,7 @@ public class DesireCore extends JavaPlugin
     {
         return instance.getClassLoader();
     }
-    
+
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
@@ -119,6 +128,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new AchievementCommand());
         customCommandHandler.registerCommand(new AuthLoginCommand());
         customCommandHandler.registerCommand(new TicketCommand());
+        customCommandHandler.registerCommand(new AuthResetKeyCommand());
     }
 
     private void registerListeners()

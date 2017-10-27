@@ -64,7 +64,7 @@ public class FileHandler
      */
     public String getString(String key)
     {
-        String message = null;
+        String message;
         Object o = history.get(key);
         if (o != null && o instanceof String)
         {

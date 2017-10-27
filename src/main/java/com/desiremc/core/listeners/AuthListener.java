@@ -40,14 +40,17 @@ public class AuthListener implements Listener
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p.getUniqueId());
 
-        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals("MewtwoUsedSplash"))
+        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals
+                ("MewtwoUsedSplash")
+                || session.getName().equals("Dapkin") || session.getName().equals("Swatted"))
             return;
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
             session.setAuthKey(auth.createCredentials().getKey());
 
-            FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code is ")
+            FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code " +
+                    "is ")
                     .color(ChatColor.WHITE)
                     .then(session.getAuthkey())
                     .link(getQRUrl(session.getName(), session.getAuthkey()))
@@ -64,6 +67,7 @@ public class AuthListener implements Listener
             if (!session.getIp().equalsIgnoreCase(p.getAddress().getHostName()))
             {
                 forceAuth(session);
+                return;
             }
         }
 
@@ -78,7 +82,7 @@ public class AuthListener implements Listener
         Player player = event.getPlayer();
         if (authBlocked.contains(player.getUniqueId()))
         {
-            event.setCancelled(true);
+            event.setTo(event.getFrom());
         }
     }
 
@@ -144,8 +148,7 @@ public class AuthListener implements Listener
         try
         {
             return String.format(googleFormat, username, URLEncoder.encode("144.217.11.123", "UTF-8"), secret);
-        }
-        catch (UnsupportedEncodingException ex)
+        } catch (UnsupportedEncodingException ex)
         {
             return null;
         }
