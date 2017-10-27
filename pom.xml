@@ -22,21 +22,11 @@
 			<artifactId>desiredependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<!-- TabAPI -->
-		<dependency>
-			<groupId>org.inventivetalent</groupId>
-			<artifactId>tabapi</artifactId>
-			<version>1.1.1</version>
-		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
 			<id>destroystokyo-repo</id>
 			<url>https://repo.destroystokyo.com/repository/maven-snapshots/</url>
-		</repository>
-		<repository>
-			<id>inventive-repo</id>
-			<url>https://repo.inventivetalent.org/content/groups/public/</url>
 		</repository>
 	</repositories>
 	<build>
@@ -67,7 +57,6 @@
 							<artifactSet>
 								<includes>
 									<include>com.desiremc.depends:desiredependencies</include>
-									<include>org.inventivetalent:tabapi</include>
 								</includes>
 							</artifactSet>
 						</configuration>
