@@ -1,6 +1,5 @@
 package com.desiremc.core;
 
-<<<<<<< HEAD
 import java.io.File;
 import java.util.UUID;
 
@@ -41,13 +40,6 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
