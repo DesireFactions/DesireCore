@@ -1,6 +1,5 @@
 package com.desiremc.core.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +31,9 @@ public class ConnectionListener implements Listener
         if (p != null)
         {
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
-                    (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n" + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                    (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n"
+                            + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
+                            + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
                             .replace("{reason}", p.getReason())
                             .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
                             .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
@@ -54,7 +55,9 @@ public class ConnectionListener implements Listener
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
         boolean noColor = session.getRank().getId() == 1;
         boolean justColor = session.getRank().getId() == 2;
-        event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ? session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + ChatColor.GRAY + event.getPlayer().getName());
+        event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ?
+                session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + ChatColor
+                .GRAY + event.getPlayer().getName());
 
         if (!session.getIp().equalsIgnoreCase(ip))
         {
@@ -81,6 +84,7 @@ public class ConnectionListener implements Listener
 
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
-        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", e.getPlayer().getName()));
+        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", e.getPlayer().getName
+                ()));
     }
 }

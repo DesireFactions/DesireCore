@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.desiremc.core.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
@@ -29,14 +31,14 @@ public class Session
 
     @Indexed
     private String name;
-    
+
     private List<String> nameList;
 
     private Rank rank;
 
     @Indexed
     private String ip;
-    
+
     private List<String> ipList;
 
     @Property("first_login")
@@ -126,7 +128,7 @@ public class Session
     {
         return uuid;
     }
-    
+
     protected void assignDefaults(UUID uuid, String name, String ip)
     {
         this.uuid = uuid;
@@ -137,7 +139,7 @@ public class Session
         this.totalPlayed = 0;
         this.ip = ip;
     }
-    
+
     protected void assignConsole()
     {
         this.uuid = DesireCore.getConsoleUUID();
@@ -297,9 +299,10 @@ public class Session
         getAchievements().add(achievement);
         save();
 
+        Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
+
         if (inform)
         {
-            Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.title", true);
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.name", true);
@@ -310,9 +313,22 @@ public class Session
             }
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
         }
+
         if (achievement.getReward() > 0)
         {
-            tokens += achievement.getReward();
+            addTokens(achievement.getReward(), false);
+        }
+
+        FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix() + " " + player.getName() + " " +
+                "has received the achievement ")
+                .color(ChatColor.WHITE)
+                .then(achievement.getName())
+                .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
+                .color(ChatColor.WHITE);
+
+        for (Player target : Bukkit.getOnlinePlayers())
+        {
+            nessage.send(target);
         }
     }
 
@@ -368,7 +384,7 @@ public class Session
     {
         return nameList;
     }
-    
+
     private void save()
     {
         SessionHandler.getInstance().save(this);

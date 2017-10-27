@@ -149,6 +149,11 @@ public class FriendUtils
         {
             player.awardAchievement(Achievement.FIRST_FRIEND, true);
         }
+
+        if (!target.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            target.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
     }
 
 }
