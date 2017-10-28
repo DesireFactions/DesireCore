@@ -89,6 +89,23 @@ public class LangHandler extends FileHandler
         return message;
     }
 
+    public String renderMessageNoPrefix(String string, String... args)
+    {
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
+
+        String message = super.getString(string);
+
+        for (int i = 0; i < args.length; i += 2)
+        {
+            message = message.replace(args[i], args[i + 1]);
+        }
+
+        return message;
+    }
+
     public String renderString(String string, String... args)
     {
         if (args.length % 2 != 0)

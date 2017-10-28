@@ -26,7 +26,7 @@ public class AchievementCommand extends ValidCommand
 
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
-    private static HashMap<UUID, Integer> pages;
+    private static HashMap<UUID, Integer> pages = new HashMap<>();
 
     public AchievementCommand()
     {
@@ -43,7 +43,7 @@ public class AchievementCommand extends ValidCommand
 
     private void openAchievementsGUI(Session session)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessage("agui.inventory.title"));
+        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("agui.inventory.title"));
 
         List<Achievement> achievements = Achievement.getAllAchievements();
 
@@ -78,7 +78,7 @@ public class AchievementCommand extends ValidCommand
 
             for (String loreString : LANG.getStringList("agui.inventory.item.lore"))
             {
-                lore.add(LANG.renderString(loreString, "{desc}", achievement.getDescription()));
+                lore.add(LANG.renderString(loreString, "{desc}", achievement.getDescription(), "{tokens}", achievement.getReward()+""));
             }
 
             skull.setLore(lore);

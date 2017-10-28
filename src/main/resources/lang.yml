@@ -159,6 +159,7 @@ agui:
     item:
       lore:
         - "Description: {desc}"
+        - "Tokens: {tokens}"
     next:
       name: "Next Item"
       lore:
