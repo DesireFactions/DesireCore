@@ -103,7 +103,7 @@ public class AuthListener implements Listener
         Player player = event.getPlayer();
         if (authBlocked.contains(player.getUniqueId()))
         {
-            if (!event.getMessage().contains("login"))
+            if (!event.getMessage().startsWith("/login"))
             {
                 event.setCancelled(true);
             }
