@@ -10,10 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.tablist.events.TabDeleteEvent;
 
 public class TabList implements Listener
@@ -37,34 +35,17 @@ public class TabList implements Listener
         {
             TabList.instance = this;
             this.options = options;
-            (new BukkitRunnable()
+            for (Player p : Bukkit.getOnlinePlayers())
             {
-                public void run()
-                {
-                    for (Player p : Bukkit.getOnlinePlayers())
-                    {
-                        TabList.this.checkPlayer(p);
-                    }
-                }
-            }).runTaskLaterAsynchronously(DesireCore.getInstance(), 4L);
+                TabList.this.checkPlayer(p);
+            }
         }
     }
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-        final Player player = event.getPlayer();
-        
-        System.out.println(Bukkit.getOnlinePlayers().contains(event.getPlayer()));
-
-        Bukkit.getScheduler().runTaskLaterAsynchronously(DesireCore.getInstance(), new Runnable()
-        {
-            public void run()
-            {
-                TabList.this.checkPlayer(player);
-                System.out.println(Bukkit.getOnlinePlayers().contains(event.getPlayer()));
-            }
-        }, 4l);
+        TabList.this.checkPlayer(event.getPlayer());
     }
 
     @EventHandler

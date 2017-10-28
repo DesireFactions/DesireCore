@@ -12,7 +12,6 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.tablist.events.TabCreateEvent;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
@@ -37,15 +36,9 @@ public class Tab
         }
         else
         {
-            Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable()
-            {
-                public void run()
-                {
-                    Tab.this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-                    player.setScoreboard(Tab.this.scoreboard);
-                    Tab.this.assemble();
-                }
-            });
+            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            player.setScoreboard(this.scoreboard);
+            this.assemble();
         }
 
         Tab.playerTabs.put(this, true);
@@ -76,7 +69,7 @@ public class Tab
         this.entries.clear();
     }
 
-    private void assemble()
+    public void assemble()
     {
         for (int i = 0; i < 60; ++i)
         {
