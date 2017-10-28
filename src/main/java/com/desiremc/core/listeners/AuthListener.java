@@ -40,43 +40,28 @@ public class AuthListener implements Listener
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p.getUniqueId());
 
-        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals("MewtwoUsedSplash") || session.getName().equals("Dapkin") || session.getName().equals("Swatted"))
+        if (!session.getRank().isStaff())
             return;
-
-        if (session.getIpList().contains(event.getPlayer().getAddress().getAddress().getHostAddress()))
-        {
-            return;
-        }
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
             session.setAuthKey(auth.createCredentials().getKey());
 
-            FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code " +
-                    "is ")
-                            .color(ChatColor.WHITE)
-                            .then(session.getAuthkey())
-                            .link(getQRUrl(session.getName(), session.getAuthkey()))
-                            .color(ChatColor.RED)
-                            .then(". Click it for a QR code.")
-                            .color(ChatColor.WHITE);
-
-            message.send(p);
-
-            forceAuth(session);
+            sendAuthKey(session);
         }
         else
         {
-            if (!session.getIp().equalsIgnoreCase(p.getAddress().getHostName()))
+            if(!session.hasAuthorized())
             {
-                forceAuth(session);
+                sendAuthKey(session);
+            }
+            else if(session.getIpList().contains(event.getPlayer().getAddress().getAddress().getHostAddress()))
+            {
                 return;
             }
         }
 
-        authBlocked.add(p.getUniqueId());
-
-        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
+        forceAuth(session);
     }
 
     @EventHandler
@@ -153,11 +138,25 @@ public class AuthListener implements Listener
         try
         {
             return String.format(googleFormat, username, URLEncoder.encode("144.217.11.123", "UTF-8"), secret);
-        }
-        catch (UnsupportedEncodingException ex)
+        } catch (UnsupportedEncodingException ex)
         {
             return null;
         }
+    }
+
+    private void sendAuthKey(Session session)
+    {
+        Player p = session.getPlayer();
+        FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code " +
+                "is ")
+                .color(ChatColor.WHITE)
+                .then(session.getAuthkey())
+                .link(getQRUrl(session.getName(), session.getAuthkey()))
+                .color(ChatColor.RED)
+                .then(". Click it for a QR code.")
+                .color(ChatColor.WHITE);
+
+        message.send(p);
     }
 
 }

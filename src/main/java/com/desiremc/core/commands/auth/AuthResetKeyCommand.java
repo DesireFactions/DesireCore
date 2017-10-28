@@ -23,6 +23,7 @@ public class AuthResetKeyCommand extends ValidCommand
         Session target = (Session) args[0];
 
         target.setAuthKey("");
+        target.setHasAuthorized(false);
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "auth.reset", "{player}", target.getName());
     }

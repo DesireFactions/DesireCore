@@ -45,6 +45,7 @@ public class AuthLoginCommand extends ValidCommand
         if (validAuth)
         {
             AuthListener.authBlocked.remove(session.getUniqueId());
+            session.setHasAuthorized(true);
             DesireCore.getLangHandler().sendRenderMessage(session, "auth.authenticated");
         }
         else

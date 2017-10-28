@@ -53,6 +53,9 @@ public class Session
     @Property("auth_key")
     private String authKey;
 
+    @Property("has_authorized")
+    private boolean hasAuthorized;
+
     private List<Achievement> achievements;
 
     @Reference
@@ -383,6 +386,16 @@ public class Session
     public List<String> getNameList()
     {
         return nameList;
+    }
+
+    public void setHasAuthorized(boolean hasAuthorized)
+    {
+        this.hasAuthorized = hasAuthorized;
+    }
+
+    public boolean hasAuthorized()
+    {
+        return hasAuthorized;
     }
 
     private void save()
