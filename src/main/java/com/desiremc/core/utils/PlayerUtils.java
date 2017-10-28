@@ -24,17 +24,22 @@ public class PlayerUtils
 
     public static UUID getUUIDFromName(String name)
     {
-        if (!hasPlayed(name)) { return null; }
+        if (!hasPlayed(name))
+        {
+            return null;
+        }
         Session s = SessionHandler.getInstance().findOne("name", name);
-        if (s == null) { return null; }
+        if (s == null)
+        {
+            return null;
+        }
         return s.getUniqueId();
     }
 
     /**
      * Get a player's name from their UUID.
      * 
-     * @param uuid
-     *            the uuid of the player in question.
+     * @param uuid the uuid of the player in question.
      * @return the last seen username of the player.
      */
     public static String getName(UUID uuid)
@@ -43,19 +48,6 @@ public class PlayerUtils
         return op == null ? null : op.getName();
     }
 
-    /**
-     * Set's a player's name and prefix in the tab list menu on the server.
-     * 
-     * @param prefix
-     *            the new prefix
-     * @param player
-     *            the player being changed
-     */
-    public static void setPrefix(String prefix, Player player)
-    {
-        player.setPlayerListName(prefix + player.getName());
-    }
-    
     public static List<Player> getPlayersInRange(Player player, int range)
     {
         List<Player> inRange = new ArrayList<>();
@@ -73,9 +65,9 @@ public class PlayerUtils
 
     public static boolean hasEffect(Player player, PotionEffectType type)
     {
-        for(PotionEffect effect : player.getActivePotionEffects())
+        for (PotionEffect effect : player.getActivePotionEffects())
         {
-            if(effect.getType().equals(type))
+            if (effect.getType().equals(type))
                 return true;
         }
         return false;

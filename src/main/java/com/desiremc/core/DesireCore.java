@@ -1,5 +1,13 @@
 package com.desiremc.core;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
@@ -30,15 +38,9 @@ import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.tablist.TabList;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -129,6 +131,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new PlayerListener());
         listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
+        listenerManager.addListener(new TabList());
     }
 
     public MongoWrapper getMongoWrapper()

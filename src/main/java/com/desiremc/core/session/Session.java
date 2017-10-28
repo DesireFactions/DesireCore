@@ -58,10 +58,10 @@ public class Session
     @Reference
     private List<Session> friends;
 
-    @Property("incoming_friend_requests")
+    @Embedded("incoming_friend_requests")
     private List<Session> incomingFriendRequests;
 
-    @Property("outgoing_friend_requests")
+    @Embedded("outgoing_friend_requests")
     private List<Session> outgoingFriendRequests;
 
     private int tokens;

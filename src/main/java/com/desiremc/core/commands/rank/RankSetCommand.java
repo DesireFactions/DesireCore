@@ -10,7 +10,6 @@ import com.desiremc.core.parsers.RankParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
 
 public class RankSetCommand extends ValidCommand
 {
@@ -52,8 +51,6 @@ public class RankSetCommand extends ValidCommand
         {
             System.out.println("validRun() query after save: " + SessionHandler.getSession(target.getUniqueId()).getRank().getDisplayName());
         }
-
-        PlayerUtils.setPrefix(target.getRank().getPrefix(), Bukkit.getPlayer(target.getUniqueId()));
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
 

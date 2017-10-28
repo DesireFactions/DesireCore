@@ -1,6 +1,5 @@
 package com.desiremc.core.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -34,10 +33,10 @@ public class ConnectionListener implements Listener
                     (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n"
                             + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                             + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
-                            .replace("{reason}", p.getReason())
-                            .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
-                            .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                            .replace("&", "§"));
+                                    .replace("{reason}", p.getReason())
+                                    .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
+                                    .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                    .replace("&", "§"));
             return;
         }
 
@@ -51,13 +50,8 @@ public class ConnectionListener implements Listener
             System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
         }
         Player player = event.getPlayer();
-        String ip = player.getAddress().getAddress().getHostName();
+        String ip = player.getAddress().getAddress().getHostAddress();
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
-        boolean noColor = session.getRank().getId() == 1;
-        boolean justColor = session.getRank().getId() == 2;
-        event.getPlayer().setPlayerListName(noColor ? ChatColor.GRAY + event.getPlayer().getName() : justColor ?
-                session.getRank().getMain() + event.getPlayer().getName() : session.getRank().getPrefix() + ChatColor
-                .GRAY + event.getPlayer().getName());
 
         if (!session.getIp().equalsIgnoreCase(ip))
         {
@@ -84,7 +78,6 @@ public class ConnectionListener implements Listener
 
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
-        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", e.getPlayer().getName
-                ()));
+        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", e.getPlayer().getName()));
     }
 }
