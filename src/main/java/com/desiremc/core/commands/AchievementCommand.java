@@ -65,11 +65,11 @@ public class AchievementCommand extends ValidCommand
 
             if (session.hasAchievement(achievement))
             {
-                item = new ItemStack(Material.WOOL, 1, (short) 13);
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
             }
             else
             {
-                item = new ItemStack(Material.WOOL, 1, (short) 14);
+                item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             }
             ItemMeta skull = item.getItemMeta();
             skull.setDisplayName(achievement.getName());
