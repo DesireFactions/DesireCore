@@ -13,17 +13,17 @@ public class TicketListCommand extends ValidCommand
 
     public TicketListCommand()
     {
-        super("list", "List all open tickets.", Rank.MODERATOR, new String[]{});
+        super("list", "List all open tickets.", Rank.MODERATOR, new String[] {});
     }
 
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
         int num = 1;
-        for(Ticket ticket : TicketHandler.getAllTickets())
+        for (Ticket ticket : TicketHandler.getAllTickets())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.list", "{num}", num+"", "{player}", Bukkit.getPlayer(ticket.getPlayer()).getName(),
-                    "{reason}", ticket.getText(), "{id}", ticket.getId()+"");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.list", "{num}", num + "", "{player}", Bukkit.getPlayer(ticket.getPlayer()).getName(),
+                    "{reason}", ticket.getText(), "{id}", ticket.getId() + "");
             num++;
         }
     }

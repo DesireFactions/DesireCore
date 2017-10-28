@@ -149,7 +149,7 @@ public class Entry
         this.skin = skin;
         GameProfile profile = nms.getProfile();
         ReflectionUtils.setValue(profile, NMSFields.gameProfileId, uuid);
-        ReflectionUtils.setValue(profile, NMSFields.gameProfileId, text);
+        ReflectionUtils.setValue(profile, NMSFields.gameProfileName, text);
         ((CraftPlayer) playerTab.getPlayer()).getHandle().playerConnection.sendPacket(PacketPlayOutPlayerInfo.updateDisplayName(nms));
         return this;
     }

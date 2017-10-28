@@ -21,6 +21,7 @@ import org.mongodb.morphia.annotations.Transient;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -40,6 +41,9 @@ public class Session
     private String ip;
 
     private List<String> ipList;
+
+    @Transient
+    private boolean updatedIp;
 
     @Property("first_login")
     private long firstLogin;
@@ -272,9 +276,15 @@ public class Session
     public void setIp(String ip)
     {
         this.ip = ip;
+        this.updatedIp = true;
         save();
     }
 
+    public boolean hasNewIp()
+    {
+        return updatedIp;
+    }
+    
     public List<Achievement> getAchievements()
     {
         return achievements;
@@ -324,10 +334,10 @@ public class Session
 
         FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix() + " " + player.getName() + " " +
                 "has received the achievement ")
-                .color(ChatColor.WHITE)
-                .then(achievement.getName())
-                .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
-                .color(ChatColor.WHITE);
+                        .color(ChatColor.WHITE)
+                        .then(achievement.getName())
+                        .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
+                        .color(ChatColor.WHITE);
 
         for (Player target : Bukkit.getOnlinePlayers())
         {
@@ -376,6 +386,11 @@ public class Session
     public String getAuthkey()
     {
         return this.authKey;
+    }
+
+    public boolean hasAuthKey()
+    {
+        return !StringUtils.isNullOrEmpty(authKey);
     }
 
     public List<String> getIpList()

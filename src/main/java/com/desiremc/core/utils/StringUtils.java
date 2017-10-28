@@ -37,7 +37,7 @@ public class StringUtils
         }
 
         final int newCodePoints[] = new int[strLen]; // cannot be longer than
-                                                     // the char array
+                                                    // the char array
         int outOffset = 0;
         newCodePoints[outOffset++] = newCodePoint; // copy the first codepoint
         for (int inOffset = Character.charCount(firstCodepoint); inOffset < strLen;)
@@ -48,7 +48,7 @@ public class StringUtils
         }
         return new String(newCodePoints, 0, outOffset);
     }
-    
+
     public static boolean contains(String[] values, String search)
     {
         for (String val : values)
@@ -59,6 +59,11 @@ public class StringUtils
             }
         }
         return false;
+    }
+
+    public static boolean isNullOrEmpty(String str)
+    {
+        return str == null || str.equals("") || str.equals("\0");
     }
 
 }

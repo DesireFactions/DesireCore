@@ -36,14 +36,10 @@ public class Cache<K, V> implements Map<K, V>
     /**
      * Create a new cache with given values.
      * 
-     * @param expirationTime
-     *            the amount of time based on the given unit.
-     * @param unit
-     *            the time unit of expirationTime.
-     * @param removalListener
-     *            the event that fires when an entry expires.
-     * @param plugin
-     *            the plugin that handles the removal timer
+     * @param expirationTime the amount of time based on the given unit.
+     * @param unit the time unit of expirationTime.
+     * @param removalListener the event that fires when an entry expires.
+     * @param plugin the plugin that handles the removal timer
      */
     public Cache(int expirationTime, TimeUnit unit, RemovalListener<K, V> removalListener, JavaPlugin plugin)
     {
@@ -58,12 +54,9 @@ public class Cache<K, V> implements Map<K, V>
     /**
      * Creates a new cache with given values that has no listener for removal.
      * 
-     * @param expirationTime
-     *            the amount of time based on the given unit.
-     * @param unit
-     *            the time unit of expirationTime.
-     * @param plugin
-     *            the plugin that handles the removal timer
+     * @param expirationTime the amount of time based on the given unit.
+     * @param unit the time unit of expirationTime.
+     * @param plugin the plugin that handles the removal timer
      */
     public Cache(int expirationTime, TimeUnit unit, JavaPlugin plugin)
     {
@@ -71,13 +64,11 @@ public class Cache<K, V> implements Map<K, V>
     }
 
     /**
-     * Creates a new cache that expires after the given number of ticks with no
-     * listener for removal. Assumes optimal TPS of 20.
+     * Creates a new cache that expires after the given number of ticks with no listener for removal. Assumes optimal
+     * TPS of 20.
      * 
-     * @param ticks
-     *            the amount of ticks before removal.
-     * @param plugin
-     *            the plugin that handles the removal timer
+     * @param ticks the amount of ticks before removal.
+     * @param plugin the plugin that handles the removal timer
      */
     public Cache(int ticks, RemovalListener<K, V> removalListener, JavaPlugin plugin)
     {
@@ -85,13 +76,11 @@ public class Cache<K, V> implements Map<K, V>
     }
 
     /**
-     * Creates a new cache that expires after the given number of ticks with no
-     * listener for removal. Assumes optimal TPS of 20.
+     * Creates a new cache that expires after the given number of ticks with no listener for removal. Assumes optimal
+     * TPS of 20.
      * 
-     * @param ticks
-     *            the amount of ticks before removal.
-     * @param plugin
-     *            the plugin that handles the removal timer
+     * @param ticks the amount of ticks before removal.
+     * @param plugin the plugin that handles the removal timer
      */
     public Cache(int ticks, JavaPlugin plugin)
     {
@@ -126,6 +115,15 @@ public class Cache<K, V> implements Map<K, V>
     public V get(Object key)
     {
         Data<K, V> data = base.get(key);
+        if (data == null)
+        {
+            return null;
+        }
+        if (data.getExpirationTime() < System.currentTimeMillis())
+        {
+            remove(data.getKey(), data.getValue());
+            return null;
+        }
         return data == null ? null : data.getValue();
     }
 
