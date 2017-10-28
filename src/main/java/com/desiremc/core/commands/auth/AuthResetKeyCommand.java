@@ -12,7 +12,7 @@ public class AuthResetKeyCommand extends ValidCommand
 
     public AuthResetKeyCommand()
     {
-        super("resetkey", "Authenticate with Google Auth.", Rank.DEVELOPER, new String[]{"target"});
+        super("resetkey", "Authenticate with Google Auth.", Rank.ADMIN, new String[]{"target"});
 
         addParser(new PlayerSessionParser(), "target");
     }
