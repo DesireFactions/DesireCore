@@ -17,7 +17,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.fanciful.FancyMessage;
@@ -86,20 +85,6 @@ public class AuthListener implements Listener
             System.out.println("AuthListener.onJoin(PlayerJoinEvent) forcing player to auth.");
         }
         forceAuth(session);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onQuit(PlayerQuitEvent event)
-    {
-        Session session = SessionHandler.getSession(event.getPlayer().getUniqueId());
-        if (session.hasAuthKey() && !session.hasAuthorized())
-        {
-            session.setAuthKey(null);
-        }
-        else
-        {
-            SessionHandler.getInstance().save(session);
-        }
     }
 
     @EventHandler
