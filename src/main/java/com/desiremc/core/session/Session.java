@@ -391,6 +391,7 @@ public class Session
     public void setHasAuthorized(boolean hasAuthorized)
     {
         this.hasAuthorized = hasAuthorized;
+        save();
     }
 
     public boolean hasAuthorized()

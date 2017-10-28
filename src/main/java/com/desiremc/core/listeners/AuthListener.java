@@ -51,11 +51,11 @@ public class AuthListener implements Listener
         }
         else
         {
-            if(!session.hasAuthorized())
+            if (!session.hasAuthorized())
             {
                 sendAuthKey(session);
             }
-            else if(session.getIpList().contains(event.getPlayer().getAddress().getAddress().getHostAddress()))
+            else if (session.getIpList().contains(event.getPlayer().getAddress().getAddress().getHostAddress()))
             {
                 return;
             }
@@ -147,7 +147,7 @@ public class AuthListener implements Listener
     private void sendAuthKey(Session session)
     {
         Player p = session.getPlayer();
-        FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code " +
+        FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + " Your Google Auth code " +
                 "is ")
                 .color(ChatColor.WHITE)
                 .then(session.getAuthkey())
