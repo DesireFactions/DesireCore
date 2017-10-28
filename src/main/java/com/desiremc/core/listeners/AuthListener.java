@@ -40,10 +40,13 @@ public class AuthListener implements Listener
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p.getUniqueId());
 
-        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals
-                ("MewtwoUsedSplash")
-                || session.getName().equals("Dapkin") || session.getName().equals("Swatted"))
+        if (!session.getRank().isStaff() || session.getName().equals("Doctor_Zee") || session.getName().equals("MewtwoUsedSplash") || session.getName().equals("Dapkin") || session.getName().equals("Swatted"))
             return;
+
+        if (session.getIpList().contains(event.getPlayer().getAddress().getAddress().getHostAddress()))
+        {
+            return;
+        }
 
         if (session.getAuthkey() == null || session.getAuthkey().equalsIgnoreCase(""))
         {
@@ -51,12 +54,12 @@ public class AuthListener implements Listener
 
             FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix() + "Your Google Auth code " +
                     "is ")
-                    .color(ChatColor.WHITE)
-                    .then(session.getAuthkey())
-                    .link(getQRUrl(session.getName(), session.getAuthkey()))
-                    .color(ChatColor.RED)
-                    .then(". Click it for a QR code.")
-                    .color(ChatColor.WHITE);
+                            .color(ChatColor.WHITE)
+                            .then(session.getAuthkey())
+                            .link(getQRUrl(session.getName(), session.getAuthkey()))
+                            .color(ChatColor.RED)
+                            .then(". Click it for a QR code.")
+                            .color(ChatColor.WHITE);
 
             message.send(p);
 
@@ -106,7 +109,9 @@ public class AuthListener implements Listener
         if (authBlocked.contains(player.getUniqueId()))
         {
             event.setCancelled(true);
+            System.out.println("The event was cancelled in AuthListener");
         }
+        System.out.println("The event was not cancelled in AuthListener");
     }
 
     @EventHandler
@@ -148,7 +153,8 @@ public class AuthListener implements Listener
         try
         {
             return String.format(googleFormat, username, URLEncoder.encode("144.217.11.123", "UTF-8"), secret);
-        } catch (UnsupportedEncodingException ex)
+        }
+        catch (UnsupportedEncodingException ex)
         {
             return null;
         }

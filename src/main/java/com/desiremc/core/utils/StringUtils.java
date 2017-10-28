@@ -48,5 +48,17 @@ public class StringUtils
         }
         return new String(newCodePoints, 0, outOffset);
     }
+    
+    public static boolean contains(String[] values, String search)
+    {
+        for (String val : values)
+        {
+            if (val.equalsIgnoreCase(search))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

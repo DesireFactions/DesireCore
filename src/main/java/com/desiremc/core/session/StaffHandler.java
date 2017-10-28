@@ -40,7 +40,7 @@ public class StaffHandler
     private List<UUID> staffChat;
     private int numCPSTests;
 
-    private boolean chatEnabled;
+    private boolean chatDisabled = false;
 
     private HashMap<UUID, Integer> pages;
 
@@ -166,17 +166,12 @@ public class StaffHandler
 
     public void toggleChat()
     {
-        if (chatEnabled)
-        {
-            chatEnabled = false;
-            return;
-        }
-        chatEnabled = true;
+        chatDisabled = !chatDisabled;
     }
 
-    public boolean isChatEnabled()
+    public boolean chatDisabled()
     {
-        return chatEnabled;
+        return chatDisabled;
     }
 
     public boolean isFrozen(Player p)

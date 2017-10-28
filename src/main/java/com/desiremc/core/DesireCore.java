@@ -38,6 +38,7 @@ import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.tablist.TabList;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 
@@ -130,6 +131,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new PlayerListener());
         listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
+        listenerManager.addListener(new TabList());
     }
 
     public MongoWrapper getMongoWrapper()

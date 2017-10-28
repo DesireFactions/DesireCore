@@ -1,10 +1,10 @@
 package com.desiremc.core.tablist;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,7 +20,7 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
 public class Tab
 {
 
-    private static Set<Tab> playerTabs = new HashSet<>();
+    private static ConcurrentHashMap<Tab, Boolean> playerTabs = new ConcurrentHashMap<>();
     private Player player;
     private Scoreboard scoreboard;
     private List<Entry> entries;
@@ -48,7 +48,7 @@ public class Tab
             });
         }
 
-        Tab.playerTabs.add(this);
+        Tab.playerTabs.put(this, true);
     }
 
     public void clear()
@@ -165,24 +165,19 @@ public class Tab
 
     public static Tab getByPlayer(Player player)
     {
-        Iterator<Tab> iterator = Tab.playerTabs.iterator();
-
-        while (iterator.hasNext())
+        for (Tab t : playerTabs.keySet())
         {
-            Tab playerTab = (Tab) iterator.next();
-
-            if (playerTab.getPlayer().getName().equals(player.getName()))
+            if (t.getPlayer().getName().equals(player.getName()))
             {
-                return playerTab;
+                return t;
             }
         }
-
         return null;
     }
 
     public static Set<Tab> getPlayerTabs()
     {
-        return Tab.playerTabs;
+        return Tab.playerTabs.keySet();
     }
 
     public Player getPlayer()

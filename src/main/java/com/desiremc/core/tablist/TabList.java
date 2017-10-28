@@ -47,7 +47,6 @@ public class TabList implements Listener
                     }
                 }
             }).runTaskLaterAsynchronously(DesireCore.getInstance(), 4L);
-            Bukkit.getPluginManager().registerEvents(this, DesireCore.getInstance());
         }
     }
 
@@ -55,12 +54,15 @@ public class TabList implements Listener
     public void onPlayerJoinEvent(PlayerJoinEvent event)
     {
         final Player player = event.getPlayer();
+        
+        System.out.println(Bukkit.getOnlinePlayers().contains(event.getPlayer()));
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(DesireCore.getInstance(), new Runnable()
         {
             public void run()
             {
                 TabList.this.checkPlayer(player);
+                System.out.println(Bukkit.getOnlinePlayers().contains(event.getPlayer()));
             }
         }, 4l);
     }
