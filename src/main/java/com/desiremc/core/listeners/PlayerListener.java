@@ -49,7 +49,6 @@ public class PlayerListener implements Listener
 
         if (StaffHandler.getInstance().inStaffChat(p))
         {
-            System.out.println("The event was cancelled in PlayerListener 1");
             event.setCancelled(true);
             for (UUID target : StaffHandler.getInstance().getAllInStaffChat())
             {
@@ -61,7 +60,6 @@ public class PlayerListener implements Listener
 
         if (StaffHandler.getInstance().chatDisabled() && !session.getRank().isStaff())
         {
-            System.out.println("The event was cancelled in PlayerListener 2: " + (!StaffHandler.getInstance().chatDisabled()) + " " + (!session.getRank().isStaff()));
             event.setCancelled(true);
             return;
         }
@@ -73,7 +71,6 @@ public class PlayerListener implements Listener
                 s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
         }
-        System.out.println("The event was not cancelled in PlayerListener");
     }
 
     @EventHandler
