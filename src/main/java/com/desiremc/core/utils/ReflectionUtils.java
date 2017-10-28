@@ -41,7 +41,12 @@ public class ReflectionUtils
 
     public static class NMSClasses
     {
-        public static Class<?> gameProfile = net.minecraft.util.com.mojang.authlib.GameProfile.class;
+        public static Class<?> gameProfile;
+
+        public static void initialize()
+        {
+            gameProfile = net.minecraft.util.com.mojang.authlib.GameProfile.class;
+        }
     }
 
     public static class NMSFields
@@ -49,6 +54,7 @@ public class ReflectionUtils
         public static Field gameProfileId;
         public static Field gameProfileName;
 
+        public static void initialize()
         {
             try
             {

@@ -41,6 +41,8 @@ import com.desiremc.core.session.StaffHandler;
 import com.desiremc.core.tablist.TabList;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
+import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
+import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 
 public class DesireCore extends JavaPlugin
 {
@@ -76,6 +78,8 @@ public class DesireCore extends JavaPlugin
 
         mongoWrapper = new MongoWrapper();
 
+        NMSClasses.initialize();
+        NMSFields.initialize();
         PunishmentHandler.initialize();
         ScoreboardRegistry.initialize();
         EntryRegistry.initialize();
