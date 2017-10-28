@@ -155,7 +155,7 @@ tickets:
 agui:
   open: "You have opened the Achievement GUI."
   inventory:
-    title: "DesireHCF Achievement GUI"
+    title: "Achievement"
     item:
       lore:
         - "Description: {desc}"
