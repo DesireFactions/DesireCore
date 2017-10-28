@@ -8,29 +8,44 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
+import com.desiremc.core.utils.ReflectionUtils;
+import com.desiremc.core.utils.ReflectionUtils.NMSFields;
+
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.MinecraftServer;
 import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_7_R4.PlayerInteractManager;
+import net.minecraft.server.v1_7_R4.TileEntitySkull;
 import net.minecraft.util.com.mojang.authlib.GameProfile;
 
 public class Entry
 {
 
     private Tab playerTab;
+
     private int x;
     private int y;
     private String text;
+    private String skin;
+
     private EntityPlayer nms;
+    private UUID uuid;
+
     private Team team;
     private boolean setup;
 
     public Entry(Tab playerTab, String text, int x, int y)
     {
+        this(playerTab, text, x, y, null);
+    }
+
+    public Entry(Tab playerTab, String text, int x, int y, String skin)
+    {
         this.playerTab = playerTab;
         this.text = text;
         this.x = x;
         this.y = y;
+        this.skin = skin;
         playerTab.getEntries().add(this);
     }
 
@@ -40,7 +55,15 @@ public class Entry
         Player player = this.playerTab.getPlayer();
         CraftPlayer craftplayer = (CraftPlayer) player;
 
-        this.nms = new EntityPlayer(MinecraftServer.getServer(), ((CraftWorld) player.getWorld()).getHandle(), new GameProfile(UUID.randomUUID(), ChatColor.translateAlternateColorCodes('&', this.text)), new PlayerInteractManager(((CraftWorld) player.getWorld()).getHandle()));
+        GameProfile profile = new GameProfile((uuid = UUID.randomUUID()), ChatColor.translateAlternateColorCodes('&', this.text));
+        if (skin != null)
+        {
+            GameProfile skinProfile = TileEntitySkull.skinCache.getUnchecked(skin.toLowerCase());
+            ReflectionUtils.setValue(skinProfile, NMSFields.gameProfileId, uuid);
+            ReflectionUtils.setValue(skinProfile, NMSFields.gameProfileId, text);
+            
+        }
+        this.nms = new EntityPlayer(MinecraftServer.getServer(), ((CraftWorld) player.getWorld()).getHandle(), profile, new PlayerInteractManager(((CraftWorld) player.getWorld()).getHandle()));
         PacketPlayOutPlayerInfo packet = PacketPlayOutPlayerInfo.updateDisplayName(this.nms);
 
         craftplayer.getHandle().playerConnection.sendPacket(packet);
@@ -57,7 +80,9 @@ public class Entry
         }
         else
         {
+            // translate the text color
             this.text = ChatColor.translateAlternateColorCodes('&', this.text);
+            
             if (this.text.length() > 16)
             {
                 this.team.setPrefix(this.text.substring(0, 16));
@@ -90,32 +115,32 @@ public class Entry
         }
     }
 
-    public Tab playerTab()
+    public Tab getPlayerTab()
     {
         return this.playerTab;
     }
 
-    public int x()
+    public int getX()
     {
         return this.x;
     }
 
-    public int y()
+    public int getY()
     {
         return this.y;
     }
 
-    public String text()
+    public String getText()
     {
         return this.text;
     }
 
-    public EntityPlayer nms()
+    public EntityPlayer getNms()
     {
         return this.nms;
     }
 
-    public Team team()
+    public Team getTeam()
     {
         return this.team;
     }
@@ -126,31 +151,31 @@ public class Entry
         return this;
     }
 
-    public Entry x(int x)
+    public Entry setX(int x)
     {
         this.x = x;
         return this;
     }
 
-    public Entry y(int y)
+    public Entry setY(int y)
     {
         this.y = y;
         return this;
     }
 
-    public Entry text(String text)
+    public Entry setText(String text)
     {
         this.text = text;
         return this;
     }
 
-    public Entry nms(EntityPlayer nms)
+    public Entry setNms(EntityPlayer nms)
     {
         this.nms = nms;
         return this;
     }
 
-    public Entry team(Team team)
+    public Entry setTeam(Team team)
     {
         this.team = team;
         return this;

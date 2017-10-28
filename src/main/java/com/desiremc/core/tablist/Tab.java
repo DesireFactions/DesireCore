@@ -59,9 +59,9 @@ public class Tab
         {
             Entry online = iterator.next();
 
-            if (online.nms() != null)
+            if (online.getNms() != null)
             {
-                PacketPlayOutPlayerInfo packet = PacketPlayOutPlayerInfo.removePlayer(online.nms());
+                PacketPlayOutPlayerInfo packet = PacketPlayOutPlayerInfo.removePlayer(online.getNms());
 
                 ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
             }
@@ -83,13 +83,13 @@ public class Tab
             int x = i % 3;
             int y = i / 3;
 
-            (new Entry(this, this.getNextBlank(), x, y)).send();
+            new Entry(this, this.getNextBlank(), x, y).send();
         }
 
         Bukkit.getPluginManager().callEvent(new TabCreateEvent(this));
     }
 
-    public Entry getByPosition(int x, int y)
+    public Entry getEntry(int x, int y)
     {
         Iterator<Entry> iterator = this.entries.iterator();
 
@@ -103,7 +103,7 @@ public class Tab
             }
 
             tabEntry = iterator.next();
-        } while (tabEntry.x() != x || tabEntry.y() != y);
+        } while (tabEntry.getX() != x || tabEntry.getY() != y);
 
         return tabEntry;
     }
@@ -121,7 +121,7 @@ public class Tab
             {
                 Entry tabEntry = iterator1.next();
 
-                if (tabEntry.text() != null && tabEntry.text().startsWith(string))
+                if (tabEntry.getText() != null && tabEntry.getText().startsWith(string))
                 {
                     continue label23;
                 }
