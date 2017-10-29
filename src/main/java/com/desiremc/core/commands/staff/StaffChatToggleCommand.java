@@ -22,11 +22,11 @@ public class StaffChatToggleCommand extends ValidCommand
     {
         if (StaffHandler.getInstance().chatDisabled())
         {
-            LANG.sendRenderMessage(sender, "staff.chat-off");
+            LANG.sendRenderMessage(sender, "staff.chat-on");
         }
         else
         {
-            LANG.sendRenderMessage(sender, "staff.chat-on");
+            LANG.sendRenderMessage(sender, "staff.chat-off");
         }
         StaffHandler.getInstance().toggleChat();
     }

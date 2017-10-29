@@ -28,11 +28,14 @@ public class StaffChatClearCommand extends ValidCommand
 
             if (session.getRank().isStaff())
             {
-                LANG.sendRenderMessage(session, "staff.chat-cleared-all", "{player}", sender.getName());
+                if (!session.getName().equalsIgnoreCase(sender.getName()))
+                {
+                    LANG.sendRenderMessage(session, "staff.chat-cleared-all", "{player}", sender.getName());
+                }
                 continue;
             }
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 75; i++)
             {
                 p.sendMessage("");
             }

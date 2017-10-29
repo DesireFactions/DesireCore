@@ -17,7 +17,7 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand()
     {
-        super("chat", "Join or leave Staff chat", Rank.JRMOD, new String[]{});
+        super("chat", "Join or leave Staff chat", Rank.JRMOD, new String[] {});
         addValidator(new PlayerValidator());
     }
 
@@ -26,12 +26,13 @@ public class StaffChatCommand extends ValidCommand
     {
         Player p = (Player) sender;
 
-        if(StaffHandler.getInstance().inStaffChat(p))
+        if (StaffHandler.getInstance().inStaffChat(p))
         {
-            LANG.sendRenderMessage(p, "staff-chat-off");
+            LANG.sendRenderMessage(p, "staff.staff-chat-off");
         }
-        else{
-            LANG.sendRenderMessage(p, "staff-chat-on");
+        else
+        {
+            LANG.sendRenderMessage(p, "staff.staff-chat-on");
         }
         StaffHandler.getInstance().toggleStaffChat(p);
     }

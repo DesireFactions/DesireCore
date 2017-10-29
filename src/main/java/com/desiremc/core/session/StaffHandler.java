@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -123,6 +124,7 @@ public class StaffHandler
         p.getInventory().setItem(7, new ItemStack(Material.CHEST, 1));
         p.getInventory().setItem(8, new ItemStack(Material.LEASH, 1));
         LANG.sendString(p, "staff.staff-on");
+        p.setGameMode(GameMode.CREATIVE);
 
     }
 
@@ -154,6 +156,7 @@ public class StaffHandler
         {
             p.getInventory().setContents(inventories.get(p.getUniqueId()));
             inventories.remove(p.getUniqueId());
+            p.setGameMode(GameMode.SURVIVAL);
             LANG.sendString(p, "staff.staff-off");
         }
     }
