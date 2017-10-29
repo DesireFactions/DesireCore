@@ -35,7 +35,7 @@ public class StaffHandler
     private static StaffHandler instance;
     private HashMap<UUID, ItemStack[]> inventories;
     private HashMap<UUID, Integer> cpsTests;
-    private HashMap<UUID, Boolean> frozenPlayers;
+    private List<UUID> frozenPlayers;
     private List<UUID> hiddenPlayers;
     private List<UUID> staffChat;
     private int numCPSTests;
@@ -51,7 +51,7 @@ public class StaffHandler
         inventories = new HashMap<>();
         cpsTests = new HashMap<>();
         hiddenPlayers = new LinkedList<>();
-        frozenPlayers = new HashMap<>();
+        frozenPlayers = new ArrayList<>();
         staffChat = new ArrayList<>();
         numCPSTests = 0;
         pages = new HashMap<>();
@@ -100,6 +100,11 @@ public class StaffHandler
         return false;
     }
 
+    public boolean isCPSTested(Player p)
+    {
+        return cpsTests.containsKey(p.getUniqueId());
+    }
+
     public void decreaseNumCPSTests()
     {
         numCPSTests--;
@@ -109,14 +114,14 @@ public class StaffHandler
     {
         inventories.put(p.getUniqueId(), p.getInventory().getContents());
         p.getInventory().clear();
-        p.getInventory().addItem(new ItemStack(Material.COMPASS, 1));
-        p.getInventory().addItem(new ItemStack(Material.EYE_OF_ENDER, 1));
-        p.getInventory().addItem(new ItemStack(Material.CLAY, 1));
-        p.getInventory().addItem(new ItemStack(Material.PAPER, 1));
-        p.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
-        p.getInventory().addItem(new ItemStack(Material.WATCH, 1));
-        p.getInventory().addItem(new ItemStack(Material.CHEST, 1));
-        p.getInventory().addItem(new ItemStack(Material.LEASH, 1));
+        p.getInventory().setItem(0, new ItemStack(Material.COMPASS, 1));
+        p.getInventory().setItem(1, new ItemStack(Material.EYE_OF_ENDER, 1));
+        p.getInventory().setItem(2, new ItemStack(Material.CLAY, 1));
+        p.getInventory().setItem(3, new ItemStack(Material.PAPER, 1));
+        p.getInventory().setItem(5, new ItemStack(Material.BLAZE_ROD, 1));
+        p.getInventory().setItem(6, new ItemStack(Material.WATCH, 1));
+        p.getInventory().setItem(7, new ItemStack(Material.CHEST, 1));
+        p.getInventory().setItem(8, new ItemStack(Material.LEASH, 1));
         LANG.sendString(p, "staff.staff-on");
 
     }
@@ -176,14 +181,7 @@ public class StaffHandler
 
     public boolean isFrozen(Player p)
     {
-        Boolean frozen = frozenPlayers.get(p.getUniqueId());
-
-        if (frozen == null)
-        {
-            return false;
-        }
-
-        return frozen;
+        return frozenPlayers.contains(p.getUniqueId());
     }
 
     public void removeIsFrozenObject(Player p)
@@ -191,94 +189,41 @@ public class StaffHandler
         frozenPlayers.remove(p.getUniqueId());
     }
 
-    public void unfreezePlayer(Player player)
+    public void unFreeze(Player target)
     {
-        if (isFrozen(player))
-        {
-            frozenPlayers.put(player.getUniqueId(), false);
-        }
+        frozenPlayers.remove(target.getUniqueId());
     }
 
-    public boolean toggleFreeze(Player p)
+    public void toggleFreeze(Player target, Player source)
     {
-        if (isFrozen(p))
+
+        Session targetSession = SessionHandler.getSession(target.getUniqueId());
+        Session sourceSession = SessionHandler.getSession(source.getUniqueId());
+
+        if (isFrozen(target))
         {
-            frozenPlayers.put(p.getUniqueId(), false);
-            return false;
+            frozenPlayers.remove(target.getUniqueId());
+
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName
+                    ());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target
+                    .getName());
         }
-
-        frozenPlayers.put(p.getUniqueId(), true);
-
-        return true;
-    }
-
-    @SuppressWarnings("incomplete-switch")
-    @EventHandler
-    public void playerInteractEntity(PlayerInteractEntityEvent e)
-    {
-        if (!inStaffMode(e.getPlayer()))
+        else
         {
-            return;
-        }
+            frozenPlayers.add(target.getUniqueId());
 
-        e.setCancelled(true);
-
-        if (e.getPlayer().getItemInHand() != null)
-        {
-            Material type = e.getPlayer().getItemInHand().getType();
-            switch (type)
-            {
-            case WATCH:
-                useClicksPerSecond(e);
-                break;
-            case LEASH:
-                useMount(e);
-                break;
-            case BLAZE_ROD:
-                useFreeze(e);
-                break;
-            case CHEST:
-                useOpenInventory(e);
-                break;
-            }
-        }
-
-    }
-
-    @SuppressWarnings("incomplete-switch")
-    @EventHandler
-    public void playerInteract(PlayerInteractEvent e)
-    {
-        if (!inStaffMode(e.getPlayer()))
-        {
-            return;
-        }
-
-        e.setCancelled(true);
-        if (e.getItem() != null)
-        {
-            Material type = e.getItem().getType();
-            switch (type)
-            {
-            case COMPASS:
-                useLaunch(e);
-                break;
-            case EYE_OF_ENDER:
-                useTeleport(e);
-                break;
-            case CLAY:
-                useInvisibility(e);
-                break;
-            }
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.frozen", "{player}", source.getName
+                    ());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target
+                    .getName());
         }
     }
 
     public void useLaunch(PlayerInteractEvent e)
     {
         Player staffPlayer = e.getPlayer();
-        FileHandler c = DesireCore.getConfigHandler();
-        double launchVelocity = c.getDouble("staff.launch_velocity");
-        System.out.println(launchVelocity);
+        double launchVelocity = DesireCore.getConfigHandler().getDouble("staff.launch_velocity");
         Vector cameraVector = staffPlayer.getLocation().getDirection().normalize();
 
         staffPlayer.setVelocity(cameraVector.multiply(launchVelocity));
@@ -342,7 +287,7 @@ public class StaffHandler
 
     public void startCPSTestForPlayer(Player player, Player target)
     {
-        UUID playerID = player.getUniqueId();
+        UUID playerID = target.getUniqueId();
 
         if (cpsTests.containsKey(playerID))
         {
@@ -359,7 +304,7 @@ public class StaffHandler
         if (e.getRightClicked() instanceof Player)
         {
             Player p = (Player) e.getRightClicked();
-            toggleFreeze(p);
+            toggleFreeze(p, e.getPlayer());
         }
     }
 
@@ -376,11 +321,12 @@ public class StaffHandler
         }
     }
 
-    private void useOpenInventory(PlayerInteractEntityEvent e)
+    public void useOpenInventory(PlayerInteractEntityEvent e)
     {
         if (e.getRightClicked() instanceof Player)
         {
-            e.getPlayer().openInventory(((Player) e).getInventory());
+            Player target = (Player) e.getRightClicked();
+            e.getPlayer().openInventory(target.getInventory());
         }
     }
 
@@ -404,7 +350,7 @@ public class StaffHandler
 
     public void openReportsGUI(Player p)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessage("report.inventory.title"));
+        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("report.inventory.title"));
 
         List<Report> reports = ReportHandler.getInstance().getAllReports(true);
 

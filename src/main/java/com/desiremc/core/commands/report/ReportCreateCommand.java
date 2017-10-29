@@ -1,6 +1,12 @@
 package com.desiremc.core.commands.report;
 
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.parsers.PlayerParser;
+import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.validators.PlayerValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
@@ -17,7 +23,10 @@ public class ReportCreateCommand extends ValidCommand
 
     public ReportCreateCommand()
     {
-        super("create", "Create a new report.", Rank.GUEST, new String[] { "target", "reason" });
+        super("create", "Create a new report.", Rank.GUEST, new String[] {"target", "reason"});
+        addParser(new PlayerSessionParser(), "target");
+        addParser(new StringParser(), "reason");
+        addValidator(new PlayerValidator());
     }
 
     @Override
@@ -27,15 +36,16 @@ public class ReportCreateCommand extends ValidCommand
         Session target = (Session) args[0];
         StringBuilder sb = new StringBuilder();
 
-        if (args.length >= 2)
+        if (args.length >= 1)
         {
-            for (int i = 2; i < args.length; i++)
+            for (int i = 1; i < args.length; i++)
             {
                 sb.append(args[i] + " ");
             }
         }
 
-        ReportHandler.getInstance().submitReport(target.getUniqueId(), session != null ? session.getUniqueId() : DesireCore.getConsoleUUID(), sb.toString().trim());
+        ReportHandler.getInstance().submitReport(target.getUniqueId(), session != null ? session.getUniqueId() :
+                DesireCore.getConsoleUUID(), sb.toString().trim());
 
         LANG.sendRenderMessage(session, "report.reported",
                 "{player}", target.getName(),

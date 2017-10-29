@@ -76,9 +76,15 @@ staff:
   staff-chat-off: "You have left staff chat."
   staff-chat-format: "[Staff] {prefix} {name}: {message}"
   chat-cleared: "You have cleared chat."
-  chat-cleared-all:
+  chat-cleared-all: "{player} has cleared chat."
   chat-on: "You have turned chat back on."
   chat-off: "You have turned chat off."
+  set-invisible: "You are now invisible."
+  set-visible: "You are now visible."
+  target-frozen: "You have froze {player}."
+  target-unfrozen: "You have unfroze (player)."
+  frozen: "You have been frozen by {player}."
+  unfrozen: "You have been unfrozen by {player}."
 report:
   reported: "You have reported {player} for {reason}"
   getreport:

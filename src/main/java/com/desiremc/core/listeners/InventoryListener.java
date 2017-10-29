@@ -8,6 +8,7 @@ import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.StaffHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class InventoryListener implements Listener
 {
@@ -30,10 +33,21 @@ public class InventoryListener implements Listener
     public void onReportsClick(InventoryClickEvent event)
     {
         if (event.getInventory() == null || event.getClickedInventory() == null || event.getCurrentItem() == null
-                || event.getCurrentItem().getType() == Material.AIR) return;
+                || event.getCurrentItem().getType() == Material.AIR)
+        {
+            return;
+        }
+
         Inventory inv = event.getClickedInventory();
 
-        if (!lang.renderString(inv.getTitle()).equalsIgnoreCase(lang.renderString("report.inventory.title"))) return;
+        if (!inv.getTitle().equalsIgnoreCase(lang.renderMessageNoPrefix("report.inventory.title")))
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        Player p = (Player) event.getWhoClicked();
 
         if (event.getClick().equals(ClickType.DOUBLE_CLICK))
         {
@@ -44,10 +58,13 @@ public class InventoryListener implements Listener
                 Session issuer = SessionHandler.getSession(report.getIssuer());
 
                 if (!reported.getName().equalsIgnoreCase(item.getItemMeta().getDisplayName())) continue;
-                if (!item.getItemMeta().getLore().contains(report.getReason())) continue;
-                if (!item.getItemMeta().getLore().contains(issuer.getName())) continue;
+                if (!listContainsString(item.getItemMeta().getLore(), report.getReason())) continue;
+                if (!listContainsString(item.getItemMeta().getLore(), issuer.getName())) continue;
 
                 report.setResolved(true);
+                p.closeInventory();
+                StaffHandler.getInstance().openReportsGUI(p);
+                break;
             }
         }
     }
@@ -98,5 +115,17 @@ public class InventoryListener implements Listener
             p.closeInventory();
             AchievementCommand.minusPage(p.getUniqueId());
         }
+    }
+
+    private boolean listContainsString(List<String> list, String string)
+    {
+        for (String s : list)
+        {
+            if (s.contains(string))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

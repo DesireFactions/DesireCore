@@ -15,10 +15,7 @@ public class StaffAPI
 
     public static void freeze(CommandSender sender, Player player)
     {
-        if (STAFF.toggleFreeze(player))
-        {
-            LANG.sendRenderMessage(sender, "staff.froze-target", "{player}", player.getDisplayName());
-        }
+        STAFF.toggleFreeze(player, (Player) sender);
     }
 
     public static void toggleStaffMode(Player sender)

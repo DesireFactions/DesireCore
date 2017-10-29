@@ -3,6 +3,8 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.listeners.StaffListener;
+import com.desiremc.core.report.ReportHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -90,6 +92,7 @@ public class DesireCore extends JavaPlugin
         StaffHandler.initialize();
         TicketHandler.initialize();
         StatusManager.startPingTask();
+        ReportHandler.initialize();
 
         mongoWrapper.getDatastore().ensureIndexes();
 
@@ -136,6 +139,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
         listenerManager.addListener(new TabList());
+        listenerManager.addListener(new StaffListener());
     }
 
     public MongoWrapper getMongoWrapper()
