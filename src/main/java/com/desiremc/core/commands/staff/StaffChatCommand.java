@@ -7,7 +7,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
 
 public class StaffChatCommand extends ValidCommand

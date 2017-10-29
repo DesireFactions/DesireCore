@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.desiremc.core.listeners.StaffListener;
 import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.GadgetHandler;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,7 +40,8 @@ import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.GadgetHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.tablist.TabList;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;

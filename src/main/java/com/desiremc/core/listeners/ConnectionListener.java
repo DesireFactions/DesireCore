@@ -12,7 +12,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.PlayerUtils;
 

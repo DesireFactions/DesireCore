@@ -1,4 +1,4 @@
-package com.desiremc.core.session;
+package com.desiremc.core.staff;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +25,8 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.thread.ClicksPerSecondThread;
 import com.desiremc.core.utils.DateUtils;
 

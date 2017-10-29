@@ -1,4 +1,4 @@
-package com.desiremc.core.gadgets;
+package com.desiremc.core.staff;
 
 import org.bukkit.Material;
 

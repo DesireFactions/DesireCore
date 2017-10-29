@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 
 public class StaffListener implements Listener
 {

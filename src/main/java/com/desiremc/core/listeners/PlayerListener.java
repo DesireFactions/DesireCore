@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.StringUtils;
 
 public class PlayerListener implements Listener

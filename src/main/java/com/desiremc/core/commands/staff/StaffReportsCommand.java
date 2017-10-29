@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
 
 public class StaffReportsCommand extends ValidCommand

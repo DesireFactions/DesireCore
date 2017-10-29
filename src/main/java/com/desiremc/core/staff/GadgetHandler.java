@@ -1,4 +1,4 @@
-package com.desiremc.core.gadgets;
+package com.desiremc.core.staff;
 
 import java.util.ArrayList;
 import java.util.HashMap;

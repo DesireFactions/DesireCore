@@ -18,7 +18,7 @@ import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 
 public class InventoryListener implements Listener
 {
