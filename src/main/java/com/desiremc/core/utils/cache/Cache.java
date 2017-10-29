@@ -33,6 +33,8 @@ public class Cache<K, V> implements Map<K, V>
 
     private RemovalListener<K, V> removalListener;
 
+    private boolean debug;
+
     /**
      * Create a new cache with given values.
      * 
@@ -43,12 +45,26 @@ public class Cache<K, V> implements Map<K, V>
      */
     public Cache(int expirationTime, TimeUnit unit, RemovalListener<K, V> removalListener, JavaPlugin plugin)
     {
+        this(expirationTime, unit, removalListener, plugin, false);
+    }
+
+    /**
+     * Create a new cache with given values.
+     * 
+     * @param expirationTime the amount of time based on the given unit.
+     * @param unit the time unit of expirationTime.
+     * @param removalListener the event that fires when an entry expires.
+     * @param plugin the plugin that handles the removal timer
+     */
+    public Cache(int expirationTime, TimeUnit unit, RemovalListener<K, V> removalListener, JavaPlugin plugin, boolean debug)
+    {
         this.expirationTime = expirationTime;
         this.unit = unit;
         this.removalListener = removalListener;
         this.plugin = plugin;
         base = new HashMap<>();
         values = new LinkedList<>();
+        this.debug = debug;
     }
 
     /**
@@ -130,6 +146,10 @@ public class Cache<K, V> implements Map<K, V>
     @Override
     public V put(K key, V value)
     {
+        if (debug)
+        {
+            System.out.println(getExpirationTimeTicks());
+        }
         BukkitTask task = Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
         {
             @Override
@@ -241,9 +261,9 @@ public class Cache<K, V> implements Map<K, V>
         return TimeUnit.MILLISECONDS.convert(expirationTime, unit);
     }
 
-    private int getExpirationTimeTicks()
+    private long getExpirationTimeTicks()
     {
-        return Math.toIntExact(50 * getExpirationTimeMillis(expirationTime, unit));
+        return TimeUnit.SECONDS.convert(expirationTime, unit) * 20;
     }
 
     private static class Data<K, V>

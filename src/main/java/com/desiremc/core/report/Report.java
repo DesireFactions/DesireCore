@@ -1,11 +1,10 @@
 package com.desiremc.core.report;
 
-import com.desiremc.core.session.SessionHandler;
+import java.util.UUID;
+
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
-
-import java.util.UUID;
 
 @Entity(noClassnameStored = true, value = "reports")
 public class Report

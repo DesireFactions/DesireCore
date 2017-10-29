@@ -1,7 +1,5 @@
 package com.desiremc.core.listeners;
 
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.StaffHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,6 +7,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.desiremc.core.session.StaffHandler;
 
 public class StaffListener implements Listener
 {

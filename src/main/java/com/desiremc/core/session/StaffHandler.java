@@ -13,7 +13,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
@@ -207,19 +205,15 @@ public class StaffHandler
         {
             frozenPlayers.remove(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName
-                    ());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target
-                    .getName());
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target.getName());
         }
         else
         {
             frozenPlayers.add(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.frozen", "{player}", source.getName
-                    ());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target
-                    .getName());
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.frozen", "{player}", source.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target.getName());
         }
     }
 

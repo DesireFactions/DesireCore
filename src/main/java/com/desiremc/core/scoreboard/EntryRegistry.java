@@ -21,6 +21,8 @@ public class EntryRegistry implements ScoreboardHandler
 
     private HashMap<Player, PlayerEntry> entries = new HashMap<>();
 
+    //private Pattern pat = Pattern.compile(".*\\{[a-zA-Z]+\\}.*");
+
     @Override
     public String getTitle(Player player)
     {
@@ -30,10 +32,10 @@ public class EntryRegistry implements ScoreboardHandler
     @Override
     public List<Entry> getEntries(Player player)
     {
-        Collection<String> entry = entries.get(player).getEntries();
+        PlayerEntry entry = getEntry(player);
         if (entry == null)
         {
-            entry = new LinkedList<>();
+            return new LinkedList<>();
         }
 
         return EntryBuilder.build(entry);
@@ -44,10 +46,11 @@ public class EntryRegistry implements ScoreboardHandler
     {
         PlayerEntry entry = entries.get(player);
 
-        if (entry == null) { return false; }
-        if (entry.getEntries() == null) { return false; }
-
-        return entry.getEntries().size() != 0;
+        if (entry == null)
+        {
+            return false;
+        }
+        return entry.hasEntries();
     }
 
     public PlayerEntry getEntry(Player player)
@@ -58,12 +61,9 @@ public class EntryRegistry implements ScoreboardHandler
     /**
      * Set the value on a player's scoreboard.
      * 
-     * @param player
-     *            the player to target.
-     * @param key
-     *            the key to store as reference.
-     * @param value
-     *            the string displayed on the scoreboard.
+     * @param player the player to target.
+     * @param key the key to store as reference.
+     * @param value the string displayed on the scoreboard.
      */
     public void setValue(Player player, String key, String value)
     {
@@ -75,16 +75,14 @@ public class EntryRegistry implements ScoreboardHandler
             Scoreboard board = new SimpleScoreboard(player).setHandler(instance).setUpdateInterval(2l);
             board.activate();
         }
-        entry.setEntry(key, value);
+        entry.setEntry(key, key + "§7: §c" + value);
     }
 
     /**
      * Set the value on all player's scoreboard.
      * 
-     * @param key
-     *            the key to store as reference.
-     * @param value
-     *            the string displayed on the scoreboard.
+     * @param key the key to store as reference.
+     * @param value the string displayed on the scoreboard.
      */
     public void setAll(String key, String value)
     {
@@ -97,10 +95,8 @@ public class EntryRegistry implements ScoreboardHandler
     /**
      * Clear a value on a player's scoreboard.
      * 
-     * @param player
-     *            the player to target.
-     * @param key
-     *            the key used as a reference.
+     * @param player the player to target.
+     * @param key the key used as a reference.
      */
     public void removeValue(Player player, String key)
     {
@@ -119,8 +115,7 @@ public class EntryRegistry implements ScoreboardHandler
     /**
      * Clear a value on all player's scoreboard.
      * 
-     * @param key
-     *            the key used as a reference.
+     * @param key the key used as a reference.
      */
     public void removeAll(String key)
     {
@@ -168,6 +163,11 @@ public class EntryRegistry implements ScoreboardHandler
         public Collection<String> getEntries()
         {
             return entries.values();
+        }
+        
+        public HashMap<String, String> getEntryMap()
+        {
+            return entries;
         }
 
         public boolean hasEntries()

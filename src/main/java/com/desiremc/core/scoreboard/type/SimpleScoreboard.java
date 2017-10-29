@@ -37,7 +37,7 @@ public class SimpleScoreboard implements Scoreboard
     private boolean activated;
     private ScoreboardHandler handler;
     private Map<FakePlayer, Integer> entryCache = new ConcurrentHashMap<>();
-    private Table<String, Integer, FakePlayer> playerCache = HashBasedTable.create();
+    private Map<UUID, FakePlayer> playerCache = new ConcurrentHashMap<>();
     private Table<Team, String, String> teamCache = HashBasedTable.create();
     private BukkitRunnable updateTask;
 
@@ -173,10 +173,12 @@ public class SimpleScoreboard implements Scoreboard
                 appearance = key;
             }
             if (!appeared.containsKey(appearance))
+            {
                 appeared.put(appearance, -1);
+            }
             appeared.put(appearance, appeared.get(appearance) + 1);
             // Get fake player
-            FakePlayer faker = getFakePlayer(key, appeared.get(appearance));
+            FakePlayer faker = getFakePlayer(key, entry.getUniqueId(), appeared.get(appearance));
             // Set score
             objective.getScore(faker).setScore(score);
             // Update references
@@ -195,12 +197,11 @@ public class SimpleScoreboard implements Scoreboard
         }
     }
 
-    private FakePlayer getFakePlayer(String text, int offset)
+    private FakePlayer getFakePlayer(String text, UUID uuid, int offset)
     {
         Team team = null;
         String name;
-        // If the text has a length less than 16, teams need not to be be
-        // created
+        // If the text has a length less than 16, teams need not to be be created
         if (text.length() <= 16)
         {
             name = text + Strings.repeat(" ", offset);
@@ -210,14 +211,17 @@ public class SimpleScoreboard implements Scoreboard
             String prefix;
             String suffix = "";
             offset++;
-            // Otherwise, iterate through the string and cut off prefix and
-            // suffix
+            // Otherwise, iterate through the string and cut off prefix and suffix
             prefix = text.substring(0, 16 - offset);
             name = text.substring(16 - offset);
             if (name.length() > 16)
+            {
                 name = name.substring(0, 16);
+            }
             if (text.length() > 32)
+            {
                 suffix = text.substring(32 - offset);
+            }
             // If teams already exist, use them
             for (Team other : teamCache.rowKeySet())
             {
@@ -236,10 +240,10 @@ public class SimpleScoreboard implements Scoreboard
             }
         }
         FakePlayer faker;
-        if (!playerCache.contains(name, offset))
+        if (!playerCache.containsKey(uuid))
         {
-            faker = new FakePlayer(name, team);
-            playerCache.put(name, offset, faker);
+            faker = new FakePlayer(uuid, name, team);
+            playerCache.put(uuid, faker);
             if (faker.getTeam() != null)
             {
                 faker.getTeam().addPlayer(faker);
@@ -247,7 +251,12 @@ public class SimpleScoreboard implements Scoreboard
         }
         else
         {
-            faker = playerCache.get(name, offset);
+            faker = playerCache.get(uuid);
+            if (!faker.getName().equals(name))
+            {
+                scoreboard.resetScores(faker.getName());
+                faker.setName(name);
+            }
             if (team != null && faker.getTeam() != null)
             {
                 faker.getTeam().removePlayer(faker);
@@ -274,14 +283,17 @@ public class SimpleScoreboard implements Scoreboard
     private static class FakePlayer implements OfflinePlayer
     {
 
-        private final String name;
+        private UUID uuid;
+
+        private String name;
 
         private Team team;
 
-        FakePlayer(String name, Team team)
+        FakePlayer(UUID uuid, String name, Team team)
         {
             this.name = name;
             this.team = team;
+            this.uuid = uuid;
         }
 
         public Team getTeam()
@@ -306,10 +318,15 @@ public class SimpleScoreboard implements Scoreboard
             return name;
         }
 
+        public void setName(String name)
+        {
+            this.name = name;
+        }
+
         @Override
         public UUID getUniqueId()
         {
-            return UUID.randomUUID();
+            return uuid;
         }
 
         @Override
