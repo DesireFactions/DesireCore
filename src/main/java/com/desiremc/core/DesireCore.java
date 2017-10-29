@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.desiremc.core.listeners.StaffListener;
 import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.GadgetHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -93,6 +94,7 @@ public class DesireCore extends JavaPlugin
         TicketHandler.initialize();
         StatusManager.startPingTask();
         ReportHandler.initialize();
+        GadgetHandler.initialize();
 
         mongoWrapper.getDatastore().ensureIndexes();
 
