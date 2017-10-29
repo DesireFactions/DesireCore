@@ -27,7 +27,7 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 public class AuthListener implements Listener
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static GoogleAuthenticator auth = new GoogleAuthenticator();
     public static List<UUID> authBlocked = new ArrayList<>();
