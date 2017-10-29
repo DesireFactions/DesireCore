@@ -17,7 +17,7 @@ public class StaffChatClearCommand extends ValidCommand
 
     public StaffChatClearCommand()
     {
-        super("clear", "Clear all chat", Rank.MODERATOR, new String[] {});
+        super("chatclear", "Clear all chat", Rank.MODERATOR, new String[] {});
     }
 
     public void validRun(CommandSender sender, String label, Object... args)

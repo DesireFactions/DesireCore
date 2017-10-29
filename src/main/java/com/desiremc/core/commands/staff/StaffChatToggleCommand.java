@@ -15,7 +15,7 @@ public class StaffChatToggleCommand extends ValidCommand
 
     public StaffChatToggleCommand()
     {
-        super("toggle", "Toggle chat on or off.", Rank.ADMIN, new String[] {});
+        super("chattoggle", "Toggle chat on or off.", Rank.ADMIN, new String[] {});
     }
 
     public void validRun(CommandSender sender, String label, Object... args)
