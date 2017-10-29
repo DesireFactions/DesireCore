@@ -115,7 +115,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             }
         }
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(session.getUniqueId())
+                .field("punished").equal(uuid)
                 .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
                 .asList();
         session.setActivePunishments(punishments);
