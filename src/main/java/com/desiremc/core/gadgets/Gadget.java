@@ -1,4 +1,4 @@
-package com.desiremc.core.session;
+package com.desiremc.core.gadgets;
 
 import org.bukkit.Material;
 
@@ -21,8 +21,7 @@ public class Gadget
 
     private List<String> lore;
 
-    public Gadget(String name, boolean enabled, int slot, Material type, short data, String displayName, List<String>
-            lore)
+    public Gadget(String name, boolean enabled, int slot, Material type, short data, String displayName, List<String> lore)
     {
         this.name = name;
         this.enabled = enabled;
