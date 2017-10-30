@@ -1,4 +1,4 @@
-package com.desiremc.core.commands.staff;
+package com.desiremc.core.commands.chat;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
@@ -10,14 +10,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class StaffChatClearCommand extends ValidCommand
+public class ChatClearCommand extends ValidCommand
 {
 
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
-    public StaffChatClearCommand()
+    public ChatClearCommand()
     {
-        super("chatclear", "Clear all chat", Rank.MODERATOR, new String[] {});
+        super("clear", "Clear all chat", Rank.MODERATOR, new String[] {});
     }
 
     public void validRun(CommandSender sender, String label, Object... args)

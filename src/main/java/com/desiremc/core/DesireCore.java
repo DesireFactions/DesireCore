@@ -3,6 +3,8 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.commands.chat.ChatCommand;
+import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.listeners.StaffListener;
 import com.desiremc.core.report.ReportHandler;
 
@@ -124,6 +126,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new InfoCommand());
         customCommandHandler.registerCommand(new RankCommand());
         customCommandHandler.registerCommand(new StaffCommand());
+        customCommandHandler.registerCommand(new ChatCommand());
         customCommandHandler.registerCommand(new TempBanCommand());
         customCommandHandler.registerCommand(new BanCommand());
         customCommandHandler.registerCommand(new UnbanCommand());
