@@ -49,7 +49,7 @@ gadgets:
   vanish:
     enabled: true
     slot: 3
-    item: INK_SAC:10
+    item: INK_SACK:10
     name: "&6Vanish"
     lore:
       - "&7Toggles your player vanish."

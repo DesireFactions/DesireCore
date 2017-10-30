@@ -115,14 +115,11 @@ public class StaffHandler
     {
         inventories.put(p.getUniqueId(), p.getInventory().getContents());
         p.getInventory().clear();
-        p.getInventory().setItem(0, new ItemStack(Material.COMPASS, 1));
-        p.getInventory().setItem(1, new ItemStack(Material.EYE_OF_ENDER, 1));
-        p.getInventory().setItem(2, new ItemStack(Material.CLAY, 1));
-        p.getInventory().setItem(3, new ItemStack(Material.PAPER, 1));
-        p.getInventory().setItem(5, new ItemStack(Material.BLAZE_ROD, 1));
-        p.getInventory().setItem(6, new ItemStack(Material.WATCH, 1));
-        p.getInventory().setItem(7, new ItemStack(Material.CHEST, 1));
-        p.getInventory().setItem(8, new ItemStack(Material.LEASH, 1));
+
+        for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
+        {
+            p.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget));
+        }
         LANG.sendString(p, "staff.staff-on");
         p.setGameMode(GameMode.CREATIVE);
 
@@ -207,15 +204,18 @@ public class StaffHandler
         {
             frozenPlayers.remove(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target.getName());
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName
+                    ());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target
+                    .getName());
         }
         else
         {
             frozenPlayers.add(target.getUniqueId());
 
             DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.frozen", "{player}", source.getName());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target
+                    .getName());
         }
     }
 

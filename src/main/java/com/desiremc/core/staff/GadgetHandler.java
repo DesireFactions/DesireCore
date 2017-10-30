@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +15,7 @@ import com.desiremc.core.DesireCore;
 public class GadgetHandler
 {
 
-    private HashMap<String, Gadget> gadgets;
+    public HashMap<String, Gadget> gadgets;
     private static GadgetHandler instance;
 
     public GadgetHandler()
@@ -30,8 +31,10 @@ public class GadgetHandler
         {
             boolean enabled = DesireCore.getConfigHandler().getBoolean("gadgets." + key + ".enabled");
             int slot = DesireCore.getConfigHandler().getInteger("gadgets." + key + ".slot");
-            Material type = Material.getMaterial(DesireCore.getConfigHandler().getString("gadgets." + key + ".item").split(":")[0]);
-            short data = (short) Integer.parseInt(DesireCore.getConfigHandler().getString("gadgets." + key + ".item").split(":")[1]);
+            Material type = Material.getMaterial(DesireCore.getConfigHandler().getString("gadgets." + key + ".item")
+                    .split(":")[0]);
+            short data = (short) Integer.parseInt(DesireCore.getConfigHandler().getString("gadgets." + key + ".item")
+                    .split(":")[1]);
             String displayName = DesireCore.getConfigHandler().getString("gadgets." + key + ".name");
             List<String> lore = DesireCore.getConfigHandler().getStringList("gadgets." + key + ".lore");
 
@@ -60,6 +63,36 @@ public class GadgetHandler
         Gadget gadget = gadgets.get(name);
 
         ItemStack item = new ItemStack(gadget.getType(), 1, gadget.getData());
+
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', gadget.getDisplayName()));
+
+        List<String> lore = new ArrayList<>();
+
+        for (String s : gadget.getLore())
+        {
+            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+        }
+
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public ItemStack buildGadget(Gadget gadget)
+    {
+        ItemStack item;
+
+        if(gadget.getData() == -1)
+        {
+            item = new ItemStack(gadget.getType(), 1, gadget.getData());
+        }
+        else
+        {
+            item = new ItemStack(gadget.getType(), 1);
+        }
 
         ItemMeta meta = item.getItemMeta();
 

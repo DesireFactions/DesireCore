@@ -1,5 +1,7 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.staff.Gadget;
+import com.desiremc.core.staff.GadgetHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,11 +19,6 @@ public class StaffListener implements Listener
     public void onInteract(PlayerInteractEvent event)
     {
         Player p = event.getPlayer();
-
-        if (StaffHandler.getInstance().isCPSTested(p))
-        {
-            StaffHandler.getInstance().CPSTest(p);
-        }
 
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
         {
@@ -57,44 +54,56 @@ public class StaffListener implements Listener
 
     private boolean handleInteraction(ItemStack item, PlayerInteractEvent event)
     {
-        switch (item.getType())
+        for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
         {
-            case COMPASS:
-                StaffHandler.getInstance().useLaunch(event);
-                break;
-            case EYE_OF_ENDER:
-                StaffHandler.getInstance().useTeleport(event);
-                break;
-            case CLAY:
-                StaffHandler.getInstance().useInvisibility(event);
-                break;
-            case PAPER:
-                StaffHandler.getInstance().openReportsGUI(event.getPlayer());
-                break;
-            default:
-                return false;
+            if (gadget.getType().equals(item.getType()))
+            {
+                switch (gadget.getName())
+                {
+                    case "launcher":
+                        StaffHandler.getInstance().useLaunch(event);
+                        break;
+                    case "random-teleport":
+                        StaffHandler.getInstance().useTeleport(event);
+                        break;
+                    case "vanish":
+                        StaffHandler.getInstance().useInvisibility(event);
+                        break;
+                    case "reports":
+                        StaffHandler.getInstance().openReportsGUI(event.getPlayer());
+                        break;
+                    default:
+                        return false;
+                }
+            }
         }
         return true;
     }
 
     private boolean handleEntityInteraction(ItemStack item, PlayerInteractEntityEvent event)
     {
-        switch (item.getType())
+        for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
         {
-            case BLAZE_ROD:
-                StaffHandler.getInstance().useFreeze(event);
-                break;
-            case WATCH:
-                StaffHandler.getInstance().useClicksPerSecond(event);
-                break;
-            case CHEST:
-                StaffHandler.getInstance().useOpenInventory(event);
-                break;
-            case LEASH:
-                StaffHandler.getInstance().useMount(event);
-                break;
-            default:
-                return false;
+            if (gadget.getType().equals(item.getType()))
+            {
+                switch (gadget.getName())
+                {
+                    case "freezer":
+                        StaffHandler.getInstance().useFreeze(event);
+                        break;
+                    case "clicker":
+                        StaffHandler.getInstance().useClicksPerSecond(event);
+                        break;
+                    case "examine":
+                        StaffHandler.getInstance().useOpenInventory(event);
+                        break;
+                    case "follow":
+                        StaffHandler.getInstance().useMount(event);
+                        break;
+                    default:
+                        return false;
+                }
+            }
         }
         return true;
     }
