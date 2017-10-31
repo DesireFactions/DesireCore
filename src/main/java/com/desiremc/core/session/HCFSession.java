@@ -48,7 +48,6 @@ public class HCFSession
     @Transient
     private PVPTimer pvpTimer;
 
-    @Transient
     private PVPClass pvpClass;
 
     public HCFSession()
@@ -367,6 +366,7 @@ public class HCFSession
     public void setPvpClass(PVPClass pvpClass)
     {
         this.pvpClass = pvpClass;
+        save();
     }
 
     private void save()
