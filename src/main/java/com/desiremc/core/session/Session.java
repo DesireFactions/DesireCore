@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.desiremc.core.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -19,8 +18,10 @@ import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
@@ -98,7 +99,7 @@ public class Session
     {
         if (player == null)
         {
-            player = Bukkit.getPlayer(uuid);
+            player = PlayerUtils.getPlayer(uuid);
         }
         if (player == null || !player.isOnline())
         {

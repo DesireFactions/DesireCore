@@ -33,10 +33,10 @@ public class ConnectionListener implements Listener
                     (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n"
                             + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                             + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
-                            .replace("{reason}", p.getReason())
-                            .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
-                            .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                            .replace("&", "§"));
+                                    .replace("{reason}", p.getReason())
+                                    .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
+                                    .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                    .replace("&", "§"));
             return;
         }
 
@@ -64,6 +64,8 @@ public class ConnectionListener implements Listener
             session.getNameList().add(player.getName());
             session.setName(player.getName());
         }
+        
+        PlayerUtils.addPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -74,12 +76,14 @@ public class ConnectionListener implements Listener
             System.out.println("onLougout(PlayerQuitEvent) called in ConnectionListener.");
         }
 
-        Player p = e.getPlayer();
-        Session session = SessionHandler.getSession(p);
+        Player player = e.getPlayer();
+        Session session = SessionHandler.getSession(player);
         SessionHandler.endSession(session);
 
-        StaffHandler.getInstance().disableStaffMode(p);
-        StaffHandler.getInstance().unFreeze(p);
-        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", p.getName()));
+        StaffHandler.getInstance().disableStaffMode(player);
+        StaffHandler.getInstance().unFreeze(player);
+        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", player.getName()));
+        
+        PlayerUtils.removePlayer(player);
     }
 }

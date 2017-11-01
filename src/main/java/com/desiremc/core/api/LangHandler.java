@@ -3,12 +3,12 @@ package com.desiremc.core.api;
 import java.io.File;
 import java.util.Arrays;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.PlayerUtils;
 
 /**
  * @author Michael Ziluck
@@ -135,7 +135,7 @@ public class LangHandler extends FileHandler
 
     public void sendRenderMessage(Session s, String string, String... args)
     {
-        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
+        CommandSender sender = PlayerUtils.getPlayer(s.getUniqueId());
         sendRenderMessage(sender, string, args);
     }
 
@@ -153,7 +153,7 @@ public class LangHandler extends FileHandler
 
     public void sendRenderMessage(Session s, String string, boolean center, String... args)
     {
-        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
+        CommandSender sender = PlayerUtils.getPlayer(s.getUniqueId());
         if (center)
         {
             ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));

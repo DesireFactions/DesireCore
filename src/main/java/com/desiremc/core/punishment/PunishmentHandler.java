@@ -2,11 +2,11 @@ package com.desiremc.core.punishment;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class PunishmentHandler extends BasicDAO<Punishment, Long>
 {
@@ -35,15 +35,15 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         punishment.setReason(reason);
         save(punishment);
 
-        if (Bukkit.getPlayer(punished) != null)
+        if (PlayerUtils.getPlayer(punished) != null)
         {
             if (type == Punishment.Type.BAN)
             {
-                Bukkit.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().renderMessage("punishment.ban"));
+                PlayerUtils.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().renderMessage("punishment.ban"));
             }
             else if (type == Punishment.Type.MUTE)
             {
-                Bukkit.getPlayer(punished).sendMessage(DesireCore.getLangHandler().renderMessage("punishment.mute"));
+                PlayerUtils.getPlayer(punished).sendMessage(DesireCore.getLangHandler().renderMessage("punishment.mute"));
             }
         }
     }

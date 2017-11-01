@@ -3,7 +3,6 @@ package com.desiremc.core.session;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.RedBlackTree;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
@@ -163,7 +163,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             System.out.println("createSession(UUID) called with value " + uuid.toString() + ".");
         }
-        Player p = Bukkit.getPlayer(uuid);
+        Player p = PlayerUtils.getPlayer(uuid);
         if (p == null)
         {
             if (DesireCore.DEBUG)

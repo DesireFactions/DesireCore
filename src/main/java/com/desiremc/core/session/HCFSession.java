@@ -48,6 +48,10 @@ public class HCFSession
     @Transient
     private PVPTimer pvpTimer;
 
+    @Transient
+    private Player player;
+
+    @Transient
     private PVPClass pvpClass;
 
     public HCFSession()
@@ -71,7 +75,11 @@ public class HCFSession
 
     public Player getPlayer()
     {
-        return Bukkit.getPlayer(uuid);
+        if (player == null)
+        {
+            player = PlayerUtils.getPlayer(uuid);
+        }
+        return player;
     }
 
     @IdGetter
@@ -234,11 +242,7 @@ public class HCFSession
 
     public void sendMessage(String message)
     {
-        Player p = Bukkit.getPlayer(uuid);
-        if (p != null)
-        {
-            p.sendMessage(message);
-        }
+        getPlayer().sendMessage(message);
     }
 
     public PVPTimer getTimer()
@@ -315,7 +319,7 @@ public class HCFSession
         List<Ticker> kills = this.kills.get(server);
         if (kills == null)
         {
-            return new String[]{};
+            return new String[] {};
         }
         Collections.sort(kills);
         String[] array = new String[kills.size()];

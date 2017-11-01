@@ -1,7 +1,7 @@
 package com.desiremc.core.commands.rank;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
@@ -10,6 +10,7 @@ import com.desiremc.core.parsers.RankParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class RankSetCommand extends ValidCommand
 {
@@ -54,9 +55,10 @@ public class RankSetCommand extends ValidCommand
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
 
-        if (Bukkit.getPlayer(target.getUniqueId()) != null)
+        Player player = PlayerUtils.getPlayer(target.getUniqueId());
+        if (player != null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(Bukkit.getPlayer(target.getUniqueId()), "rank.inform", "{rank}", target.getRank().getDisplayName());
+            DesireCore.getLangHandler().sendRenderMessage(player, "rank.inform", "{rank}", target.getRank().getDisplayName());
         }
     }
 }

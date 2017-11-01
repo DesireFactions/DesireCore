@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -20,6 +19,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 
 public class PlayerListener implements Listener
@@ -52,10 +52,8 @@ public class PlayerListener implements Listener
             event.setCancelled(true);
             for (UUID target : StaffHandler.getInstance().getAllInStaffChat())
             {
-                String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format",
-                        "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event
-                                .getMessage());
-                Bukkit.getPlayer(target).sendMessage(message);
+                String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event.getMessage());
+                PlayerUtils.getPlayer(target).sendMessage(message);
             }
             return;
         }
@@ -94,8 +92,7 @@ public class PlayerListener implements Listener
         {
             if (session.getSettings().hasXrayNotification())
             {
-                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName()
-                        , "{count}", vein.size() + "", "{oreName}", name);
+                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
             }
         }
     }

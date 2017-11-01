@@ -1,20 +1,38 @@
 package com.desiremc.core.utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+
 public class PlayerUtils
 {
+
+    private static HashMap<UUID, Player> playerCache = new HashMap<>();
+
+    public static Player getPlayer(UUID uuid)
+    {
+        return playerCache.get(uuid);
+    }
+
+    public static void addPlayer(Player player)
+    {
+        playerCache.put(player.getUniqueId(), player);
+    }
+
+    public static void removePlayer(Player player)
+    {
+        playerCache.remove(player.getUniqueId());
+    }
 
     @SuppressWarnings("deprecation")
     public static boolean hasPlayed(String name)
