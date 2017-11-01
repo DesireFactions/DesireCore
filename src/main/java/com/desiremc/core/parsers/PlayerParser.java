@@ -1,17 +1,14 @@
 package com.desiremc.core.parsers;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ArgumentParser;
 
 public class PlayerParser implements ArgumentParser
 {
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     @Override
     public Player parseArgument(CommandSender sender, String label, String arg)
@@ -20,7 +17,7 @@ public class PlayerParser implements ArgumentParser
 
         if (player == null)
         {
-            LANG.sendString(sender, "player_not_found");
+            DesireCore.getLangHandler().sendString(sender, "player_not_found");
         }
 
         return player;

@@ -131,6 +131,18 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         return true;
     }
 
+    public static HCFSession findOfflinePlayerByName(String name)
+    {
+        Session session = SessionHandler.getInstance().findOne("name", name);
+        if (session == null)
+        {
+            return null;
+        }
+        HCFSession hcfSession = instance.findOne("uuid", session.getUniqueId());
+
+        return hcfSession;
+    }
+
     private static HCFSession createHCFSession(UUID uuid)
     {
         HCFSession session = new HCFSession();

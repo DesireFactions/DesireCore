@@ -6,24 +6,24 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ArgumentParser;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
 
-public class PlayerSessionParser implements ArgumentParser
+public class PlayerHCFSessionParser implements ArgumentParser
 {
 
     @Override
-    public Session parseArgument(CommandSender sender, String label, String arg)
+    public Object parseArgument(CommandSender sender, String label, String arg)
     {
         Player p = Bukkit.getPlayerExact(arg);
-        Session s;
+        HCFSession s;
         if (p == null)
         {
-            s = SessionHandler.findOfflinePlayerByName(arg);
+            s = HCFSessionHandler.findOfflinePlayerByName(arg);
         }
         else
         {
-            s = SessionHandler.getSession(p.getUniqueId());
+            s = HCFSessionHandler.getHCFSession(p.getUniqueId());
         }
         if (s == null)
         {
