@@ -17,15 +17,25 @@ import com.desiremc.core.session.SessionHandler;
 public class PlayerUtils
 {
 
+    private static final boolean DEBUG = false;
+
     private static HashMap<UUID, Player> playerCache = new HashMap<>();
 
     public static Player getPlayer(UUID uuid)
     {
+        if (DEBUG)
+        {
+            System.out.println("Retrieved player " + uuid.toString() + ".");
+        }
         return playerCache.get(uuid);
     }
 
     public static void addPlayer(Player player)
     {
+        if (DEBUG)
+        {
+            System.out.println("Added player " + player.getName() + ".");
+        }
         playerCache.put(player.getUniqueId(), player);
     }
 

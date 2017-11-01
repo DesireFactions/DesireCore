@@ -19,10 +19,12 @@ import com.desiremc.core.utils.PlayerUtils;
 public class ConnectionListener implements Listener
 {
 
+    private static final boolean DEBUG = false;
+    
     @EventHandler
     public void onLogin(final PlayerLoginEvent event)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
@@ -45,7 +47,7 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent event)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
         }
@@ -71,7 +73,7 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLogout(PlayerQuitEvent e)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("onLougout(PlayerQuitEvent) called in ConnectionListener.");
         }
