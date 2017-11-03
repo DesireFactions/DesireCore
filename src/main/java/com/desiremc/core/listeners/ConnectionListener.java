@@ -52,6 +52,8 @@ public class ConnectionListener implements Listener
             System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
         }
         Player player = event.getPlayer();
+        PlayerUtils.addPlayer(player);
+        
         String ip = player.getAddress().getAddress().getHostAddress();
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
 
@@ -67,7 +69,6 @@ public class ConnectionListener implements Listener
             session.setName(player.getName());
         }
         
-        PlayerUtils.addPlayer(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

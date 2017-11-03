@@ -18,6 +18,8 @@ import com.desiremc.core.utils.RedBlackTree;
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
 
+    private static final boolean DEBUG = false;
+
     private static Session console;
 
     private static SessionHandler instance;
@@ -31,7 +33,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(Session.class);
-        
+
         sessions = new RedBlackTree<>();
         staff = new RedBlackTree<>();
 
@@ -62,7 +64,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static Session getSession(UUID uuid)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("getSession(UUID) called with value " + uuid.toString() + ".");
         }
@@ -70,13 +72,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
         if (session != null)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("getSession(UUID) found a logged in user.");
             }
             return session;
         }
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("getSession(UUID) did not find a logged in user.");
         }
@@ -85,14 +87,14 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static Session initializeSession(UUID uuid, boolean cache)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("initializeSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
         }
         Session session = instance.findOne("_id", uuid);
         if (session == null)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("initializeSession(UUID, boolean) non-existing player.");
             }
@@ -100,14 +102,14 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         }
         if (cache)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("initializeSession(UUID, boolean) cached player in sessions.");
             }
             instance.sessions.put(uuid, session);
             if (session.getRank().isStaff())
             {
-                if (DesireCore.DEBUG)
+                if (DEBUG)
                 {
                     System.out.println("initializeSession(UUID, boolean) is staff member.");
                 }
@@ -119,13 +121,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
                 .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
                 .asList();
         session.setActivePunishments(punishments);
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("initializeSession(UUID, boolean) set punishments and returned.");
         }
         return session;
     }
-    
+
     public static Punishment getBan(UUID uuid)
     {
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
@@ -159,34 +161,34 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     private static Session createSession(UUID uuid)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("createSession(UUID) called with value " + uuid.toString() + ".");
         }
         Player p = PlayerUtils.getPlayer(uuid);
         if (p == null)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("createSession(UUID) could not find player.");
             }
             return null;
         }
 
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("createSession(UUID) set defaults.");
         }
         Session session = new Session();
         session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
 
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("createSession(UUID) saved to database.");
         }
         instance.save(session);
 
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("createSession(UUID) returned.");
         }
