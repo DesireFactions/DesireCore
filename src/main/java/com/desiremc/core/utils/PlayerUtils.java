@@ -23,9 +23,17 @@ public class PlayerUtils
 
     public static Player getPlayer(UUID uuid)
     {
+        if (uuid == null)
+        {
+            if (DEBUG)
+            {
+                System.out.println("getPlayer(UUID) called with null UUID.");
+            }
+            return null;
+        }
         if (DEBUG)
         {
-            System.out.println("Retrieved player " + uuid.toString() + ".");
+            System.out.println("getPlayer(UUID) called with value " + uuid.toString() + ".");
         }
         return playerCache.get(uuid);
     }
@@ -34,13 +42,17 @@ public class PlayerUtils
     {
         if (DEBUG)
         {
-            System.out.println("Added player " + player.getName() + ".");
+            System.out.println("addPlayer(Player) called with player " + player.getName() + ".");
         }
         playerCache.put(player.getUniqueId(), player);
     }
 
     public static void removePlayer(Player player)
     {
+        if (DEBUG)
+        {
+            System.out.println("removePlayer(Player) called with player " + player.getName() + ".");
+        }
         playerCache.remove(player.getUniqueId());
     }
 
