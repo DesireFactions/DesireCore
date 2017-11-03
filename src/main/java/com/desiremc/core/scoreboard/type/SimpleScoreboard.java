@@ -138,31 +138,52 @@ public class SimpleScoreboard implements Scoreboard
     @SuppressWarnings("deprecation")
     private void update()
     {
+        // make sure the person being sent the scoreboard is online
         if (!holder.isOnline())
         {
+            // clear the scoreboard from the registry
             ScoreboardRegistry.getInstance().clearScoreboard(holder);
+            // remove all teams and reset the holder's scoreboard to the main
             deactivate();
             return;
         }
-        // Title
+        // Set the title
         String handlerTitle = handler.getTitle(holder);
+        // If title is blank, set it to filler
         String finalTitle = Strings.format(handlerTitle != null ? handlerTitle : ChatColor.BOLD.toString());
+
+        // update the title if it has changed
         if (!objective.getDisplayName().equals(finalTitle))
             objective.setDisplayName(Strings.format(finalTitle));
 
-        // Entries
+        // all the registered scoreboard entries
         List<Entry> passed = handler.getEntries(holder);
-        Map<String, Integer> appeared = new HashMap<>();
-        Map<FakePlayer, Integer> current = new HashMap<>();
+
+        // only continue if handler has entries
         if (passed == null)
+        {
             return;
+        }
+
+        // everything to be displayed on the scoreboard
+        Map<String, Integer> appeared = new HashMap<>();
+
+        // what's been set on the scoreboard
+        Map<FakePlayer, Integer> current = new HashMap<>();
+
         for (Entry entry : passed)
         {
-            // Handle the entry
+            // get the entry values
             String key = entry.getName();
             Integer score = entry.getPosition();
+
+            // scoreboards can't go over 48 characters, truncate
             if (key.length() > 48)
+            {
                 key = key.substring(0, 47);
+            }
+
+            // ensure there are no duplicates
             String appearance;
             if (key.length() > 16)
             {
@@ -176,16 +197,21 @@ public class SimpleScoreboard implements Scoreboard
             {
                 appeared.put(appearance, -1);
             }
+
             appeared.put(appearance, appeared.get(appearance) + 1);
+
             // Get fake player
             FakePlayer faker = getFakePlayer(key, entry.getUniqueId(), appeared.get(appearance));
+
             // Set score
             objective.getScore(faker).setScore(score);
+
             // Update references
             entryCache.put(faker, score);
+
+            // add to entered entries
             current.put(faker, score);
         }
-        appeared.clear();
         // Remove duplicated or non-existent entries
         for (FakePlayer fakePlayer : entryCache.keySet())
         {
