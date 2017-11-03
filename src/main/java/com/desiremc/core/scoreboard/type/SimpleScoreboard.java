@@ -178,9 +178,9 @@ public class SimpleScoreboard implements Scoreboard
             Integer score = entry.getPosition();
 
             // scoreboards can't go over 48 characters, truncate
-            if (key.length() > 48)
+            if (key.length() > 32)
             {
-                key = key.substring(0, 47);
+                key = key.substring(0, 31);
             }
 
             // ensure there are no duplicates
@@ -197,7 +197,6 @@ public class SimpleScoreboard implements Scoreboard
             {
                 appeared.put(appearance, -1);
             }
-
             appeared.put(appearance, appeared.get(appearance) + 1);
 
             // Get fake player
@@ -227,44 +226,47 @@ public class SimpleScoreboard implements Scoreboard
     {
         Team team = null;
         String name;
-        // If the text has a length less than 16, teams need not to be be created
-        if (text.length() <= 16)
+        String prefix;
+        String suffix = "";
+
+        if (text.equals(""))
         {
-            name = text + Strings.repeat(" ", offset);
+            prefix = " ";
+            name = " ";
+            suffix = " ";
         }
         else
         {
-            String prefix;
-            String suffix = "";
-            offset++;
-            // Otherwise, iterate through the string and cut off prefix and suffix
-            prefix = text.substring(0, 16 - offset);
-            name = text.substring(16 - offset);
-            if (name.length() > 16)
+            prefix = text.substring(0, text.length() == 0 ? 0 : Math.min(16, text.length() - 1));
+            if (prefix.endsWith("$"))
             {
-                name = name.substring(0, 16);
+                suffix += "§";
             }
-            if (text.length() > 32)
+            name = "";
+            if (text.length() > 16)
             {
-                suffix = text.substring(32 - offset);
-            }
-            // If teams already exist, use them
-            for (Team other : teamCache.rowKeySet())
-            {
-                if (other.getPrefix().equals(prefix) && other.getSuffix().equals(suffix))
-                {
-                    team = other;
-                }
-            }
-            // Otherwise create them
-            if (team == null)
-            {
-                team = scoreboard.registerNewTeam(TEAM_PREFIX + TEAM_COUNTER++);
-                team.setPrefix(prefix);
-                team.setSuffix(suffix);
-                teamCache.put(team, prefix, suffix);
+                suffix += text.substring(16);
             }
         }
+
+        // If teams already exist, use them
+        for (Team other : teamCache.rowKeySet())
+        {
+            if (other.getPrefix().equals(prefix) && other.getSuffix().equals(suffix))
+            {
+                team = other;
+            }
+        }
+
+        // Otherwise create them
+        if (team == null)
+        {
+            team = scoreboard.registerNewTeam(TEAM_PREFIX + TEAM_COUNTER++);
+            team.setPrefix(prefix);
+            team.setSuffix(suffix);
+            teamCache.put(team, prefix, suffix);
+        }
+
         FakePlayer faker;
         if (!playerCache.containsKey(uuid))
         {
