@@ -1,7 +1,7 @@
 prefix:
   text: '&7[&bHCF&7]'
   use: true
-list-header: '&c----------------------------'
+list-header: '&c&m---------------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
 not_time: '&7Time format used is invalid.'
 never_logged_in: '&7This player has never logged in before.'
