@@ -151,6 +151,7 @@ public class StaffHandler
     {
         if (inStaffMode(p))
         {
+            p.getInventory().clear();
             p.getInventory().setContents(inventories.get(p.getUniqueId()));
             inventories.remove(p.getUniqueId());
             p.setGameMode(GameMode.SURVIVAL);
