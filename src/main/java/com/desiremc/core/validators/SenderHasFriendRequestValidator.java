@@ -2,6 +2,7 @@ package com.desiremc.core.validators;
 
 import org.bukkit.command.CommandSender;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -19,7 +20,7 @@ public class SenderHasFriendRequestValidator extends CommandValidator
         }
         else
         {
-            LANG.sendRenderMessage(sender, "friend.no_request", "{player}", ((Session) arg).getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_request", "{player}", ((Session) arg).getName());
             return false;
         }
     }

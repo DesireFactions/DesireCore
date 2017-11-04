@@ -1,5 +1,6 @@
 package com.desiremc.core.validators;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.tickets.TicketHandler;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ public class TicketExistsValidator extends CommandValidator
         }
         else
         {
-            LANG.sendRenderMessage(sender, "ticket.doesnt-exist");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.doesnt-exist");
             return false;
         }
     }

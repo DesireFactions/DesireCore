@@ -3,6 +3,8 @@ package com.desiremc.core.validators;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
+
 public class ItemInHandValidator extends PlayerValidator {
 
     @Override
@@ -14,7 +16,7 @@ public class ItemInHandValidator extends PlayerValidator {
         
         Player p = (Player) sender;
         if (p.getItemInHand() == null) {
-            LANG.sendString(sender, "item_in_hand");
+            DesireCore.getLangHandler().sendString(sender, "item_in_hand");
             return false;
         }
         

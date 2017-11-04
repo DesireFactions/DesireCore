@@ -2,6 +2,7 @@ package com.desiremc.core.validators;
 
 import org.bukkit.command.CommandSender;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.SessionHandler;
@@ -22,7 +23,7 @@ public class SenderOutranksTargetValidator extends CommandValidator
         }
         else
         {
-            LANG.sendRenderMessage(sender, "sender_doesnt_outrank");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "sender_doesnt_outrank");
             return false;
         }
     }

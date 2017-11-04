@@ -2,6 +2,7 @@ package com.desiremc.core.validators;
 
 import org.bukkit.command.CommandSender;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -15,7 +16,7 @@ public class SenderIsFriendsValidator extends CommandValidator
     {
         if (!FriendUtils.areFriends(SessionHandler.getSession(sender), (Session) arg))
         {
-            LANG.sendRenderMessage(sender, "friend.not_friends", "{player}", ((Session) arg).getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.not_friends", "{player}", ((Session) arg).getName());
             return false;
         }
 

@@ -3,6 +3,7 @@ package com.desiremc.core.validators;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 
 public class PlayerValidator extends CommandValidator
@@ -13,7 +14,7 @@ public class PlayerValidator extends CommandValidator
     {
         if (!(sender instanceof Player))
         {
-            LANG.sendString(sender, "only_players");
+            DesireCore.getLangHandler().sendString(sender, "only_players");
             return false;
         }
 

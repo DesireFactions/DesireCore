@@ -2,6 +2,7 @@ package com.desiremc.core.validators;
 
 import org.bukkit.command.CommandSender;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.SessionHandler;
 
@@ -17,7 +18,7 @@ public class SenderHasIncomingFriendRequestsValidator extends CommandValidator
         }
         else
         {
-            LANG.sendString(sender, "friend.no_incoming");
+            DesireCore.getLangHandler().sendString(sender, "friend.no_incoming");
             return false;
         }
     }
