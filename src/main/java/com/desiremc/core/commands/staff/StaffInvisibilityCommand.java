@@ -13,7 +13,7 @@ public class StaffInvisibilityCommand extends ValidCommand
 
     public StaffInvisibilityCommand()
     {
-        super("invisibility", "Toggle invisibility for player.", Rank.ADMIN, ARITY_OPTIONAL, new String[] { "target" }, "invisible", "invis");
+        super("invisibility", "Toggle invisibility for player.", Rank.JRMOD, ARITY_OPTIONAL, new String[] { "target" }, "invisible", "invis");
 
         addParser(new PlayerParser(), "target");
     }

@@ -13,7 +13,7 @@ public class StaffCPSCommand extends ValidCommand
 
     public StaffCPSCommand()
     {
-        super("cps", "Starts clicks per second test on player", Rank.ADMIN, new String[] { "target" });
+        super("cps", "Starts clicks per second test on player", Rank.JRMOD, new String[] { "target" });
         addParser(new PlayerParser(), "target");
     }
 

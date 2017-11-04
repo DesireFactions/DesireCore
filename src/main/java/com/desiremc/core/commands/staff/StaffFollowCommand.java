@@ -14,7 +14,7 @@ public class StaffFollowCommand extends ValidCommand
 
     public StaffFollowCommand()
     {
-        super("follow", "Follow a player", Rank.ADMIN, new String[] { "target" }, "mount", "ride", "leash", "lead");
+        super("follow", "Follow a player", Rank.JRMOD, new String[] { "target" }, "mount", "ride", "leash", "lead");
         addParser(new PlayerParser(), "target");
         addValidator(new PlayerValidator());
     }
