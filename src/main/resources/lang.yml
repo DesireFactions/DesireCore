@@ -67,7 +67,7 @@ warn:
   warned: "You have been warned by {player} for {reason}. The warning expires in {time}"
 staff:
   cps-start: "Starting clicks per second test for {player}. Result in 10 seconds."
-  cps-finish: "{player} clicked {amount} per second over 10 seconds."
+  cps-finish: "{player} had a CPS of {amount} over 10 seconds."
   cps-already-running: "There is already a clicks per second test for {player} running."
   froze-target: "You have frozen {player}"
   staff-on: "You have toggled staff mode on."

@@ -56,11 +56,11 @@ public class TabList implements Listener
 
         if (playerTab != null)
         {
-            Iterator<Team> iterator = (new HashSet<Team>(playerTab.getScoreboard().getTeams())).iterator();
+            Iterator<Team> iterator = (new HashSet<>(playerTab.getScoreboard().getTeams())).iterator();
 
             while (iterator.hasNext())
             {
-                Team team = (Team) iterator.next();
+                Team team = iterator.next();
 
                 team.unregister();
             }
