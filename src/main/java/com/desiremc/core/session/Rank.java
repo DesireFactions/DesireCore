@@ -8,32 +8,30 @@ import com.desiremc.core.utils.StringUtils;
 public enum Rank
 {
 
-    GUEST(1, "Guest", "§7⧫", "", ChatColor.GRAY, ChatColor.GRAY),
-    BRIGADIER(2, "Brigadier", "§a⧫", "", ChatColor.GRAY, ChatColor.GREEN),
-    COMMODORE(3, "Commodore", "§b⧫", "", ChatColor.GRAY, ChatColor.AQUA),
-    GRANDMASTER(4, "Grandmaster", "§d⧫", "", ChatColor.GRAY, ChatColor.LIGHT_PURPLE),
-    YOUTUBER(5, "YouTuber", "§6§[§eYT§6]", "", ChatColor.WHITE, ChatColor.GOLD),
-    JRMOD(6, "Junior_Moderator", "§9§lJr.Mod", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
-    MODERATOR(7, "Moderator", "§2§lMod", "", ChatColor.WHITE, ChatColor.BLUE, "mod"),
-    SRMOD(8, "Senior_Mod", "§e§lSr.Mod", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
-    ADMIN(9, "Admin", "§4§lAdmin", "", ChatColor.RED, ChatColor.RED),
-    DEVELOPER(10, "Developer", "§5§lDeveloper", "", ChatColor.LIGHT_PURPLE, ChatColor.RED, "dev"),
-    OWNER(11, "Owner", "§3§lOwner", "", ChatColor.AQUA, ChatColor.RED);
+    GUEST(1, "Guest", "§7⧫", ChatColor.GRAY, ChatColor.GRAY),
+    BRIGADIER(2, "Brigadier", "§a⧫", ChatColor.GRAY, ChatColor.GREEN),
+    COMMODORE(3, "Commodore", "§b⧫", ChatColor.GRAY, ChatColor.AQUA),
+    GRANDMASTER(4, "Grandmaster", "§d⧫", ChatColor.GRAY, ChatColor.LIGHT_PURPLE),
+    YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
+    JRMOD(6, "Junior_Moderator", "§9§lJr.Mod", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
+    MODERATOR(7, "Moderator", "§2§lMod", ChatColor.WHITE, ChatColor.BLUE, "mod"),
+    SRMOD(8, "Senior_Mod", "§e§lSr.Mod", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
+    ADMIN(9, "Admin", "§4§lAdmin", ChatColor.RED, ChatColor.RED),
+    DEVELOPER(10, "Developer", "§5§lDev", ChatColor.LIGHT_PURPLE, ChatColor.RED, "dev"),
+    OWNER(11, "Owner", "§3§lOwner", ChatColor.AQUA, ChatColor.RED);
 
     private final int id;
     private final String displayName;
     private final String prefix;
-    private final String suffix;
     private final ChatColor color;
     private final ChatColor main;
     private final String[] aliases;
 
-    Rank(int id, String displayName, String prefix, String suffix, ChatColor color, ChatColor main, String... aliases)
+    Rank(int id, String displayName, String prefix, ChatColor color, ChatColor main, String... aliases)
     {
         this.id = id;
         this.displayName = displayName;
         this.prefix = prefix;
-        this.suffix = suffix;
         this.color = color;
         this.main = main;
         this.aliases = aliases;
@@ -47,11 +45,6 @@ public enum Rank
     public String getDisplayName()
     {
         return displayName;
-    }
-
-    public String getSuffix()
-    {
-        return suffix;
     }
 
     public ChatColor getColor()
