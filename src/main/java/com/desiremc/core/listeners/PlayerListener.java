@@ -66,8 +66,7 @@ public class PlayerListener implements Listener
 
         for (Session s : SessionHandler.getInstance().getStaff())
         {
-            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings()
-                    .hasMentionsEnabled())
+            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings().hasMentionsEnabled())
             {
                 s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
@@ -114,9 +113,7 @@ public class PlayerListener implements Listener
                 for (int k = -1; k < 2; k++)
                 {
                     Block relative = block.getRelative(i, j, k);
-                    if (!vein.contains(relative) &&
-                            block.equals(relative) &&
-                            (i != 0 || j != 0 || k != 0))
+                    if (!vein.contains(relative) && block.equals(relative) && (i != 0 || j != 0 || k != 0))
                     {
                         vein.add(relative);
                         getVein(relative, vein);
