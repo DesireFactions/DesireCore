@@ -11,11 +11,11 @@ public class StaffCommand extends ValidBaseCommand
         super("staff", "staff tools", Rank.ADMIN);
         addSubCommand(new StaffToggleCommand());
         addSubCommand(new StaffFreezeCommand());
-        addSubCommand(new StaffClicksPerSecondCommand());
+        addSubCommand(new StaffCPSCommand());
         addSubCommand(new StaffInvisibilityCommand());
-        addSubCommand(new StaffMountCommand());
+        addSubCommand(new StaffFollowCommand());
         addSubCommand(new StaffChatCommand());
-        addSubCommand(new StaffReportsCommand());
+        addSubCommand(new StaffReportsCommand("reports", new String[] { "report" }));
     }
 
 }

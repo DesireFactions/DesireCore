@@ -11,9 +11,9 @@ import com.desiremc.core.validators.PlayerValidator;
 public class StaffReportsCommand extends ValidCommand
 {
 
-    public StaffReportsCommand()
+    public StaffReportsCommand(String name, String[] aliases)
     {
-        super("reports", "Open reports GUI", Rank.JRMOD, new String[] {});
+        super(name, "Open reports GUI", Rank.JRMOD, new String[] {}, aliases);
         addValidator(new PlayerValidator());
     }
 

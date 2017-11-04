@@ -17,7 +17,7 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand()
     {
-        super("chat", "Join or leave Staff chat", Rank.JRMOD, new String[] {});
+        super("chat", "Join or leave staff chat.", Rank.JRMOD, new String[] {});
         addValidator(new PlayerValidator());
     }
 

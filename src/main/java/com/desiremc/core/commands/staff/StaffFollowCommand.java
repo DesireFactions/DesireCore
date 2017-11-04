@@ -7,20 +7,22 @@ import com.desiremc.core.api.StaffAPI;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.validators.PlayerValidator;
 
-public class StaffClicksPerSecondCommand extends ValidCommand
+public class StaffFollowCommand extends ValidCommand
 {
 
-    public StaffClicksPerSecondCommand()
+    public StaffFollowCommand()
     {
-        super("cps", "starts clicks per second test on player", Rank.ADMIN, new String[]{"target"});
+        super("follow", "Follow a player", Rank.ADMIN, new String[] { "target" }, "mount", "ride", "leash", "lead");
         addParser(new PlayerParser(), "target");
+        addValidator(new PlayerValidator());
     }
 
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        StaffAPI.clicksPerSecondTest(sender, (Player) args[0]);
+        StaffAPI.mount((Player) sender, (Player) args[0]);
     }
 
 }

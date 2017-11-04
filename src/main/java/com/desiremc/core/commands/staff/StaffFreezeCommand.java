@@ -13,7 +13,7 @@ public class StaffFreezeCommand extends ValidCommand
 
     public StaffFreezeCommand()
     {
-        super("freeze", "freeze a target player", Rank.ADMIN, new String[]{"target"});
+        super("freeze", "Freeze a target player", Rank.ADMIN, new String[] { "target" });
         addParser(new PlayerParser(), "target");
     }
 
