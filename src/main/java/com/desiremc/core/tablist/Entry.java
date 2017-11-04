@@ -57,6 +57,10 @@ public class Entry
         Player player = this.playerTab.getPlayer();
         CraftPlayer craftplayer = (CraftPlayer) player;
 
+        if (text == null)
+        {
+            text = "";
+        }
         GameProfile profile = new GameProfile((uuid = UUID.randomUUID()), ChatColor.translateAlternateColorCodes('&', this.text));
         if (skin != null)
         {

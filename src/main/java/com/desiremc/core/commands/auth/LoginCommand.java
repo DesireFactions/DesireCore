@@ -13,10 +13,10 @@ import com.desiremc.core.validators.AuthCodeValidator;
 import com.desiremc.core.validators.PlayerIsAuthBlockedValidator;
 import com.desiremc.core.validators.PlayerValidator;
 
-public class AuthLoginCommand extends ValidCommand
+public class LoginCommand extends ValidCommand
 {
 
-    public AuthLoginCommand()
+    public LoginCommand()
     {
         super("login", "Authenticate with Google Auth.", Rank.JRMOD, new String[] { "code" });
         addParser(new IntegerParser(), "code");

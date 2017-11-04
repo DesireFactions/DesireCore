@@ -7,12 +7,12 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import org.bukkit.command.CommandSender;
 
-public class AuthResetKeyCommand extends ValidCommand
+public class AuthResetCommand extends ValidCommand
 {
 
-    public AuthResetKeyCommand()
+    public AuthResetCommand()
     {
-        super("resetkey", "Authenticate with Google Auth.", Rank.ADMIN, new String[]{"target"});
+        super("reset", "Authenticate with Google Auth.", Rank.ADMIN, new String[] { "target" });
 
         addParser(new PlayerSessionParser(), "target");
     }

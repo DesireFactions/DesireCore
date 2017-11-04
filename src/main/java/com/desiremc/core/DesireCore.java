@@ -19,8 +19,8 @@ import com.desiremc.core.commands.TempBanCommand;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.commands.WarnCommand;
 import com.desiremc.core.commands.alerts.AlertsCommand;
-import com.desiremc.core.commands.auth.AuthLoginCommand;
-import com.desiremc.core.commands.auth.AuthResetKeyCommand;
+import com.desiremc.core.commands.auth.AuthCommand;
+import com.desiremc.core.commands.auth.LoginCommand;
 import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.rank.RankCommand;
@@ -130,9 +130,9 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnbanCommand());
         customCommandHandler.registerCommand(new WarnCommand());
         customCommandHandler.registerCommand(new AchievementCommand());
-        customCommandHandler.registerCommand(new AuthLoginCommand());
+        customCommandHandler.registerCommand(new LoginCommand());
         customCommandHandler.registerCommand(new TicketCommand());
-        customCommandHandler.registerCommand(new AuthResetKeyCommand());
+        customCommandHandler.registerCommand(new AuthCommand());
     }
 
     private void registerListeners()
