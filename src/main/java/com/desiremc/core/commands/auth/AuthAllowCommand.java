@@ -26,7 +26,7 @@ public class AuthAllowCommand extends ValidCommand
         
         AuthListener.authBlocked.remove(session.getUniqueId());
         session.setHasAuthorized(true);
-        DesireCore.getLangHandler().sendRenderMessage(session, "auth.allow", "{player}", session.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.allow", "{player}", session.getName());
         
     }
 
