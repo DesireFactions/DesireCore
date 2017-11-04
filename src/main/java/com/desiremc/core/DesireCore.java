@@ -25,7 +25,10 @@ import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
+import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
+import com.desiremc.core.commands.staff.StaffFreezeCommand;
+import com.desiremc.core.commands.staff.StaffModeCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
@@ -133,6 +136,9 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new LoginCommand());
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new AuthCommand());
+        customCommandHandler.registerCommand(new StaffModeCommand("mod"));
+        customCommandHandler.registerCommand(new StaffFreezeCommand());
+        customCommandHandler.registerCommand(new StaffChatCommand("sc", "staffchat"));
     }
 
     private void registerListeners()

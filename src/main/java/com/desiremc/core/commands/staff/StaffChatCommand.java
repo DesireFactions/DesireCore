@@ -15,9 +15,9 @@ public class StaffChatCommand extends ValidCommand
 
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
-    public StaffChatCommand()
+    public StaffChatCommand(String name, String... aliases)
     {
-        super("chat", "Join or leave staff chat.", Rank.JRMOD, new String[] {});
+        super(name, "Join or leave staff chat.", Rank.JRMOD, new String[] {}, aliases);
         addValidator(new PlayerValidator());
     }
 

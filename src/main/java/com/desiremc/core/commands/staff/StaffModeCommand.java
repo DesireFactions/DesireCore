@@ -8,12 +8,12 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 
-public class StaffToggleCommand extends ValidCommand
+public class StaffModeCommand extends ValidCommand
 {
 
-    public StaffToggleCommand()
+    public StaffModeCommand(String name, String... aliases)
     {
-        super("toggle", "toggle staff mode", Rank.JRMOD, new String[] {}, "mode");
+        super(name, "Toggle staff mode", Rank.JRMOD, new String[] {}, aliases);
         addValidator(new PlayerValidator());
     }
 

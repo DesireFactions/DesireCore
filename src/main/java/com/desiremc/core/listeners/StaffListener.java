@@ -4,6 +4,7 @@ import com.desiremc.core.staff.Gadget;
 import com.desiremc.core.staff.GadgetHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -15,7 +16,7 @@ import com.desiremc.core.staff.StaffHandler;
 public class StaffListener implements Listener
 {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInteract(PlayerInteractEvent event)
     {
         Player p = event.getPlayer();
@@ -30,13 +31,11 @@ public class StaffListener implements Listener
             return;
         }
 
-        if (handleInteraction(event.getItem(), event))
-        {
-            event.setCancelled(true);
-        }
+        event.setCancelled(true);
+        handleInteraction(event.getItem(), event);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(PlayerInteractEntityEvent event)
     {
         Player p = event.getPlayer();
