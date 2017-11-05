@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.RedBlackTree;
@@ -45,7 +46,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
      * @param o
      * @return
      */
-    public static HCFSession getHCFSession(UUID uuid)
+    public static HCFSession getHCFSession(UUID uuid, String server)
     {
         if (DesireCore.DEBUG)
         {
@@ -70,16 +71,16 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
             {
                 System.out.println("getHCFSession(UUID) no user found.");
             }
-            return initializeHCFSession(uuid, false);
+            return initializeHCFSession(uuid, server, false);
         }
 
     }
 
-    public static HCFSession getHCFSession(CommandSender sender)
+    public static HCFSession getHCFSession(CommandSender sender, String server)
     {
         if (sender instanceof Player)
         {
-            return getHCFSession(((Player) sender).getUniqueId());
+            return getHCFSession(((Player) sender).getUniqueId(), server);
         }
         else if (sender instanceof ConsoleCommandSender)
         {
@@ -91,20 +92,23 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         }
     }
 
-    public static HCFSession initializeHCFSession(UUID uuid, boolean cache)
+    public static HCFSession initializeHCFSession(UUID uuid, String server, boolean cache)
     {
         if (DesireCore.DEBUG)
         {
             System.out.println("initializeHCFSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
         }
-        HCFSession session = getInstance().findOne("_id", uuid);
+        Query<HCFSession> query = getInstance().createQuery();
+        query.field("uuid").equal(uuid);
+        query.field("server").equal(server);
+        HCFSession session = getInstance().findOne(query);
         if (session == null)
         {
             if (DesireCore.DEBUG)
             {
                 System.out.println("initializeHCFSession(UUID, boolean) HCFSession not found.");
             }
-            session = createHCFSession(uuid);
+            session = createHCFSession(uuid, server);
         }
         if (DesireCore.DEBUG)
         {
@@ -143,10 +147,10 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         return hcfSession;
     }
 
-    private static HCFSession createHCFSession(UUID uuid)
+    private static HCFSession createHCFSession(UUID uuid, String server)
     {
         HCFSession session = new HCFSession();
-        session.assignDefault(uuid);
+        session.assignDefault(uuid, server);
         getInstance().save(session);
 
         return session;

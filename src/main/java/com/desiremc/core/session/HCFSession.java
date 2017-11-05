@@ -1,18 +1,16 @@
 package com.desiremc.core.session;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
@@ -23,8 +21,14 @@ import com.desiremc.core.utils.PlayerUtils;
 public class HCFSession
 {
 
-    @Id
+    @Transient
+    private static final boolean DEBUG = true;
+
+    @Indexed
     private UUID uuid;
+
+    @Indexed
+    String server;
 
     @Property("safe_timer")
     private long safeTimer;
@@ -34,13 +38,13 @@ public class HCFSession
     private int diamonds;
 
     @Embedded
-    private Map<String, List<DeathBan>> deathBans;
+    private List<DeathBan> deathBans;
 
     @Embedded
-    private Map<String, List<Ticker>> kills;
+    private List<Ticker> kills;
 
     @Embedded
-    private Map<String, List<Ticker>> deaths;
+    private List<Ticker> deaths;
 
     @Transient
     private Session session;
@@ -57,14 +61,15 @@ public class HCFSession
     public HCFSession()
     {
         pvpTimer = new PVPTimer();
-        kills = new HashMap<>();
-        deaths = new HashMap<>();
-        deathBans = new HashMap<>();
+        kills = new LinkedList<>();
+        deaths = new LinkedList<>();
+        deathBans = new LinkedList<>();
     }
 
-    protected void assignDefault(UUID uuid)
+    protected void assignDefault(UUID uuid, String server)
     {
         this.uuid = uuid;
+        this.server = server;
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time");
     }
 
@@ -149,47 +154,29 @@ public class HCFSession
         save();
     }
 
-    public int getTotalKills(String server)
+    public int getTotalKills()
     {
-        List<Ticker> local = kills.get(server);
-        if (local == null)
-        {
-            kills.put(server, new LinkedList<>());
-            return 0;
-        }
         int count = 0;
-        for (Ticker ticker : local)
+        for (Ticker ticker : kills)
         {
             count += ticker.getCount();
         }
         return count;
     }
 
-    public int getTotalDeaths(String server)
+    public int getTotalDeaths()
     {
-        List<Ticker> local = deaths.get(server);
-        if (local == null)
-        {
-            deaths.put(server, new LinkedList<>());
-            return 0;
-        }
         int count = 0;
-        for (Ticker ticker : local)
+        for (Ticker ticker : deaths)
         {
             count += ticker.getCount();
         }
         return count;
     }
 
-    public void addKill(String server, UUID victim)
+    public void addKill(UUID victim)
     {
-        List<Ticker> local = kills.get(server);
-        if (local == null)
-        {
-            local = new LinkedList<>();
-            kills.put(server, local);
-        }
-        for (Ticker tick : local)
+        for (Ticker tick : kills)
         {
             if (tick.getUniqueId().equals(victim))
             {
@@ -197,31 +184,19 @@ public class HCFSession
                 return;
             }
         }
-        local.add(new Ticker(victim));
+        kills.add(new Ticker(victim));
         save();
     }
 
-    public void addDeath(String server, UUID killer)
+    public void addDeath(UUID killer)
     {
         System.out.println("addDeath() called with server " + server + " and killer " + (killer == null ? "null" : killer.toString()) + ".");
-        List<DeathBan> bans = deathBans.get(server);
-        if (bans == null)
-        {
-            bans = new LinkedList<>();
-            deathBans.put(server, bans);
-        }
-        bans.add(new DeathBan(System.currentTimeMillis()));
-        save();
+
+        deathBans.add(new DeathBan(System.currentTimeMillis()));
 
         if (killer != null)
         {
-            List<Ticker> local = deaths.get(server);
-            if (local == null)
-            {
-                local = new LinkedList<>();
-                deaths.put(server, local);
-            }
-            for (Ticker tick : local)
+            for (Ticker tick : deaths)
             {
                 if (tick.getUniqueId().equals(killer))
                 {
@@ -230,7 +205,7 @@ public class HCFSession
                     return;
                 }
             }
-            local.add(new Ticker(killer));
+            deaths.add(new Ticker(killer));
             save();
         }
     }
@@ -250,24 +225,20 @@ public class HCFSession
         return pvpTimer;
     }
 
-    public boolean hasDeathBan(String server)
+    public boolean hasDeathBan()
     {
-        return getActiveDeathBan(server) != null;
+        return getActiveDeathBan() != null;
     }
 
-    public long getDeathBanEnd(String server)
+    public long getDeathBanEnd()
     {
-        DeathBan ban = getActiveDeathBan(server);
-        if (ban == null)
-        {
-            throw new IllegalStateException("Player does not have a deathban.");
-        }
+        DeathBan ban = getActiveDeathBan();
         return ban != null ? ban.getStartTime() : -1;
     }
 
-    public void revive(String server)
+    public void revive()
     {
-        DeathBan ban = getActiveDeathBan(server);
+        DeathBan ban = getActiveDeathBan();
         if (ban == null)
         {
             throw new IllegalStateException("Player does not have a deathban.");
@@ -276,26 +247,32 @@ public class HCFSession
         save();
     }
 
-    public DeathBan getActiveDeathBan(String server)
+    public DeathBan getActiveDeathBan()
     {
-        System.out.println("getActiveDeathBan() called.");
-        System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
-        List<DeathBan> bans = deathBans.get(server);
-        if (bans == null)
+        if (DEBUG)
         {
-            return null;
+            System.out.println("getActiveDeathBan() called.");
+            System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
         }
-        System.out.println("getActiveDeathBan() found for server " + server + ".");
-        for (DeathBan ban : bans)
+        for (DeathBan ban : deathBans)
         {
-            System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
+            if (DEBUG)
+            {
+                System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
+            }
             if (!ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
             {
-                System.out.println("getActiveDeathBan() returned ban.");
+                if (DEBUG)
+                {
+                    System.out.println("getActiveDeathBan() returned ban.");
+                }
                 return ban;
             }
         }
-        System.out.println("getActiveDeathBan() returned null.");
+        if (DEBUG)
+        {
+            System.out.println("getActiveDeathBan() returned null.");
+        }
         return null;
     }
 
@@ -314,13 +291,8 @@ public class HCFSession
         return ((HCFSession) o).getUniqueId().equals(uuid);
     }
 
-    public String[] getKillDisplay(String server)
+    public String[] getKillDisplay()
     {
-        List<Ticker> kills = this.kills.get(server);
-        if (kills == null)
-        {
-            return new String[] {};
-        }
         Collections.sort(kills);
         String[] array = new String[kills.size()];
         int i = 0;
