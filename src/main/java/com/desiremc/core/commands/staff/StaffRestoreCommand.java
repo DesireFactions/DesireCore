@@ -4,10 +4,11 @@ package com.desiremc.core.commands.staff;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class StaffRestoreCommand extends ValidCommand
 {
@@ -21,8 +22,8 @@ public class StaffRestoreCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        Player player = (Player) sender;
-        Player target = (Player) args[0];
+        Session player = SessionHandler.getSession(sender);
+        Session target = (Session) args[0];
 
         StaffHandler.getInstance().restoreInventory(player, target);
     }
