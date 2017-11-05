@@ -65,6 +65,7 @@ public class TabList implements Listener
                 team.unregister();
             }
 
+            playerTab.clear();
             Tab.getPlayerTabs().remove(playerTab);
             Bukkit.getPluginManager().callEvent(new TabDeleteEvent(playerTab));
         }
