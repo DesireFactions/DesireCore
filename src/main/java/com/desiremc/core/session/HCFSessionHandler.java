@@ -2,6 +2,8 @@ package com.desiremc.core.session;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -89,6 +91,28 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         else
         {
             return null;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static HCFSession getHCFSessionByName(String name, String server)
+    {
+        OfflinePlayer p = Bukkit.getPlayerExact(name);
+        if (p == null)
+        {
+            p = Bukkit.getOfflinePlayer(name);
+        }
+        if (p == null)
+        {
+            return null;
+        }
+        if (p.isOnline())
+        {
+            return getHCFSession(p.getUniqueId(), server);
+        }
+        else
+        {
+            return initializeHCFSession(p.getUniqueId(), server, false);
         }
     }
 
