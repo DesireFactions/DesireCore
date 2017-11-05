@@ -36,6 +36,8 @@ public class HCFSession
     private int lives;
 
     private int diamonds;
+    
+    private double balance;
 
     @Embedded
     private List<DeathBan> deathBans;
@@ -154,6 +156,30 @@ public class HCFSession
         save();
     }
 
+    public double getBalance()
+    {
+        return balance;
+    }
+    
+    public void setBalance(double balance)
+    {
+        this.balance = balance;
+        save();
+    }
+    
+    public void depositBalance(double amount)
+    {
+        this.balance += amount;
+        save();
+    }
+    
+    public void withdrawBalance(double amount)
+    {
+        this.balance -= amount;
+        save();
+    }
+    
+    
     public int getTotalKills()
     {
         int count = 0;
