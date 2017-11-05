@@ -202,6 +202,9 @@ public class Tab
     public void removeEntry(UUID uuid)
     {
         Entry entry = this.entries.remove(uuid);
-        entry.setText("").send();
+        if (entry != null)
+        {
+            entry.setText("").send();
+        }
     }
 }
