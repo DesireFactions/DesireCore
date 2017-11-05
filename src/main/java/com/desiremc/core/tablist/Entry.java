@@ -43,12 +43,18 @@ public class Entry
 
     public Entry(Tab playerTab, String text, int x, int y, String skin)
     {
+        this(playerTab, text, x, y, skin, UUID.randomUUID());
+    }
+
+    public Entry(Tab playerTab, String text, int x, int y, String skin, UUID uuid)
+    {
         this.playerTab = playerTab;
         this.text = text;
         this.x = x;
         this.y = y;
         this.skin = skin;
-        playerTab.getEntries().add(this);
+        this.uuid = uuid;
+        playerTab.addEntry(this);
     }
 
     private Entry setup()

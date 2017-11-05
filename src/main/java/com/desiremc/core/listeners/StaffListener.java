@@ -7,8 +7,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.staff.StaffHandler;
@@ -16,7 +18,7 @@ import com.desiremc.core.staff.StaffHandler;
 public class StaffListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event)
     {
         Player p = event.getPlayer();
@@ -49,6 +51,30 @@ public class StaffListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    public void onBreak(BlockBreakEvent event)
+    {
+        Player p = event.getPlayer();
+
+        if (!StaffHandler.getInstance().inStaffMode(p))
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+    }
+
+    public void onPickup(PlayerPickupItemEvent event)
+    {
+        Player p = event.getPlayer();
+
+        if (!StaffHandler.getInstance().inStaffMode(p))
+        {
+            return;
+        }
+        
+        event.setCancelled(true);
     }
 
     private boolean handleInteraction(ItemStack item, PlayerInteractEvent event)

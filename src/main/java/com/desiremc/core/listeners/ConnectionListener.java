@@ -44,7 +44,7 @@ public class ConnectionListener implements Listener
 
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event)
     {
         if (DEBUG)

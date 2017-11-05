@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -37,21 +38,27 @@ public class TabList implements Listener
             this.options = options;
             for (Player p : Bukkit.getOnlinePlayers())
             {
-                TabList.this.checkPlayer(p);
+                checkPlayer(p);
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoinEvent(PlayerJoinEvent event)
     {
-        TabList.this.checkPlayer(event.getPlayer());
+        checkPlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
+
+        for (Tab tab : Tab.getPlayerTabs())
+        {
+            tab.removeEntry(player.getUniqueId());
+        }
+
         Tab playerTab = Tab.getByPlayer(player);
 
         if (playerTab != null)

@@ -1,9 +1,11 @@
 package com.desiremc.core.tablist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -19,15 +21,17 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
 public class Tab
 {
 
+    private static final boolean DEBUG = true;
+
     private static ConcurrentHashMap<Tab, Boolean> playerTabs = new ConcurrentHashMap<>();
     private Player player;
     private Scoreboard scoreboard;
-    private List<Entry> entries;
+    private HashMap<UUID, Entry> entries;
 
     public Tab(final Player player)
     {
         this.player = player;
-        this.entries = new ArrayList<>();
+        this.entries = new HashMap<>();
         this.clear();
         if (!player.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard()))
         {
@@ -46,7 +50,7 @@ public class Tab
 
     public void clear()
     {
-        Iterator<Entry> iterator = this.entries.iterator();
+        Iterator<Entry> iterator = this.entries.values().iterator();
 
         while (iterator.hasNext())
         {
@@ -84,7 +88,7 @@ public class Tab
 
     public Entry getEntry(int x, int y)
     {
-        Iterator<Entry> iterator = this.entries.iterator();
+        Iterator<Entry> iterator = this.entries.values().iterator();
 
         Entry tabEntry;
 
@@ -108,7 +112,7 @@ public class Tab
         label23: while (iterator.hasNext())
         {
             String string = iterator.next();
-            Iterator<Entry> iterator1 = this.entries.iterator();
+            Iterator<Entry> iterator1 = this.entries.values().iterator();
 
             while (iterator1.hasNext())
             {
@@ -122,7 +126,10 @@ public class Tab
 
             return string;
         }
-
+        if (DEBUG)
+        {
+            System.out.println("Tab.getNextBlank() returned null.");
+        }
         return null;
     }
 
@@ -183,8 +190,18 @@ public class Tab
         return this.scoreboard;
     }
 
-    public List<Entry> getEntries()
+    public void addEntry(Entry entry)
     {
-        return this.entries;
+        if (entry.getUniqueId() == null)
+        {
+            throw new IllegalArgumentException("Entry has null UUID.");
+        }
+        this.entries.put(entry.getUniqueId(), entry);
+    }
+
+    public void removeEntry(UUID uuid)
+    {
+        Entry entry = this.entries.remove(uuid);
+        entry.setText("").send();
     }
 }

@@ -6,9 +6,14 @@ import org.bukkit.entity.Player;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class StaffChatCommand extends ValidCommand
 {
@@ -17,8 +22,10 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand(String name, String... aliases)
     {
-        super(name, "Join or leave staff chat.", Rank.JRMOD, new String[] {}, aliases);
+        super(name, "Join or leave staff chat.", Rank.JRMOD, ARITY_OPTIONAL_VARIADIC, new String[] { "message" }, aliases);
         addValidator(new PlayerValidator());
+
+        addParser(new StringParser(), "message");
     }
 
     @Override
@@ -26,14 +33,27 @@ public class StaffChatCommand extends ValidCommand
     {
         Player p = (Player) sender;
 
-        if (StaffHandler.getInstance().inStaffChat(p))
+        if (args.length == 0)
         {
-            LANG.sendRenderMessage(p, "staff.staff-chat-off");
+            if (StaffHandler.getInstance().inStaffChat(p))
+            {
+                LANG.sendRenderMessage(p, "staff.staff-chat-off");
+            }
+            else
+            {
+                LANG.sendRenderMessage(p, "staff.staff-chat-on");
+            }
+            StaffHandler.getInstance().toggleStaffChat(p);
         }
         else
         {
-            LANG.sendRenderMessage(p, "staff.staff-chat-on");
+            String message = (String) args[0];
+            String parsed = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', message));
+            for (Session target : SessionHandler.getInstance().getStaff())
+            {
+                target.getPlayer().sendMessage(parsed);
+            }
+
         }
-        StaffHandler.getInstance().toggleStaffChat(p);
     }
 }

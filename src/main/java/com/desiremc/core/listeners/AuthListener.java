@@ -110,7 +110,7 @@ public class AuthListener implements Listener
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent event)
     {
         Player player = event.getPlayer();

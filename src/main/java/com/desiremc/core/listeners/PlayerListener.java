@@ -2,7 +2,6 @@ package com.desiremc.core.listeners;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -19,11 +18,14 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener
 {
+    private static final boolean DEBUG = true;
+
     @EventHandler
     public void onFrozenPlayerMove(PlayerMoveEvent event)
     {
@@ -41,19 +43,23 @@ public class PlayerListener implements Listener
         StaffHandler.getInstance().handleCPSTest(event);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onChat(AsyncPlayerChatEvent event)
     {
+        if (DEBUG)
+        {
+            System.out.println("PlayerListener.onChat() called.");
+        }
         Player p = event.getPlayer();
         Session session = SessionHandler.getSession(p);
 
         if (StaffHandler.getInstance().inStaffChat(p))
         {
             event.setCancelled(true);
-            for (UUID target : StaffHandler.getInstance().getAllInStaffChat())
+            String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+            for (Session target : SessionHandler.getInstance().getStaff())
             {
-                String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event.getMessage());
-                PlayerUtils.getPlayer(target).sendMessage(message);
+                target.getPlayer().sendMessage(message);
             }
             return;
         }
