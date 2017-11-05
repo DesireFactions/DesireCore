@@ -17,7 +17,7 @@ public enum Rank
     MODERATOR(7, "Moderator", "§2§lMod", ChatColor.WHITE, ChatColor.BLUE, "mod"),
     SRMOD(8, "Senior_Mod", "§e§lSr.Mod", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
     ADMIN(9, "Admin", "§4§lAdmin", ChatColor.RED, ChatColor.RED),
-    DEVELOPER(10, "Developer", "§5§lDev", ChatColor.LIGHT_PURPLE, ChatColor.RED, "dev"),
+    DEVELOPER(10, "Developer", "§5§lDeveloper", ChatColor.LIGHT_PURPLE, ChatColor.RED, "dev"),
     OWNER(11, "Owner", "§3§lOwner", ChatColor.AQUA, ChatColor.RED);
 
     private final int id;
