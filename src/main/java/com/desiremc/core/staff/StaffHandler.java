@@ -34,7 +34,8 @@ public class StaffHandler
 {
 
     private static StaffHandler instance;
-    private HashMap<UUID, ItemStack[]> inventories;
+    private HashMap<UUID, ItemStack[]> staffInventories;
+    private HashMap<UUID, ItemStack[]> deathInventories;
     private HashMap<UUID, Integer> cpsTests;
     private List<UUID> frozenPlayers;
     private List<UUID> hiddenPlayers;
@@ -49,7 +50,8 @@ public class StaffHandler
 
     public StaffHandler()
     {
-        inventories = new HashMap<>();
+        staffInventories = new HashMap<>();
+        deathInventories = new HashMap<>();
         cpsTests = new HashMap<>();
         hiddenPlayers = new LinkedList<>();
         frozenPlayers = new ArrayList<>();
@@ -70,7 +72,7 @@ public class StaffHandler
 
     public boolean inStaffMode(Player p)
     {
-        return inventories.containsKey(p.getUniqueId());
+        return staffInventories.containsKey(p.getUniqueId());
     }
 
     public boolean runningCPSTests()
@@ -113,7 +115,7 @@ public class StaffHandler
 
     public void enableStaffMode(Player p)
     {
-        inventories.put(p.getUniqueId(), p.getInventory().getContents());
+        staffInventories.put(p.getUniqueId(), p.getInventory().getContents());
         p.getInventory().clear();
 
         for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
@@ -152,8 +154,8 @@ public class StaffHandler
         if (inStaffMode(p))
         {
             p.getInventory().clear();
-            p.getInventory().setContents(inventories.get(p.getUniqueId()));
-            inventories.remove(p.getUniqueId());
+            p.getInventory().setContents(staffInventories.get(p.getUniqueId()));
+            staffInventories.remove(p.getUniqueId());
             p.setGameMode(GameMode.SURVIVAL);
             LANG.sendString(p, "staff.staff-off");
         }
@@ -269,10 +271,11 @@ public class StaffHandler
             hiddenPlayers.add(player.getUniqueId());
             LANG.sendString(player, "staff.set-invisible");
 
-            if(item)
+            if (item)
             {
                 Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
-                player.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget, true));
+                player.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget,
+                        true));
                 player.updateInventory();
             }
         }
@@ -282,7 +285,7 @@ public class StaffHandler
             hiddenPlayers.remove(index);
             LANG.sendString(player, "staff.set-visible");
 
-            if(item)
+            if (item)
             {
                 Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
                 player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
@@ -457,4 +460,24 @@ public class StaffHandler
         StaffHandler.getInstance().openReportsGUI(p);
     }
 
+    public void saveInventory(Player player)
+    {
+        deathInventories.put(player.getUniqueId(), player.getInventory().getContents());
+    }
+
+    public void restoreInventory(Player player, Player target)
+    {
+        if (!deathInventories.containsKey(target.getUniqueId()))
+        {
+            DesireCore.getLangHandler().sendRenderMessage(player, "staff.no-restore", "{player}", target.getName());
+            return;
+        }
+
+        target.getInventory().setContents(deathInventories.get(target.getUniqueId()));
+        deathInventories.remove(target.getUniqueId());
+        target.updateInventory();
+
+        DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(target, "staff.restore-target", "{player}", player.getName());
+    }
 }

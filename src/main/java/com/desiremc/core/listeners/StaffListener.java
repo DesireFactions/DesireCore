@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -53,28 +54,32 @@ public class StaffListener implements Listener
         }
     }
 
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event)
+    {
+        StaffHandler.getInstance().saveInventory(event.getEntity());
+    }
+
+    @EventHandler
     public void onBreak(BlockBreakEvent event)
     {
         Player p = event.getPlayer();
 
-        if (!StaffHandler.getInstance().inStaffMode(p))
+        if (StaffHandler.getInstance().inStaffMode(p))
         {
-            return;
+            event.setCancelled(true);
         }
-
-        event.setCancelled(true);
     }
 
+    @EventHandler
     public void onPickup(PlayerPickupItemEvent event)
     {
         Player p = event.getPlayer();
 
-        if (!StaffHandler.getInstance().inStaffMode(p))
+        if (StaffHandler.getInstance().inStaffMode(p))
         {
-            return;
+            event.setCancelled(true);
         }
-        
-        event.setCancelled(true);
     }
 
     private boolean handleInteraction(ItemStack item, PlayerInteractEvent event)

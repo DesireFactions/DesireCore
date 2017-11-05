@@ -16,6 +16,7 @@ public class StaffCommand extends ValidBaseCommand
         addSubCommand(new StaffFollowCommand());
         addSubCommand(new StaffChatCommand("chat", "sc"));
         addSubCommand(new StaffReportsCommand("reports", "report"));
+        addSubCommand(new StaffRestoreCommand());
     }
 
 }
