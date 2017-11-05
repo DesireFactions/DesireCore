@@ -118,7 +118,7 @@ public class StaffHandler
 
         for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
         {
-            p.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget));
+            p.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget, false));
         }
         LANG.sendString(p, "staff.staff-on");
         p.setGameMode(GameMode.CREATIVE);
@@ -256,10 +256,10 @@ public class StaffHandler
 
     public void useInvisibility(PlayerInteractEvent e)
     {
-        toggleInvisibility(e.getPlayer());
+        toggleInvisibility(e.getPlayer(), true);
     }
 
-    public void toggleInvisibility(Player player)
+    public void toggleInvisibility(Player player, boolean item)
     {
         int index = hiddenPlayers.indexOf(player.getUniqueId());
 
@@ -268,12 +268,24 @@ public class StaffHandler
             hidePlayer(player);
             hiddenPlayers.add(player.getUniqueId());
             LANG.sendString(player, "staff.set-invisible");
+
+            if(item)
+            {
+                Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
+                player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, true));
+            }
         }
         else
         {
             showPlayer(player);
             hiddenPlayers.remove(index);
             LANG.sendString(player, "staff.set-visible");
+
+            if(item)
+            {
+                Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
+                player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
+            }
         }
     }
 

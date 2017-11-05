@@ -52,22 +52,33 @@ public class GadgetHandler
         return gadgets.get(name);
     }
 
-    public ItemStack buildGadget(String name)
+    public ItemStack buildGadget(String name, boolean status)
     {
-        return buildGadget(gadgets.get(name));
+        return buildGadget(gadgets.get(name), status);
     }
 
-    public ItemStack buildGadget(Gadget gadget)
+    public ItemStack buildGadget(Gadget gadget, boolean status)
     {
         ItemStack item;
 
-        if(gadget.getData() != -1)
+        if (gadget.getName().equalsIgnoreCase("vanish") && status)
         {
-            item = new ItemStack(gadget.getType(), 1, gadget.getData());
+            Material material = Material.matchMaterial(DesireCore.getConfigHandler().getString("gadgets.vanish" +
+                    ".item-on").split(":")[0]);
+            byte data = (byte) Integer.parseInt(DesireCore.getConfigHandler().getString("gadgets.vanish.item-on")
+                    .split(":")[1]);
+            item = new ItemStack(material, 1, data);
         }
         else
         {
-            item = new ItemStack(gadget.getType(), 1);
+            if (gadget.getData() != -1)
+            {
+                item = new ItemStack(gadget.getType(), 1, gadget.getData());
+            }
+            else
+            {
+                item = new ItemStack(gadget.getType(), 1);
+            }
         }
 
         ItemMeta meta = item.getItemMeta();

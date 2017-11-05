@@ -26,7 +26,7 @@ public class StaffInvisibilityCommand extends ValidCommand
         {
             p = (Player) args[0];
         }
-        StaffAPI.toggleInvisibility(p);
+        StaffAPI.toggleInvisibility(p, false);
     }
 
 }

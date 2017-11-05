@@ -35,9 +35,9 @@ public class StaffAPI
         LANG.sendRenderMessage(sender, "staff.cps-start", "{player}", player.getDisplayName());
     }
 
-    public static void toggleInvisibility(Player player)
+    public static void toggleInvisibility(Player player, boolean item)
     {
-        STAFF.toggleInvisibility(player);
+        STAFF.toggleInvisibility(player, item);
     }
 
     public static void mount(Player passenger, Player target)
