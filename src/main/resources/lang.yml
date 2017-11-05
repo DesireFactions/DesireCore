@@ -27,6 +27,7 @@ invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
 potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
 cant_to_self: "You can't do that to yourself!"
+player-not-found: "That player does not exist!"
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'

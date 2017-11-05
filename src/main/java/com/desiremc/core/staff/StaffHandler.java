@@ -465,17 +465,18 @@ public class StaffHandler
         deathInventories.put(player.getUniqueId(), player.getInventory().getContents());
     }
 
-    public void restoreInventory(Player player, Player target)
+    public void restoreInventory(Session player, Session target)
     {
+
         if (!deathInventories.containsKey(target.getUniqueId()))
         {
             DesireCore.getLangHandler().sendRenderMessage(player, "staff.no-restore", "{player}", target.getName());
             return;
         }
 
-        target.getInventory().setContents(deathInventories.get(target.getUniqueId()));
+        target.getPlayer().getInventory().setContents(deathInventories.get(target.getUniqueId()));
         deathInventories.remove(target.getUniqueId());
-        target.updateInventory();
+        target.getPlayer().updateInventory();
 
         DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", "{player}", target.getName());
         DesireCore.getLangHandler().sendRenderMessage(target, "staff.restore-target", "{player}", player.getName());
