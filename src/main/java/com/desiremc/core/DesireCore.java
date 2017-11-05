@@ -3,6 +3,8 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.core.commands.BlacklistCommand;
+import com.desiremc.core.commands.UnblacklistCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -126,6 +128,8 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new ReportCommand());
         customCommandHandler.registerCommand(new InfoCommand());
         customCommandHandler.registerCommand(new RankCommand());
+        customCommandHandler.registerCommand(new BlacklistCommand());
+        customCommandHandler.registerCommand(new UnblacklistCommand());
         customCommandHandler.registerCommand(new StaffCommand());
         customCommandHandler.registerCommand(new ChatCommand());
         customCommandHandler.registerCommand(new TempBanCommand());

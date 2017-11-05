@@ -8,6 +8,8 @@ never_logged_in: '&7This player has never logged in before.'
 only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 not_banned: '{player} is not banned.'
+not_blacklisted: "{player} is not blacklisted."
+blacklisted: "{player} is blacklisted. They can't be unbanned."
 no_season_data: Could not find Season data for &e{faction}
 could_not_retrieve: '&6Could not retrieve &7{name}'
 current_koth: Current KOTH $l&e{koth}
@@ -24,6 +26,7 @@ item_in_hand: '&7You must have an item in your hand.'
 invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
 potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
+cant_to_self: "You can't do that to yourself!"
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
@@ -54,14 +57,16 @@ friend:
   no_friends: 'You have currently have no friends.'
   not_friends: 'You are not friends with {player}.'
 ban:
-  rank_to_low_error: '&7You may only ban people below your rank.'
-  invalid_ban_time_error: '&7Invalid ban time.'
   tempban_message: '&7You have {duration} banned &e{player}&7 for &e{reason}&7.'
   permban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
   unban_message: '&7You have unbanned &e{player}&7.'
   tempban_message_target: '&7You have been {duration} banned by &e{player}&7 for &e{reason}&7.'
   permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
   unban_message_target: '&7You have been unbanned by &e{player}&7.'
+blacklist:
+  blacklist_message: '&7You have blacklisted &e{player}&7 for &e{reason}&7.'
+  unblacklist_message: '&7You have unblacklisted &e{player}&7.'
+  permban_message_target: '&7You have been blacklisted by &e{player}&7 for &e{reason}&7.'
 warn:
   warn_issued: "You have warned {player} for {reason}"
   warned: "You have been warned by {player} for {reason}. The warning expires in {time}"
