@@ -42,6 +42,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         return getInstance().sessions.values();
     }
 
+    public static HCFSession getHCFSession(UUID uuid)
+    {
+        return getHCFSession(uuid, DesireCore.getCurrentServer());
+    }
+    
     /**
      * Gets the session of a user and initializes it if it does not yet exist.
      * 
@@ -76,6 +81,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
             return initializeHCFSession(uuid, server, false);
         }
 
+    }
+    
+    public static HCFSession getHCFSession(CommandSender sender)
+    {
+        return getHCFSession(sender, DesireCore.getCurrentServer());
     }
 
     public static HCFSession getHCFSession(CommandSender sender, String server)
@@ -116,6 +126,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         }
     }
 
+    public static HCFSession initializeHCFSession(UUID uuid, boolean cache)
+    {
+        return initializeHCFSession(uuid, DesireCore.getCurrentServer(), cache);
+    }
+    
     public static HCFSession initializeHCFSession(UUID uuid, String server, boolean cache)
     {
         if (DesireCore.DEBUG)
