@@ -23,7 +23,7 @@ public class PlayerHCFSessionParser implements ArgumentParser
         }
         else
         {
-            s = HCFSessionHandler.getHCFSession(p.getUniqueId());
+            s = HCFSessionHandler.getHCFSession(p.getUniqueId(), DesireCore.getCurrentServer());
         }
         if (s == null)
         {
