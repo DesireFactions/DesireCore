@@ -272,7 +272,8 @@ public class StaffHandler
             if(item)
             {
                 Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
-                player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, true));
+                player.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget, true));
+                player.updateInventory();
             }
         }
         else

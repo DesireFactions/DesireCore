@@ -26,6 +26,8 @@ public class Punishment {
 
     private boolean repealed;
 
+    private boolean blacklisted;
+
     private String reason;
 
     public UUID getPunished() {
@@ -82,6 +84,16 @@ public class Punishment {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public void setBlacklisted(boolean blacklisted)
+    {
+        this.blacklisted = blacklisted;
+    }
+
+    public boolean isBlacklisted()
+    {
+        return blacklisted;
     }
 
     public static enum Type {
