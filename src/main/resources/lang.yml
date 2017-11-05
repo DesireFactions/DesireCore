@@ -90,6 +90,10 @@ staff:
   target-unfrozen: "You have unfroze {player}."
   frozen: "You have been frozen by {player}."
   unfrozen: "You have been unfrozen by {player}."
+  no-restore: "{player} does not have an inventory to restore."
+  restore: "You have restored {player}'s inventory."
+  restore-target: "{player} has restored your inventory."
+  kick-message: "You have been kicked by {player} for {reason}"
 report:
   reported: "You have reported {player} for {reason}"
   getreport:
