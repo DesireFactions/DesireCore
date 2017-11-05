@@ -82,7 +82,7 @@ staff:
   set-invisible: "You are now invisible."
   set-visible: "You are now visible."
   target-frozen: "You have froze {player}."
-  target-unfrozen: "You have unfroze (player)."
+  target-unfrozen: "You have unfroze {player}."
   frozen: "You have been frozen by {player}."
   unfrozen: "You have been unfrozen by {player}."
 report:

@@ -54,37 +54,14 @@ public class GadgetHandler
 
     public ItemStack buildGadget(String name)
     {
-        if (gadgets.get(name) == null || !gadgets.get(name).isEnabled())
-        {
-            return new ItemStack(Material.AIR);
-        }
-
-        Gadget gadget = gadgets.get(name);
-
-        ItemStack item = new ItemStack(gadget.getType(), 1, gadget.getData());
-
-        ItemMeta meta = item.getItemMeta();
-
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', gadget.getDisplayName()));
-
-        List<String> lore = new ArrayList<>();
-
-        for (String s : gadget.getLore())
-        {
-            lore.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-
-        return item;
+        return buildGadget(gadgets.get(name));
     }
 
     public ItemStack buildGadget(Gadget gadget)
     {
         ItemStack item;
 
-        if(gadget.getData() == -1)
+        if(gadget.getData() != -1)
         {
             item = new ItemStack(gadget.getType(), 1, gadget.getData());
         }
