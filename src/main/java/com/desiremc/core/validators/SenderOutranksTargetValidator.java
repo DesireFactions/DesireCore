@@ -17,6 +17,12 @@ public class SenderOutranksTargetValidator extends CommandValidator
         Rank senderRank = SessionUtils.getRank(SessionHandler.getSession(sender));
         Rank targetRank = SessionUtils.getRank(arg);
 
+        if(sender.getName().equalsIgnoreCase(SessionHandler.getSession(sender).getName()))
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "cant_to_self");
+            return false;
+        }
+
         if (senderRank.compareTo(targetRank) > 0)
         {
             return true;
