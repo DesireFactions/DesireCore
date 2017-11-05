@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.core.utils.PlayerUtils;
 
 /**
  * @author Michael Ziluck
@@ -20,8 +19,7 @@ public class LangHandler extends FileHandler
     private boolean usePrefix;
 
     /**
-     * Create a new {@link LangHandler} based on the {@link FileHandler}. Also
-     * loads the prefix.
+     * Create a new {@link LangHandler} based on the {@link FileHandler}. Also loads the prefix.
      *
      * @param file
      */
@@ -37,9 +35,8 @@ public class LangHandler extends FileHandler
     }
 
     /**
-     * Gets a formatted string from the config file. Replaces any color place
-     * holders as well. If the string does not exist in the config, returns
-     * null.
+     * Gets a formatted string from the config file. Replaces any color place holders as well. If the string does not
+     * exist in the config, returns null.
      *
      * @param string
      * @return the formatted string.
@@ -75,37 +72,21 @@ public class LangHandler extends FileHandler
      */
     public String renderMessage(String string, String... args)
     {
-        if (args.length % 2 != 0)
-        {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
-        }
-
-        String message = getString(string);
-        for (int i = 0; i < args.length; i += 2)
-        {
-            message = message.replace(args[i], args[i + 1]);
-        }
-
-        return message;
+        return renderString(getString(string), args);
     }
 
     public String renderMessageNoPrefix(String string, String... args)
     {
-        if (args.length % 2 != 0)
-        {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
-        }
-
-        String message = super.getString(string);
-
-        for (int i = 0; i < args.length; i += 2)
-        {
-            message = message.replace(args[i], args[i + 1]);
-        }
-
-        return message;
+        return renderString(super.getString(string), args);
     }
 
+    /**
+     * Render a string with the proper parameters.
+     * 
+     * @param string the rendered string.
+     * @param args the placeholders and proper content.
+     * @return the rendered string.
+     */
     public String renderString(String string, String... args)
     {
         if (args.length % 2 != 0)
@@ -135,8 +116,7 @@ public class LangHandler extends FileHandler
 
     public void sendRenderMessage(Session s, String string, String... args)
     {
-        CommandSender sender = PlayerUtils.getPlayer(s.getUniqueId());
-        sendRenderMessage(sender, string, args);
+        sendRenderMessage(s.getPlayer(), string, args);
     }
 
     public void sendRenderMessage(CommandSender sender, String string, boolean center, String... args)
@@ -153,14 +133,13 @@ public class LangHandler extends FileHandler
 
     public void sendRenderMessage(Session s, String string, boolean center, String... args)
     {
-        CommandSender sender = PlayerUtils.getPlayer(s.getUniqueId());
         if (center)
         {
-            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
+            ChatUtils.sendCenteredMessage(s.getPlayer(), renderMessage(string, args));
         }
         else
         {
-            sender.sendMessage(renderMessage(string, args));
+            s.getPlayer().sendMessage(renderMessage(string, args));
         }
     }
 
