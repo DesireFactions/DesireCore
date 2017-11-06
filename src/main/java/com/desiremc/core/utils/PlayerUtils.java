@@ -7,10 +7,12 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 
@@ -74,6 +76,18 @@ public class PlayerUtils
             return null;
         }
         return s.getUniqueId();
+    }
+
+    public static UUID getUUIDFromSender(CommandSender sender)
+    {
+        if (sender instanceof Player)
+        {
+            return ((Player) sender).getUniqueId();
+        }
+        else
+        {
+            return DesireCore.getConsoleUUID();
+        }
     }
 
     /**

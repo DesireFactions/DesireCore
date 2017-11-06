@@ -12,7 +12,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,13 +22,12 @@ import com.desiremc.core.session.SessionHandler;
 
 /**
  * @author Michael Ziluck
- *
  */
 public class CustomCommandHandler implements CommandExecutor
 {
 
     private static CustomCommandHandler instance;
-    
+
     private static CommandMap commandMapInstance = getCommandMap();
 
     private LinkedList<ValidCommand> commands;
@@ -40,7 +38,7 @@ public class CustomCommandHandler implements CommandExecutor
         ValidCommand command = getCustomCommand(label);
         if (command != null)
         {
-            Session s = sender instanceof Player ? SessionHandler.getSession(sender) : null;
+            Session s = SessionHandler.getSession(sender);
             if (s == null || s.getRank().getId() >= command.getRequiredRank().getId())
             {
                 command.run(sender, label, args);
@@ -125,16 +123,19 @@ public class CustomCommandHandler implements CommandExecutor
     {
         for (ValidCommand command : commands)
         {
-            if (command.matches(cmd)) { return command; }
+            if (command.matches(cmd))
+            {
+                return command;
+            }
         }
         return null;
     }
 
-    public static void initialize() 
+    public static void initialize()
     {
         instance = new CustomCommandHandler();
     }
-    
+
     public static CustomCommandHandler getInstance()
     {
         return instance;
