@@ -1,5 +1,6 @@
 package com.desiremc.core.commands;
 
+import com.desiremc.core.validators.PlayerIsOnlineValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,11 +17,12 @@ public class KickCommand extends ValidCommand
 
     public KickCommand()
     {
-        super("kick", "Kick a user from the server.", Rank.JRMOD, new String[] { "target", "reason" });
+        super("kick", "Kick a user from the server.", Rank.JRMOD, new String[]{"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
         addValidator(new SenderOutranksTargetValidator(), "target");
+        addValidator(new PlayerIsOnlineValidator());
     }
 
     @Override
@@ -39,6 +41,7 @@ public class KickCommand extends ValidCommand
             }
         }
 
-        target.kickPlayer(DesireCore.getLangHandler().renderMessage("staff.kick-message", "{player}", player.getName(), "{reason}", sb.toString().trim()));
+        target.kickPlayer(DesireCore.getLangHandler().renderMessage("staff.kick-message", "{player}", player.getName
+                (), "{reason}", sb.toString().trim()));
     }
 }

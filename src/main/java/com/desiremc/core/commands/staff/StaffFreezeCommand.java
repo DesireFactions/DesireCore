@@ -1,5 +1,6 @@
 package com.desiremc.core.commands.staff;
 
+import com.desiremc.core.validators.PlayerIsOnlineValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,6 +16,7 @@ public class StaffFreezeCommand extends ValidCommand
     {
         super("freeze", "Freeze a target player", Rank.JRMOD, new String[] { "target" }, "ss");
         addParser(new PlayerParser(), "target");
+        addValidator(new PlayerIsOnlineValidator());
     }
 
     @Override

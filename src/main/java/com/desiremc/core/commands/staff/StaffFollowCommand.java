@@ -1,5 +1,6 @@
 package com.desiremc.core.commands.staff;
 
+import com.desiremc.core.validators.PlayerIsOnlineValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,7 @@ public class StaffFollowCommand extends ValidCommand
         super("follow", "Follow a player", Rank.JRMOD, new String[] { "target" }, "mount", "ride", "leash", "lead");
         addParser(new PlayerParser(), "target");
         addValidator(new PlayerValidator());
+        addValidator(new PlayerIsOnlineValidator());
     }
 
     @Override
