@@ -120,7 +120,7 @@ public class StaffHandler
 
         for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
         {
-            p.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget, false));
+            p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
         }
         LANG.sendString(p, "staff.staff-on");
         p.setGameMode(GameMode.CREATIVE);
@@ -274,7 +274,7 @@ public class StaffHandler
             if (item)
             {
                 Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
-                player.getInventory().setItem(gadget.getSlot() - 1, GadgetHandler.getInstance().buildGadget(gadget,
+                player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget,
                         true));
                 player.updateInventory();
             }
@@ -289,6 +289,7 @@ public class StaffHandler
             {
                 Gadget gadget = GadgetHandler.getInstance().getGadget("vanish");
                 player.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
+                player.updateInventory();
             }
         }
     }

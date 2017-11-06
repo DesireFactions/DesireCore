@@ -39,54 +39,25 @@ gadgets:
     lore:
       - "&7Launches you towards the"
       - "&7location you are facing."
-  random-teleport:
-    enabled: true
-    slot: 2
-    item: EYE_OF_ENDER:-1
-    name: "&cRandom Teleport"
-    lore:
-      - "&7Teleports you to a random player."
   vanish:
     enabled: true
-    slot: 3
+    slot: 8
     item: INK_SACK:1
     name: "&6Vanish"
     lore:
       - "&7Toggles your player vanish."
     item-on: INK_SACK:10
-  reports:
-    enabled: true
-    slot: 4
-    item: PAPER:-1
-    name: "&eReports GUI"
-    lore:
-      - "&7Opens the Reports GUI."
   freezer:
     enabled: true
-    slot: 6
+    slot: 2
     item: BLAZE_ROD:-1
     name: "&2Freeze"
     lore:
       - "&7Toggles freeze for the clicked player."
-  clicker:
-    enabled: true
-    slot: 7
-    item: WATCH:-1
-    name: "&3CPS Test"
-    lore:
-      - "&7Runs a click per second test on"
-      - "&7the player that was clicked."
   examine:
     enabled: true
-    slot: 8
-    item: CHEST:-1
+    slot: 9
+    item: BOOK:-1
     name: "&bExamine"
     lore:
       - "&7Inspects the inventory of the player that was clicked."
-  follow:
-    enabled: true
-    slot: 9
-    item: LEASH:-1
-    name: "&9Follow"
-    lore:
-      - "&7Mounts the player that was clicked."

@@ -37,7 +37,7 @@ public class GadgetHandler
             String displayName = DesireCore.getConfigHandler().getString("gadgets." + key + ".name");
             List<String> lore = DesireCore.getConfigHandler().getStringList("gadgets." + key + ".lore");
 
-            Gadget gadget = new Gadget(key, enabled, slot, type, data, displayName, lore);
+            Gadget gadget = new Gadget(key, enabled, slot - 1, type, data, displayName, lore);
             getInstance().gadgets.put(key, gadget);
         }
     }
