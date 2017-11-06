@@ -96,6 +96,8 @@ staff:
   restore: 'You have restored {player}''s inventory.'
   restore-target: '{player} has restored your inventory.'
   kick-message: 'You have been kicked by {player} for {reason}'
+  invalid-block: "You are not pointing to a valid block"
+  no-free-space: "There is no free space available for teleport."
 report:
   reported: 'You have reported {player} for {reason}.'
   getreport:

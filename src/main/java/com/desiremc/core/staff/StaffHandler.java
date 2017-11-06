@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import com.desiremc.core.utils.TargetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -224,11 +227,50 @@ public class StaffHandler
 
     public void useLaunch(PlayerInteractEvent e)
     {
-        Player staffPlayer = e.getPlayer();
-        double launchVelocity = DesireCore.getConfigHandler().getDouble("staff.launch_velocity");
-        Vector cameraVector = staffPlayer.getLocation().getDirection().normalize();
+        Player player = e.getPlayer();
+        Session session = SessionHandler.getSession(player.getUniqueId());
 
-        staffPlayer.setVelocity(cameraVector.multiply(launchVelocity));
+        TargetBlock aiming = new TargetBlock(player, 1000, 0.2);
+        Block block = aiming.getTargetBlock();
+
+        if (block == null || block.getY() <= 1)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(session, "staff.invalid-block");
+        }
+        else
+        {
+            boolean passed = false;
+
+            while ((block = aiming.getNextBlock()) != null)
+            {
+                if (block.getY() <= 1)
+                {
+                    DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space");
+                    return;
+                }
+
+                Location to = new Location(block.getWorld(), block.getX(), block.getY() + 1, block.getZ(), player
+                        .getLocation().getYaw(), player.getLocation().getPitch());
+
+                to.setX(to.getX() + .5D);
+                to.setZ(to.getZ() + .5D);
+
+                if (!block.getWorld().isChunkLoaded(to.getBlockX() >> 4, to.getBlockZ() >> 4))
+                {
+                    block.getWorld().loadChunk(to.getBlockX() >> 4, to.getBlockZ() >> 4);
+                }
+
+                player.teleport(to);
+
+                passed = true;
+                break;
+            }
+
+            if (!passed)
+            {
+                DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space");
+            }
+        }
     }
 
     public void useTeleport(PlayerInteractEvent e)
