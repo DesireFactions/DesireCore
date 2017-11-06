@@ -11,14 +11,14 @@ import com.warrenstrange.googleauth.GoogleAuthenticator;
 public class AuthCodeValidator extends CommandValidator
 {
 
+    private GoogleAuthenticator auth = new GoogleAuthenticator();
+
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
         Integer authCode = (Integer) arg;
         Session session = SessionHandler.getSession(sender);
         String key = session.getAuthkey();
-
-        GoogleAuthenticator auth = new GoogleAuthenticator();
 
         boolean validAuth = auth.authorize(key, authCode);
 
