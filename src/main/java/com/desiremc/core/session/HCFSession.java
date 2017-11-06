@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
@@ -24,6 +25,9 @@ public class HCFSession
     @Transient
     private static final boolean DEBUG = true;
 
+    @Id
+    private int id;
+
     @Indexed
     private UUID uuid;
 
@@ -36,7 +40,7 @@ public class HCFSession
     private int lives;
 
     private int diamonds;
-    
+
     private double balance;
 
     @Embedded
@@ -62,14 +66,30 @@ public class HCFSession
 
     public HCFSession()
     {
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        for (int i = 1; i < 8; i++)
+        {
+            System.out.println(elements[i].getClassName() + ":" + elements[i].getLineNumber());
+        }
         pvpTimer = new PVPTimer();
         kills = new LinkedList<>();
         deaths = new LinkedList<>();
         deathBans = new LinkedList<>();
     }
 
+    protected void setId(int id)
+    {
+        this.id = id;
+    }
+
+    protected int getId()
+    {
+        return id;
+    }
+
     protected void assignDefault(UUID uuid, String server)
     {
+        this.id = HCFSessionHandler.getNextId();
         this.uuid = uuid;
         this.server = server;
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time");
@@ -160,26 +180,25 @@ public class HCFSession
     {
         return balance;
     }
-    
+
     public void setBalance(double balance)
     {
         this.balance = balance;
         save();
     }
-    
+
     public void depositBalance(double amount)
     {
         this.balance += amount;
         save();
     }
-    
+
     public void withdrawBalance(double amount)
     {
         this.balance -= amount;
         save();
     }
-    
-    
+
     public int getTotalKills()
     {
         int count = 0;

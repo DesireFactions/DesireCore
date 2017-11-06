@@ -5,13 +5,13 @@ import org.bukkit.command.CommandSender;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 
-public class IntegerSizeValidator extends CommandValidator
+public class DoubleSizeValidator extends CommandValidator
 {
 
-    private int minSize;
-    private int maxSize;
+    private double minSize;
+    private double maxSize;
 
-    public IntegerSizeValidator(int minSize, int maxSize)
+    public DoubleSizeValidator(double minSize, double maxSize)
     {
         this.minSize = minSize;
         this.maxSize = maxSize;
@@ -20,7 +20,7 @@ public class IntegerSizeValidator extends CommandValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        int i = (Integer) arg;
+        double i = (Double) arg;
 
         if (i < minSize)
         {

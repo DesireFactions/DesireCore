@@ -1,22 +1,22 @@
 package com.desiremc.core.commands;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class KickCommand extends ValidCommand
 {
 
     public KickCommand()
     {
-        super("kick", "Kick a user from the server.", Rank.JRMOD, new String[]{"target", "reason"});
+        super("kick", "Kick a user from the server.", Rank.JRMOD, new String[] { "target", "reason" });
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
@@ -39,7 +39,6 @@ public class KickCommand extends ValidCommand
             }
         }
 
-        target.kickPlayer(DesireCore.getLangHandler().renderMessage("staff.kick-message", "{player}", player.getName
-                (), "{reason}", sb.toString().trim()));
+        target.kickPlayer(DesireCore.getLangHandler().renderMessage("staff.kick-message", "{player}", player.getName(), "{reason}", sb.toString().trim()));
     }
 }

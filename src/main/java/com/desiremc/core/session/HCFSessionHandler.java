@@ -7,6 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
@@ -22,6 +23,8 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     private RedBlackTree<UUID, HCFSession> sessions;
 
+    private static int nextId = 0;
+
     public HCFSessionHandler()
     {
         super(HCFSession.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
@@ -30,6 +33,15 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
         sessions = new RedBlackTree<>();
         console = new HCFSession();
+        if (count() > 0)
+        {
+            nextId = findOne(createQuery().order("-_id")).getId() + 1;
+        }
+    }
+
+    public static int getNextId()
+    {
+        return nextId++;
     }
 
     public static void initialize()
@@ -40,6 +52,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
     public static Iterable<HCFSession> getSessions()
     {
         return getInstance().sessions.values();
+    }
+
+    public static HCFSession getHCFSession(UUID uuid)
+    {
+        return getHCFSession(uuid, DesireCore.getCurrentServer());
     }
 
     /**
@@ -78,6 +95,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
 
     }
 
+    public static HCFSession getHCFSession(CommandSender sender)
+    {
+        return getHCFSession(sender, DesireCore.getCurrentServer());
+    }
+
     public static HCFSession getHCFSession(CommandSender sender, String server)
     {
         if (sender instanceof Player)
@@ -114,6 +136,11 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         {
             return initializeHCFSession(p.getUniqueId(), server, false);
         }
+    }
+
+    public static HCFSession initializeHCFSession(UUID uuid, boolean cache)
+    {
+        return initializeHCFSession(uuid, DesireCore.getCurrentServer(), cache);
     }
 
     public static HCFSession initializeHCFSession(UUID uuid, String server, boolean cache)
@@ -187,6 +214,12 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
             initialize();
         }
         return instance;
+    }
+
+    @Override
+    public Key<HCFSession> save(HCFSession entity)
+    {
+        return super.save(entity);
     }
 
 }

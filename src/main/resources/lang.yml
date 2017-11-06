@@ -8,54 +8,54 @@ never_logged_in: '&7This player has never logged in before.'
 only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 not_banned: '{player} is not banned.'
-not_blacklisted: "{player} is not blacklisted."
-blacklisted: "{player} is blacklisted. They can't be unbanned."
-no_season_data: Could not find Season data for &e{faction}
+not_blacklisted: '{player} is not blacklisted.'
+blacklisted: '{player} is blacklisted. They can''t be unbanned.'
+no_season_data: 'Could not find Season data for &e{faction}'
 could_not_retrieve: '&6Could not retrieve &7{name}'
-current_koth: Current KOTH $l&e{koth}
-location: Location &l&eX {x} Y {y} Z {z}
-num_players: Players &l&e{players}
-koth_pause: You have resumed the current koth
-koth_end_time: Ends &l&e{time}
-koth_start_new: Ending current koth, startin the next
-player_not_found: Player not found.
-sender_doesnt_outrank: "You must outrank the target player."
-arg_not_number: One or more of your arguments should be a number!
+current_koth: 'Current KOTH $l&e{koth}'
+location: 'Location &l&eX {x} Y {y} Z {z}'
+num_players: 'Players &l&e{players}'
+koth_pause: 'You have resumed the current koth'
+koth_end_time: 'Ends &l&e{time}'
+koth_start_new: 'Ending current koth, startin the next'
+player_not_found: 'Player not found.'
+sender_doesnt_outrank: 'You must outrank the target player.'
+arg_not_number: 'One or more of your arguments should be a number!'
 player: '{player}'
 item_in_hand: '&7You must have an item in your hand.'
 invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
-potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
-cant_to_self: "You can't do that to yourself!"
-player-not-found: "That player does not exist!"
+potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
+cant_to_self: 'You can''t do that to yourself!'
+player-not-found: 'That player does not exist!'
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
-integer:
+number:
   too_large: '&7That number is too large.'
   too_small: '&7That number is too small.'
 set_end:
   exit: '&8[&c&l*&8]&7 You have set end exit!'
   spawn: '&8[&c&l*&8]&7 You have set end spawn!'
 rank:
-  invalid: Rank invalid
-  inform: You are now a {rank}.
+  invalid: 'Rank invalid'
+  inform: 'You are now a {rank}.'
   list: '{color}{rank}'
-  check: Your rank is currently {color}{rank}.
-  set: You have set {player}'s rank to &e{rank}.
+  check: 'Your rank is currently {color}{rank}.'
+  set: 'You have set {player}''s rank to &e{rank}.'
 friend:
-  already_friends: 'You are already friends with {player}'
-  accepted_friend_request: You accepted a friend request from {player}
-  are_now_friend: You are now friends with {player}
-  no_longer_friend: You are no longer friends with {player}
-  already_sent_request: You have already sent {player} a friend request.
-  sent_request: You have sent {player} a friend request.
-  both_friend_requested: You had a friend request from {player} so we added you both as friends.
-  denied_friend_request: You have denied {player}'s friend request.
-  no_request: 'You do not have a friend request from {player}.'
+  already_friends: 'You are already friends with {player}.'
+  accepted_friend_request: 'You accepted a friend request from {player}.'
+  are_now_friend: 'You are now friends with {player}.'
+  no_longer_friend: 'You are no longer friends with {player}.'
+  already_sent_request: 'You have already sent {player} a friend request.'
+  sent_request: 'You have sent {player} a friend request.'
+  both_friend_requested: 'You had a friend request from {player} so we added you both as friends.'
+  denied_friend_request: 'You have denied {player}''s friend request.'
+  no_request: 'You don''t have a friend request from {player}.'
   no_incoming: 'You don''t have any incoming friend requests.'
   no_outgoing: 'You don''t have any outgoing friend requests.'
-  no_friends: 'You have currently have no friends.'
+  no_friends: 'You currently have no friends.'
   not_friends: 'You are not friends with {player}.'
 ban:
   tempban_message: '&7You have {duration} banned &e{player}&7 for &e{reason}&7.'
@@ -69,130 +69,133 @@ blacklist:
   unblacklist_message: '&7You have unblacklisted &e{player}&7.'
   permban_message_target: '&7You have been blacklisted by &e{player}&7 for &e{reason}&7.'
 warn:
-  warn_issued: "You have warned {player} for {reason}"
-  warned: "You have been warned by {player} for {reason}. The warning expires in {time}"
+  warn_issued: 'You have warned {player} for {reason}'
+  warned: 'You have been warned by {player} for {reason}. The warning expires in {time}'
 staff:
-  cps-start: "Starting clicks per second test for {player}. Result in 10 seconds."
-  cps-finish: "{player} had a CPS of {amount} over 10 seconds."
-  cps-already-running: "There is already a clicks per second test for {player} running."
-  froze-target: "You have frozen {player}"
-  staff-on: "You have toggled staff mode on."
-  staff-off: "You have toggled staff mode off."
-  staff-chat-on: "You are now in staff chat."
-  staff-chat-off: "You have left staff chat."
-  staff-chat-format: "&c[SC] &f{name}&7: {message}"
-  chat-cleared: "You have cleared chat."
-  chat-cleared-all: "{player} has cleared chat."
-  chat-on: "You have turned chat back on."
-  chat-off: "You have turned chat off."
-  set-invisible: "You are now invisible."
-  set-visible: "You are now visible."
-  target-frozen: "You have froze {player}."
-  target-unfrozen: "You have unfroze {player}."
-  frozen: "You have been frozen by {player}."
-  unfrozen: "You have been unfrozen by {player}."
-  no-restore: "{player} does not have an inventory to restore."
-  restore: "You have restored {player}'s inventory."
-  restore-target: "{player} has restored your inventory."
-  kick-message: "You have been kicked by {player} for {reason}"
+  cps-start: 'Starting clicks per second test for {player}. Result in 10 seconds.'
+  cps-finish: '{player} had a CPS of {amount} over 10 seconds.'
+  cps-already-running: 'There is already a clicks per second test for {player} running.'
+  froze-target: 'You have frozen {player}.'
+  staff-on: 'You have toggled staff mode on.'
+  staff-off: 'You have toggled staff mode off.'
+  staff-chat-on: 'You are now in staff chat.'
+  staff-chat-off: 'You have left staff chat.'
+  staff-chat-format: '&c[SC] &f{name}&7: {message}'
+  chat-cleared: 'You have cleared chat.'
+  chat-cleared-all: '{player} has cleared chat.'
+  chat-on: 'You have turned chat back on.'
+  chat-off: 'You have turned chat off.'
+  set-invisible: 'You are now invisible.'
+  set-visible: 'You are now visible.'
+  target-frozen: 'You have froze {player}.'
+  target-unfrozen: 'You have unfroze {player}.'
+  frozen: 'You have been frozen by {player}.'
+  unfrozen: 'You have been unfrozen by {player}.'
+  no-restore: '{player} does not have an inventory to restore.'
+  restore: 'You have restored {player}''s inventory.'
+  restore-target: '{player} has restored your inventory.'
+  kick-message: 'You have been kicked by {player} for {reason}'
 report:
-  reported: "You have reported {player} for {reason}"
+  reported: 'You have reported {player} for {reason}.'
   getreport:
-    - "Reported on {date}"
-    - "Reported by {player}"
-    - "Reported for {reason}"
-  clear: "You have cleared {player}'s reports."
+  - 'Reported on {date}.'
+  - 'Reported by {player}.'
+  - 'Reported for {reason}.'
+  clear: 'You have cleared {player}''s reports.'
   inventory:
-    title: "DesireHCF Reports GUI"
+    title: 'DesireHCF Reports GUI'
     item:
       lore:
-        - "Reported by: {issuer}"
-        - "Reported on: {date}"
-        - "Report Reason: {reason}"
+      - 'Reported by: {issuer}'
+      - 'Reported on: {date}'
+      - 'Report Reason: {reason}'
     next:
-      name: "Next Item"
+      name: 'Next Item'
       lore:
-        - "Go to the next page!"
-      item: "IRON_BLOCK"
+      - 'Go to the next page!'
+      item: 'IRON_BLOCK'
     back:
-      name: "Next Item"
+      name: 'Next Item'
       lore:
-        - "Go to the next page!"
-      item: "IRON_BLOCK"
+      - 'Go to the next page!'
+      item: 'IRON_BLOCK'
 alerts:
   mention:
-    on: "You will now receive alerts when mentioned."
-    off: "You will no longer receive alerts when mentioned."
+    true: 'You will now receive alerts when mentioned.'
+    false: 'You will no longer receive alerts when mentioned.'
   xray:
-    on: "You will now receive xray alerts."
-    off: "You will no longer receive xray alerts."
-    message: "{player} has found a vein of {count} {oreName}"
+    true: 'You will now receive xray alerts.'
+    false: 'You will no longer receive xray alerts.'
+    message: '{player} has found a vein of {count} {oreName}'
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
-  scoreboard: "&7Enderpearl Timer"
+  scoreboard: '&7Enderpearl Timer'
 tokens:
-  add: "&7You have been awarded &e{tokens}&7 tokens!"
-  remove: "Your token amount is now {tokens}."
-  give: "You have gained {tokens} tokens."
-  set: "Your token amount is now {tokens}"
+  add: '&7You have been awarded &e{tokens}&7 tokens!'
+  remove: 'Your token amount is now {tokens}.'
+  give: 'You have gained {tokens} tokens.'
+  set: 'Your token amount is now {tokens}'
 achievement:
   award:
-    header: "&8----------------------------------------------------"
-    title: "&7               Achievement unlocked!                "
-    name: "&7Name: &e{name}"
-    desc: "&7Desc: &e{desc}"
-    reward: "&7Reward: &e{reward}"
-    footer: "&8----------------------------------------------------"
+    header: '&8----------------------------------------------------'
+    title: '&7               Achievement unlocked!                '
+    name: '&7Name: &e{name}'
+    desc: '&7Desc: &e{desc}'
+    reward: '&7Reward: &e{reward}'
+    footer: '&8----------------------------------------------------'
 punishment:
-  ban: "You have been BANNED!"
-  mute: "YOu have been MUTED!"
-  found: "[DesireHCF] Found punishment document for: {player}"
-  type: "[DesireHCF] Punishment Type: {reason}"
-  notfound: "[DesireHCF] Punishment document was not found for: {player}"
+  ban: 'You have been BANNED!'
+  mute: 'You have been MUTED!'
+  found: '[DesireHCF] Found punishment document for: {player}'
+  type: '[DesireHCF] Punishment Type: {reason}'
+  notfound: '[DesireHCF] Punishment document was not found for: {player}'
 info:
-  header-footer: "&8----------------------------------------------------"
-  name: "{player}"
-  uuid: "UUID: {uuid}"
-  ip: "IP: {ip}"
-  tokens: "Tokens: {tokens}"
-  status: "Status: {status}"
-  banned: "Banned: {time}"
-  muted: "Muted: {time}"
-  normal: "Normal"
+  header-footer: '&8----------------------------------------------------'
+  name: '{player}'
+  uuid: 'UUID: {uuid}'
+  ip: 'IP: {ip}'
+  tokens: 'Tokens: {tokens}'
+  status: 'Status: {status}'
+  banned: 'Banned: {time}'
+  muted: 'Muted: {time}'
+  normal: 'Normal'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
-  delete: "&7You have deleted ticket #{id}."
-  closed: "&7You have closed ticket #{id}."
-  doesnt-exist: "That ticket ID does not exist."
-  list: "{num}. Opened by: {player} Reason: {reason} ID: {id}"
+  delete: '&7You have deleted ticket #{id}.'
+  closed: '&7You have closed ticket #{id}.'
+  doesnt-exist: 'That ticket ID does not exist.'
+  list: '{num}. Opened by: {player} Reason: {reason} ID: {id}'
 tickets:
-  open: "There are {number} tickets open."
+  open: 'There are {number} tickets open.'
 agui:
-  open: "You have opened the Achievement GUI."
+  open: 'You have opened the Achievement GUI.'
   inventory:
-    title: "Achievement"
+    title: 'Achievement'
     item:
       lore:
-        - "Description: {desc}"
-        - "Tokens: {tokens}"
+      - 'Description: {desc}'
+      - 'Tokens: {tokens}'
     next:
-      name: "Next Item"
+      name: 'Next Item'
       lore:
-        - "Go to the next page!"
-      item: "IRON_BLOCK"
+      - 'Go to the next page!'
+      item: 'IRON_BLOCK'
     back:
-      name: "Next Item"
+      name: 'Next Item'
       lore:
-        - "Go to the next page!"
-      item: "IRON_BLOCK"
+      - 'Go to the next page!'
+      item: 'IRON_BLOCK'
 auth:
-  setup: "Your Google Auth Code is {code}. Click it for a QR code."
-  must-login: "Please open your authenticator and use /login <code> in-game with the code."
-  already-auth: "You have already authenticated with Google Authenticator."
-  invalid-code: "Incorrect or expired Authenticator code."
-  authenticated: "Access Granted. Welcome!"
-  reset: "You have reset {player}'s auth key. They will get another when they log in next."
-  allow: "Allowed {player} to join the server."
+  setup: 'Your Google Auth Code is {code}. Click it for a QR code.'
+  must-login: 'Please open your authenticator and use /login <code> in-game with the code.'
+  already-auth: 'You have already authenticated with Google Authenticator.'
+  invalid-code: 'Incorrect or expired Authenticator code.'
+  authenticated: 'Access Granted. Welcome!'
+  reset: 'You have reset {player}''s auth key. They will get another when they log in next.'
+  allow: 'Allowed {player} to join the server.'
 leave:
-  message: "{player} has left the server."
+  message: '{player} has left the server.'
+chat:
+  ignoring: '&7You are ignoring &c{target}&7.'
+  ignored: '&c{target} &7is ignoring you.'

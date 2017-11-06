@@ -13,6 +13,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
@@ -40,7 +41,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
     public static void openTicket(CommandSender sender, String text)
     {
-        Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : DesireCore.getConsoleUUID(), text);
+        Ticket ticket = new Ticket(PlayerUtils.getUUIDFromSender(sender), text);
         ticket.setId(instance.getNextId());
         instance.save(ticket);
         tickets.put(ticket.getId(), ticket);

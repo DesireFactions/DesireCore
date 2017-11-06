@@ -63,6 +63,8 @@ public class Session
 
     private List<Achievement> achievements;
 
+    private List<UUID> ignoring;
+
     @Reference
     private List<Session> friends;
 
@@ -93,6 +95,7 @@ public class Session
         settings = new SessionSettings();
         ipList = new LinkedList<>();
         nameList = new LinkedList<>();
+        ignoring = new LinkedList<>();
     }
 
     public Player getPlayer()
@@ -285,7 +288,7 @@ public class Session
     {
         return updatedIp;
     }
-    
+
     public List<Achievement> getAchievements()
     {
         return achievements;
@@ -414,7 +417,24 @@ public class Session
     {
         return hasAuthorized;
     }
+    
+    public boolean isIgnoring(UUID uuid)
+    {
+        return ignoring.contains(uuid);
+    }
+    
+    public void ignore(UUID uuid)
+    {
+        ignoring.add(uuid);
+        save();
+    }
 
+    public void unignore(UUID uuid)
+    {
+        ignoring.remove(uuid);
+        save();
+    }
+    
     private void save()
     {
         SessionHandler.getInstance().save(this);
