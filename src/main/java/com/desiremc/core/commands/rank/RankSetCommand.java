@@ -1,5 +1,6 @@
 package com.desiremc.core.commands.rank;
 
+import com.desiremc.core.validators.RankSetValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,7 @@ public class RankSetCommand extends ValidCommand
         super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "target", "rank" }, "update");
         addParser(new PlayerSessionParser(), "target");
         addParser(new RankParser(), "rank");
+        addValidator(new RankSetValidator(), "rank");
     }
 
     @Override

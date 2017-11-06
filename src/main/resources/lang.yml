@@ -29,6 +29,7 @@ potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
 cant_to_self: 'You can''t do that to yourself!'
 player-not-found: 'That player does not exist!'
 not_online: "That player is not online."
+rank_too_high: "You can't set a players rank higher than your own."
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'

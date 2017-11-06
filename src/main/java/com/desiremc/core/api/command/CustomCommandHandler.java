@@ -39,7 +39,7 @@ public class CustomCommandHandler implements CommandExecutor
         if (command != null)
         {
             Session s = SessionHandler.getSession(sender);
-            if (s == null || s.getRank().getId() >= command.getRequiredRank().getId())
+            if (s != null && s.getRank().getId() >= command.getRequiredRank().getId())
             {
                 command.run(sender, label, args);
             }
