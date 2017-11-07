@@ -7,4 +7,10 @@ public class StrictCommandArity implements CommandArity {
         return sentArgsLength == commandArgsLength;
     }
 
+    @Override
+    public boolean hasOptional()
+    {
+        return false;
+    }
+
 }

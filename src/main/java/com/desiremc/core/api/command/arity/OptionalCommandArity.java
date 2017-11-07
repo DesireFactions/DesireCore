@@ -7,4 +7,10 @@ public class OptionalCommandArity implements CommandArity {
         return sentArgsLength == commandArgsLength || sentArgsLength == commandArgsLength - 1;
     }
 
+    @Override
+    public boolean hasOptional()
+    {
+        return true;
+    }
+
 }

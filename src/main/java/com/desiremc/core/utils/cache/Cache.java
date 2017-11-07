@@ -156,7 +156,7 @@ public class Cache<K, V> implements Map<K, V>
             public void run()
             {
                 removalListener.onRemoval(new RemovalNotification<>(key, value, Cause.EXPIRE));
-                remove(key);
+                base.remove(key);
             }
         }, getExpirationTimeTicks());
 

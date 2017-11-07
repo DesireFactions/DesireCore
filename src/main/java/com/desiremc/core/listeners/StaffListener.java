@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -77,6 +78,17 @@ public class StaffListener implements Listener
         Player p = event.getPlayer();
 
         if (StaffHandler.getInstance().inStaffMode(p))
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event)
+    {
+        Player p = event.getPlayer();
+
+        if (StaffHandler.getInstance().inStaffChat(p))
         {
             event.setCancelled(true);
         }

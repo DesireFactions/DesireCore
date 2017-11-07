@@ -321,12 +321,12 @@ public class Session
         if (inform)
         {
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.title", true);
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.name", true);
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.desc", true);
+            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.title");
+            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.name");
+            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.desc");
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.reward", true);
+                DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.reward");
             }
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
         }

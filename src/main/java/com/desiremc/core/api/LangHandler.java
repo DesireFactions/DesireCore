@@ -34,6 +34,11 @@ public class LangHandler extends FileHandler
 
     }
 
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
     /**
      * Gets a formatted string from the config file. Replaces any color place holders as well. If the string does not
      * exist in the config, returns null.
@@ -53,6 +58,23 @@ public class LangHandler extends FileHandler
     }
 
     /**
+     * Render a message using the format rendered in lang.yml
+     *
+     * @param string
+     * @param args
+     * @return
+     */
+    public String renderMessage(String string, Object... args)
+    {
+        return renderString(getString(string), args);
+    }
+
+    public String renderMessageNoPrefix(String string, Object... args)
+    {
+        return renderString(super.getString(string), args);
+    }
+
+    /**
      * Shorthand to send getString to {@link CommandSender}
      *
      * @param sender
@@ -64,66 +86,26 @@ public class LangHandler extends FileHandler
     }
 
     /**
-     * Render a message using the format rendered in lang.yml
-     *
-     * @param string
-     * @param args
-     * @return
-     */
-    public String renderMessage(String string, String... args)
-    {
-        return renderString(getString(string), args);
-    }
-
-    public String renderMessageNoPrefix(String string, String... args)
-    {
-        return renderString(super.getString(string), args);
-    }
-
-    /**
-     * Render a string with the proper parameters.
-     * 
-     * @param string the rendered string.
-     * @param args the placeholders and proper content.
-     * @return the rendered string.
-     */
-    public String renderString(String string, String... args)
-    {
-        if (args.length % 2 != 0)
-        {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
-        }
-
-        for (int i = 0; i < args.length; i += 2)
-        {
-            string = string.replace(args[i], args[i + 1]);
-        }
-
-        return string;
-    }
-
-    /**
      * Shorthand to render a command and send it to a {@link CommandSender}
      *
      * @param sender
      * @param string
      * @param args
      */
-    public void sendRenderMessage(CommandSender sender, String string, String... args)
+    public void sendRenderMessage(CommandSender sender, String string, Object... args)
     {
         sender.sendMessage(renderMessage(string, args));
     }
 
-    public void sendRenderMessage(Session s, String string, String... args)
+    public void sendCenteredRenderMessage(CommandSender sender, String string, Object... args)
     {
-        sendRenderMessage(s.getPlayer(), string, args);
+        ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
     }
 
-    public void sendRenderMessage(CommandSender sender, String string, boolean center, String... args)
+    public void sendRenderMessage(CommandSender sender, String string, boolean center, Object... args)
     {
         if (center)
         {
-            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
         }
         else
         {
@@ -131,7 +113,12 @@ public class LangHandler extends FileHandler
         }
     }
 
-    public void sendRenderMessage(Session s, String string, boolean center, String... args)
+    public void sendRenderMessage(Session s, String string, Object... args)
+    {
+        sendRenderMessage(s.getPlayer(), string, args);
+    }
+
+    public void sendRenderMessage(Session s, String string, boolean center, Object... args)
     {
         if (center)
         {
@@ -149,11 +136,11 @@ public class LangHandler extends FileHandler
      * @param args
      * @return
      */
-    public String usageMessage(String label, String... args)
+    public String usageMessage(String label, Object... args)
     {
         String argsString = "/" + label;
 
-        for (String arg : args)
+        for (Object arg : args)
         {
             argsString += " [" + arg + "]";
         }
@@ -166,14 +153,31 @@ public class LangHandler extends FileHandler
      *
      * @param sender
      */
-    public void sendUsageMessage(CommandSender sender, String label, String... args)
+    public void sendUsageMessage(CommandSender sender, String label, Object... args)
     {
         sender.sendMessage(usageMessage(label, args));
     }
 
-    public String getPrefix()
+    /**
+     * Render a string with the proper parameters.
+     * 
+     * @param string the rendered string.
+     * @param args the placeholders and proper content.
+     * @return the rendered string.
+     */
+    public String renderString(String string, Object... args)
     {
-        return prefix;
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
+
+        for (int i = 0; i < args.length; i += 2)
+        {
+            string = string.replace(args[i].toString(), args[i + 1].toString());
+        }
+
+        return string;
     }
 
 }

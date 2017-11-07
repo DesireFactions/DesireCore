@@ -4,4 +4,6 @@ public interface CommandArity {
 
     public boolean validateArity(int sentArgsLength, int commandArgsLength);
 
+    public boolean hasOptional();
+    
 }

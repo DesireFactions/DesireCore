@@ -32,18 +32,24 @@ public class InfoCommand extends ValidCommand
     {
         Session target = (Session) args[0];
         LANG.sendRenderMessage(target, "info.header-footer");
-        LANG.sendRenderMessage(target, "info.name", true, "{name}", target.getName());
-        LANG.sendRenderMessage(target, "info.uuid", true, "{uuid}", target.getUniqueId().toString());
-        LANG.sendRenderMessage(target, "info.ip", true, "{ip}", target.getPlayer().getAddress().getAddress().toString());
-        LANG.sendRenderMessage(target, "info.tokens", true, "{tokens}", target.getTokens() + "");
-        LANG.sendRenderMessage(target, "info.status", true, "{status}", getStatus(target));
+        LANG.sendCenteredRenderMessage(target.getPlayer(), "info.name", "{name}", target.getName());
+        LANG.sendCenteredRenderMessage(target.getPlayer(), "info.uuid", "{uuid}", target.getUniqueId().toString());
+        LANG.sendCenteredRenderMessage(target.getPlayer(), "info.ip", "{ip}", target.getPlayer().getAddress().getAddress().toString());
+        LANG.sendCenteredRenderMessage(target.getPlayer(), "info.tokens", "{tokens}", target.getTokens() + "");
+        LANG.sendCenteredRenderMessage(target.getPlayer(), "info.status", "{status}", getStatus(target));
         LANG.sendRenderMessage(target, "info.header-footer");
     }
 
     private String getStatus(Session player)
     {
-        if (player.isBanned() != null) { return LANG.renderMessage("info.banned", "{time}", longToTime(player.isBanned().getExpirationTime())); }
-        if (player.isMuted() != null) { return LANG.renderMessage("info.muted", "{time}", longToTime(player.isBanned().getExpirationTime())); }
+        if (player.isBanned() != null)
+        {
+            return LANG.renderMessage("info.banned", "{time}", longToTime(player.isBanned().getExpirationTime()));
+        }
+        if (player.isMuted() != null)
+        {
+            return LANG.renderMessage("info.muted", "{time}", longToTime(player.isBanned().getExpirationTime()));
+        }
         return LANG.renderMessage("info.normal");
     }
 

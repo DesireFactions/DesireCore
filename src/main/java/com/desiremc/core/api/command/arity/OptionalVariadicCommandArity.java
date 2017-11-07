@@ -7,4 +7,10 @@ public class OptionalVariadicCommandArity implements CommandArity {
         return sentArgsLength >= commandArgsLength - 1;
     }
 
+    @Override
+    public boolean hasOptional()
+    {
+        return true;
+    }
+
 }

@@ -1,7 +1,8 @@
 package com.desiremc.core.commands.report;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.report.Report;
@@ -10,12 +11,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import org.bukkit.command.CommandSender;
 
 public class ReportGetCommand extends ValidCommand
 {
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public ReportGetCommand()
     {
@@ -36,12 +34,12 @@ public class ReportGetCommand extends ValidCommand
                 continue;
             }
 
-            for (String msg : LANG.getStringList("report.getreport"))
+            for (String msg : DesireCore.getLangHandler().getStringList("report.getreport"))
             {
-                session.getPlayer().sendMessage(LANG.renderString(msg,
+                DesireCore.getLangHandler().sendRenderMessage(session.getPlayer(), msg,
                         "{date}", DateUtils.formatDateDiff(report.getIssued()),
                         "{player}", SessionHandler.getSession(report.getIssuer()).getName(),
-                        "{reason}", report.getReason()));
+                        "{reason}", report.getReason());
             }
         }
     }
