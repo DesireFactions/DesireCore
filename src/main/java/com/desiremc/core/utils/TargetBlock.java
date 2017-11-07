@@ -266,6 +266,7 @@ public class TargetBlock
      *
      * @return Block
      */
+    @SuppressWarnings("deprecation")
     public Block getTargetBlock()
     {
         this.reset();
@@ -282,6 +283,7 @@ public class TargetBlock
      * @param typeID ID of type to set the block to
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public boolean setTargetBlock(int typeID)
     {
         if (Material.getMaterial(typeID) != null)
@@ -307,6 +309,7 @@ public class TargetBlock
      * @param type Material to set the block to
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public boolean setTargetBlock(Material type)
     {
         this.reset();
@@ -329,6 +332,7 @@ public class TargetBlock
      * @param type Name of type to set the block to
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public boolean setTargetBlock(String type)
     {
         Material mat = Material.valueOf(type);
@@ -354,6 +358,7 @@ public class TargetBlock
      *
      * @return Block
      */
+    @SuppressWarnings("deprecation")
     public Block getFaceBlock()
     {
         while ((getNextBlock() != null) && ((getCurrentBlock().getTypeId() == 0) || this.blockToIgnoreHasValue(getCurrentBlock().getTypeId())))
@@ -376,6 +381,7 @@ public class TargetBlock
      * @param typeID
      * @return boolean
      */
+    @SuppressWarnings("deprecation")
     public boolean setFaceBlock(int typeID)
     {
         if (Material.getMaterial(typeID) != null)
@@ -475,6 +481,7 @@ public class TargetBlock
      *
      * @param typeID
      */
+    @SuppressWarnings("deprecation")
     public boolean setCurrentBlock(int typeID)
     {
         if (Material.getMaterial(typeID) != null)
@@ -540,6 +547,7 @@ public class TargetBlock
      *
      * @param typeID
      */
+    @SuppressWarnings("deprecation")
     public boolean setPreviousBlock(int typeID)
     {
         if (Material.getMaterial(typeID) != null)
