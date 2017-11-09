@@ -1,6 +1,6 @@
 package com.desiremc.core.scoreboard.type;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,13 +14,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Team;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.scoreboard.common.Strings;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 public class SimpleScoreboard implements Scoreboard
 {
@@ -38,7 +37,7 @@ public class SimpleScoreboard implements Scoreboard
     private ScoreboardHandler handler;
     private Map<FakePlayer, Integer> entryCache = new ConcurrentHashMap<>();
     private Map<UUID, FakePlayer> playerCache = new ConcurrentHashMap<>();
-    private Table<Team, String, String> teamCache = HashBasedTable.create();
+    private Map<String, Team> teamCache = new ConcurrentHashMap<>();
     private BukkitRunnable updateTask;
 
     public SimpleScoreboard(Player holder)
@@ -87,7 +86,7 @@ public class SimpleScoreboard implements Scoreboard
             }
         }
         // Unregister teams that are created for this scoreboard
-        for (Team team : teamCache.rowKeySet())
+        for (Team team : teamCache.values())
         {
             team.unregister();
         }
@@ -165,136 +164,83 @@ public class SimpleScoreboard implements Scoreboard
             return;
         }
 
-        // everything to be displayed on the scoreboard
-        Map<String, Integer> appeared = new HashMap<>();
-
         // what's been set on the scoreboard
-        Map<FakePlayer, Integer> current = new HashMap<>();
+        List<UUID> current = new LinkedList<>();
 
         for (Entry entry : passed)
         {
             // get the entry values
-            String key = entry.getName();
-            Integer score = entry.getPosition();
+            String prefix = entry.getPrefix();
+            String value = entry.getValue();
+            Integer val = entry.getPosition();
 
-            // scoreboards can't go over 48 characters, truncate
-            if (key.length() > 32)
+            // prefix can't go over 16 characters, truncate
+            if (prefix.length() > 16)
             {
-                key = key.substring(0, 31);
+                prefix = prefix.substring(0, 15);
             }
-
-            // ensure there are no duplicates
-            String appearance;
-            if (key.length() > 16)
-            {
-                appearance = key.substring(16);
-            }
-            else
-            {
-                appearance = key;
-            }
-            if (!appeared.containsKey(appearance))
-            {
-                appeared.put(appearance, -1);
-            }
-            appeared.put(appearance, appeared.get(appearance) + 1);
 
             // Get fake player
-            FakePlayer faker = getFakePlayer(key, entry.getUniqueId(), appeared.get(appearance));
+            FakePlayer faker = getFakePlayer(prefix, value, entry.getUniqueId());
 
             // Set score
-            objective.getScore(faker).setScore(score);
+            Score score = objective.getScore(faker);
+            score.setScore(val);
 
             // Update references
-            entryCache.put(faker, score);
+            entryCache.put(faker, val);
 
             // add to entered entries
-            current.put(faker, score);
+            current.add(faker.getUniqueId());
         }
         // Remove duplicated or non-existent entries
         for (FakePlayer fakePlayer : entryCache.keySet())
         {
-            if (!current.containsKey(fakePlayer))
+            if (!current.contains(fakePlayer.getUniqueId()))
             {
                 entryCache.remove(fakePlayer);
                 scoreboard.resetScores(fakePlayer.getName());
             }
         }
+        blanks = 1;
     }
 
-    private FakePlayer getFakePlayer(String text, UUID uuid, int offset)
+    private int blanks = 1;
+
+    private FakePlayer getFakePlayer(String text, String value, UUID uuid)
     {
         Team team = null;
         String name;
-        String prefix;
         String suffix = "";
 
         if (text.equals(""))
         {
-            prefix = " ";
-            name = " ";
-            suffix = " ";
-        }
-        else
-        {
-            prefix = text.substring(0, text.length() == 0 ? 0 : Math.min(16, text.length() - 1));
-            if (prefix.endsWith("$"))
+            for (int i = 0; i < blanks; i++)
             {
-                suffix += "§";
+                text += " ";
             }
-            name = "";
-            if (text.length() > 16)
-            {
-                suffix += text.substring(16);
-            }
+            blanks++;
+            value = "";
         }
+        name = text;
+        suffix = value;
 
-        // If teams already exist, use them
-        for (Team other : teamCache.rowKeySet())
-        {
-            if (other.getPrefix().equals(prefix) && other.getSuffix().equals(suffix))
-            {
-                team = other;
-            }
-        }
+        FakePlayer faker = playerCache.get(uuid);
 
-        // Otherwise create them
-        if (team == null)
-        {
-            team = scoreboard.registerNewTeam(TEAM_PREFIX + TEAM_COUNTER++);
-            team.setPrefix(prefix);
-            team.setSuffix(suffix);
-            teamCache.put(team, prefix, suffix);
-        }
-
-        FakePlayer faker;
-        if (!playerCache.containsKey(uuid))
+        if (faker == null)
         {
             faker = new FakePlayer(uuid, name, team);
             playerCache.put(uuid, faker);
-            if (faker.getTeam() != null)
-            {
-                faker.getTeam().addPlayer(faker);
-            }
+            faker.setTeam(scoreboard.registerNewTeam(TEAM_PREFIX + TEAM_COUNTER++));
+            faker.getTeam().addPlayer(faker);
         }
-        else
+
+        team = faker.getTeam();
+        if (!team.getSuffix().equals(suffix))
         {
-            faker = playerCache.get(uuid);
-            if (!faker.getName().equals(name))
-            {
-                scoreboard.resetScores(faker.getName());
-                faker.setName(name);
-            }
-            if (team != null && faker.getTeam() != null)
-            {
-                faker.getTeam().removePlayer(faker);
-            }
-            faker.setTeam(team);
-            if (faker.getTeam() != null)
-            {
-                faker.getTeam().addPlayer(faker);
-            }
+            team.setSuffix(suffix);
         }
+
         return faker;
     }
 
@@ -344,11 +290,6 @@ public class SimpleScoreboard implements Scoreboard
         public String getName()
         {
             return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
         }
 
         @Override

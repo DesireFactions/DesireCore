@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.desiremc.core.scoreboard.EntryRegistry.PlayerEntry;
@@ -19,10 +20,12 @@ public final class EntryBuilder
 
     private static final HashMap<String, UUID> keyHistory = new HashMap<>();
     private static final ArrayList<UUID> blanks = new ArrayList<>();
+    private static final ArrayList<UUID> lines = new ArrayList<>();
 
     private final LinkedList<Entry> entries = new LinkedList<>();
 
     private int blankCount;
+    private int lineCount;
 
     /**
      * Append a blank line.
@@ -42,7 +45,24 @@ public final class EntryBuilder
             uuid = blanks.get(blankCount);
         }
         blankCount++;
-        return next(uuid.toString(), "", uuid);
+        return next("", "", uuid);
+    }
+
+    private EntryBuilder line()
+    {
+        UUID uuid;
+        if (lineCount >= lines.size())
+        {
+            uuid = UUID.randomUUID();
+            lines.add(uuid);
+        }
+        else
+        {
+            uuid = lines.get(lineCount);
+        }
+        entries.add(new Entry("§7§m---------" + (lineCount != 0 ? "§r" : ""), "§7§m----------", uuid, entries.size() + 1));
+        lineCount++;
+        return this;
     }
 
     /**
@@ -67,7 +87,7 @@ public final class EntryBuilder
 
     private EntryBuilder next(String key, String value, UUID uuid)
     {
-        entries.add(new Entry(adapt(value), uuid, entries.size()));
+        entries.add(new Entry(key, "§7: §c" + value, uuid, entries.size() + 1));
         return this;
     }
 
@@ -78,28 +98,31 @@ public final class EntryBuilder
      */
     public List<Entry> build()
     {
-        for (Entry entry : entries)
-        {
-            entry.setPosition(entries.size() - entry.getPosition());
-        }
         return entries;
     }
 
-    private String adapt(String entry)
+    public int size()
     {
-        // Cut off the exceeded part if needed
-        if (entry.length() > 48)
-            entry = entry.substring(0, 47);
-        return Strings.format(entry);
+        return entries.size();
     }
 
     public static List<Entry> build(PlayerEntry playerEntry)
     {
         EntryBuilder builder = new EntryBuilder();
-        for (java.util.Map.Entry<String, String> entry : playerEntry.getEntryMap().entrySet())
+        if (playerEntry.getEntryMap().size() > 0)
         {
-            builder.blank();
-            builder.next(entry.getKey(), entry.getValue());
+            builder.line();
+            Map<String, String> entries;
+            entries = playerEntry.getEntryMap();
+            for (Map.Entry<String, String> entry : entries.entrySet())
+            {
+                if (builder.size() > 1)
+                {
+                    builder.blank();
+                }
+                builder.next(entry.getKey(), entry.getValue());
+            }
+            builder.line();
         }
         return builder.build();
     }

@@ -28,7 +28,7 @@ public class DeathBanHandler extends BasicDAO<DeathBan, Integer>
     {
         DeathBan ban = new DeathBan(getNextId(), session);
         
-        instance.save(ban);
+        getInstance().save(ban);
         
         return ban;
     }

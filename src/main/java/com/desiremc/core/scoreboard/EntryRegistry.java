@@ -17,6 +17,8 @@ import com.desiremc.core.scoreboard.type.SimpleScoreboard;
 public class EntryRegistry implements ScoreboardHandler
 {
 
+    private static final boolean DEBUG = false;
+
     private static EntryRegistry instance;
 
     private HashMap<Player, PlayerEntry> entries = new HashMap<>();
@@ -75,7 +77,11 @@ public class EntryRegistry implements ScoreboardHandler
             Scoreboard board = new SimpleScoreboard(player).setHandler(instance).setUpdateInterval(2l);
             board.activate();
         }
-        entry.setEntry(key, key + "§7: §c" + value);
+        if (DEBUG)
+        {
+            System.out.println(key + " " + value);
+        }
+        entry.setEntry(key, value);
     }
 
     /**
@@ -164,7 +170,7 @@ public class EntryRegistry implements ScoreboardHandler
         {
             return entries.values();
         }
-        
+
         public HashMap<String, String> getEntryMap()
         {
             return entries;

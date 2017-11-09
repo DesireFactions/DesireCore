@@ -24,7 +24,7 @@ public class HCFSession
 {
 
     @Transient
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @Id
     private int id;

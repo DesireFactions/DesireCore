@@ -15,6 +15,17 @@ public class StringUtils
         return sb.toString().trim();
     }
 
+    public static String[] add(String[] array, String add)
+    {
+        String[] values = new String[array.length + 1];
+        for (int i = 0; i < array.length; i++)
+        {
+            values[i] = array[i];
+        }
+        values[array.length] = add;
+        return values;
+    }
+
     public static String compile(String[] strings)
     {
         return implode(strings, 0, strings.length);
@@ -64,6 +75,11 @@ public class StringUtils
     public static boolean isNullOrEmpty(String str)
     {
         return str == null || str.equals("") || str.equals("\0");
+    }
+
+    public static boolean isWhitespace(String str)
+    {
+        return str.length() == 0 || str.matches("\\s");
     }
 
 }

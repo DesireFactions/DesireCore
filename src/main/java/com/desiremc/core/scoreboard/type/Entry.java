@@ -2,30 +2,40 @@ package com.desiremc.core.scoreboard.type;
 
 import java.util.UUID;
 
-import com.desiremc.core.scoreboard.common.Strings;
-
 public class Entry
 {
 
-    private String name;
+    private String prefix;
+    private String value;
     private UUID uuid;
     private int position;
 
-    public Entry(String name, UUID uuid, int position)
+    public Entry(String prefix, String value, UUID uuid, int position)
     {
-        this.name = Strings.format(name);
+        this.prefix = prefix;
+        this.value = value;
         this.uuid = uuid;
         this.position = position;
     }
 
-    public String getName()
+    public String getPrefix()
     {
-        return name;
+        return prefix;
     }
 
-    public void setName(String name)
+    public void setPrefix(String prefix)
     {
-        this.name = name;
+        this.prefix = prefix;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public void setValue(String value)
+    {
+        this.value = value;
     }
 
     public void setUniqueId(UUID uuid)

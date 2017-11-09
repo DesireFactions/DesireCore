@@ -58,6 +58,17 @@ public class LangHandler extends FileHandler
     }
 
     /**
+     * Gets a string without a prefix.
+     * 
+     * @param string the reference.
+     * @return the formatted string.
+     */
+    public String getStringNoPrefix(String string)
+    {
+        return super.getString(string);
+    }
+
+    /**
      * Render a message using the format rendered in lang.yml
      *
      * @param string
