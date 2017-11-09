@@ -103,6 +103,18 @@ public class Cache<K, V> implements Map<K, V>
         this(ticks * 50, TimeUnit.MILLISECONDS, plugin);
     }
 
+    public void toRemove(K k)
+    {
+        Bukkit.getScheduler().runTask(plugin, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                remove(k);
+            }
+        });
+    }
+
     @Override
     public int size()
     {
