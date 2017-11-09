@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
@@ -20,7 +21,7 @@ public class ConnectionListener implements Listener
 {
 
     private static final boolean DEBUG = false;
-    
+
     @EventHandler
     public void onLogin(final PlayerLoginEvent event)
     {
@@ -31,7 +32,7 @@ public class ConnectionListener implements Listener
         Punishment p = SessionHandler.getBan(event.getPlayer().getUniqueId());
         if (p != null)
         {
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
+            event.disallow(Result.KICK_BANNED,
                     (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n"
                             + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                             + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
@@ -41,7 +42,6 @@ public class ConnectionListener implements Listener
                                     .replace("&", "§"));
             return;
         }
-
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -53,7 +53,7 @@ public class ConnectionListener implements Listener
         }
         Player player = event.getPlayer();
         PlayerUtils.addPlayer(player);
-        
+
         String ip = player.getAddress().getAddress().getHostAddress();
         Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
 
@@ -68,7 +68,7 @@ public class ConnectionListener implements Listener
             session.getNameList().add(player.getName());
             session.setName(player.getName());
         }
-        
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -76,7 +76,7 @@ public class ConnectionListener implements Listener
     {
         if (DEBUG)
         {
-            System.out.println("onLougout(PlayerQuitEvent) called in ConnectionListener.");
+            System.out.println("onLogout(PlayerQuitEvent) called in ConnectionListener.");
         }
 
         Player player = e.getPlayer();
@@ -86,7 +86,7 @@ public class ConnectionListener implements Listener
         StaffHandler.getInstance().disableStaffMode(player);
         StaffHandler.getInstance().unFreeze(player);
         e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", player.getName()));
-        
+
         PlayerUtils.removePlayer(player);
     }
 }

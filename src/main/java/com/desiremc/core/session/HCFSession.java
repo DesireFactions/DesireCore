@@ -13,6 +13,7 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
@@ -43,7 +44,7 @@ public class HCFSession
 
     private double balance;
 
-    @Embedded
+    @Reference(ignoreMissing = true)
     private List<DeathBan> deathBans;
 
     @Embedded
@@ -66,11 +67,6 @@ public class HCFSession
 
     public HCFSession()
     {
-        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-        for (int i = 1; i < 8; i++)
-        {
-            System.out.println(elements[i].getClassName() + ":" + elements[i].getLineNumber());
-        }
         pvpTimer = new PVPTimer();
         kills = new LinkedList<>();
         deaths = new LinkedList<>();
@@ -82,6 +78,7 @@ public class HCFSession
         this.id = id;
     }
 
+    @IdGetter
     protected int getId()
     {
         return id;
@@ -235,9 +232,13 @@ public class HCFSession
 
     public void addDeath(UUID killer)
     {
-        System.out.println("addDeath() called with server " + server + " and killer " + (killer == null ? "null" : killer.toString()) + ".");
+        if (DEBUG)
+        {
+            System.out.println("addDeath() called with server " + server + " and killer " + (killer == null ? "null" : killer.toString()) + ".");
+        }
 
-        deathBans.add(new DeathBan(System.currentTimeMillis()));
+        deathBans.add(DeathBanHandler.createDeathBan(this));
+        save();
 
         if (killer != null)
         {
@@ -281,7 +282,7 @@ public class HCFSession
         return ban != null ? ban.getStartTime() : -1;
     }
 
-    public void revive()
+    public void revive(String reson, boolean staffRevived, UUID reviver)
     {
         DeathBan ban = getActiveDeathBan();
         if (ban == null)
@@ -289,6 +290,10 @@ public class HCFSession
             throw new IllegalStateException("Player does not have a deathban.");
         }
         ban.setRevived(true);
+        ban.setStaffRevive(staffRevived);
+        ban.setReviveReason(reson);
+        ban.setReviver(reviver);
+        ban.save();
         save();
     }
 

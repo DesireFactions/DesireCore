@@ -14,7 +14,7 @@ import org.mongodb.morphia.query.Query;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.RedBlackTree;
 
-public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
+public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 {
 
     private static HCFSession console;

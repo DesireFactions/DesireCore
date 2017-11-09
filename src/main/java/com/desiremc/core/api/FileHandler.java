@@ -55,9 +55,8 @@ public class FileHandler
     }
 
     /**
-     * Gets a formatted string from the config file. Replaces any color
-     * placeholders as well. If the string does not exist in the config, returns
-     * null.
+     * Gets a formatted string from the config file. Replaces any color placeholders as well. If the string does not
+     * exist in the config, returns null.
      *
      * @param key
      * @return the formatted string.
@@ -73,7 +72,8 @@ public class FileHandler
         message = fileConfig.getString(key);
         if (message != null)
         {
-            message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
+            message = message.replaceAll("\\{nl\\}", "\n");
+            message = ChatColor.translateAlternateColorCodes('&', message);
             history.put(key, message);
             return message;
         }
@@ -84,8 +84,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a double value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a double value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -104,8 +103,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a long value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a long value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -124,8 +122,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a integer value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a integer value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -149,8 +146,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a boolean value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a boolean value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -169,9 +165,8 @@ public class FileHandler
     }
 
     /**
-     * Gets a formatted string list from the config file. Replaces any color
-     * placeholders as well. If the string list does not exist in the config,
-     * returns null.
+     * Gets a formatted string list from the config file. Replaces any color placeholders as well. If the string list
+     * does not exist in the config, returns null.
      *
      * @param key
      * @return the formatted string list.
