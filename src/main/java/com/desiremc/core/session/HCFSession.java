@@ -383,10 +383,15 @@ public class HCFSession
             }
             else
             {
-                EntryRegistry.getInstance().setValue(getPlayer(), "pvp.scoreboard", getTimeLeftFormatted());
+                setScoreboard();
             }
         }
 
+        public void setScoreboard()
+        {
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"), getTimeLeftFormatted());
+        }
+        
         public String getTimeLeftFormatted()
         {
             long time = (safeTimer / 1000);
