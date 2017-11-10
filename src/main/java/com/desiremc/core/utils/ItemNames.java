@@ -180,7 +180,7 @@ public class ItemNames
             .put("92", "Cake (Block)")
             .put("93", "Redstone Repeater (Block Off)")
             .put("94", "Redstone Repeater (Block On)")
-            .put("95", "Glass")
+            .put("95", "White Glass")
             .put("95:1", "Orange Glass")
             .put("95:2", "Magenta Glass")
             .put("95:3", "Light Blue Glass")
@@ -275,22 +275,22 @@ public class ItemNames
             .put("156", "Quartz Stairs")
             .put("157", "Activator Rail")
             .put("158", "Dropper")
-            .put("159", "Clay")
-            .put("159:1", "Orange Clay")
-            .put("159:2", "Magenta Clay")
-            .put("159:3", "Light Blue Clay")
-            .put("159:4", "Yellow Clay")
-            .put("159:5", "Lime Clay")
-            .put("159:6", "Pink Clay")
-            .put("159:7", "Gray Clay")
-            .put("159:8", "Light Gray Clay")
-            .put("159:9", "Cyan Clay")
-            .put("159:10", "Purple Clay")
-            .put("159:11", "Blue Clay")
-            .put("159:12", "Brown Clay")
-            .put("159:13", "Green Clay")
-            .put("159:14", "Red Clay")
-            .put("159:15", "Black Clay")
+            .put("159", "White Hardened Clay")
+            .put("159:1", "Orange Hardened Clay")
+            .put("159:2", "Magenta Hardened Clay")
+            .put("159:3", "Light Blue Hardened Clay")
+            .put("159:4", "Yellow Hardened Clay")
+            .put("159:5", "Lime Hardened Clay")
+            .put("159:6", "Pink Hardened Clay")
+            .put("159:7", "Gray Hardened Clay")
+            .put("159:8", "Light Gray Hardened Clay")
+            .put("159:9", "Cyan Hardened Clay")
+            .put("159:10", "Purple Hardened Clay")
+            .put("159:11", "Blue Hardened Clay")
+            .put("159:12", "Brown Hardened Clay")
+            .put("159:13", "Green Hardened Clay")
+            .put("159:14", "Red Hardened Clay")
+            .put("159:15", "Black Hardened Clay")
             .put("160", "Glass Pane")
             .put("160:1", "Orange Glass Pane")
             .put("160:2", "Magenta Glass Pane")
@@ -719,9 +719,10 @@ public class ItemNames
         }
         String result;
         String key = Integer.toString(stack.getTypeId());
-        if (stack.getDurability() != 0)
+        System.out.println(stack.getType());
+        if (stack.getData().getData() != 0)
         {
-            result = map.get(key + ":" + stack.getDurability());
+            result = map.get(key + ":" + stack.getData().getData());
             if (result == null)
             {
                 result = map.get(key);
