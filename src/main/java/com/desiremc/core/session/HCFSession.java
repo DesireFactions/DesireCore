@@ -1,5 +1,6 @@
 package com.desiremc.core.session;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.PlayerUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
@@ -89,7 +91,7 @@ public class HCFSession
         this.id = HCFSessionHandler.getNextId();
         this.uuid = uuid;
         this.server = server;
-        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time");
+        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
     }
 
     public Rank getRank()
@@ -353,6 +355,8 @@ public class HCFSession
         return array;
     }
 
+    private static final DecimalFormat df = new DecimalFormat("00");
+
     public class PVPTimer implements Runnable
     {
 
@@ -369,6 +373,20 @@ public class HCFSession
             }
             safeTimer -= System.currentTimeMillis() - lastRunTime;
             lastRunTime = System.currentTimeMillis();
+            if (safeTimer <= 0)
+            {
+                EntryRegistry.getInstance().removeValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+            }
+            else
+            {
+                EntryRegistry.getInstance().setValue(getPlayer(), "pvp.scoreboard", getTimeLeftFormatted());
+            }
+        }
+
+        public String getTimeLeftFormatted()
+        {
+            long time = (safeTimer / 1000);
+            return "§b" + df.format(time / 60) + ":" + df.format(time % 60);
         }
 
         public void pause()

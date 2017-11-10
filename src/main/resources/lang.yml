@@ -203,3 +203,5 @@ leave:
 chat:
   ignoring: '&7You are ignoring &c{target}&7.'
   ignored: '&c{target} &7is ignoring you.'
+pvp:
+  scoreboard: '&c&lPVP Timer'
