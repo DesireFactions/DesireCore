@@ -268,7 +268,7 @@ public class HCFSession
         getPlayer().sendMessage(message);
     }
 
-    public PVPTimer getTimer()
+    public PVPTimer getSafeTimer()
     {
         return pvpTimer;
     }
@@ -362,14 +362,18 @@ public class HCFSession
 
         private long lastRunTime;
 
-        private boolean pause;
-
+        private boolean paused;
+        
         @Override
         public void run()
         {
-            if (!pause && safeTimer > 0)
+            if (!paused && safeTimer > 0)
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
+            }
+            if (DEBUG)
+            {
+                System.out.println("PVPTimer.run() safeTimer = " + safeTimer);
             }
             safeTimer -= System.currentTimeMillis() - lastRunTime;
             lastRunTime = System.currentTimeMillis();
@@ -391,12 +395,13 @@ public class HCFSession
 
         public void pause()
         {
-            pause = true;
+            paused = true;
         }
 
         public void resume()
         {
-            pause = false;
+            lastRunTime = System.currentTimeMillis();
+            paused = false;
             run();
         }
 

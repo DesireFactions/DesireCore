@@ -822,13 +822,13 @@ public class RedBlackTree<Key extends Comparable<Key>, Value>
      ***************************************************************************/
 
     /**
-     * Returns all keys in the symbol table as an {@code Iterable}. To iterate
+     * Returns all keys in the symbol table as an {@code Queue}. To iterate
      * over all of the keys in the symbol table named {@code st}, use the
      * foreach notation: {@code for (Key key : st.keys())}.
      * 
-     * @return all keys in the symbol table as an {@code Iterable}
+     * @return all keys in the symbol table as an {@code Queue}
      */
-    public Iterable<Key> keys()
+    public Queue<Key> keys()
     {
         if (isEmpty())
         {
@@ -839,18 +839,18 @@ public class RedBlackTree<Key extends Comparable<Key>, Value>
 
     /**
      * Returns all keys in the symbol table in the given range, as an
-     * {@code Iterable}.
+     * {@code Queue}.
      *
      * @param lo
      *            minimum endpoint
      * @param hi
      *            maximum endpoint
      * @return all keys in the sybol table between {@code lo} (inclusive) and
-     *         {@code hi} (inclusive) as an {@code Iterable}
+     *         {@code hi} (inclusive) as an {@code Queue}
      * @throws IllegalArgumentException
      *             if either {@code lo} or {@code hi} is {@code null}
      */
-    public Iterable<Key> keys(Key lo, Key hi)
+    public Queue<Key> keys(Key lo, Key hi)
     {
         if (lo == null)
         {
@@ -892,13 +892,13 @@ public class RedBlackTree<Key extends Comparable<Key>, Value>
     }
 
     /**
-     * Returns all values in the symbol table as an {@code Iterable}. To iterate
+     * Returns all values in the symbol table as an {@code Queue}. To iterate
      * over all of the values in the symbol table named {@code st}, use the
      * foreach notation: {@code for (Value value : st.values())}.
      * 
-     * @return all values in the symbol table as an {@code Iterable}
+     * @return all values in the symbol table as an {@code Queue}
      */
-    public Iterable<Value> values()
+    public Queue<Value> values()
     {
         if (isEmpty())
         {
@@ -909,18 +909,18 @@ public class RedBlackTree<Key extends Comparable<Key>, Value>
 
     /**
      * Returns all values in the symbol table in the given range, as an
-     * {@code Iterable}.
+     * {@code Queue}.
      *
      * @param lo
      *            minimum endpoint
      * @param hi
      *            maximum endpoint
      * @return all values in the sybol table between {@code lo} (inclusive) and
-     *         {@code hi} (inclusive) as an {@code Iterable}
+     *         {@code hi} (inclusive) as an {@code Queue}
      * @throws IllegalArgumentException
      *             if either {@code lo} or {@code hi} is {@code null}
      */
-    public Iterable<Value> values(Key lo, Key hi)
+    public Queue<Value> values(Key lo, Key hi)
     {
         if (lo == null)
         {

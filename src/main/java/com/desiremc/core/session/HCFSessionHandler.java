@@ -1,5 +1,7 @@
 package com.desiremc.core.session;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -49,9 +51,9 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         instance = new HCFSessionHandler();
     }
 
-    public static Iterable<HCFSession> getSessions()
+    public static Collection<HCFSession> getSessions()
     {
-        return getInstance().sessions.values();
+        return Collections.unmodifiableCollection(getInstance().sessions.values());
     }
 
     public static HCFSession getHCFSession(UUID uuid)
