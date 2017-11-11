@@ -1,10 +1,10 @@
 package com.desiremc.core.punishment;
 
-import java.util.UUID;
-
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
+
+import java.util.UUID;
 
 @Entity(noClassnameStored = true, value = "punishments")
 public class Punishment {
@@ -25,6 +25,8 @@ public class Punishment {
     private long expirationTime;
 
     private boolean repealed;
+
+    private boolean permanent;
 
     private boolean blacklisted;
 
@@ -76,6 +78,16 @@ public class Punishment {
 
     public void setRepealed(boolean repealed) {
         this.repealed = repealed;
+    }
+
+    public boolean isPermanent()
+    {
+        return permanent;
+    }
+
+    public void setPermanent(boolean permanent)
+    {
+        this.permanent = permanent;
     }
 
     public String getReason() {

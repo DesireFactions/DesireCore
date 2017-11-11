@@ -48,6 +48,7 @@ public class BanCommand extends ValidCommand
         punishment.setPunished(target.getUniqueId());
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(Long.MAX_VALUE);
+        punishment.setPermanent(true);
         punishment.setReason(sb.toString().trim());
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.BAN);

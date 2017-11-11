@@ -12,11 +12,6 @@ public class PlayerIsBlacklistedValidator extends PlayerValidator
     {
         Session session = (Session) arg;
 
-        if (session == null)
-        {
-            return false;
-        }
-
         for(Punishment punishment : session.getActivePunishments())
         {
             if(punishment.isBlacklisted())

@@ -1,9 +1,8 @@
 package com.desiremc.core.validators;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
+import org.bukkit.command.CommandSender;
 
 public class PlayerIsBannedValidator extends PlayerValidator
 {
@@ -13,12 +12,7 @@ public class PlayerIsBannedValidator extends PlayerValidator
     {
         Session session = (Session) arg;
 
-        if (session == null)
-        {
-            return false;
-        }
-
-        if (session.isBanned() != null)
+        if (session.isBanned() == null)
         {
             DesireCore.getLangHandler().sendString(sender, "not_banned");
             return false;

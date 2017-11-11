@@ -18,10 +18,11 @@ public class UnbanCommand extends ValidCommand
 
     public UnbanCommand()
     {
-        super("unban", "Unban a user from the server.", Rank.MODERATOR, new String[] { "target" });
+        super("unban", "Unban a user from the server.", Rank.MODERATOR, new String[]{"target"});
         addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerIsBannedValidator());
-        addValidator(new PlayerIsNotBlacklistedValidator());
+
+        addValidator(new PlayerIsBannedValidator(), "target");
+        addValidator(new PlayerIsNotBlacklistedValidator(), "target");
     }
 
     @Override

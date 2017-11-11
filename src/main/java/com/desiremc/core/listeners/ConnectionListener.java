@@ -33,7 +33,7 @@ public class ConnectionListener implements Listener
         if (p != null)
         {
             Bukkit.broadcastMessage(p.getExpirationTime() + ":" + Long.MAX_VALUE);
-            if (p.getExpirationTime() == Long.MAX_VALUE)
+            if (p.isPermanent())
             {
                 event.disallow(Result.KICK_BANNED,
                         (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +

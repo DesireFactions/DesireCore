@@ -13,11 +13,6 @@ public class PlayerIsOnlineValidator extends PlayerValidator
     {
         Session session = (Session) arg;
 
-        if (session == null)
-        {
-            return false;
-        }
-
         if (!session.getPlayer().isOnline())
         {
             DesireCore.getLangHandler().sendString(sender, "not_online");
