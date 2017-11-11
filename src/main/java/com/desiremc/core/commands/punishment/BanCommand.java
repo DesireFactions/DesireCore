@@ -11,7 +11,6 @@ import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
 
@@ -26,7 +25,7 @@ public class BanCommand extends ValidCommand
                 new String[] {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
-        addValidator(new PlayerValidator());
+
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
@@ -46,8 +45,11 @@ public class BanCommand extends ValidCommand
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);
 
-        LANG.sendRenderMessage(sender, "ban.permban_message",
-                "{player}", target.getName(),
-                "{reason}", punishment.getReason());
+        if (target.getPlayer() != null)
+        {
+            target.getPlayer().kickPlayer(LANG.renderMessage("ban.permban_message",
+                    "{player}", target.getName(),
+                    "{reason}", punishment.getReason()));
+        }
     }
 }

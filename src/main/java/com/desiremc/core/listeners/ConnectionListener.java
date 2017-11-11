@@ -7,7 +7,6 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,9 +29,8 @@ public class ConnectionListener implements Listener
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
         Punishment p = SessionHandler.getBan(event.getPlayer().getUniqueId());
-        if (p != null)
+        if (p != null && !p.isRepealed())
         {
-            Bukkit.broadcastMessage(p.getExpirationTime() + ":" + Long.MAX_VALUE);
             if (p.isPermanent())
             {
                 event.disallow(Result.KICK_BANNED,
