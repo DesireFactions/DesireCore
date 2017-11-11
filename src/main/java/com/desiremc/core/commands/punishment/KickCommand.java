@@ -16,11 +16,12 @@ public class KickCommand extends ValidCommand
 
     public KickCommand()
     {
-        super("kick", "Kick a user from the server.", Rank.JRMOD, new String[]{"target", "reason"});
+        super("kick", "Kick a user from the server.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[]
+                {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
-        addValidator(new PlayerIsOnlineValidator());
+        addValidator(new PlayerIsOnlineValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
@@ -30,17 +31,7 @@ public class KickCommand extends ValidCommand
         Player player = (Player) sender;
         Player target = (Player) args[0];
 
-        StringBuilder sb = new StringBuilder();
-
-        if (args.length >= 2)
-        {
-            for (int i = 1; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
-
         target.kickPlayer(DesireCore.getLangHandler().renderMessage("staff.kick-message", "{player}", player.getName
-                (), "{reason}", sb.toString().trim()));
+                (), "{reason}", args[1]));
     }
 }
