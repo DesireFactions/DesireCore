@@ -5,7 +5,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import org.bukkit.command.CommandSender;
 
-public class PlayerIsOnlineValidator extends PlayerValidator
+public class PlayerSessionIsOnlineValidator extends PlayerValidator
 {
 
     @Override

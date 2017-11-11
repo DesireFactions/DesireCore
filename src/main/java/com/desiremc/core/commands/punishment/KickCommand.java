@@ -5,7 +5,7 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerIsOnlineValidator;
+import com.desiremc.core.validators.PlayerSessionIsOnlineValidator;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
@@ -21,7 +21,7 @@ public class KickCommand extends ValidCommand
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
-        addValidator(new PlayerIsOnlineValidator(), "target");
+        addValidator(new PlayerSessionIsOnlineValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 

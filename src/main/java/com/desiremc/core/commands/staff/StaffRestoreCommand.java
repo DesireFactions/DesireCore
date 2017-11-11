@@ -7,7 +7,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.validators.PlayerIsOnlineValidator;
+import com.desiremc.core.validators.PlayerSessionIsOnlineValidator;
 import com.desiremc.core.validators.PlayerValidator;
 import org.bukkit.command.CommandSender;
 
@@ -18,7 +18,7 @@ public class StaffRestoreCommand extends ValidCommand
         super("restore", "Restore a players inventory.", Rank.JRMOD, new String[]{"target"});
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
-        addValidator(new PlayerIsOnlineValidator());
+        addValidator(new PlayerSessionIsOnlineValidator());
     }
 
     @Override

@@ -1,14 +1,12 @@
 package com.desiremc.core.commands.staff;
 
-import com.desiremc.core.validators.PlayerIsOnlineValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.StaffAPI;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class StaffFollowCommand extends ValidCommand
 {
@@ -19,7 +17,6 @@ public class StaffFollowCommand extends ValidCommand
         addParser(new PlayerParser(), "target");
         
         addValidator(new PlayerValidator());
-        addValidator(new PlayerIsOnlineValidator(), "target");
     }
 
     @Override
