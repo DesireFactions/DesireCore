@@ -1,19 +1,18 @@
 package com.desiremc.core.session;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.RedBlackTree;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.List;
+import java.util.UUID;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
@@ -214,6 +213,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         s.setTotalPlayed(s.getTotalPlayed() + System.currentTimeMillis() - s.getLastLogin());
         s.setLastLogin(System.currentTimeMillis());
+        instance.staff.delete(s.getUniqueId());
         instance.save(s);
         instance.sessions.delete(s.getUniqueId());
         // TODO change this return type
