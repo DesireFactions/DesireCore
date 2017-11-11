@@ -97,7 +97,6 @@ public abstract class ValidCommand
         }
 
         Object[] parsedArgs = parseArguments(sender, label, args);
-        System.out.println("ValidCommand.run(): " + parsedArgs.length);
 
         if (parsedArgs == null || !isArgsValid(sender, label, parsedArgs, this.validators))
         {
@@ -121,11 +120,6 @@ public abstract class ValidCommand
 
     private boolean isArgsValid(CommandSender sender, String label, Object[] parsedArgs, Collection<CommandValidator> validators)
     {
-        System.out.println("ValidCommand.isArgsValid(): " + parsedArgs.length);
-        if (args.length == 1 && sender.getName().contains("Mewtwo"))
-        {
-            System.out.println("Arg type: " + parsedArgs[0]);
-        }
         for (CommandValidator validator : validators)
         {
             if (!validator.validate(sender, label, parsedArgs))
@@ -151,7 +145,6 @@ public abstract class ValidCommand
             }
             parsedArgs[i] = parsed;
         }
-        System.out.println("ValidCommand.parseArguments(): " + parsedArgs.length);
         return parsedArgs;
     }
 
