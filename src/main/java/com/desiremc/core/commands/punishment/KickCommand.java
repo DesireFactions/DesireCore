@@ -20,8 +20,8 @@ public class KickCommand extends ValidCommand
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
-        addValidator(new SenderOutranksTargetValidator(), "target");
         addValidator(new PlayerIsOnlineValidator());
+        addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class KickCommand extends ValidCommand
 
         if (args.length >= 2)
         {
-            for (int i = 2; i < args.length; i++)
+            for (int i = 1; i < args.length; i++)
             {
                 sb.append(args[i] + " ");
             }

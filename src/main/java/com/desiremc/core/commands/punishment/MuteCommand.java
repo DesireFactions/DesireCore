@@ -15,14 +15,15 @@ import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
 
-public class BanCommand extends ValidCommand
+public class MuteCommand extends ValidCommand
 {
 
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
-    public BanCommand()
+    public MuteCommand()
     {
-        super("ban", "Permanently ban a user from the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] { "target", "reason" });
+        super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC,
+                new String[]{"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
@@ -50,10 +51,10 @@ public class BanCommand extends ValidCommand
         punishment.setExpirationTime(Long.MAX_VALUE);
         punishment.setReason(sb.toString().trim());
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setType(Type.BAN);
+        punishment.setType(Type.MUTE);
         PunishmentHandler.getInstance().save(punishment);
 
-        LANG.sendRenderMessage(sender, "ban.permban_message",
+        LANG.sendRenderMessage(sender, "mute.permmute_message",
                 "{player}", target.getName(),
                 "{reason}", punishment.getReason());
     }
