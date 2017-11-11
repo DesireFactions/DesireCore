@@ -19,10 +19,10 @@ public class UnblacklistCommand extends ValidCommand
 
     public UnblacklistCommand()
     {
-        super("unblacklist", "Unblacklist a user from the server.", Rank.DEVELOPER, new String[]{"target"});
+        super("unblacklist", "Unblacklist a user from the server.", Rank.DEVELOPER, new String[] {"target"});
         addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerIsBannedValidator());
-        addValidator(new PlayerIsBlacklistedValidator());
+        addValidator(new PlayerIsBannedValidator(), "target");
+        addValidator(new PlayerIsBlacklistedValidator(), "target");
     }
 
     @Override
@@ -36,6 +36,7 @@ public class UnblacklistCommand extends ValidCommand
         {
             punishment.setBlacklisted(false);
         }
+
         PunishmentHandler.getInstance().save(target.isBanned());
     }
 }

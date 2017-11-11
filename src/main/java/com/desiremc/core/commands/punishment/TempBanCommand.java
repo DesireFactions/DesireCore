@@ -38,21 +38,12 @@ public class TempBanCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
         long time = (long) args[1];
-        StringBuilder sb = new StringBuilder();
-
-        if (args.length >= 3)
-        {
-            for (int i = 2; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
 
         Punishment punishment = new Punishment();
         punishment.setPunished(target.getUniqueId());
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(time);
-        punishment.setReason(sb.toString().trim());
+        punishment.setReason((String) args[1]);
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);

@@ -22,7 +22,8 @@ public class BlacklistCommand extends ValidCommand
 
     public BlacklistCommand()
     {
-        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] { "target", "reason" });
+        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN, ValidCommand.ARITY_REQUIRED_VARIADIC, new
+                String[] {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
@@ -34,21 +35,12 @@ public class BlacklistCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
-        StringBuilder sb = new StringBuilder();
-
-        if (args.length >= 2)
-        {
-            for (int i = 1; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
 
         Punishment punishment = new Punishment();
         punishment.setPunished(target.getUniqueId());
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(Long.MAX_VALUE);
-        punishment.setReason(sb.toString().trim());
+        punishment.setReason((String) args[1]);
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.BAN);
         punishment.setBlacklisted(true);

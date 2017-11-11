@@ -23,7 +23,7 @@ public class MuteCommand extends ValidCommand
     public MuteCommand()
     {
         super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[]{"target", "reason"});
+                new String[] {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
         addValidator(new PlayerValidator());
@@ -35,21 +35,12 @@ public class MuteCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
-        StringBuilder sb = new StringBuilder();
-
-        if (args.length >= 2)
-        {
-            for (int i = 1; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
 
         Punishment punishment = new Punishment();
         punishment.setPunished(target.getUniqueId());
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(Long.MAX_VALUE);
-        punishment.setReason(sb.toString().trim());
+        punishment.setReason((String) args[1]);
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.MUTE);
         PunishmentHandler.getInstance().save(punishment);
