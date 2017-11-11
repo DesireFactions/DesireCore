@@ -24,7 +24,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener
 {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @EventHandler
     public void onFrozenPlayerMove(PlayerMoveEvent event)

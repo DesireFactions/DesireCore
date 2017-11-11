@@ -97,6 +97,7 @@ public abstract class ValidCommand
         }
 
         Object[] parsedArgs = parseArguments(sender, label, args);
+        System.out.println("ValidCommand.run(): " + parsedArgs.length);
 
         if (parsedArgs == null || !isArgsValid(sender, label, parsedArgs, this.validators))
         {
@@ -105,50 +106,53 @@ public abstract class ValidCommand
 
         if (commandArity.hasOptional())
         {
-            if (parsedArgs.length == this.args.length)
+            if (parsedArgs.length == this.args.length && !isArgsValid(sender, label, parsedArgs, optionalExistsValidators))
             {
-                isArgsValid(sender, label, parsedArgs, optionalExistsValidators);
+                return;
             }
-            else
+            else if (isArgsValid(sender, label, parsedArgs, optionalNonexistantValidators))
             {
-                isArgsValid(sender, label, parsedArgs, optionalNonexistantValidators);
+                return;
             }
         }
 
         this.validRun(sender, label, parsedArgs);
     }
 
-    public void addValidator(CommandValidator validator, String... argsToValidate)
+    private boolean isArgsValid(CommandSender sender, String label, Object[] parsedArgs, Collection<CommandValidator> validators)
     {
-        validator.setArgsToValidate(argsMap, argsToValidate);
-        validators.add(validator);
-    }
-
-    public void addOptionalExistsValidator(CommandValidator validator, String... argsToValidate)
-    {
-        validator.setArgsToValidate(argsMap, argsToValidate);
-        optionalExistsValidators.add(validator);
-    }
-
-    public void addOptionalNonexistantValidator(CommandValidator validator, String... argsToValidate)
-    {
-        validator.setArgsToValidate(argsMap, argsToValidate);
-        optionalNonexistantValidators.add(validator);
-    }
-
-    public void addParser(ArgumentParser parser, String... argsToParse)
-    {
-        for (String arg : argsToParse)
+        System.out.println("ValidCommand.isArgsValid(): " + parsedArgs.length);
+        if (args.length == 1 && sender.getName().contains("Mewtwo"))
         {
-            Integer index = argsMap.get(arg);
-
-            if (index == null)
-            {
-                throw new IllegalArgumentException("Argument " + arg + " not found.");
-            }
-
-            parsers[argsMap.get(arg)] = parser;
+            System.out.println("Arg type: " + parsedArgs[0]);
         }
+        for (CommandValidator validator : validators)
+        {
+            if (!validator.validate(sender, label, parsedArgs))
+            {
+                return false;
+            }
+        }
+    
+        return true;
+    }
+
+    private Object[] parseArguments(CommandSender sender, String label, String[] args)
+    {
+        Object[] parsedArgs = new Object[args.length];
+    
+        for (int i = 0; i < args.length; i++)
+        {
+            Object parsed = getParser(i).parseArgument(sender, label, args[i]);
+    
+            if (parsed == null)
+            {
+                return null;
+            }
+            parsedArgs[i] = parsed;
+        }
+        System.out.println("ValidCommand.parseArguments(): " + parsedArgs.length);
+        return parsedArgs;
     }
 
     public abstract void validRun(CommandSender sender, String label, Object... args);
@@ -253,41 +257,42 @@ public abstract class ValidCommand
         return sb.toString();
     }
 
+    public void addValidator(CommandValidator validator, String... argsToValidate)
+    {
+        validator.setArgsToValidate(argsMap, argsToValidate);
+        validators.add(validator);
+    }
+
+    public void addOptionalExistsValidator(CommandValidator validator, String... argsToValidate)
+    {
+        validator.setArgsToValidate(argsMap, argsToValidate);
+        optionalExistsValidators.add(validator);
+    }
+
+    public void addOptionalNonexistantValidator(CommandValidator validator, String... argsToValidate)
+    {
+        validator.setArgsToValidate(argsMap, argsToValidate);
+        optionalNonexistantValidators.add(validator);
+    }
+
+    public void addParser(ArgumentParser parser, String... argsToParse)
+    {
+        for (String arg : argsToParse)
+        {
+            Integer index = argsMap.get(arg);
+    
+            if (index == null)
+            {
+                throw new IllegalArgumentException("Argument " + arg + " not found.");
+            }
+    
+            parsers[argsMap.get(arg)] = parser;
+        }
+    }
+
     public String[] getArgs()
     {
         return args;
-    }
-
-    private boolean isArgsValid(CommandSender sender, String label, Object[] parsedArgs, Collection<CommandValidator> validators)
-    {
-        for (CommandValidator validator : validators)
-        {
-            if (!validator.validate(sender, label, parsedArgs))
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private Object[] parseArguments(CommandSender sender, String label, String[] args)
-    {
-        Object[] parsedArgs = new Object[args.length];
-
-        for (int i = 0; i < args.length; i++)
-        {
-            Object parsed = getParser(i).parseArgument(sender, label, args[i]);
-
-            if (parsed == null)
-            {
-                return null;
-            }
-
-            parsedArgs[i] = parsed;
-        }
-
-        return parsedArgs;
     }
 
     private ArgumentParser getParser(int argIndex)

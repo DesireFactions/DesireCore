@@ -36,7 +36,7 @@ public abstract class CommandValidator
         {
             throw new IllegalStateException("Did not call setArgsToValidateIndices yet.");
         }
-
+        
         // support for validators not tied to any arguments
         if (argsToValdate.length == 0)
         {
