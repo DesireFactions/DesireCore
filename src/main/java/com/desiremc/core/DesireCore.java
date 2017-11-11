@@ -1,31 +1,23 @@
 package com.desiremc.core;
 
-import java.io.File;
-import java.util.UUID;
-
-import com.desiremc.core.commands.BlacklistCommand;
-import com.desiremc.core.commands.KickCommand;
-import com.desiremc.core.commands.UnblacklistCommand;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.AchievementCommand;
-import com.desiremc.core.commands.BanCommand;
 import com.desiremc.core.commands.InfoCommand;
-import com.desiremc.core.commands.TempBanCommand;
-import com.desiremc.core.commands.UnbanCommand;
-import com.desiremc.core.commands.WarnCommand;
 import com.desiremc.core.commands.alerts.AlertsCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
 import com.desiremc.core.commands.auth.LoginCommand;
 import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
+import com.desiremc.core.commands.punishment.BanCommand;
+import com.desiremc.core.commands.punishment.BlacklistCommand;
+import com.desiremc.core.commands.punishment.KickCommand;
+import com.desiremc.core.commands.punishment.TempBanCommand;
+import com.desiremc.core.commands.punishment.UnbanCommand;
+import com.desiremc.core.commands.punishment.UnblacklistCommand;
+import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.staff.StaffChatCommand;
@@ -53,6 +45,13 @@ import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {

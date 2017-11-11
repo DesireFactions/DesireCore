@@ -1,4 +1,4 @@
-package com.desiremc.core.commands;
+package com.desiremc.core.commands.punishment;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;

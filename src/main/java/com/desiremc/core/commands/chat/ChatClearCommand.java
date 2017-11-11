@@ -34,7 +34,11 @@ public class ChatClearCommand extends ValidCommand
                 }
                 continue;
             }
-            p.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+            for (int i = 0; i < 75; i++)
+            {
+                p.sendMessage("");
+            }
 
             LANG.sendRenderMessage(session, "staff.chat-cleared-all", "{player}", sender.getName());
         }

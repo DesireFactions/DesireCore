@@ -1,16 +1,15 @@
-package com.desiremc.core.commands;
-
-import com.desiremc.core.validators.PlayerIsOnlineValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+package com.desiremc.core.commands.punishment;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.validators.PlayerIsOnlineValidator;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class KickCommand extends ValidCommand
 {

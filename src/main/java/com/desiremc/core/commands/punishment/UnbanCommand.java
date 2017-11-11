@@ -1,16 +1,15 @@
-package com.desiremc.core.commands;
+package com.desiremc.core.commands.punishment;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.validators.PlayerIsNotBlacklistedValidator;
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.PlayerIsBannedValidator;
+import com.desiremc.core.validators.PlayerIsNotBlacklistedValidator;
+import org.bukkit.command.CommandSender;
 
 public class UnbanCommand extends ValidCommand
 {
