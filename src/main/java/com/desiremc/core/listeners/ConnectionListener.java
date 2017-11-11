@@ -1,5 +1,13 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.PlayerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,14 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.PlayerUtils;
 
 public class ConnectionListener implements Listener
 {
@@ -32,15 +32,30 @@ public class ConnectionListener implements Listener
         Punishment p = SessionHandler.getBan(event.getPlayer().getUniqueId());
         if (p != null)
         {
-            event.disallow(Result.KICK_BANNED,
-                    (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n"
-                            + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
-                            + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
-                                    .replace("{reason}", p.getReason())
-                                    .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
-                                    .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                                    .replace("&", "§"));
-            return;
+            Bukkit.broadcastMessage(p.getExpirationTime() + ":" + Long.MAX_VALUE);
+            if (p.getExpirationTime() == Long.MAX_VALUE)
+            {
+                event.disallow(Result.KICK_BANNED,
+                        (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +
+                                " the network!\n"
+                                + "\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
+                                + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                                .replace("{reason}", p.getReason())
+                                .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                .replace("&", "§"));
+            }
+            else
+            {
+                event.disallow(Result.KICK_BANNED,
+                        (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the " +
+                                "network!\n"
+                                + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
+                                + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                                .replace("{reason}", p.getReason())
+                                .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
+                                .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                .replace("&", "§"));
+            }
         }
     }
 
