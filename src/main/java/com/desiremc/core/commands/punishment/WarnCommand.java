@@ -14,6 +14,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
 
@@ -24,11 +25,14 @@ public class WarnCommand extends ValidCommand
 
     public WarnCommand()
     {
-        super("warn", "Warn a user on the server.", Rank.MODERATOR, new String[] {"target", "time", "reason"});
+        super("warn", "Warn a user on the server.", Rank.MODERATOR, new String[] { "target", "time", "reason" });
+
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
+
         addValidator(new PlayerValidator());
+        addValidator(new SenderNotTargetValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 

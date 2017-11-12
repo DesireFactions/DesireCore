@@ -112,7 +112,7 @@ public abstract class ValidCommand
             {
                 return;
             }
-            else if (isArgsValid(sender, label, parsedArgs, optionalNonexistantValidators))
+            else if (!isArgsValid(sender, label, parsedArgs, optionalNonexistantValidators))
             {
                 return;
             }

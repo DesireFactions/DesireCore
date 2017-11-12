@@ -1,12 +1,11 @@
 package com.desiremc.core.validators;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.SessionUtils;
-import org.bukkit.command.CommandSender;
 
 public class SenderOutranksTargetValidator extends CommandValidator
 {
@@ -14,16 +13,8 @@ public class SenderOutranksTargetValidator extends CommandValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        Rank senderRank = SessionHandler.getSession(sender).getRank();
+        Rank senderRank = SessionUtils.getRank(sender);
         Rank targetRank = SessionUtils.getRank(arg);
-
-        Session session = (Session) arg;
-
-        if (sender.getName().equalsIgnoreCase(session.getName()))
-        {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "cant_to_self");
-            return false;
-        }
 
         if (senderRank.compareTo(targetRank) > 0)
         {

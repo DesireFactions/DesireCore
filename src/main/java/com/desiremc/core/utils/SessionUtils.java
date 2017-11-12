@@ -28,7 +28,7 @@ public class SessionUtils
         }
         else if (o instanceof Session)
         {
-            uuid = ((Session) o).getUniqueId();
+            return ((Session) o).getRank();
         }
         else
         {

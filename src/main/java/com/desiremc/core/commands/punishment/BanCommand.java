@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.punishment;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
@@ -11,8 +13,8 @@ import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.command.CommandSender;
 
 public class BanCommand extends ValidCommand
 {
@@ -26,6 +28,7 @@ public class BanCommand extends ValidCommand
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
 
+        addValidator(new SenderNotTargetValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 

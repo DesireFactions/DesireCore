@@ -1,5 +1,7 @@
 package com.desiremc.core.commands.punishment;
 
+import org.bukkit.command.CommandSender;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
@@ -14,8 +16,8 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.command.CommandSender;
 
 public class TempMuteCommand extends ValidCommand
 {
@@ -25,11 +27,14 @@ public class TempMuteCommand extends ValidCommand
     public TempMuteCommand()
     {
         super("tempmute", "Temporarily mute a user on the server.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[] {"target", "time", "reason"});
+                new String[] { "target", "time", "reason" });
+
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
+
         addValidator(new PlayerValidator());
+        addValidator(new SenderNotTargetValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
