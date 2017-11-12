@@ -1,4 +1,4 @@
-package com.desiremc.core.commands;
+package com.desiremc.core.commands.achievement;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
@@ -8,7 +8,6 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
