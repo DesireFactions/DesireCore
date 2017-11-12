@@ -14,7 +14,9 @@ import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.punishment.BanCommand;
 import com.desiremc.core.commands.punishment.BlacklistCommand;
 import com.desiremc.core.commands.punishment.KickCommand;
+import com.desiremc.core.commands.punishment.MuteCommand;
 import com.desiremc.core.commands.punishment.TempBanCommand;
+import com.desiremc.core.commands.punishment.TempMuteCommand;
 import com.desiremc.core.commands.punishment.UnbanCommand;
 import com.desiremc.core.commands.punishment.UnblacklistCommand;
 import com.desiremc.core.commands.punishment.WarnCommand;
@@ -147,6 +149,8 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new AuthCommand());
         customCommandHandler.registerCommand(new KickCommand());
+        customCommandHandler.registerCommand(new MuteCommand());
+        customCommandHandler.registerCommand(new TempMuteCommand());
     }
 
     private void registerListeners()
