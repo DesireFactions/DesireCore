@@ -1,6 +1,7 @@
 package com.desiremc.core.api.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -90,11 +91,13 @@ public abstract class ValidCommand
      */
     public void run(CommandSender sender, String label, String[] args)
     {
-        if (!commandArity.validateArity(args.length, this.args.length))
+        List<String> listArguments = new ArrayList<>(Arrays.asList(args));
+        if (!commandArity.validateArity(listArguments, this.args.length))
         {
             DesireCore.getLangHandler().sendUsageMessage(sender, label, (Object[]) this.args);
             return;
         }
+        args = listArguments.toArray(new String[0]);
 
         Object[] parsedArgs = parseArguments(sender, label, args);
 
@@ -127,18 +130,18 @@ public abstract class ValidCommand
                 return false;
             }
         }
-    
+
         return true;
     }
 
     private Object[] parseArguments(CommandSender sender, String label, String[] args)
     {
         Object[] parsedArgs = new Object[args.length];
-    
+
         for (int i = 0; i < args.length; i++)
         {
             Object parsed = getParser(i).parseArgument(sender, label, args[i]);
-    
+
             if (parsed == null)
             {
                 return null;
@@ -273,12 +276,12 @@ public abstract class ValidCommand
         for (String arg : argsToParse)
         {
             Integer index = argsMap.get(arg);
-    
+
             if (index == null)
             {
                 throw new IllegalArgumentException("Argument " + arg + " not found.");
             }
-    
+
             parsers[argsMap.get(arg)] = parser;
         }
     }
