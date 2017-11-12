@@ -20,8 +20,7 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand(String name, String... aliases)
     {
-        super(name, "Join or leave staff chat.", Rank.JRMOD, ARITY_REQUIRED_VARIADIC, new String[] {"message"},
-                aliases);
+        super(name, "Join or leave staff chat.", Rank.JRMOD, ARITY_OPTIONAL_VARIADIC, new String[] { "message" }, aliases);
         addValidator(new PlayerValidator());
 
         addParser(new StringParser(), "message");

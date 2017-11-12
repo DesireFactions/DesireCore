@@ -22,6 +22,7 @@ import com.desiremc.core.commands.punishment.UnblacklistCommand;
 import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
+import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.commands.timings.TimingsCommand;
@@ -160,6 +161,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new MuteCommand());
         customCommandHandler.registerCommand(new TempMuteCommand());
         customCommandHandler.registerCommand(new TimingsCommand());
+        customCommandHandler.registerCommand(new StaffChatCommand("sc"));
     }
 
     private void registerListeners()
