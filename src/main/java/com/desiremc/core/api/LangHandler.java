@@ -1,13 +1,12 @@
 package com.desiremc.core.api;
 
-import java.io.File;
-import java.util.Arrays;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.ChatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.utils.ChatUtils;
+import java.io.File;
+import java.util.Arrays;
 
 /**
  * @author Michael Ziluck
@@ -83,6 +82,16 @@ public class LangHandler extends FileHandler
     public String renderMessageNoPrefix(String string, Object... args)
     {
         return renderString(super.getString(string), args);
+    }
+
+    public void sendRenderMessageNoPrefix(CommandSender sender, String string, Object... args)
+    {
+        sender.sendMessage(renderString(super.getString(string), args));
+    }
+
+    public void sendRenderMessageCenteredeNoPrefix(CommandSender sender, String string, Object... args)
+    {
+        ChatUtils.sendCenteredMessage(sender, renderString(super.getString(string), args));
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.desiremc.core.session;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -17,12 +19,9 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -323,15 +322,15 @@ public class Session
 
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
-            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.title");
-            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.name");
-            DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.desc");
+            DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
+            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.title");
+            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.name");
+            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.desc");
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendCenteredRenderMessage(player, "achievement.award.reward");
+                DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.reward");
             }
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header");
+            DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
         }
 
         if (achievement.getReward() > 0)

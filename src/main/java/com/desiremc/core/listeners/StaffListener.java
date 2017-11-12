@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -94,6 +95,22 @@ public class StaffListener implements Listener
         Player p = event.getPlayer();
 
         if (StaffHandler.getInstance().inStaffChat(p))
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onAttack(EntityDamageByEntityEvent event)
+    {
+        if (!(event.getDamager() instanceof Player))
+        {
+            return;
+        }
+
+        Player player = (Player) event.getDamager();
+
+        if (StaffHandler.getInstance().inStaffMode(player))
         {
             event.setCancelled(true);
         }

@@ -1,7 +1,13 @@
 package com.desiremc.core.listeners;
 
-import java.util.List;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.commands.achievement.AchievementCommand;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,14 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.commands.AchievementCommand;
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.staff.StaffHandler;
+import java.util.List;
 
 public class InventoryListener implements Listener
 {
