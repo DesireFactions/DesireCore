@@ -2,6 +2,8 @@ package com.desiremc.core.listeners;
 
 import com.desiremc.core.staff.Gadget;
 import com.desiremc.core.staff.GadgetHandler;
+import com.desiremc.core.staff.StaffHandler;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,8 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.staff.StaffHandler;
-
 public class StaffListener implements Listener
 {
 
@@ -24,6 +24,11 @@ public class StaffListener implements Listener
     public void onInteract(PlayerInteractEvent event)
     {
         Player p = event.getPlayer();
+
+        if (event.getItem() == null || event.getItem().getType() == Material.AIR)
+        {
+            return;
+        }
 
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
         {

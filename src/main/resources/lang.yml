@@ -80,6 +80,9 @@ blacklist:
 warn:
   warn_issued: 'You have warned {player} for {reason}'
   warned: 'You have been warned by {player} for {reason}. The warning expires in {time}'
+kick:
+  kick_message_target: 'You have been kicked by {player} for {reason}'
+  kick_message: 'You have kicked {player} for {reason}'
 staff:
   cps-start: 'Starting clicks per second test for {player}. Result in 10 seconds.'
   cps-finish: '{player} had a CPS of {amount} over 10 seconds.'
@@ -103,7 +106,6 @@ staff:
   no-restore: '{player} does not have an inventory to restore.'
   restore: 'You have restored {player}''s inventory.'
   restore-target: '{player} has restored your inventory.'
-  kick-message: 'You have been kicked by {player} for {reason}'
   invalid-block: "You are not pointing to a valid block"
   no-free-space: "There is no free space available for teleport."
 report:

@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
@@ -18,6 +16,7 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.command.CommandSender;
 
 public class TempMuteCommand extends ValidCommand
 {
@@ -49,7 +48,7 @@ public class TempMuteCommand extends ValidCommand
         punishment.setPunished(target.getUniqueId());
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(time);
-        punishment.setReason((String) args[1]);
+        punishment.setReason((String) args[2]);
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.MUTE);
         PunishmentHandler.getInstance().save(punishment);
