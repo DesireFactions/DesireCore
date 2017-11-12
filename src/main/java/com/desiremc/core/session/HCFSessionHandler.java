@@ -19,6 +19,8 @@ import com.desiremc.core.utils.RedBlackTree;
 public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 {
 
+    private static final boolean DEBUG = false;
+    
     private static HCFSession console;
 
     private static HCFSessionHandler instance;
@@ -69,7 +71,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
      */
     public static HCFSession getHCFSession(UUID uuid, String server)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("getHCFSession(UUID) called with " + (uuid == null ? "null" : uuid.toString()) + ".");
         }
@@ -80,7 +82,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         HCFSession session = getInstance().sessions.get(uuid);
         if (session != null)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("getHCFSession(UUID) found a logged in user.");
             }
@@ -88,7 +90,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         }
         else
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("getHCFSession(UUID) no user found.");
             }
@@ -147,7 +149,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 
     public static HCFSession initializeHCFSession(UUID uuid, String server, boolean cache)
     {
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("initializeHCFSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
         }
@@ -157,20 +159,20 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         HCFSession session = getInstance().findOne(query);
         if (session == null)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("initializeHCFSession(UUID, boolean) HCFSession not found.");
             }
             session = createHCFSession(uuid, server);
         }
-        if (DesireCore.DEBUG)
+        if (DEBUG)
         {
             System.out.println("initializeHCFSession(UUID, boolean) setting base session.");
         }
         session.setSession(SessionHandler.getSession(uuid));
         if (cache)
         {
-            if (DesireCore.DEBUG)
+            if (DEBUG)
             {
                 System.out.println("initializeHCFSession(UUID, boolean) caching HCFSession.");
             }
@@ -196,6 +198,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
             return null;
         }
         HCFSession hcfSession = instance.findOne("uuid", session.getUniqueId());
+        hcfSession.setSession(session);
 
         return hcfSession;
     }
