@@ -148,6 +148,9 @@ public class Session
         this.firstLogin = System.currentTimeMillis();
         this.lastLogin = System.currentTimeMillis();
         this.totalPlayed = 0;
+        this.settings = new SessionSettings();
+        this.settings.toggleFindOreNotifications();
+        this.settings.toggleMentions();
         this.ip = ip;
     }
 

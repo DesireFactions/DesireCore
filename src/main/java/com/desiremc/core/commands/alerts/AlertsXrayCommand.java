@@ -23,9 +23,9 @@ public class AlertsXrayCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
 
-        session.getSettings().toggleXrayNotifications();
+        session.getSettings().toggleFindOreNotifications();
         SessionHandler.getInstance().save(session);
 
-        DesireCore.getLangHandler().sendString(sender, "alerts.xray." + (session.getSettings().hasXrayNotification() ? "on" : "off"));
+        DesireCore.getLangHandler().sendString(sender, "alerts.xray." + (session.getSettings().hasFindOreNotifications() ? "on" : "off"));
     }
 }

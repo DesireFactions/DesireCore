@@ -1,5 +1,14 @@
 package com.desiremc.core.listeners;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.session.Session;
@@ -7,14 +16,6 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListener implements Listener
 {
@@ -22,13 +23,13 @@ public class ConnectionListener implements Listener
     private static final boolean DEBUG = false;
 
     @EventHandler
-    public void onLogin(final PlayerLoginEvent event)
+    public void onLogin(final AsyncPlayerPreLoginEvent event)
     {
         if (DEBUG)
         {
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
-        Punishment p = SessionHandler.getBan(event.getPlayer().getUniqueId());
+        Punishment p = SessionHandler.getBan(event.getUniqueId());
         if (p != null && !p.isRepealed())
         {
             if (p.isPermanent())
@@ -38,9 +39,9 @@ public class ConnectionListener implements Listener
                                 " the network!\n"
                                 + "\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
                                 + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
-                                .replace("{reason}", p.getReason())
-                                .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                                .replace("&", "§"));
+                                        .replace("{reason}", p.getReason())
+                                        .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                        .replace("&", "§"));
             }
             else
             {
@@ -49,10 +50,10 @@ public class ConnectionListener implements Listener
                                 "network!\n"
                                 + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                                 + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
-                                .replace("{reason}", p.getReason())
-                                .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
-                                .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                                .replace("&", "§"));
+                                        .replace("{reason}", p.getReason())
+                                        .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
+                                        .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
+                                        .replace("&", "§"));
             }
         }
     }

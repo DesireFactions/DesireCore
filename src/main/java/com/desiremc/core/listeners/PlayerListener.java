@@ -95,7 +95,7 @@ public class PlayerListener implements Listener
 
         for (Session session : SessionHandler.getInstance().getStaff())
         {
-            if (session.getSettings().hasXrayNotification())
+            if (session.getSettings().hasFindOreNotifications())
             {
                 DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
             }

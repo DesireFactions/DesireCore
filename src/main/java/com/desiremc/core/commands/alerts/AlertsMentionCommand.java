@@ -26,6 +26,6 @@ public class AlertsMentionCommand extends ValidCommand
         session.getSettings().toggleMentions();
         SessionHandler.getInstance().save(session);
 
-        DesireCore.getLangHandler().sendString(sender, "alerts.mention." + (session.getSettings().hasXrayNotification() ? "on" : "off"));
+        DesireCore.getLangHandler().sendString(sender, "alerts.mention." + (session.getSettings().hasMentionsEnabled() ? "on" : "off"));
     }
 }

@@ -11,7 +11,7 @@ public class SessionSettings
     private boolean mentionsEnabled;
 
     @Property("xray_enabled")
-    private boolean xrayNotifications;
+    private boolean findOreNotifications;
 
     @Property("tablist_classic")
     private boolean tablistClassic;
@@ -21,9 +21,9 @@ public class SessionSettings
         return mentionsEnabled;
     }
 
-    public boolean hasXrayNotification()
+    public boolean hasFindOreNotifications()
     {
-        return xrayNotifications;
+        return findOreNotifications;
     }
 
     public void toggleMentions()
@@ -31,9 +31,9 @@ public class SessionSettings
         mentionsEnabled = !mentionsEnabled;
     }
 
-    public void toggleXrayNotifications()
+    public void toggleFindOreNotifications()
     {
-        xrayNotifications = !xrayNotifications;
+        findOreNotifications = !findOreNotifications;
     }
     
     public boolean hasClassicTablist()

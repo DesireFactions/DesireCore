@@ -24,6 +24,7 @@ import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
+import com.desiremc.core.commands.timings.TimingsCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
 import com.desiremc.core.listeners.AuthListener;
@@ -47,6 +48,7 @@ import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -69,6 +71,8 @@ public class DesireCore extends JavaPlugin
     private static FileHandler config;
     private static ItemDb itemHandler;
 
+    private static boolean useTimings;
+
     @Override
     public void onEnable()
     {
@@ -80,6 +84,10 @@ public class DesireCore extends JavaPlugin
 
         config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
         lang = new LangHandler(new File(getDataFolder(), "lang.yml"), this);
+
+        useTimings = config.getBoolean("timings");
+        ((SimplePluginManager) Bukkit.getPluginManager()).useTimings(useTimings);
+
         itemHandler = new ItemDb();
 
         SERVER = config.getString("SERVER");
@@ -151,6 +159,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new KickCommand());
         customCommandHandler.registerCommand(new MuteCommand());
         customCommandHandler.registerCommand(new TempMuteCommand());
+        customCommandHandler.registerCommand(new TimingsCommand());
     }
 
     private void registerListeners()
@@ -197,6 +206,13 @@ public class DesireCore extends JavaPlugin
     public static String getCurrentServer()
     {
         return SERVER;
+    }
+
+    public static boolean toggleTimings()
+    {
+        useTimings = !useTimings;
+        config.setBoolean("timings", useTimings);
+        return useTimings;
     }
 
 }
