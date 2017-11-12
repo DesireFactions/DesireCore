@@ -20,10 +20,7 @@ import com.desiremc.core.commands.punishment.UnblacklistCommand;
 import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
-import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
-import com.desiremc.core.commands.staff.StaffFreezeCommand;
-import com.desiremc.core.commands.staff.StaffModeCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
@@ -115,6 +112,15 @@ public class DesireCore extends JavaPlugin
         }
     }
 
+    @Override
+    public void onDisable()
+    {
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            StaffHandler.getInstance().disableStaffMode(p);
+        }
+    }
+
     public static ClassLoader getLoader()
     {
         return instance.getClassLoader();
@@ -141,9 +147,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new AuthCommand());
         customCommandHandler.registerCommand(new KickCommand());
-        customCommandHandler.registerCommand(new StaffModeCommand("mod"));
-        customCommandHandler.registerCommand(new StaffFreezeCommand());
-        customCommandHandler.registerCommand(new StaffChatCommand("sc", "staffchat"));
     }
 
     private void registerListeners()

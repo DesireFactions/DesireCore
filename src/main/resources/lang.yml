@@ -118,8 +118,8 @@ report:
     item:
       lore:
       - 'Reported by: {issuer}'
-      - 'Reported on: {date}'
-      - 'Report Reason: {reason}'
+      - 'Reported: {date} ago'
+      - 'Reason: {reason}'
     next:
       name: 'Next Item'
       lore:

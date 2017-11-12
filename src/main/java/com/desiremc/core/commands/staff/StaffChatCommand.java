@@ -1,8 +1,5 @@
 package com.desiremc.core.commands.staff;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
@@ -12,8 +9,9 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.validators.PlayerValidator;
-
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class StaffChatCommand extends ValidCommand
 {
@@ -22,7 +20,8 @@ public class StaffChatCommand extends ValidCommand
 
     public StaffChatCommand(String name, String... aliases)
     {
-        super(name, "Join or leave staff chat.", Rank.JRMOD, ARITY_OPTIONAL_VARIADIC, new String[] { "message" }, aliases);
+        super(name, "Join or leave staff chat.", Rank.JRMOD, ARITY_REQUIRED_VARIADIC, new String[] {"message"},
+                aliases);
         addValidator(new PlayerValidator());
 
         addParser(new StringParser(), "message");
@@ -47,13 +46,20 @@ public class StaffChatCommand extends ValidCommand
         }
         else
         {
-            String message = (String) args[0];
-            String parsed = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', message));
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < args.length; i++)
+            {
+                sb.append(args[i] + " ");
+            }
+
+            String message = sb.toString().trim();
+            String parsed = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p
+                    .getName(), "{message}", ChatColor.translateAlternateColorCodes('&', message));
             for (Session target : SessionHandler.getInstance().getStaff())
             {
                 target.getPlayer().sendMessage(parsed);
             }
-
         }
     }
 }

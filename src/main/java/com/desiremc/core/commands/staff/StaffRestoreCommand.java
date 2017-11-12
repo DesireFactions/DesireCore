@@ -15,10 +15,11 @@ public class StaffRestoreCommand extends ValidCommand
 {
     public StaffRestoreCommand()
     {
-        super("restore", "Restore a players inventory.", Rank.JRMOD, new String[]{"target"});
+        super("restore", "Restore a players inventory.", Rank.JRMOD, new String[] {"target"});
         addParser(new PlayerSessionParser(), "target");
+
         addValidator(new PlayerValidator());
-        addValidator(new PlayerSessionIsOnlineValidator());
+        addValidator(new PlayerSessionIsOnlineValidator(), "target");
     }
 
     @Override

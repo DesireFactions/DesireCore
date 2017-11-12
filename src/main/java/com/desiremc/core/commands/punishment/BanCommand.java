@@ -45,10 +45,14 @@ public class BanCommand extends ValidCommand
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);
 
+        LANG.sendRenderMessage(sender, "ban.permban_message",
+                "{player}", target.getName(),
+                "{reason}", punishment.getReason());
+
         if (target.getPlayer() != null)
         {
-            target.getPlayer().kickPlayer(LANG.renderMessage("ban.permban_message",
-                    "{player}", target.getName(),
+            target.getPlayer().kickPlayer(LANG.renderMessage("ban.permban_message_target",
+                    "{player}", session.getName(),
                     "{reason}", punishment.getReason()));
         }
     }
