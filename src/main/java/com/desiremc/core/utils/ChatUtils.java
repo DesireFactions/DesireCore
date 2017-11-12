@@ -1,12 +1,8 @@
 package com.desiremc.core.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.tickets.TicketHandler;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,9 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.tickets.TicketHandler;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class ChatUtils
 {
@@ -55,14 +54,7 @@ public class ChatUtils
             else if (previousCode)
             {
                 previousCode = false;
-                if (c == 'l' || c == 'L')
-                {
-                    isBold = true;
-                }
-                else
-                {
-                    isBold = false;
-                }
+                isBold = (c == 'l' || c == 'L');
             }
             else
             {
