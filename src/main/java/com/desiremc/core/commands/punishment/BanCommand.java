@@ -37,8 +37,16 @@ public class BanCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
-        Punishment punishment = PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
-                .getUniqueId() : DesireCore.getConsoleUUID(), (String) args[1]);
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(Type.BAN);
+        punishment.setPunished(target.getUniqueId());
+        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
+        punishment.setReason((String) args[1]);
+        punishment.setPermanent(true);
+        PunishmentHandler.getInstance().save(punishment);
+
+        PunishmentHandler.getInstance().refreshPunishments(session);
 
         LANG.sendRenderMessage(sender, "ban.permban_message",
                 "{player}", target.getName(),

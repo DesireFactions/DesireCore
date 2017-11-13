@@ -5,6 +5,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -39,8 +40,16 @@ public class BlacklistCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
-        PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
-                .getUniqueId() : DesireCore.getConsoleUUID(), (String) args[1], true);
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(Type.BAN);
+        punishment.setPunished(target.getUniqueId());
+        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
+        punishment.setReason((String) args[1]);
+        punishment.setBlacklisted(true);
+        PunishmentHandler.getInstance().save(punishment);
+
+        PunishmentHandler.getInstance().refreshPunishments(session);
 
         LANG.sendRenderMessage(sender, "blacklist.blacklist_message",
                 "{player}", target.getName(),

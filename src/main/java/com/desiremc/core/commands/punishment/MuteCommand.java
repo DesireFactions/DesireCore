@@ -40,10 +40,14 @@ public class MuteCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
-        Punishment punishment = PunishmentHandler.getInstance().issuePunishment(Type.MUTE, target.getUniqueId(), session != null ? session
-                .getUniqueId() : DesireCore.getConsoleUUID(), (String) args[1]);
-
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(Type.MUTE);
+        punishment.setPunished(target.getUniqueId());
+        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
+        punishment.setReason((String) args[1]);
         punishment.setPermanent(true);
+        PunishmentHandler.getInstance().save(punishment);
 
         LANG.sendRenderMessage(sender, "mute.permmute_message",
                 "{player}", target.getName(),

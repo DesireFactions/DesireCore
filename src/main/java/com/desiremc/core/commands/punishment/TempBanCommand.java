@@ -6,6 +6,7 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.parsers.TimeParser;
+import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -43,8 +44,14 @@ public class TempBanCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
-        PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
-                .getUniqueId() : DesireCore.getConsoleUUID(), time, (String) args[2]);
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(Type.BAN);
+        punishment.setPunished(target.getUniqueId());
+        punishment.setExpirationTime(time);
+        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
+        punishment.setReason((String) args[2]);
+        PunishmentHandler.getInstance().save(punishment);
 
         LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),
