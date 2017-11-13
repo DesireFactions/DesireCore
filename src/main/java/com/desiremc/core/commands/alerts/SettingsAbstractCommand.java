@@ -4,17 +4,20 @@ import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.validators.PlayerValidator;
 
-public class AlertsXrayCommand extends ValidCommand
+public class SettingsAbstractCommand extends ValidCommand
 {
 
-    public AlertsXrayCommand()
+    private SessionSetting setting;
+
+    public SettingsAbstractCommand(SessionSetting setting)
     {
-        super("Xray", "Toggle ore break notifications on and off.", Rank.JRMOD, new String[] {});
+        super(setting.name().toLowerCase(), "Toggle " + setting.getDisplayName() + " on and off", setting.getRank(), new String[] {}, setting.getAliases());
+
         addValidator(new PlayerValidator());
     }
 
@@ -23,9 +26,10 @@ public class AlertsXrayCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
 
-        session.getSettings().toggleFindOreNotifications();
+        boolean value = session.toggleSetting(setting);
         SessionHandler.getInstance().save(session);
 
-        DesireCore.getLangHandler().sendString(sender, "alerts.xray." + (session.getSettings().hasFindOreNotifications() ? "on" : "off"));
+        DesireCore.getLangHandler().sendRenderMessage(sender, "settings." + setting.name().toLowerCase() + "." + (value ? "on" : "off"));
     }
+
 }

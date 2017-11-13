@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.StringUtils;
 
@@ -72,7 +73,7 @@ public class PlayerListener implements Listener
 
         for (Session s : SessionHandler.getInstance().getStaff())
         {
-            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings().hasMentionsEnabled())
+            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSetting(SessionSetting.MENTIONS))
             {
                 s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
@@ -95,7 +96,7 @@ public class PlayerListener implements Listener
 
         for (Session session : SessionHandler.getInstance().getStaff())
         {
-            if (session.getSettings().hasFindOreNotifications())
+            if (session.getSetting(SessionSetting.FINDORE))
             {
                 DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
             }
