@@ -45,5 +45,12 @@ public class BlacklistCommand extends ValidCommand
         LANG.sendRenderMessage(sender, "blacklist.blacklist_message",
                 "{player}", target.getName(),
                 "{reason}", args[2]);
+
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "blacklist.blacklist_message_target",
+                    "{player}", session.getName(),
+                    "{reason}", args[2]);
+        }
     }
 }

@@ -32,7 +32,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         punishment.setType(type);
         punishment.setPunished(punished);
         punishment.setIssuer(issuer);
-        punishment.setExpirationTime(time + System.currentTimeMillis());
+        punishment.setExpirationTime(time);
         punishment.setReason(reason);
         save(punishment);
 
@@ -70,6 +70,14 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         Session session = SessionHandler.getSession(punishment.getPunished());
 
         refreshPunishments(session);
+    }
+
+    public void processPunishment(Punishment punishment)
+    {
+        if (punishment.getType() == Type.BAN)
+        {
+
+        }
     }
 
     public void refreshPunishments(Session session)

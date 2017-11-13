@@ -50,6 +50,18 @@ public class TempBanCommand extends ValidCommand
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
                 "{reason}", args[2]);
+
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        {
+            target.getPlayer().kickPlayer((DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the " +
+                    "network!\n"
+                    + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
+                    + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                    .replace("{reason}", (String) args[2])
+                    .replace("{until}", DateUtils.formatDateDiff(time))
+                    .replace("{issuer}", session.getName())
+                    .replace("&", "§"));
+        }
     }
 
 }
