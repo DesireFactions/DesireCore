@@ -1,8 +1,11 @@
 package com.desiremc.core.listeners;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.StringUtils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -14,13 +17,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.StringUtils;
-
-import net.md_5.bungee.api.ChatColor;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerListener implements Listener
 {
@@ -50,13 +48,13 @@ public class PlayerListener implements Listener
         {
             System.out.println("PlayerListener.onChat() called.");
         }
-        Player p = event.getPlayer();
-        Session session = SessionHandler.getSession(p);
+        Player player = event.getPlayer();
+        Session session = SessionHandler.getSession(player);
 
-        if (StaffHandler.getInstance().inStaffChat(p))
+        if (StaffHandler.getInstance().inStaffChat(player))
         {
             event.setCancelled(true);
-            String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+            String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", player.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
             for (Session target : SessionHandler.getInstance().getStaff())
             {
                 target.getPlayer().sendMessage(message);

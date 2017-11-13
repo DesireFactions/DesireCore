@@ -199,29 +199,12 @@ public class Session
 
     public Punishment isBanned()
     {
-        for (Punishment p : activePunishments)
-        {
-            if (p.getType() == Type.BAN)
-            {
-                if (!p.isRepealed())
-                {
-                    return p;
-                }
-            }
-        }
-        return null;
+        return SessionHandler.getPunishment(uuid, Type.BAN);
     }
 
     public Punishment isMuted()
     {
-        for (Punishment p : activePunishments)
-        {
-            if (p.getType() == Type.MUTE)
-            {
-                return p;
-            }
-        }
-        return null;
+        return SessionHandler.getPunishment(uuid, Type.MUTE);
     }
 
     public List<Session> getFriends()

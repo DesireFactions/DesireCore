@@ -25,7 +25,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         instance = new PunishmentHandler();
     }
 
-    public void issuePunishment(Type type, UUID punished, UUID issuer, long time, String reason)
+    public Punishment issuePunishment(Type type, UUID punished, UUID issuer, long time, String reason)
     {
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
@@ -39,9 +39,11 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         Session session = SessionHandler.getSession(punishment.getPunished());
 
         refreshPunishments(session);
+
+        return punishment;
     }
 
-    public void issuePunishment(Type type, UUID punished, UUID issuer, String reason)
+    public Punishment issuePunishment(Type type, UUID punished, UUID issuer, String reason)
     {
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
@@ -49,14 +51,17 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         punishment.setPunished(punished);
         punishment.setIssuer(issuer);
         punishment.setReason(reason);
+        punishment.setPermanent(true);
         save(punishment);
 
         Session session = SessionHandler.getSession(punishment.getPunished());
 
         refreshPunishments(session);
+
+        return punishment;
     }
 
-    public void issuePunishment(Type type, UUID punished, UUID issuer, String reason, boolean blacklist)
+    public Punishment issuePunishment(Type type, UUID punished, UUID issuer, String reason, boolean blacklist)
     {
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
@@ -70,6 +75,8 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         Session session = SessionHandler.getSession(punishment.getPunished());
 
         refreshPunishments(session);
+
+        return punishment;
     }
 
     public void processPunishment(Punishment punishment)

@@ -5,6 +5,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -36,7 +37,7 @@ public class BanCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
-        PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
+        Punishment punishment = PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
                 .getUniqueId() : DesireCore.getConsoleUUID(), (String) args[1]);
 
         LANG.sendRenderMessage(sender, "ban.permban_message",
