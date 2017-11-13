@@ -6,7 +6,8 @@ public enum SessionSetting
     MENTIONS("mentions", true, Rank.GUEST),
     FINDORE("find ore notifications", true, Rank.GUEST, "foundore", "fo", "xray"),
     DEATH("death messages", true, Rank.GUEST),
-    ACHIEVEMENTS("achievment messages", true, Rank.GUEST);
+    ACHIEVEMENTS("achievment messages", true, Rank.GUEST),
+    CLASSICTAB("classic tab list", false, Rank.GUEST);
 
     public String displayName;
     public Rank rank;

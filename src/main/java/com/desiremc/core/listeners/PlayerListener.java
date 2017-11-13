@@ -98,7 +98,10 @@ public class PlayerListener implements Listener
         {
             if (session.getSetting(SessionSetting.FINDORE))
             {
-                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
+                DesireCore.getLangHandler().sendRenderMessage(session, "settings.findore.notification",
+                        "{player}", p.getName(),
+                        "{count}", vein.size(),
+                        "{ore}", name);
             }
         }
     }
