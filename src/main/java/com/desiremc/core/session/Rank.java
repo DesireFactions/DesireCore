@@ -1,24 +1,23 @@
 package com.desiremc.core.session;
 
-import org.bukkit.ChatColor;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.StringUtils;
+import org.bukkit.ChatColor;
 
 public enum Rank
 {
 
-    GUEST(1, "Guest", "§7⧫", ChatColor.GRAY, ChatColor.GRAY),
-    BRIGADIER(2, "Brigadier", "§a⧫", ChatColor.GRAY, ChatColor.GREEN),
-    COMMODORE(3, "Commodore", "§b⧫", ChatColor.GRAY, ChatColor.AQUA),
-    GRANDMASTER(4, "Grandmaster", "§d⧫", ChatColor.GRAY, ChatColor.LIGHT_PURPLE),
-    YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.GOLD, ChatColor.GOLD),
-    JRMOD(6, "Junior_Moderator", "§9§lJr.Mod", ChatColor.BLUE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
-    MODERATOR(7, "Moderator", "§2§lMod", ChatColor.DARK_GREEN, ChatColor.BLUE, "mod"),
-    SRMOD(8, "Senior_Mod", "§e§lSr.Mod", ChatColor.YELLOW, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
-    ADMIN(9, "Admin", "§4§lAdmin", ChatColor.RED, ChatColor.RED),
-    DEVELOPER(10, "Developer", "§5§lDeveloper", ChatColor.DARK_PURPLE, ChatColor.RED, "dev"),
-    OWNER(11, "Owner", "§3§lOwner", ChatColor.DARK_AQUA, ChatColor.RED);
+    GUEST(1, "Guest", "§7⧫", ChatColor.WHITE, ChatColor.GRAY),
+    BRIGADIER(2, "Brigadier", "§a⧫", ChatColor.WHITE, ChatColor.GREEN),
+    COMMODORE(3, "Commodore", "§b⧫", ChatColor.WHITE, ChatColor.AQUA),
+    GRANDMASTER(4, "Grandmaster", "§d⧫", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
+    JRMOD(6, "Junior_Moderator", "§9§lJR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
+    MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
+    SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
+    ADMIN(9, "Admin", "§4§lADMIN", ChatColor.GREEN, ChatColor.RED),
+    DEVELOPER(10, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
+    OWNER(11, "Owner", "§3§lOWNER", ChatColor.GREEN, ChatColor.RED);
 
     private final int id;
     private final String displayName;
