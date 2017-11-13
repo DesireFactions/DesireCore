@@ -1,14 +1,11 @@
 package com.desiremc.core.listeners;
 
-<<<<<<< HEAD
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.StringUtils;
 import net.md_5.bungee.api.ChatColor;
-=======
->>>>>>> origin/1.7.10
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,19 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-<<<<<<< HEAD
-import java.util.HashSet;
-import java.util.Set;
-=======
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-
-import net.md_5.bungee.api.ChatColor;
->>>>>>> origin/1.7.10
 
 public class PlayerListener implements Listener
 {
