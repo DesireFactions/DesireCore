@@ -175,9 +175,9 @@ public class SimpleScoreboard implements Scoreboard
             Integer val = entry.getPosition();
 
             // prefix can't go over 16 characters, truncate
-            if (prefix.length() > 16)
+            if (prefix.length() > 32)
             {
-                prefix = prefix.substring(0, 15);
+                prefix = prefix.substring(0, 31);
             }
 
             // Get fake player
@@ -210,8 +210,9 @@ public class SimpleScoreboard implements Scoreboard
     private FakePlayer getFakePlayer(String text, String value, UUID uuid)
     {
         Team team = null;
+        String prefix;
         String name;
-        String suffix = "";
+        String suffix;
 
         if (text.equals(""))
         {
@@ -222,8 +223,25 @@ public class SimpleScoreboard implements Scoreboard
             blanks++;
             value = "";
         }
-        name = text;
+        
         suffix = value;
+        
+        if (text.length() <= 16)
+        {
+            prefix = "";
+            name = text;
+        }
+        else
+        {
+            prefix = text.substring(0, 16);
+            name = text.substring(16, Math.min(32, text.length()));
+
+            if (prefix.endsWith("§"))
+            {
+                prefix = prefix.substring(0, 15);
+                name = "§" + name.substring(0, Math.min(15, name.length()));
+            }
+        }
 
         FakePlayer faker = playerCache.get(uuid);
 
@@ -233,6 +251,7 @@ public class SimpleScoreboard implements Scoreboard
             playerCache.put(uuid, faker);
             faker.setTeam(scoreboard.registerNewTeam(TEAM_PREFIX + TEAM_COUNTER++));
             faker.getTeam().addPlayer(faker);
+            faker.getTeam().setPrefix(prefix);
         }
 
         team = faker.getTeam();

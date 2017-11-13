@@ -1,4 +1,4 @@
-package com.desiremc.core.commands.alerts;
+package com.desiremc.core.commands.settings;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
@@ -15,7 +15,7 @@ public class SettingsAbstractCommand extends ValidCommand
 
     public SettingsAbstractCommand(SessionSetting setting)
     {
-        super(setting.name().toLowerCase(), "Toggle " + setting.getDisplayName() + " on and off", setting.getRank(), new String[] {}, setting.getAliases());
+        super(setting.name().toLowerCase(), "Turn " + setting.getDisplayName() + " on and off", setting.getRank(), new String[] {}, setting.getAliases());
 
         addValidator(new PlayerValidator());
     }

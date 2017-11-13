@@ -131,7 +131,7 @@ report:
       - 'Go to the next page!'
       item: 'IRON_BLOCK'
 settings:
-  toggle: '&7You have toggled {setting} &a{status}&7.'
+  toggle: '&7You have turned {setting} &a{status}&7.'
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
