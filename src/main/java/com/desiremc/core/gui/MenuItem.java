@@ -141,6 +141,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
 
         // TODO fix nbt
+        
         //item = NBTEditor.setItemTag(item, "Unbreakable", 1);
         //item = NBTEditor.setItemTag(item, "HideFlags", 6);
 
