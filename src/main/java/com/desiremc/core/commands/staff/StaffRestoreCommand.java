@@ -12,9 +12,9 @@ import org.bukkit.command.CommandSender;
 
 public class StaffRestoreCommand extends ValidCommand
 {
-    public StaffRestoreCommand()
+    public StaffRestoreCommand(String name, String... aliases)
     {
-        super("restore", "Restore a players inventory.", Rank.JRMOD, new String[] { "target" });
+        super(name, "Restore a players inventory.", Rank.JRMOD, new String[] { "target" }, aliases);
 
         addParser(new PlayerSessionParser(), "target");
 
