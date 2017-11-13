@@ -45,5 +45,12 @@ public class MuteCommand extends ValidCommand
         LANG.sendRenderMessage(sender, "mute.permmute_message",
                 "{player}", target.getName(),
                 "{reason}", args[1]);
+
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "mute.permmute_message_target",
+                    "{player}", session.getName(),
+                    "{reason}", args[1]);
+        }
     }
 }

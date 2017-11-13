@@ -38,7 +38,7 @@ public class UnmuteCommand extends ValidCommand
 
         LANG.sendRenderMessage(sender, "mute.unmute_message", "{player}", target.getName());
 
-        if (target.getPlayer() != null && target.getPlayer().isOnline())
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
             LANG.sendRenderMessage(target, "mute.unmute_message_target", "{player}", sender.getName());
         }

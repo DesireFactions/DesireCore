@@ -50,6 +50,14 @@ public class TempMuteCommand extends ValidCommand
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
                 "{reason}", args[2]);
+
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "mute.tempmute_message_target",
+                    "{duration}", DateUtils.formatDateDiff(time),
+                    "{player}", session.getName(),
+                    "{reason}", args[2]);
+        }
     }
 
 }

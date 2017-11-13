@@ -43,11 +43,15 @@ public class BanCommand extends ValidCommand
                 "{player}", target.getName(),
                 "{reason}", args[1]);
 
-        if (target.getPlayer() != null)
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(LANG.renderMessage("ban.permban_message_target",
-                    "{player}", session.getName(),
-                    "{reason}", args[1]));
+            target.getPlayer().kickPlayer((DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +
+                    " the network!\n"
+                    + "\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
+                    + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                    .replace("{reason}", (String) args[1])
+                    .replace("{issuer}", session.getName())
+                    .replace("&", "§"));
         }
     }
 }

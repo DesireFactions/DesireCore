@@ -45,9 +45,16 @@ public class WarnCommand extends ValidCommand
         PunishmentHandler.getInstance().issuePunishment(Type.WARN, target.getUniqueId(), session != null ? session
                 .getUniqueId() : DesireCore.getConsoleUUID(), time, (String) args[2]);
 
-        LANG.sendRenderMessage(sender, "warn.warned",
-                "{time}", DateUtils.formatDateDiff(time),
+        LANG.sendRenderMessage(sender, "warn.warn_issued",
                 "{player}", target.getName(),
                 "{reason}", args[2]);
+
+        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "warn.warned",
+                    "{time}", DateUtils.formatDateDiff(time),
+                    "{player}", session.getName(),
+                    "{reason}", args[2]);
+        }
     }
 }

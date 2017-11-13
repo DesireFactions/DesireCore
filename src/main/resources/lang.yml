@@ -61,17 +61,14 @@ friend:
   no_friends: 'You currently have no friends.'
   not_friends: 'You are not friends with {player}.'
 ban:
-  tempban_message: '&7You have {duration} banned &e{player}&7 for &e{reason}&7.'
+  tempban_message: '&7You have banned &e{player}&7 for {duration} for &e{reason}&7.'
   permban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
   unban_message: '&7You have unbanned &e{player}&7.'
-  tempban_message_target: '&7You have been {duration} banned by &e{player}&7 for &e{reason}&7.'
-  permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
-  unban_message_target: '&7You have been unbanned by &e{player}&7.'
 mute:
   tempmute_message: '&7You have muted &e{player}&7 for {duration} for &e{reason}&7.'
   permmute_message: '&7You have permanently muted &e{player}&7 for &e{reason}&7.'
   unmute_message: '&7You have unmuted &e{player}&7.'
-  tempmute_message_target: '&7You have been {duration} muted by &e{player}&7 for &e{reason}&7.'
+  tempmute_message_target: '&7You have been muted by &e{player}&7 for {duration} for &e{reason}&7.'
   permmute_message_target: '&7You have been permanently muted by &e{player}&7 for &e{reason}&7.'
   unmute_message_target: '&7You have been unmuted by &e{player}&7.'
 blacklist:
