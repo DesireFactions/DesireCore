@@ -18,6 +18,8 @@ public class SettingsAbstractCommand extends ValidCommand
         super(setting.name().toLowerCase(), "Turn " + setting.getDisplayName() + " on and off", setting.getRank(), new String[] {}, setting.getAliases());
 
         addValidator(new PlayerValidator());
+        
+        this.setting = setting;
     }
 
     @Override
