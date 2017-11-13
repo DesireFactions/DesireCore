@@ -132,8 +132,6 @@ report:
       item: 'IRON_BLOCK'
 settings:
   toggle: '&7You have toggled {setting} &a{status}&7.'
-  findore:
-    notification: '&b{player} has found a vein of &a{count} &c{ore}&7.'
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'

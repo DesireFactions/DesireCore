@@ -1,15 +1,10 @@
 package com.desiremc.core.listeners;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -19,7 +14,6 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.StringUtils;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -80,56 +74,4 @@ public class PlayerListener implements Listener
         }
     }
 
-    @EventHandler
-    public void onOreBreak(BlockBreakEvent event)
-    {
-        Player p = event.getPlayer();
-
-        String name = StringUtils.capitalize(event.getBlock().getType().name().toLowerCase().replace("_", ""));
-
-        if (!DesireCore.getConfigHandler().getStringList("xray-ores").contains(event.getBlock().getType().name()))
-        {
-            return;
-        }
-
-        Set<Block> vein = getVein(event.getBlock());
-
-        for (Session session : SessionHandler.getInstance().getStaff())
-        {
-            if (session.getSetting(SessionSetting.FINDORE))
-            {
-                DesireCore.getLangHandler().sendRenderMessage(session, "settings.findore.notification",
-                        "{player}", p.getName(),
-                        "{count}", vein.size(),
-                        "{ore}", name);
-            }
-        }
-    }
-
-    private Set<Block> getVein(Block block)
-    {
-        Set<Block> vein = new HashSet<>();
-        vein.add(block);
-        getVein(block, vein);
-        return vein;
-    }
-
-    private void getVein(Block block, Set<Block> vein)
-    {
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                for (int k = -1; k < 2; k++)
-                {
-                    Block relative = block.getRelative(i, j, k);
-                    if (!vein.contains(relative) && block.equals(relative) && (i != 0 || j != 0 || k != 0))
-                    {
-                        vein.add(relative);
-                        getVein(relative, vein);
-                    }
-                }
-            }
-        }
-    }
 }
