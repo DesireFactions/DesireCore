@@ -130,14 +130,8 @@ report:
       lore:
       - 'Go to the next page!'
       item: 'IRON_BLOCK'
-alerts:
-  mention:
-    true: 'You will now receive alerts when mentioned.'
-    false: 'You will no longer receive alerts when mentioned.'
-  xray:
-    true: 'You will now receive xray alerts.'
-    false: 'You will no longer receive xray alerts.'
-    message: '{player} has found a vein of {count} {oreName}'
+settings:
+  toggle: '&7You have toggled {setting} &a{status}&7.'
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'

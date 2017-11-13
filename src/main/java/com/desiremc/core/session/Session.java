@@ -1,11 +1,10 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -19,9 +18,12 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -75,8 +77,7 @@ public class Session
 
     private int tokens;
 
-    @Embedded
-    private SessionSettings settings;
+    private HashMap<SessionSetting, Boolean> settings;
 
     @Transient
     private List<Punishment> activePunishments;
@@ -91,7 +92,7 @@ public class Session
         incomingFriendRequests = new LinkedList<>();
         outgoingFriendRequests = new LinkedList<>();
         achievements = new LinkedList<>();
-        settings = new SessionSettings();
+        settings = new HashMap<>();
         ipList = new LinkedList<>();
         nameList = new LinkedList<>();
         ignoring = new LinkedList<>();
@@ -147,9 +148,9 @@ public class Session
         this.firstLogin = System.currentTimeMillis();
         this.lastLogin = System.currentTimeMillis();
         this.totalPlayed = 0;
-        this.settings = new SessionSettings();
-        this.settings.toggleFindOreNotifications();
-        this.settings.toggleMentions();
+        this.settings = new HashMap<>();
+        this.settings.put(SessionSetting.FINDORE, true);
+        this.settings.put(SessionSetting.MENTIONS, true);
         this.ip = ip;
     }
 
@@ -355,15 +356,36 @@ public class Session
         save();
     }
 
-    public SessionSettings getSettings()
+    public HashMap<SessionSetting, Boolean> getSettings()
     {
         return settings;
     }
 
-    public void setSettings(SessionSettings settings)
+    public void setSetting(SessionSetting setting, boolean status)
     {
-        this.settings = settings;
+        this.settings.put(setting, status);
         save();
+    }
+
+    public boolean toggleSetting(SessionSetting setting)
+    {
+        Boolean status = this.settings.get(setting);
+        if (status == null || !status)
+        {
+            this.settings.put(setting, true);
+            return true;
+        }
+        else
+        {
+
+            this.settings.put(setting, false);
+            return false;
+        }
+    }
+
+    public boolean getSetting(SessionSetting setting)
+    {
+        return this.settings.get(setting);
     }
 
     public void setAuthKey(String key)
@@ -402,12 +424,12 @@ public class Session
     {
         return hasAuthorized;
     }
-    
+
     public boolean isIgnoring(UUID uuid)
     {
         return ignoring.contains(uuid);
     }
-    
+
     public void ignore(UUID uuid)
     {
         ignoring.add(uuid);
@@ -419,7 +441,7 @@ public class Session
         ignoring.remove(uuid);
         save();
     }
-    
+
     private void save()
     {
         SessionHandler.getInstance().save(this);
