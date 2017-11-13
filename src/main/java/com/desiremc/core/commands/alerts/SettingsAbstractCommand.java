@@ -1,13 +1,12 @@
 package com.desiremc.core.commands.alerts;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.validators.PlayerValidator;
+import org.bukkit.command.CommandSender;
 
 public class SettingsAbstractCommand extends ValidCommand
 {

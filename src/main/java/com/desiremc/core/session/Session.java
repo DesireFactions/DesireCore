@@ -1,10 +1,11 @@
 package com.desiremc.core.session;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -18,12 +19,10 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -234,29 +233,12 @@ public class Session
 
     public Punishment isBanned()
     {
-        for (Punishment p : activePunishments)
-        {
-            if (p.getType() == Type.BAN)
-            {
-                if (!p.isRepealed())
-                {
-                    return p;
-                }
-            }
-        }
-        return null;
+        return SessionHandler.getPunishment(uuid, Type.BAN);
     }
 
     public Punishment isMuted()
     {
-        for (Punishment p : activePunishments)
-        {
-            if (p.getType() == Type.MUTE)
-            {
-                return p;
-            }
-        }
-        return null;
+        return SessionHandler.getPunishment(uuid, Type.MUTE);
     }
 
     public List<Session> getFriends()

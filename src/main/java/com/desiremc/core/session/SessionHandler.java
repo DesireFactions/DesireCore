@@ -124,7 +124,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             }
         }
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(uuid)
+                .field("punished").equal(session.getUniqueId())
+                .field("repealed").notEqual(true)
                 .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
                 .asList();
         session.setActivePunishments(punishments);
@@ -135,16 +136,20 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return session;
     }
 
-    public static Punishment getBan(UUID uuid)
+    public static Punishment getPunishment(UUID uuid, Type type)
     {
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
                 .field("punished").equal(uuid)
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
-                .field("type").equal(Type.BAN).asList();
+                .field("repealed").equal(false)
+                .field("type").equal(type).asList();
+
         if (punishments == null || punishments.size() == 0)
         {
             return null;
         }
+
+        punishments.removeIf(punishment -> ((punishment.getExpirationTime() + punishment.getIssued()) < System.currentTimeMillis()) && !punishment.isPermanent());
+
         return punishments.get(0);
     }
 

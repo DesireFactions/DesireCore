@@ -1,5 +1,13 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.PlayerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -8,14 +16,6 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.PlayerUtils;
 
 public class ConnectionListener implements Listener
 {
@@ -29,7 +29,7 @@ public class ConnectionListener implements Listener
         {
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
-        Punishment p = SessionHandler.getBan(event.getUniqueId());
+        Punishment p = SessionHandler.getPunishment(event.getUniqueId(), Type.BAN);
         if (p != null && !p.isRepealed())
         {
             if (p.isPermanent())
