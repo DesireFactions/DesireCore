@@ -32,6 +32,7 @@ public class KickCommand extends ValidCommand
         target.kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kick_message_target", "{player}", player
                 .getName
                         (), "{reason}", args[1]));
+
         DesireCore.getLangHandler().sendRenderMessage(sender, "kick.kick_message", "{player}", target.getName
                 (), "{reason}", args[1]);
     }

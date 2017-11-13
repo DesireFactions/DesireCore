@@ -1,12 +1,13 @@
 package com.desiremc.core.punishment;
 
-import java.util.UUID;
-
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.List;
+import java.util.UUID;
 
 public class PunishmentHandler extends BasicDAO<Punishment, Long>
 {
@@ -35,17 +36,50 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         punishment.setReason(reason);
         save(punishment);
 
-        if (PlayerUtils.getPlayer(punished) != null)
-        {
-            if (type == Punishment.Type.BAN)
-            {
-                PlayerUtils.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().renderMessage("punishment.ban"));
-            }
-            else if (type == Punishment.Type.MUTE)
-            {
-                PlayerUtils.getPlayer(punished).sendMessage(DesireCore.getLangHandler().renderMessage("punishment.mute"));
-            }
-        }
+        Session session = SessionHandler.getSession(punishment.getPunished());
+
+        refreshPunishments(session);
+    }
+
+    public void issuePunishment(Type type, UUID punished, UUID issuer, String reason)
+    {
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(type);
+        punishment.setPunished(punished);
+        punishment.setIssuer(issuer);
+        punishment.setReason(reason);
+        save(punishment);
+
+        Session session = SessionHandler.getSession(punishment.getPunished());
+
+        refreshPunishments(session);
+    }
+
+    public void issuePunishment(Type type, UUID punished, UUID issuer, String reason, boolean blacklist)
+    {
+        Punishment punishment = new Punishment();
+        punishment.setIssued(System.currentTimeMillis());
+        punishment.setType(type);
+        punishment.setPunished(punished);
+        punishment.setIssuer(issuer);
+        punishment.setReason(reason);
+        punishment.setBlacklisted(blacklist);
+        save(punishment);
+
+        Session session = SessionHandler.getSession(punishment.getPunished());
+
+        refreshPunishments(session);
+    }
+
+    public void refreshPunishments(Session session)
+    {
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("punished").equal(session.getUniqueId())
+                .field("repealed").notEqual(true)
+                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
+                .asList();
+        session.setActivePunishments(punishments);
     }
 
     public Punishment getPunishment(UUID uuid)

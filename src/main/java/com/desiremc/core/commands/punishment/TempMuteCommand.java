@@ -6,7 +6,6 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.parsers.TimeParser;
-import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -26,7 +25,7 @@ public class TempMuteCommand extends ValidCommand
     public TempMuteCommand()
     {
         super("tempmute", "Temporarily mute a user on the server.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[] { "target", "time", "reason" });
+                new String[] {"target", "time", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
@@ -44,19 +43,13 @@ public class TempMuteCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
-        Punishment punishment = new Punishment();
-        punishment.setPunished(target.getUniqueId());
-        punishment.setIssued(System.currentTimeMillis());
-        punishment.setExpirationTime(time);
-        punishment.setReason((String) args[2]);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setType(Type.MUTE);
-        PunishmentHandler.getInstance().save(punishment);
+        PunishmentHandler.getInstance().issuePunishment(Type.MUTE, target.getUniqueId(), session != null ? session
+                .getUniqueId() : DesireCore.getConsoleUUID(), time, (String) args[2]);
 
         LANG.sendRenderMessage(sender, "mute.tempmute_message",
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
-                "{reason}", punishment.getReason());
+                "{reason}", args[2]);
     }
 
 }

@@ -6,7 +6,6 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.parsers.TimeParser;
-import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -25,7 +24,7 @@ public class WarnCommand extends ValidCommand
 
     public WarnCommand()
     {
-        super("warn", "Warn a user on the server.", Rank.MODERATOR, new String[] { "target", "time", "reason" });
+        super("warn", "Warn a user on the server.", Rank.MODERATOR, new String[] {"target", "time", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
@@ -43,18 +42,12 @@ public class WarnCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
-        Punishment punishment = new Punishment();
-        punishment.setPunished(target.getUniqueId());
-        punishment.setIssued(System.currentTimeMillis());
-        punishment.setExpirationTime(time);
-        punishment.setReason((String) args[1]);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setType(Type.WARN);
-        PunishmentHandler.getInstance().save(punishment);
+        PunishmentHandler.getInstance().issuePunishment(Type.WARN, target.getUniqueId(), session != null ? session
+                .getUniqueId() : DesireCore.getConsoleUUID(), time, (String) args[2]);
 
         LANG.sendRenderMessage(sender, "warn.warned",
                 "{time}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
-                "{reason}", punishment.getReason());
+                "{reason}", args[2]);
     }
 }

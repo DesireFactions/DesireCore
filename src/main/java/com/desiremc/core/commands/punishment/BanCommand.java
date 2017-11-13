@@ -1,13 +1,10 @@
 package com.desiremc.core.commands.punishment;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
-import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -15,6 +12,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.command.CommandSender;
 
 public class BanCommand extends ValidCommand
 {
@@ -38,25 +36,18 @@ public class BanCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
-        Punishment punishment = new Punishment();
-        punishment.setPunished(target.getUniqueId());
-        punishment.setIssued(System.currentTimeMillis());
-        punishment.setExpirationTime(Long.MAX_VALUE);
-        punishment.setPermanent(true);
-        punishment.setReason((String) args[1]);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setType(Type.BAN);
-        PunishmentHandler.getInstance().save(punishment);
+        PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
+                .getUniqueId() : DesireCore.getConsoleUUID(), (String) args[1]);
 
         LANG.sendRenderMessage(sender, "ban.permban_message",
                 "{player}", target.getName(),
-                "{reason}", punishment.getReason());
+                "{reason}", args[1]);
 
         if (target.getPlayer() != null)
         {
             target.getPlayer().kickPlayer(LANG.renderMessage("ban.permban_message_target",
                     "{player}", session.getName(),
-                    "{reason}", punishment.getReason()));
+                    "{reason}", args[1]));
         }
     }
 }

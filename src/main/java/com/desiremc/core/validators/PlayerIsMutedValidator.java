@@ -14,7 +14,7 @@ public class PlayerIsMutedValidator extends PlayerValidator
 
         if (session.isMuted() == null)
         {
-            DesireCore.getLangHandler().sendString(sender, "not_muted");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_muted", "{player}", session.getName());
             return false;
         }
 

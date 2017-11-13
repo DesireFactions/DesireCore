@@ -6,7 +6,6 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.parsers.TimeParser;
-import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
@@ -25,7 +24,8 @@ public class TempBanCommand extends ValidCommand
 
     public TempBanCommand()
     {
-        super("tempban", "Temporarily ban a user from the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] { "target", "time", "reason" });
+        super("tempban", "Temporarily ban a user from the server.", Rank.MODERATOR, ValidCommand
+                .ARITY_REQUIRED_VARIADIC, new String[] {"target", "time", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
@@ -43,19 +43,13 @@ public class TempBanCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
-        Punishment punishment = new Punishment();
-        punishment.setPunished(target.getUniqueId());
-        punishment.setIssued(System.currentTimeMillis());
-        punishment.setExpirationTime(time);
-        punishment.setReason((String) args[2]);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setType(Type.BAN);
-        PunishmentHandler.getInstance().save(punishment);
+        PunishmentHandler.getInstance().issuePunishment(Type.BAN, target.getUniqueId(), session != null ? session
+                .getUniqueId() : DesireCore.getConsoleUUID(), time, (String) args[2]);
 
         LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
-                "{reason}", punishment.getReason());
+                "{reason}", args[2]);
     }
 
 }

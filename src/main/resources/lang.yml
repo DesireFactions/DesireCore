@@ -68,7 +68,7 @@ ban:
   permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
   unban_message_target: '&7You have been unbanned by &e{player}&7.'
 mute:
-  tempmute_message: '&7You have {duration} muted &e{player}&7 for &e{reason}&7.'
+  tempmute_message: '&7You have muted &e{player}&7 for {duration} for &e{reason}&7.'
   permmute_message: '&7You have permanently muted &e{player}&7 for &e{reason}&7.'
   unmute_message: '&7You have unmuted &e{player}&7.'
   tempmute_message_target: '&7You have been {duration} muted by &e{player}&7 for &e{reason}&7.'
@@ -159,8 +159,6 @@ achievement:
     reward: '&7Reward: &e{reward}'
     footer: '&8----------------------------------------------------'
 punishment:
-  ban: 'You have been BANNED!'
-  mute: 'You have been MUTED!'
   found: '[DesireHCF] Found punishment document for: {player}'
   type: '[DesireHCF] Punishment Type: {reason}'
   notfound: '[DesireHCF] Punishment document was not found for: {player}'

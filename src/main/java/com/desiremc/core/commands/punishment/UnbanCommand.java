@@ -19,7 +19,7 @@ public class UnbanCommand extends ValidCommand
 
     public UnbanCommand()
     {
-        super("unban", "Unban a user from the server.", Rank.MODERATOR, new String[] { "target" });
+        super("unban", "Unban a user from the server.", Rank.MODERATOR, new String[] {"target"});
         addParser(new PlayerSessionParser(), "target");
 
         addValidator(new PlayerIsBannedValidator(), "target");
@@ -35,6 +35,7 @@ public class UnbanCommand extends ValidCommand
         Punishment p = target.isBanned();
         p.setRepealed(true);
         PunishmentHandler.getInstance().save(p);
+        PunishmentHandler.getInstance().refreshPunishments(target);
     }
 
 }

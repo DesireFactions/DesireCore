@@ -34,6 +34,7 @@ public class UnmuteCommand extends ValidCommand
         Punishment p = target.isMuted();
         p.setRepealed(true);
         PunishmentHandler.getInstance().save(p);
+        PunishmentHandler.getInstance().refreshPunishments(target);
 
         LANG.sendRenderMessage(sender, "mute.unmute_message", "{player}", target.getName());
 

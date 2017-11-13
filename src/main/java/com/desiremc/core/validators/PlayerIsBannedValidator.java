@@ -14,7 +14,7 @@ public class PlayerIsBannedValidator extends PlayerValidator
 
         if (session.isBanned() == null)
         {
-            DesireCore.getLangHandler().sendString(sender, "not_banned");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_banned", "{player}", session.getName());
             return false;
         }
 

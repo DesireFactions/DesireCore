@@ -38,5 +38,6 @@ public class UnblacklistCommand extends ValidCommand
         }
 
         PunishmentHandler.getInstance().save(target.isBanned());
+        PunishmentHandler.getInstance().refreshPunishments(target);
     }
 }
