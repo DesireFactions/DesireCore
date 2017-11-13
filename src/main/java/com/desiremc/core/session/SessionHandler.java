@@ -91,6 +91,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             System.out.println("initializeSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
         }
         Session session = instance.findOne("_id", uuid);
+
         if (session == null)
         {
             if (DEBUG)
@@ -98,6 +99,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
                 System.out.println("initializeSession(UUID, boolean) non-existing player.");
             }
             session = createSession(uuid);
+        }
+        if (session.getSettings() == null || session.getSettings().size() == 0)
+        {
+            System.out.println("Null: " + (session.getSettings()));
+            session.assignDefaultSettings();
+            session.save();
+            System.out.println("Size: " + (session.getSettings().size()));
         }
         if (cache)
         {

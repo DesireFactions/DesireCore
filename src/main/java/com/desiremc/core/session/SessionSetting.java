@@ -9,10 +9,10 @@ public enum SessionSetting
     ACHIEVEMENTS("achievment messages", true, Rank.GUEST),
     CLASSICTAB("classic tab list", false, Rank.GUEST);
 
-    public String displayName;
-    public Rank rank;
-    public boolean defaultValue;
-    public String[] aliases;
+    private String displayName;
+    private Rank rank;
+    private boolean defaultValue;
+    private String[] aliases;
 
     private SessionSetting(String displayName, boolean defaultValue, Rank rank, String... aliases)
     {
@@ -30,6 +30,11 @@ public enum SessionSetting
     public Rank getRank()
     {
         return rank;
+    }
+
+    public boolean getDefaultValue()
+    {
+        return defaultValue;
     }
 
     public String[] getAliases()

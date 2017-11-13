@@ -149,9 +149,43 @@ public class Session
         this.lastLogin = System.currentTimeMillis();
         this.totalPlayed = 0;
         this.settings = new HashMap<>();
-        this.settings.put(SessionSetting.FINDORE, true);
-        this.settings.put(SessionSetting.MENTIONS, true);
+        this.assignDefaultSettings();
         this.ip = ip;
+    }
+
+    protected void checkDefaults()
+    {
+        if (settings == null || settings.size() == 0)
+        {
+            assignDefaultSettings();
+        }
+        else if (settings.size() != SessionSetting.values().length)
+        {
+            for (SessionSetting setting : SessionSetting.values())
+            {
+                if (!settings.containsKey(setting))
+                {
+                    settings.put(setting, setting.getDefaultValue());
+                }
+            }
+        }
+        else
+        {
+            return;
+        }
+        save();
+    }
+
+    protected void assignDefaultSettings()
+    {
+        if (settings == null || settings.size() == 0)
+        {
+            this.settings = new HashMap<>();
+        }
+        for (SessionSetting setting : SessionSetting.values())
+        {
+            this.settings.put(setting, setting.getDefaultValue());
+        }
     }
 
     protected void assignConsole()
@@ -375,33 +409,37 @@ public class Session
 
     public HashMap<SessionSetting, Boolean> getSettings()
     {
+        checkDefaults();
         return settings;
     }
 
     public void setSetting(SessionSetting setting, boolean status)
     {
+        checkDefaults();
         this.settings.put(setting, status);
         save();
     }
 
     public boolean toggleSetting(SessionSetting setting)
     {
+        checkDefaults();
         Boolean status = this.settings.get(setting);
         if (status == null || !status)
         {
             this.settings.put(setting, true);
-            return true;
         }
         else
         {
 
             this.settings.put(setting, false);
-            return false;
         }
+        save();
+        return !status;
     }
 
     public boolean getSetting(SessionSetting setting)
     {
+        checkDefaults();
         return this.settings.get(setting);
     }
 
@@ -459,7 +497,7 @@ public class Session
         save();
     }
 
-    private void save()
+    protected void save()
     {
         SessionHandler.getInstance().save(this);
     }
