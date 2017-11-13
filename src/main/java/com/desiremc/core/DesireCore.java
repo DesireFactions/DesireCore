@@ -19,6 +19,7 @@ import com.desiremc.core.commands.punishment.TempBanCommand;
 import com.desiremc.core.commands.punishment.TempMuteCommand;
 import com.desiremc.core.commands.punishment.UnbanCommand;
 import com.desiremc.core.commands.punishment.UnblacklistCommand;
+import com.desiremc.core.commands.punishment.UnmuteCommand;
 import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
@@ -162,6 +163,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TempMuteCommand());
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
+        customCommandHandler.registerCommand(new UnmuteCommand());
     }
 
     private void registerListeners()
