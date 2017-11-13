@@ -25,6 +25,10 @@ import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
+import com.desiremc.core.commands.staff.StaffFreezeCommand;
+import com.desiremc.core.commands.staff.StaffModeCommand;
+import com.desiremc.core.commands.staff.StaffReportsCommand;
+import com.desiremc.core.commands.staff.StaffRestoreCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.commands.timings.TimingsCommand;
 import com.desiremc.core.connection.MongoWrapper;
@@ -163,6 +167,10 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TempMuteCommand());
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
+        customCommandHandler.registerCommand(new StaffFreezeCommand());
+        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
+        customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
+        customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
         customCommandHandler.registerCommand(new UnmuteCommand());
     }
 
