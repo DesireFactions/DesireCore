@@ -49,7 +49,7 @@ public class BlacklistCommand extends ValidCommand
         punishment.setBlacklisted(true);
         PunishmentHandler.getInstance().save(punishment);
 
-        PunishmentHandler.getInstance().refreshPunishments(session);
+        PunishmentHandler.getInstance().refreshPunishments(target);
 
         LANG.sendRenderMessage(sender, "blacklist.blacklist_message",
                 "{player}", target.getName(),

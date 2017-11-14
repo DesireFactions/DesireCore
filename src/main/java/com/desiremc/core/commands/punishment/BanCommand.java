@@ -46,7 +46,7 @@ public class BanCommand extends ValidCommand
         punishment.setPermanent(true);
         PunishmentHandler.getInstance().save(punishment);
 
-        PunishmentHandler.getInstance().refreshPunishments(session);
+        PunishmentHandler.getInstance().refreshPunishments(target);
 
         LANG.sendRenderMessage(sender, "ban.permban_message",
                 "{player}", target.getName(),
@@ -54,10 +54,10 @@ public class BanCommand extends ValidCommand
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer((DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +
+            target.getPlayer().kickPlayer(("\n" + "&c&lYou are permanently banned from" +
                     " the network!\n"
-                    + "\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
-                    + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                    + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
+                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
                     .replace("{reason}", (String) args[1])
                     .replace("{issuer}", session.getName())
                     .replace("&", "§"));

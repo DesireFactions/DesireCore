@@ -49,6 +49,8 @@ public class MuteCommand extends ValidCommand
         punishment.setPermanent(true);
         PunishmentHandler.getInstance().save(punishment);
 
+        PunishmentHandler.getInstance().refreshPunishments(target);
+
         LANG.sendRenderMessage(sender, "mute.permmute_message",
                 "{player}", target.getName(),
                 "{reason}", args[1]);

@@ -53,6 +53,8 @@ public class TempBanCommand extends ValidCommand
         punishment.setReason((String) args[2]);
         PunishmentHandler.getInstance().save(punishment);
 
+        PunishmentHandler.getInstance().refreshPunishments(target);
+
         LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
@@ -60,10 +62,10 @@ public class TempBanCommand extends ValidCommand
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer((DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the " +
+            target.getPlayer().kickPlayer(("\n" + "&c&lYou are banned from the " +
                     "network!\n"
-                    + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
-                    + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                    + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
+                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
                     .replace("{reason}", (String) args[2])
                     .replace("{until}", DateUtils.formatDateDiff(time))
                     .replace("{issuer}", session.getName())

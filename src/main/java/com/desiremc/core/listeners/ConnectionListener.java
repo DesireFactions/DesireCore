@@ -37,8 +37,8 @@ public class ConnectionListener implements Listener
                 event.disallow(Result.KICK_BANNED,
                         (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +
                                 " the network!\n"
-                                + "\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
-                                + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                                + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
+                                + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
                                         .replace("{reason}", p.getReason())
                                         .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
                                         .replace("&", "§"));
@@ -48,8 +48,8 @@ public class ConnectionListener implements Listener
                 event.disallow(Result.KICK_BANNED,
                         (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the " +
                                 "network!\n"
-                                + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
-                                + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules")
+                                + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
+                                + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
                                         .replace("{reason}", p.getReason())
                                         .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
                                         .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
