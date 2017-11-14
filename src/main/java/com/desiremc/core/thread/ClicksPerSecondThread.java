@@ -2,7 +2,6 @@ package com.desiremc.core.thread;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.staff.StaffHandler;
-
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,7 +33,7 @@ public class ClicksPerSecondThread extends BukkitRunnable
         switch (count)
         {
             case 9:
-                int amount = cps.get(target.getUniqueId()) / 20;
+                int amount = cps.get(target.getUniqueId()) / 10;
                 DesireCore.getLangHandler().sendRenderMessage(player, "staff.cps-finish", "{player}", target.getName(), "{amount}", amount+"");
                 cps.remove(target.getUniqueId());
                 instance.decreaseNumCPSTests();
