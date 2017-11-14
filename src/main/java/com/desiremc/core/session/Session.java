@@ -4,6 +4,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -233,12 +234,17 @@ public class Session
 
     public Punishment isBanned()
     {
-        return SessionHandler.getPunishment(uuid, Type.BAN);
+        return PunishmentHandler.getInstance().getPunishment(uuid, Type.BAN);
+    }
+
+    public Punishment isIPBanned()
+    {
+        return PunishmentHandler.getInstance().getPunishment(uuid, Type.IP_BAN);
     }
 
     public Punishment isMuted()
     {
-        return SessionHandler.getPunishment(uuid, Type.MUTE);
+        return PunishmentHandler.getInstance().getPunishment(uuid, Type.MUTE);
     }
 
     public List<Session> getFriends()

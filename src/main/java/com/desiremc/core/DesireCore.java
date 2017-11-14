@@ -12,10 +12,12 @@ import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.punishment.BanCommand;
 import com.desiremc.core.commands.punishment.BlacklistCommand;
+import com.desiremc.core.commands.punishment.IpbanCommand;
 import com.desiremc.core.commands.punishment.KickCommand;
 import com.desiremc.core.commands.punishment.MuteCommand;
 import com.desiremc.core.commands.punishment.TempBanCommand;
 import com.desiremc.core.commands.punishment.TempMuteCommand;
+import com.desiremc.core.commands.punishment.UnIpbanCommand;
 import com.desiremc.core.commands.punishment.UnbanCommand;
 import com.desiremc.core.commands.punishment.UnblacklistCommand;
 import com.desiremc.core.commands.punishment.UnmuteCommand;
@@ -168,10 +170,12 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
         customCommandHandler.registerCommand(new StaffFreezeCommand());
-        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
+        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
         customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
         customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
         customCommandHandler.registerCommand(new UnmuteCommand());
+        customCommandHandler.registerCommand(new IpbanCommand());
+        customCommandHandler.registerCommand(new UnIpbanCommand());
     }
 
     private void registerListeners()

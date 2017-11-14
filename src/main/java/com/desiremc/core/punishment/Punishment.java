@@ -111,7 +111,8 @@ public class Punishment {
     public static enum Type {
         MUTE,
         BAN,
-        WARN
+        WARN,
+        IP_BAN
     }
 
 }

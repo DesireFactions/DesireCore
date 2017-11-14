@@ -2,7 +2,6 @@ package com.desiremc.core.session;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.RedBlackTree;
@@ -134,23 +133,6 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             System.out.println("initializeSession(UUID, boolean) set punishments and returned.");
         }
         return session;
-    }
-
-    public static Punishment getPunishment(UUID uuid, Type type)
-    {
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(uuid)
-                .field("repealed").equal(false)
-                .field("type").equal(type).asList();
-
-        if (punishments == null || punishments.size() == 0)
-        {
-            return null;
-        }
-
-        punishments.removeIf(punishment -> ((punishment.getExpirationTime() + punishment.getIssued()) < System.currentTimeMillis()) && !punishment.isPermanent());
-
-        return punishments.get(0);
     }
 
     public static Session findOfflinePlayerByName(String name)

@@ -3,6 +3,7 @@ package com.desiremc.core.listeners;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
@@ -29,19 +30,37 @@ public class ConnectionListener implements Listener
         {
             System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
         }
-        Punishment p = SessionHandler.getPunishment(event.getUniqueId(), Type.BAN);
-        if (p != null && !p.isRepealed())
+
+        String ip = event.getAddress().getHostAddress();
+
+        if (PunishmentHandler.getInstance().getAllIpBans().contains(ip))
         {
-            if (p.isPermanent())
+            Punishment ipban = PunishmentHandler.getInstance().getPunishment(ip);
+
+            event.disallow(Result.KICK_BANNED,
+                    ("\n" + "&c&lYour IP is permanently banned from" +
+                            " the network!\n"
+                            + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
+                            + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
+                            .replace("{reason}", ipban.getReason())
+                            .replace("{issuer}", PlayerUtils.getName(ipban.getIssuer()))
+                            .replace("&", "§"));
+            return;
+        }
+
+        Punishment ban = PunishmentHandler.getInstance().getPunishment(event.getUniqueId(), Type.IP_BAN);
+        if (ban != null && !ban.isRepealed())
+        {
+            if (ban.isPermanent())
             {
                 event.disallow(Result.KICK_BANNED,
                         (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are permanently banned from" +
                                 " the network!\n"
                                 + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
                                 + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                                        .replace("{reason}", p.getReason())
-                                        .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                                        .replace("&", "§"));
+                                .replace("{reason}", ban.getReason())
+                                .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
+                                .replace("&", "§"));
             }
             else
             {
@@ -50,10 +69,10 @@ public class ConnectionListener implements Listener
                                 "network!\n"
                                 + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                                 + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                                        .replace("{reason}", p.getReason())
-                                        .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime()))
-                                        .replace("{issuer}", PlayerUtils.getName(p.getIssuer()))
-                                        .replace("&", "§"));
+                                .replace("{reason}", ban.getReason())
+                                .replace("{until}", DateUtils.formatDateDiff(ban.getExpirationTime()))
+                                .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
+                                .replace("&", "§"));
             }
         }
     }

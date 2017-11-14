@@ -1,10 +1,8 @@
 package com.desiremc.core.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -12,9 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class PlayerUtils
 {
@@ -92,14 +91,24 @@ public class PlayerUtils
 
     /**
      * Get a player's name from their UUID.
-     * 
+     *
      * @param uuid the uuid of the player in question.
      * @return the last seen username of the player.
      */
     public static String getName(UUID uuid)
     {
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
-        return op == null ? null : op.getName();
+
+        if (uuid.equals(DesireCore.getConsoleUUID()))
+        {
+            return "CONSOLE";
+        }
+        else if (op != null)
+        {
+            return op.getName();
+        }
+
+        return null;
     }
 
     public static List<Player> getPlayersInRange(Player player, int range)

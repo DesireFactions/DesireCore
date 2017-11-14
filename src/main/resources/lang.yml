@@ -8,6 +8,7 @@ never_logged_in: '&7This player has never logged in before.'
 only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 not_banned: '{player} is not banned.'
+not_ip_banned: '{player} is not IP banned.'
 not_muted: '{player} is not muted.'
 not_blacklisted: '{player} is not blacklisted.'
 blacklisted: '{player} is blacklisted. They can''t be unbanned.'
@@ -63,6 +64,9 @@ friend:
 ban:
   tempban_message: '&7You have banned &e{player}&7 for {duration} for &e{reason}&7.'
   permban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
+  unban_message: '&7You have unbanned &e{player}&7.'
+ipban:
+  ban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
   unban_message: '&7You have unbanned &e{player}&7.'
 mute:
   tempmute_message: '&7You have muted &e{player}&7 for {duration} for &e{reason}&7.'
