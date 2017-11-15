@@ -35,14 +35,12 @@ public class HCFSession
     private UUID uuid;
 
     @Indexed
-    String server;
+    private String server;
 
     @Property("safe_timer")
     private long safeTimer;
 
     private int lives;
-
-    private int diamonds;
 
     private double balance;
 
@@ -54,6 +52,12 @@ public class HCFSession
 
     @Embedded
     private List<Ticker> deaths;
+
+    @Embedded
+    private OreData currentOre;
+
+    @Embedded
+    private List<OreData> historicalOre;
 
     @Transient
     private Session session;
@@ -155,23 +159,6 @@ public class HCFSession
     public void addLives(int lives)
     {
         this.lives += lives;
-        save();
-    }
-
-    public int getDiamonds()
-    {
-        return diamonds;
-    }
-
-    public void setDiamonds(int diamonds)
-    {
-        this.diamonds = diamonds;
-        save();
-    }
-
-    public void addDiamonds(int diamonds)
-    {
-        this.diamonds += diamonds;
         save();
     }
 
@@ -363,7 +350,7 @@ public class HCFSession
         private long lastRunTime;
 
         private boolean paused;
-        
+
         @Override
         public void run()
         {
@@ -391,7 +378,7 @@ public class HCFSession
         {
             EntryRegistry.getInstance().setValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"), getTimeLeftFormatted());
         }
-        
+
         public String getTimeLeftFormatted()
         {
             long time = (safeTimer / 1000);
