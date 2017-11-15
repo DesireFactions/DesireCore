@@ -17,7 +17,6 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import java.util.HashMap;
@@ -66,14 +65,14 @@ public class Session
 
     private List<UUID> ignoring;
 
-    @Reference
-    private List<Session> friends;
+    @Embedded
+    private List<UUID> friends;
 
     @Embedded("incoming_friend_requests")
-    private List<Session> incomingFriendRequests;
+    private List<UUID> incomingFriendRequests;
 
     @Embedded("outgoing_friend_requests")
-    private List<Session> outgoingFriendRequests;
+    private List<UUID> outgoingFriendRequests;
 
     private int tokens;
 
@@ -247,29 +246,29 @@ public class Session
         return PunishmentHandler.getInstance().getPunishment(uuid, Type.MUTE);
     }
 
-    public List<Session> getFriends()
+    public List<UUID> getFriends()
     {
         return friends;
     }
 
-    public List<Session> getIncomingFriendRequests()
+    public List<UUID> getIncomingFriendRequests()
     {
         return incomingFriendRequests;
     }
 
-    public List<Session> getOutgoingFriendRequests()
+    public List<UUID> getOutgoingFriendRequests()
     {
         return outgoingFriendRequests;
     }
 
-    public boolean hasIncomingFriendRequest(Session session)
+    public boolean hasIncomingFriendRequest(UUID uuid)
     {
-        return incomingFriendRequests.contains(session);
+        return incomingFriendRequests.contains(uuid);
     }
 
-    public boolean hasOutgoingFriendRequest(Session session)
+    public boolean hasOutgoingFriendRequest(UUID uuid)
     {
-        return outgoingFriendRequests.contains(session);
+        return outgoingFriendRequests.contains(uuid);
     }
 
     public long getFirstLogin()

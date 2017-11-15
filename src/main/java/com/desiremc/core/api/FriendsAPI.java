@@ -4,10 +4,12 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.FriendUtils;
+import com.desiremc.core.utils.PlayerUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 public class FriendsAPI
 {
@@ -59,13 +61,13 @@ public class FriendsAPI
         listPlayers(sender, SessionHandler.getSession(sender).getIncomingFriendRequests());
     }
 
-    private static void listPlayers(CommandSender sender, List<Session> sessions)
+    private static void listPlayers(CommandSender sender, List<UUID> friends)
     {
         LANG.sendString(sender, "list-header");
 
-        for (Session s : sessions)
+        for (UUID uuid : friends)
         {
-            LANG.sendRenderMessage(sender, "player", "{player}", s.getName());
+            LANG.sendRenderMessage(sender, "player", "{player}", PlayerUtils.getName(uuid));
         }
     }
 
