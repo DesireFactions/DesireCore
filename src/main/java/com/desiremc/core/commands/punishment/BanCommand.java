@@ -22,8 +22,7 @@ public class BanCommand extends ValidCommand
 
     public BanCommand()
     {
-        super("ban", "Permanently ban a user from the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[] {"target", "reason"});
+        super("ban", "Permanently ban a user from the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
 

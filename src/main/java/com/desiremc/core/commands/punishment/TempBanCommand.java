@@ -14,8 +14,10 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.validators.PunishmentTimeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class TempBanCommand extends ValidCommand
@@ -25,7 +27,7 @@ public class TempBanCommand extends ValidCommand
 
     public TempBanCommand()
     {
-        super("tempban", "Temporarily ban a user from the server.", Rank.MODERATOR, ValidCommand
+        super("tempban", "Temporarily ban a user from the server.", Rank.JRMOD, ValidCommand
                 .ARITY_REQUIRED_VARIADIC, new String[] {"target", "time", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
@@ -35,6 +37,7 @@ public class TempBanCommand extends ValidCommand
         addValidator(new PlayerValidator());
         addValidator(new SenderNotTargetValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
+        addValidator(new PunishmentTimeValidator(), "time");
     }
 
     @Override
@@ -54,6 +57,8 @@ public class TempBanCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
+
+        Bukkit.broadcastMessage(time + "");
 
         LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),

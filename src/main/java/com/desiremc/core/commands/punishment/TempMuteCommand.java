@@ -14,6 +14,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.validators.PunishmentTimeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
@@ -35,6 +36,7 @@ public class TempMuteCommand extends ValidCommand
         addValidator(new PlayerValidator());
         addValidator(new SenderNotTargetValidator(), "target");
         addValidator(new SenderOutranksTargetValidator(), "target");
+        addValidator(new PunishmentTimeValidator(), "time");
     }
 
     @Override
