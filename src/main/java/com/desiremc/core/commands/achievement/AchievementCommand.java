@@ -71,13 +71,13 @@ public class AchievementCommand extends ValidCommand
                 item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             }
             ItemMeta skull = item.getItemMeta();
-            skull.setDisplayName(achievement.getName());
+            skull.setDisplayName(LANG.renderMessageNoPrefix("agui.inventory.item.name", "{name}", achievement.getName()));
 
             List<String> lore = new ArrayList<>();
 
             for (String loreString : LANG.getStringList("agui.inventory.item.lore"))
             {
-                lore.add(LANG.renderString(loreString, "{desc}", achievement.getDescription(), "{tokens}", achievement.getReward()+""));
+                lore.add(LANG.renderString(loreString, "{desc}", achievement.getDescription(), "{tokens}", achievement.getReward() + ""));
             }
 
             skull.setLore(lore);

@@ -180,9 +180,10 @@ agui:
   inventory:
     title: 'Achievement'
     item:
+      name: '&9{name}'
       lore:
-      - 'Description: {desc}'
-      - 'Tokens: {tokens}'
+      - '&a{desc}'
+      - '&aTokens: {tokens}'
     next:
       name: 'Next Item'
       lore:
