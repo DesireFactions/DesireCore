@@ -212,4 +212,21 @@ public class OreData
         this.coal = coal;
     }
 
+    /**
+     * @return a deep copy of this object
+     */
+    public OreData copy()
+    {
+        OreData data = new OreData();
+        data.worldNumber = -1;
+        data.emerald = this.emerald;
+        data.diamond = this.diamond;
+        data.gold = this.gold;
+        data.lapis = this.lapis;
+        data.redstone = this.redstone;
+        data.iron = this.iron;
+        data.coal = this.coal;
+        return data;
+    }
+
 }
