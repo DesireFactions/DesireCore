@@ -410,6 +410,11 @@ public class HCFSession
         save();
     }
 
+    public OreData getCurrentOre()
+    {
+        return currentOre;
+    }
+
     private void save()
     {
         HCFSessionHandler.getInstance().save(this);

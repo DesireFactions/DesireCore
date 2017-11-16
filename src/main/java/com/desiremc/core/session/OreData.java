@@ -47,7 +47,7 @@ public class OreData
     /**
      * @return the emerald
      */
-    public int getEmerald()
+    public int getEmeraldCount()
     {
         return emerald;
     }
@@ -71,7 +71,7 @@ public class OreData
     /**
      * @return the diamond
      */
-    public int getDiamond()
+    public int getDiamondCount()
     {
         return diamond;
     }
@@ -95,7 +95,7 @@ public class OreData
     /**
      * @return the gold
      */
-    public int getGold()
+    public int getGoldCount()
     {
         return gold;
     }
@@ -119,7 +119,7 @@ public class OreData
     /**
      * @return the lapis
      */
-    public int getLapis()
+    public int getLapisCount()
     {
         return lapis;
     }
@@ -143,7 +143,7 @@ public class OreData
     /**
      * @return the redstone
      */
-    public int getRedstone()
+    public int getRedstoneCount()
     {
         return redstone;
     }
@@ -167,7 +167,7 @@ public class OreData
     /**
      * @return the iron
      */
-    public int getIron()
+    public int getIronCount()
     {
         return iron;
     }
@@ -191,7 +191,7 @@ public class OreData
     /**
      * @return the coal
      */
-    public int getCoal()
+    public int getCoalCount()
     {
         return coal;
     }
