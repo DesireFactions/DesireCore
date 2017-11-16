@@ -125,7 +125,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
                 .field("punished").equal(session.getUniqueId())
                 .field("repealed").notEqual(true)
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
+                .field("expirationTime").greaterThan(System.currentTimeMillis())
                 .asList();
         session.setActivePunishments(punishments);
         if (DEBUG)
@@ -145,7 +145,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
                 .field("punished").equal(session.getUniqueId())
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
+                .field("expirationTime").greaterThan(System.currentTimeMillis())
                 .asList();
 
         session.setActivePunishments(punishments);
