@@ -65,7 +65,6 @@ public class Session
 
     private List<UUID> ignoring;
 
-    @Embedded
     private List<UUID> friends;
 
     @Embedded("incoming_friend_requests")
