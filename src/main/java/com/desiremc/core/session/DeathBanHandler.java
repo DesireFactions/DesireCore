@@ -28,7 +28,7 @@ public class DeathBanHandler extends BasicDAO<DeathBan, Integer>
 
     public static DeathBan getDeathBan(Session s, String server)
     {
-        Query<DeathBan> q = instance.createQuery()
+        Query<DeathBan> q = getInstance().createQuery()
                 .field("player").equal(s.getUniqueId())
                 .field("server").equal(server)
                 .field("revived").equal(false)
