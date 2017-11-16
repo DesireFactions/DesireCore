@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author Michael Ziluck
@@ -103,6 +104,18 @@ public class LangHandler extends FileHandler
     public void sendString(CommandSender sender, String string)
     {
         sender.sendMessage(getString(string));
+    }
+
+    /**
+     * Shorthand to render a command and send it to a {@link CommandSender}
+     *
+     * @param sender
+     * @param string
+     * @param args
+     */
+    public void sendRenderMessage(CommandSender sender, String string, Collection<Object> args)
+    {
+        sendRenderMessage(sender, string, args.toArray());
     }
 
     /**
