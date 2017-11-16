@@ -1,5 +1,6 @@
 package com.desiremc.core.session;
 
+import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
@@ -24,9 +25,9 @@ public class DeathBanHandler extends BasicDAO<DeathBan, Integer>
         }
     }
     
-    public static DeathBan createDeathBan(HCFSession session)
+    public static DeathBan createDeathBan(Player player)
     {
-        DeathBan ban = new DeathBan(getNextId(), session);
+        DeathBan ban = new DeathBan(getNextId(), player.getUniqueId());
         
         getInstance().save(ban);
         

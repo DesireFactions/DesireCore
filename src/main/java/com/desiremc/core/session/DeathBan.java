@@ -29,10 +29,10 @@ public class DeathBan
     
     private UUID reviver;
 
-    public DeathBan(int id, HCFSession session)
+    public DeathBan(int id, UUID uuid)
     {
         this.id = id;
-        this.player = session.getUniqueId();
+        this.player = uuid;
         this.server = DesireCore.getCurrentServer();
         this.startTime = System.currentTimeMillis();
     }
