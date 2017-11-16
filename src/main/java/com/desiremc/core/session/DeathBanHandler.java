@@ -2,6 +2,7 @@ package com.desiremc.core.session;
 
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
+import org.mongodb.morphia.query.Query;
 
 import com.desiremc.core.DesireCore;
 
@@ -24,13 +25,37 @@ public class DeathBanHandler extends BasicDAO<DeathBan, Integer>
             nextId = findOne(createQuery().order("-_id")).getId() + 1;
         }
     }
-    
+
+    public static DeathBan getDeathBan(Session s, String server)
+    {
+        Query<DeathBan> q = instance.createQuery()
+                .field("player").equal(s.getUniqueId())
+                .field("server").equal(server)
+                .field("revived").equal(false)
+                .field("staffRevive").equal(false)
+                .field("startTime").greaterThan(System.currentTimeMillis() - s.getRank().getDeathBanTime());
+
+        long count = q.count();
+        if (count == 0)
+        {
+            return null;
+        }
+        else if (count == 1)
+        {
+            return q.get();
+        }
+        else
+        {
+            throw new IllegalStateException();
+        }
+    }
+
     public static DeathBan createDeathBan(Player player)
     {
         DeathBan ban = new DeathBan(getNextId(), player.getUniqueId());
-        
+
         getInstance().save(ban);
-        
+
         return ban;
     }
 
