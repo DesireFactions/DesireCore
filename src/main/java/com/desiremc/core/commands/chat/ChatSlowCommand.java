@@ -14,7 +14,7 @@ public class ChatSlowCommand extends ValidCommand
 
     public ChatSlowCommand()
     {
-        super("slow", "Toggle slow chat on or off.", Rank.ADMIN, new String[] {});
+        super("slow", "Toggle slow chat on or off.", Rank.SRMOD, new String[] {});
     }
 
     public void validRun(CommandSender sender, String label, Object... args)
