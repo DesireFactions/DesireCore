@@ -25,6 +25,7 @@ import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.settings.SettingsCommand;
+import com.desiremc.core.commands.staff.StaffAltsCommand;
 import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
 import com.desiremc.core.commands.staff.StaffFreezeCommand;
@@ -174,6 +175,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
         customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
         customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
+        customCommandHandler.registerCommand(new StaffAltsCommand("alts"));
         customCommandHandler.registerCommand(new UnmuteCommand());
         customCommandHandler.registerCommand(new IpbanCommand());
         customCommandHandler.registerCommand(new UnIpbanCommand());

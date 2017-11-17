@@ -130,6 +130,12 @@ report:
       lore:
       - 'Go to the next page!'
       item: 'IRON_BLOCK'
+alts:
+  header: "&9Scanning {player} for alts..."
+  spacer: "&c&l&m---------------------------------------"
+  info: "&9{player} &cLast Active: {date}"
+  info_online: "&6{player} &2Currently Online"
+  none: "&c{player} does not have any alts."
 settings:
   toggle: '&7You have turned {setting} &a{status}&7.'
 enderpearl:
