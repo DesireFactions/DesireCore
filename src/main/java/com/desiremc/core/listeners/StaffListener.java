@@ -144,15 +144,23 @@ public class StaffListener implements Listener
                 {
                     case "launcher":
                         StaffHandler.getInstance().useLaunch(event);
+                        event.setCancelled(true);
                         break;
                     case "random-teleport":
                         StaffHandler.getInstance().useTeleport(event);
+                        event.setCancelled(true);
                         break;
                     case "vanish":
                         StaffHandler.getInstance().useInvisibility(event);
+                        event.setCancelled(true);
                         break;
                     case "reports":
                         StaffHandler.getInstance().openReportsGUI(event.getPlayer());
+                        event.setCancelled(true);
+                        break;
+                    case "teleporter":
+                        StaffHandler.getInstance().useTeleport(event);
+                        event.setCancelled(true);
                         break;
                     default:
                         return false;

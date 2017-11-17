@@ -28,7 +28,10 @@ public class FriendsAPI
         FriendUtils.removeFriend(sender, target);
 
         LANG.sendRenderMessage(sender, "friend.no_longer_friend", "{player}", sender.getName());
-        LANG.sendRenderMessage(target, "friend.no_longer_friend", "{player}", sender.getName());
+        if (target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "friend.no_longer_friend", "{player}", sender.getName());
+        }
     }
 
     public static void addFriend(Session sender, Session target)
@@ -36,7 +39,11 @@ public class FriendsAPI
         FriendUtils.addFriendRequest(sender, target);
 
         LANG.sendRenderMessage(sender, "friend.are_now_friend", "{player}", target.getName());
-        LANG.sendRenderMessage(target, "friend.are_now_friend", "{player}", sender.getName());
+
+        if (target.getOfflinePlayer().isOnline())
+        {
+            LANG.sendRenderMessage(target, "friend.are_now_friend", "{player}", sender.getName());
+        }
     }
 
     public static void denyFriend(Session sender, Session target)

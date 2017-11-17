@@ -1,13 +1,14 @@
 package com.desiremc.core.staff;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.thread.ClicksPerSecondThread;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.TargetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,15 +23,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.thread.ClicksPerSecondThread;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.TargetBlock;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class StaffHandler
 {
@@ -115,7 +114,7 @@ public class StaffHandler
         numCPSTests--;
     }
 
-    public void enableStaffMode(Player p)
+    private void enableStaffMode(Player p)
     {
         staffInventories.put(p.getUniqueId(), p.getInventory().getContents());
         p.getInventory().clear();
@@ -278,7 +277,6 @@ public class StaffHandler
         Collection<? extends Player> playerCollection = DesireCore.getInstance().getServer().getOnlinePlayers();
         List<Player> players = new ArrayList<>(playerCollection);
 
-        // remove staff player to avoid teleporting to yourself
         for (int i = 0; i < players.size(); i++)
         {
             if (players.get(i) == staffPlayer)
@@ -462,6 +460,8 @@ public class StaffHandler
                 lore.add(LANG.renderString(loreString));
             }
 
+            nextMeta.setLore(lore);
+
             nextItem.setItemMeta(nextMeta);
             inv.setItem(53, nextItem);
         }
@@ -479,6 +479,8 @@ public class StaffHandler
             {
                 lore.add(LANG.renderString(loreString));
             }
+
+            nextMeta.setLore(lore);
 
             nextItem.setItemMeta(nextMeta);
             inv.setItem(45, nextItem);

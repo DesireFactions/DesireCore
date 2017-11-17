@@ -40,6 +40,14 @@ gadgets:
     lore:
       - "&7Launches you towards the"
       - "&7location you are facing."
+  carpet:
+    enabled: true
+    slot: 6
+    item: CARPET:14
+    name: "&6Carpet"
+    lore:
+      - "&7I can see clearly now"
+      - "&7that the rain is gone."
   vanish:
     enabled: true
     slot: 8
@@ -48,6 +56,13 @@ gadgets:
     lore:
       - "&7Toggles your player vanish."
     item-on: INK_SACK:10
+  teleporter:
+    enabled: true
+    slot: 4
+    item: EYE_OF_ENDER:-1
+    name: "&6Random Teleporter"
+    lore:
+      - "&7Teleports you to a random player."
   freezer:
     enabled: true
     slot: 2
