@@ -37,6 +37,7 @@ import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.commands.timings.TimingsCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
+import com.desiremc.core.handler.SlowChatHandler;
 import com.desiremc.core.listeners.AchievementListener;
 import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
@@ -193,6 +194,8 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new TabList());
         listenerManager.addListener(new StaffListener());
         listenerManager.addListener(new AchievementListener());
+
+        listenerManager.addListener(new SlowChatHandler());
     }
 
     public MongoWrapper getMongoWrapper()

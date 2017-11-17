@@ -44,6 +44,7 @@ public class StaffHandler
     private int numCPSTests;
 
     private boolean chatDisabled = false;
+    private boolean chatSlowed = false;
 
     private HashMap<UUID, Integer> pages;
 
@@ -524,5 +525,15 @@ public class StaffHandler
 
         DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", "{player}", target.getName());
         DesireCore.getLangHandler().sendRenderMessage(target, "staff.restore-target", "{player}", player.getName());
+    }
+
+    public boolean isChatSlowed()
+    {
+        return chatSlowed;
+    }
+
+    public void toggleChatSlowed()
+    {
+        chatSlowed = !chatSlowed;
     }
 }

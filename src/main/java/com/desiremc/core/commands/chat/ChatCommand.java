@@ -10,5 +10,6 @@ public class ChatCommand extends ValidBaseCommand
         super("chat", "staff chat tools", Rank.ADMIN);
         addSubCommand(new ChatClearCommand());
         addSubCommand(new ChatToggleCommand());
+        addSubCommand(new ChatSlowCommand());
     }
 }

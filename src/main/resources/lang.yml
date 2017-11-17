@@ -109,6 +109,9 @@ staff:
   restore-target: '{player} has restored your inventory.'
   invalid-block: "You are not pointing to a valid block"
   no-free-space: "There is no free space available for teleport."
+  chat-slow-on: "Chat has been slowed."
+  chat-slow-off: "Chat is no longer slowed."
+  chat-slowed: "Warning! Chat has been slowed, please wait {time}."
 report:
   reported: 'You have reported {player} for {reason}.'
   getreport:

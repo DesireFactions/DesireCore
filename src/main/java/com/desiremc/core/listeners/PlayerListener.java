@@ -36,7 +36,7 @@ public class PlayerListener implements Listener
         StaffHandler.getInstance().handleCPSTest(event);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
         if (DEBUG)

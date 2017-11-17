@@ -9,6 +9,7 @@ logout:
   time: 10
 staff:
   launch_velocity: 5.0
+  chat-slow: 20
 timers:
   pvp:
     time: 1800
