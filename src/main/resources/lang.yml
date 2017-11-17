@@ -37,6 +37,9 @@ number:
 set_end:
   exit: '&8[&c&l*&8]&7 You have set end exit!'
   spawn: '&8[&c&l*&8]&7 You have set end spawn!'
+ping:
+  other: "&9{player} has a ping of &6{ping}ms&9."
+  self: "&9You have a ping of &6{ping}ms&9."
 rank:
   invalid: 'Rank invalid'
   inform: 'You are now a {rank}.'

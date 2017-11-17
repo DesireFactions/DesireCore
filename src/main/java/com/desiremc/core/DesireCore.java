@@ -5,6 +5,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.InfoCommand;
+import com.desiremc.core.commands.PingCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
 import com.desiremc.core.commands.auth.LoginCommand;
@@ -179,6 +180,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnmuteCommand());
         customCommandHandler.registerCommand(new IpbanCommand());
         customCommandHandler.registerCommand(new UnIpbanCommand());
+        customCommandHandler.registerCommand(new PingCommand("ping", "ms"));
     }
 
     private void registerListeners()
