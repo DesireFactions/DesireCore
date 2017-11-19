@@ -48,7 +48,7 @@ public class ConnectionListener implements Listener
             return;
         }
 
-        Punishment ban = PunishmentHandler.getInstance().getPunishment(event.getUniqueId(), Type.IP_BAN);
+        Punishment ban = PunishmentHandler.getInstance().getPunishment(event.getUniqueId(), Type.BAN);
         if (ban != null && !ban.isRepealed())
         {
             if (ban.isPermanent())

@@ -17,7 +17,6 @@ import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.PunishmentTimeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class TempBanCommand extends ValidCommand
@@ -57,8 +56,6 @@ public class TempBanCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
-
-        Bukkit.broadcastMessage(time + "");
 
         LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),

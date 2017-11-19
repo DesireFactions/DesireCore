@@ -142,6 +142,8 @@ alts:
   info: "&9{player} &cLast Active: {date}"
   info_online: "&6{player} &2Currently Online"
   none: "&c{player} does not have any alts."
+rollback:
+  finished: "You have rolled back all punishments from {player} within the last {time}."
 settings:
   toggle: '&7You have turned {setting} &a{status}&7.'
 enderpearl:

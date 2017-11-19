@@ -30,7 +30,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
     {
         List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
                 .field("punished").equal(session.getUniqueId())
-                .field("repealed").notEqual(true)
+                .field("repealed").equal(false)
                 .field("expirationTime").greaterThan(System.currentTimeMillis())
                 .asList();
         session.setActivePunishments(punishments);
@@ -85,6 +85,18 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
             }
         }
         return null;
+    }
+
+    public List<Punishment> getAllPunishments(UUID issuer, long time)
+    {
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("repealed").equal(false)
+                .field("issuer").equal(issuer)
+                .asList();
+
+        punishments.removeIf(punishment -> punishment.getIssued() < time);
+
+        return punishments;
     }
 
     public static PunishmentHandler getInstance()

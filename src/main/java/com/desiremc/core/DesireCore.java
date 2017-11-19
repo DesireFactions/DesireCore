@@ -16,6 +16,7 @@ import com.desiremc.core.commands.punishment.BlacklistCommand;
 import com.desiremc.core.commands.punishment.IpbanCommand;
 import com.desiremc.core.commands.punishment.KickCommand;
 import com.desiremc.core.commands.punishment.MuteCommand;
+import com.desiremc.core.commands.punishment.RollbackCommand;
 import com.desiremc.core.commands.punishment.TempBanCommand;
 import com.desiremc.core.commands.punishment.TempMuteCommand;
 import com.desiremc.core.commands.punishment.UnIpbanCommand;
@@ -182,6 +183,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new IpbanCommand());
         customCommandHandler.registerCommand(new UnIpbanCommand());
         customCommandHandler.registerCommand(new PingCommand("ping", "ms"));
+        customCommandHandler.registerCommand(new RollbackCommand());
     }
 
     private void registerListeners()
