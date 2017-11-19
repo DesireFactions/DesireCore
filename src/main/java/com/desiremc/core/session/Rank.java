@@ -12,7 +12,7 @@ public enum Rank
     COMMODORE(3, "Commodore", "§b⧫", ChatColor.WHITE, ChatColor.AQUA),
     GRANDMASTER(4, "Grandmaster", "§d⧫", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
-    JRMOD(6, "Junior_Moderator", "§9§lJR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
+    JRMOD(6, "Junior_Moderator", "§e§lJR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
     MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
     SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
     ADMIN(9, "Admin", "§4§lADMIN", ChatColor.GREEN, ChatColor.RED),
