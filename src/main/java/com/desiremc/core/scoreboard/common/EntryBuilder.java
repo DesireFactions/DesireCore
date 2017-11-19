@@ -68,7 +68,8 @@ public final class EntryBuilder
     /**
      * Append a new line with specified text.
      *
-     * @param string text
+     * @param key text
+     * @param value the value to associate with the text
      * @return this
      */
     public EntryBuilder next(String key, String value)

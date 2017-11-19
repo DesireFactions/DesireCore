@@ -16,9 +16,10 @@ public abstract class ValidBaseCommand extends ValidCommand
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
     /**
-     * @param name
-     * @param description
-     * @param aliases
+     * @param name the name of the command
+     * @param description the description of the command
+     * @param rank the rank required to use the command
+     * @param aliases the aliases of the command
      */
     public ValidBaseCommand(String name, String description, Rank requiredRank, String... aliases)
     {

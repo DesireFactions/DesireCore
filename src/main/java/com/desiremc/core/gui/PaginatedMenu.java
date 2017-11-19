@@ -377,6 +377,10 @@ public class PaginatedMenu extends MenuHolder
 
     /**
      * Add a MenuItem to the given index, on the given page.
+     * 
+     * @param page the page to put the item
+     * @param item the item to add
+     * @param index where on the page to add it
      */
     boolean addMenuItem(int page, MenuItem item, int index)
     {
@@ -409,6 +413,9 @@ public class PaginatedMenu extends MenuHolder
 
     /**
      * Remove the MenuItem at the given index, on the given page.
+     * 
+     * @param page the page the target item is on.
+     * @param index the index on the page the target item is on.
      */
     boolean removeMenuItem(int page, int index)
     {

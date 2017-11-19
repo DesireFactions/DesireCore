@@ -55,6 +55,7 @@ public class Cache<K, V> implements Map<K, V>
      * @param unit the time unit of expirationTime.
      * @param removalListener the event that fires when an entry expires.
      * @param plugin the plugin that handles the removal timer
+     * @param debug whether or not to print out detailed debug information.
      */
     public Cache(int expirationTime, TimeUnit unit, RemovalListener<K, V> removalListener, JavaPlugin plugin, boolean debug)
     {
@@ -84,7 +85,8 @@ public class Cache<K, V> implements Map<K, V>
      * TPS of 20.
      * 
      * @param ticks the amount of ticks before removal.
-     * @param plugin the plugin that handles the removal timer
+     * @param removalListener the listener for when an entry is removed.
+     * @param plugin the plugin that handles the removal timer.
      */
     public Cache(int ticks, RemovalListener<K, V> removalListener, JavaPlugin plugin)
     {

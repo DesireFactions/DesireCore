@@ -63,7 +63,7 @@ public class CustomCommandHandler implements CommandExecutor
     }
 
     /**
-     * @param command
+     * @param command the new command to register
      */
     public void registerCommand(ValidCommand command)
     {

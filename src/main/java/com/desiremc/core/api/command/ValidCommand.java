@@ -51,9 +51,11 @@ public abstract class ValidCommand
     protected CommandArity commandArity;
 
     /**
-     * @param name
-     * @param description
-     * @param aliases
+     * @param name the name of the command
+     * @param description the description for the command
+     * @param rank the rank required to run the command
+     * @param args the arguments of the command
+     * @param aliases any aliases for the command
      */
     public ValidCommand(String name, String description, Rank requiredRank, int commandArity, String args[], String... aliases)
     {
