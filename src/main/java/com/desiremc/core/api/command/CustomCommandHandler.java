@@ -51,6 +51,8 @@ public class CustomCommandHandler implements CommandExecutor
             }
             else
             {
+                // The following classes also have this check:
+                // CrateKeyCheckCommand
                 DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             }
         }
