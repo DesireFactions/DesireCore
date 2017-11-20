@@ -42,6 +42,26 @@ public abstract class MenuItem extends MenuClickBehavior
         }
     }
 
+    @SuppressWarnings("deprecation")
+    public MenuItem(ItemStack is)
+    {
+        if (is.hasItemMeta() && is.getItemMeta().hasDisplayName())
+        {
+            this.text = is.getItemMeta().getDisplayName();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Item must have a display name.");
+        }
+        this.icon = is.getData();
+        this.quantity = is.getAmount();
+        this.data = is.getData().getData();
+        if (is.hasItemMeta() && is.getItemMeta().hasLore())
+        {
+            descriptions = is.getItemMeta().getLore();
+        }        
+    }
+    
     public MenuItem(String text, MaterialData icon)
     {
         this(text, icon, 1);
