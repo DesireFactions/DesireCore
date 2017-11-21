@@ -24,7 +24,7 @@ public class Utils
     public static Location toLocation(String s)
     {
         String[] sp = s.split(",");
-        return new Location(Bukkit.getWorld(sp[0]), Double.parseDouble(sp[1]) + .5, Double.parseDouble(sp[2]), Double.parseDouble(sp[3]) + .5);
+        return new Location(Bukkit.getWorld(sp[0]), Double.parseDouble(sp[1]), Double.parseDouble(sp[2]), Double.parseDouble(sp[3]));
     }
 
 }
