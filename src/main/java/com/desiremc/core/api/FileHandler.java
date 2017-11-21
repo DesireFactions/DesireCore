@@ -1,16 +1,16 @@
 package com.desiremc.core.api;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -200,6 +200,32 @@ public class FileHandler
             fileConfig.save(file);
         }
         catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void setInt(String key, int value)
+    {
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void setDouble(String key, double value)
+    {
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
