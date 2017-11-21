@@ -78,7 +78,7 @@
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<includes>
-									<include>com.desiremc.depends:desiredependencies</include>
+									<include>com.desiremc.depends:DesireDependencies</include>
 								</includes>
 							</artifactSet>
 						</configuration>
