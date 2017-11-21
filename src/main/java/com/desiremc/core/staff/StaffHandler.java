@@ -37,6 +37,7 @@ public class StaffHandler
     private static StaffHandler instance;
     private HashMap<UUID, ItemStack[]> staffInventories;
     private HashMap<UUID, ItemStack[]> deathInventories;
+    private HashMap<UUID, ItemStack[]> deathArmor;
     private HashMap<UUID, Integer> cpsTests;
     private List<UUID> frozenPlayers;
     private List<UUID> hiddenPlayers;
@@ -508,19 +509,22 @@ public class StaffHandler
     public void saveInventory(Player player)
     {
         deathInventories.put(player.getUniqueId(), player.getInventory().getContents());
+        deathArmor.put(player.getUniqueId(), player.getInventory().getArmorContents());
     }
 
     public void restoreInventory(Session player, Session target)
     {
 
-        if (!deathInventories.containsKey(target.getUniqueId()))
+        if (!deathInventories.containsKey(target.getUniqueId()) && !deathArmor.containsKey(target.getUniqueId()))
         {
             DesireCore.getLangHandler().sendRenderMessage(player, "staff.no-restore", "{player}", target.getName());
             return;
         }
 
         target.getPlayer().getInventory().setContents(deathInventories.get(target.getUniqueId()));
+        target.getPlayer().getInventory().setArmorContents(deathArmor.get(target.getUniqueId()));
         deathInventories.remove(target.getUniqueId());
+        deathArmor.remove(target.getUniqueId());
         target.getPlayer().updateInventory();
 
         DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", "{player}", target.getName());
