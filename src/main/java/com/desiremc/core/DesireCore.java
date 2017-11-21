@@ -6,6 +6,7 @@ import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
+import com.desiremc.core.commands.SuperSlimeCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
 import com.desiremc.core.commands.auth.LoginCommand;
@@ -175,7 +176,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
         customCommandHandler.registerCommand(new StaffFreezeCommand());
-        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
+        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
         customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
         customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
         customCommandHandler.registerCommand(new StaffAltsCommand("alts"));
@@ -184,6 +185,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnIpbanCommand());
         customCommandHandler.registerCommand(new PingCommand("ping", "ms"));
         customCommandHandler.registerCommand(new RollbackCommand());
+        customCommandHandler.registerCommand(new SuperSlimeCommand());
     }
 
     private void registerListeners()
