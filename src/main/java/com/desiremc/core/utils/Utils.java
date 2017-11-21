@@ -1,11 +1,15 @@
 package com.desiremc.core.utils;
 
+import java.text.DecimalFormat;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 public class Utils
 {
+    
+    private static DecimalFormat format = new DecimalFormat("#.###");
     
     public static String chat(String s)
     {
@@ -14,7 +18,7 @@ public class Utils
 
     public static String toString(Location l)
     {
-        return l.getWorld().getName() + "," + l.getBlockX() + "," + l.getBlockY() + "," + l.getBlockZ();
+        return l.getWorld().getName() + "," + format.format(l.getX()) + "," + format.format(l.getY()) + "," + format.format(l.getZ());
     }
 
     public static Location toLocation(String s)
