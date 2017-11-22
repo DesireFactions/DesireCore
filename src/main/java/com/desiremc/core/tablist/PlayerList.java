@@ -58,7 +58,7 @@ public class PlayerList
                     wrapper.setName("1.7.10");
                 }
                 entries.put(i, wrapper);
-                connection.sendPacket(buildPacket(wrapper, ADD));
+                //connection.sendPacket(buildPacket(wrapper, ADD));
 
             }
         }
@@ -68,7 +68,7 @@ public class PlayerList
             {
                 ListWrapper wrapper = new ListWrapper(UUID.fromString("00000000-0000-0000-0000-0000000000" + Integer.toString(i)), "");
                 entries.put(i, wrapper);
-                connection.sendPacket(buildPacket(wrapper, ADD));
+                //connection.sendPacket(buildPacket(wrapper, ADD));
             }
         }
 
