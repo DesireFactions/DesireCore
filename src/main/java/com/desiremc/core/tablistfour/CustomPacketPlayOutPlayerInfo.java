@@ -2,6 +2,7 @@ package com.desiremc.core.tablistfour;
 
 import java.io.IOException;
 
+import net.minecraft.server.v1_7_R4.PacketDataSerializer;
 import net.minecraft.server.v1_7_R4.PacketPlayOutListener;
 import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
 
@@ -22,7 +23,7 @@ public class CustomPacketPlayOutPlayerInfo extends PacketPlayOutPlayerInfo
         this.c = paramInt;
     }
 
-    public void a(CustomPacketDataSerializer paramPacketDataSerializer)
+    public void a(PacketDataSerializer paramPacketDataSerializer)
     {
         try
         {
@@ -36,7 +37,7 @@ public class CustomPacketPlayOutPlayerInfo extends PacketPlayOutPlayerInfo
         this.c = paramPacketDataSerializer.readShort();
     }
 
-    public void b(CustomPacketDataSerializer paramPacketDataSerializer)
+    public void b(PacketDataSerializer paramPacketDataSerializer)
     {
         try
         {
