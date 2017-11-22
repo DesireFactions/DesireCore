@@ -2,7 +2,6 @@ package com.desiremc.core.gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import com.desiremc.core.api.nbt.NBTItem;
+import com.desiremc.core.utils.ItemNames;
 
 public abstract class MenuItem extends MenuClickBehavior
 {
@@ -54,7 +54,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
         else
         {
-            this.text = UUID.randomUUID().toString();
+            this.text = ItemNames.lookup(is);
         }
         this.icon = is.getData();
         this.quantity = is.getAmount();
