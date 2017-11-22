@@ -91,6 +91,7 @@ public class ItemStackTypeConverter extends TypeConverter
             try
             {
                 craftHandle = CraftItemStack.class.getDeclaredField("handle");
+                craftHandle.setAccessible(true);
             }
             catch (NoSuchFieldException | SecurityException e)
             {
