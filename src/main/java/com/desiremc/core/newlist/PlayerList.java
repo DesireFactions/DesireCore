@@ -33,39 +33,20 @@ import com.google.common.collect.*;
 
 public class PlayerList
 {
-    private static final Class<?> PACKET_PLAYER_INFO_CLASS = a(7) ? ReflectionUtil
-            .getNMSClass("PacketPlayOutPlayerInfo")
-            : ReflectionUtil
-                    .getNMSClass("Packet201PlayerInfo");
-    private static final Class<?> PACKET_PLAYER_INFO_DATA_CLASS = a() ? ReflectionUtil
-            .getNMSClass("PacketPlayOutPlayerInfo$PlayerInfoData") : null;
+    private static final Class<?> PACKET_PLAYER_INFO_CLASS = a(7) ? ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo") : ReflectionUtil.getNMSClass("Packet201PlayerInfo");
+    private static final Class<?> PACKET_PLAYER_INFO_DATA_CLASS = a() ? ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo$PlayerInfoData") : null;
     private static Class<?> WORLD_GAME_MODE_CLASS;
-    protected static final Class<?> GAMEPROFILECLASS = a() ? ReflectionUtil
-            .getMojangAuthClass("GameProfile") : null;
-    protected static final Class<?> PROPERTYCLASS = a() ? ReflectionUtil
-            .getMojangAuthClass("properties.Property") : null;
-    private static final Constructor<?> GAMEPROPHILECONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil
-            .getConstructor(GAMEPROFILECLASS, UUID.class, String.class).get()
-            : null;
-    private static final Class<?> CRAFTPLAYERCLASS = ReflectionUtil
-            .getCraftbukkitClass("CraftPlayer", "entity");
+    protected static final Class<?> GAMEPROFILECLASS = a() ? ReflectionUtil.getMojangAuthClass("GameProfile") : null;
+    protected static final Class<?> PROPERTYCLASS = a() ? ReflectionUtil.getMojangAuthClass("properties.Property") : null;
+    private static final Constructor<?> GAMEPROPHILECONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(GAMEPROFILECLASS, UUID.class, String.class).get() : null;
+    private static final Class<?> CRAFTPLAYERCLASS = ReflectionUtil.getCraftbukkitClass("CraftPlayer", "entity");
     private static final Object WORLD_GAME_MODE_NOT_SET;
-    private static final Class<?> CRAFT_CHAT_MESSAGE_CLASS = a() ? ReflectionUtil
-            .getCraftbukkitClass("CraftChatMessage", "util") : null;
-    private static final Class<?> PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS = a() ? ReflectionUtil
-            .getNMSClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction") : null;
-    private static final Object PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER = a() ? ReflectionUtil
-            .getEnumConstant(PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS,
-                    "REMOVE_PLAYER")
-            : null;
-    private static final Object PACKET_PLAYER_INFO_ACTION_ADD_PLAYER = a() ? ReflectionUtil
-            .getEnumConstant(PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS,
-                    "ADD_PLAYER")
-            : null;
-    private static final Class<?> PACKET_CLASS = ReflectionUtil
-            .getNMSClass("Packet");
-    private static final Class<?> I_CHAT_BASE_COMPONENT_CLASS = a() ? ReflectionUtil
-            .getNMSClass("IChatBaseComponent") : null;
+    private static final Class<?> CRAFT_CHAT_MESSAGE_CLASS = a() ? ReflectionUtil.getCraftbukkitClass("CraftChatMessage", "util") : null;
+    private static final Class<?> PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS = a() ? ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction") : null;
+    private static final Object PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER = a() ? ReflectionUtil.getEnumConstant(PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS, "REMOVE_PLAYER") : null;
+    private static final Object PACKET_PLAYER_INFO_ACTION_ADD_PLAYER = a() ? ReflectionUtil.getEnumConstant(PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS, "ADD_PLAYER") : null;
+    private static final Class<?> PACKET_CLASS = ReflectionUtil.getNMSClass("Packet");
+    private static final Class<?> I_CHAT_BASE_COMPONENT_CLASS = a() ? ReflectionUtil.getNMSClass("IChatBaseComponent") : null;
     private static final Constructor<?> PACKET_PLAYER_INFO_DATA_CONSTRUCTOR;
 
     private static Constructor<?> PACKET_HEADER_FOOTER_CONSTRUCTOR = null;
@@ -78,8 +59,7 @@ public class PlayerList
 
     private static Object invokeChatSerializerA(String text)
     {
-        return ReflectionUtil.invokeMethod(CHAT_SERIALIZER, null, "a",
-                new Class[] { String.class }, "{\"text\":\"" + text + "\"}");
+        return ReflectionUtil.invokeMethod(CHAT_SERIALIZER, null, "a", new Class[] { String.class }, "{\"text\":\"" + text + "\"}");
     }
 
     // TODO: This bit of code has been added to check specifically for 1.7.10.
@@ -419,7 +399,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     private void removeCustomTab(int id, boolean remove)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
@@ -996,8 +976,7 @@ public class PlayerList
          * @param params The Constructor parameters
          * @return The Constructor or an empty Optional if there is none with these parameters
          */
-        private static Optional<?> getConstructor(Class<?> clazz,
-                Class<?>... params)
+        private static Optional<?> getConstructor(Class<?> clazz, Class<?>... params)
         {
             try
             {
@@ -1024,8 +1003,7 @@ public class PlayerList
          * @param arguments The initial arguments
          * @return The resulting object, or null if an error occurred.
          */
-        private static Object instantiate(Constructor<?> constructor,
-                Object... arguments)
+        private static Object instantiate(Constructor<?> constructor, Object... arguments)
         {
             try
             {
