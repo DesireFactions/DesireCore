@@ -49,11 +49,11 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName())
         {
-            this.text = "§f" + is.getItemMeta().getDisplayName();
+            this.text = is.getItemMeta().getDisplayName();
         }
         else
         {
-            this.text = ItemNames.lookup(is);
+            this.text = "§r" + ItemNames.lookup(is);
         }
         this.icon = is.getData();
         this.quantity = is.getAmount();
