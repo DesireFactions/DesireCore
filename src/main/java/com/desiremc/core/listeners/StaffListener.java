@@ -104,13 +104,12 @@ public class StaffListener implements Listener
     @EventHandler
     public void onSpawn(InventoryClickEvent event)
     {
-
-        if (!(event.getInventory().getHolder() instanceof Player))
+        if (!(event.getWhoClicked() instanceof Player))
         {
             return;
         }
 
-        Player p = (Player) event.getInventory().getHolder();
+        Player p = (Player) event.getWhoClicked();
 
         if (StaffHandler.getInstance().inStaffMode(p))
         {
