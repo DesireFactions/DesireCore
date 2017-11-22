@@ -19,7 +19,10 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
     @Override
     public void openMenu(Player player)
     {
-        if (this.getInventory().getViewers().contains(player)) { throw new IllegalStateException(player.getName() + " is already viewing " + this.getInventory().getTitle()); }
+        if (this.getInventory().getViewers().contains(player))
+        {
+            throw new IllegalStateException(player.getName() + " is already viewing " + this.getInventory().getTitle());
+        }
 
         player.openInventory(this.getInventory());
     }
@@ -60,11 +63,15 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
         {
             return false;
         }
-        else if ((index < 0) || (index >= this.getMaxItems())) { return false; }
+        else if ((index < 0) || (index >= this.getMaxItems()))
+        {
+            return false;
+        }
 
         this.getInventory().setItem(index, item.getItemStack());
         this.items[index] = item;
         item.addToMenu(this);
+        item.setSlot(index);
 
         return true;
     }
@@ -77,7 +84,10 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
         {
             return false;
         }
-        else if ((index < 0) || (index >= this.getMaxItems())) { return false; }
+        else if ((index < 0) || (index >= this.getMaxItems()))
+        {
+            return false;
+        }
 
         this.getInventory().clear(index);
         MenuItem remove = this.items[index];
@@ -89,6 +99,11 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
         }
 
         return true;
+    }
+
+    public boolean removeMenuItem(int x, int y)
+    {
+        return this.removeMenuItem((y * 9) + x);
     }
 
     public void updateMenu()

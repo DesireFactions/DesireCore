@@ -15,7 +15,7 @@ import com.desiremc.core.utils.ItemNames;
 public abstract class MenuItem extends MenuClickBehavior
 {
 
-    private MenuBase menu;
+    private MenuHolder menu;
     private int quantity;
     private MaterialData icon;
     private String text;
@@ -94,7 +94,7 @@ public abstract class MenuItem extends MenuClickBehavior
         this.data = data;
     }
 
-    public void addToMenu(MenuBase menu)
+    public void addToMenu(MenuHolder menu)
     {
         this.menu = menu;
     }
@@ -107,7 +107,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
     }
 
-    public MenuBase getMenu()
+    public MenuHolder getMenu()
     {
         return this.menu;
     }
