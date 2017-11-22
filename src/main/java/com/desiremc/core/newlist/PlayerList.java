@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +29,9 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -44,6 +44,10 @@ import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.collect.Maps;
+
+import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketPlayOutPlayerInfo;
+import net.minecraft.util.com.mojang.authlib.GameProfile;
 
 /*
  * Copyright (C) 2017 Zombie_Striker This program is free software; you can redistribute it and/or modify it under the
@@ -58,22 +62,17 @@ import com.google.common.collect.Maps;
 public class PlayerList
 {
     private static final Class<?> PACKET_PLAYER_INFO_CLASS = ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo");
-    private static final Class<?> PACKET_PLAYER_INFO_DATA_CLASS = a() ? ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo$PlayerInfoData") : null;
-    private static Class<?> WORLD_GAME_MODE_CLASS;
     protected static final Class<?> GAMEPROFILECLASS = a() ? ReflectionUtil.getMojangAuthClass("GameProfile") : null;
     protected static final Class<?> PROPERTYCLASS = a() ? ReflectionUtil.getMojangAuthClass("properties.Property") : null;
-    private static final Class<?> CRAFTPLAYERCLASS = ReflectionUtil.getCraftbukkitClass("CraftPlayer", "entity");
-    private static final Object WORLD_GAME_MODE_NOT_SET;
-    private static final Class<?> CRAFT_CHAT_MESSAGE_CLASS = a() ? ReflectionUtil.getCraftbukkitClass("CraftChatMessage", "util") : null;
-    private static final Constructor<?> GAMEPROPHILECONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(GAMEPROFILECLASS, UUID.class, String.class).get() : null;
-    private static final Object PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER = null;
-    private static final Object PACKET_PLAYER_INFO_ACTION_ADD_PLAYER = null;
-    private static final Class<?> PACKET_CLASS = ReflectionUtil.getNMSClass("Packet");
-    private static final Class<?> I_CHAT_BASE_COMPONENT_CLASS = a() ? ReflectionUtil.getNMSClass("IChatBaseComponent") : null;
-    private static final Constructor<?> PACKET_PLAYER_INFO_DATA_CONSTRUCTOR;
 
     private static Constructor<?> PACKET_HEADER_FOOTER_CONSTRUCTOR = null;
     private static Class<?> CHAT_SERIALIZER;
+
+    private static Field PLAYER_INFO_PACKET_ACTION;
+    private static Field PLAYER_INFO_PACKET_PROFILE;
+    private static Field PLAYER_INFO_PACKET_GAMEMODE;
+    private static Field PLAYER_INFO_PACKET_PING;
+    private static Field PLAYER_INFO_PACKET_USERNAME;
 
     private static Object invokeChatSerializerA(String text)
     {
@@ -84,11 +83,20 @@ public class PlayerList
     {
         try
         {
-            WORLD_GAME_MODE_CLASS = ReflectionUtil.getNMSClass("EnumGamemode");
+            PLAYER_INFO_PACKET_ACTION = PACKET_PLAYER_INFO_CLASS.getDeclaredField("action");
+            PLAYER_INFO_PACKET_PROFILE = PACKET_PLAYER_INFO_CLASS.getDeclaredField("player");
+            PLAYER_INFO_PACKET_GAMEMODE = PACKET_PLAYER_INFO_CLASS.getDeclaredField("gamemode");
+            PLAYER_INFO_PACKET_PING = PACKET_PLAYER_INFO_CLASS.getDeclaredField("ping");
+            PLAYER_INFO_PACKET_USERNAME = PACKET_PLAYER_INFO_CLASS.getDeclaredField("username");
+            PLAYER_INFO_PACKET_ACTION.setAccessible(true);
+            PLAYER_INFO_PACKET_PROFILE.setAccessible(true);
+            PLAYER_INFO_PACKET_GAMEMODE.setAccessible(true);
+            PLAYER_INFO_PACKET_PING.setAccessible(true);
+            PLAYER_INFO_PACKET_USERNAME.setAccessible(true);
         }
-        catch (Exception e)
+        catch (NoSuchFieldException | SecurityException e1)
         {
-            WORLD_GAME_MODE_CLASS = ReflectionUtil.getNMSClass("WorldSettings$EnumGamemode");
+            e1.printStackTrace();
         }
         try
         {
@@ -104,10 +112,6 @@ public class PlayerList
             {
             }
         }
-
-        WORLD_GAME_MODE_NOT_SET = a() ? ReflectionUtil.getEnumConstant(WORLD_GAME_MODE_CLASS, "NOT_SET") : null;
-        PACKET_PLAYER_INFO_DATA_CONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_DATA_CLASS, PACKET_PLAYER_INFO_CLASS, GAMEPROFILECLASS, int.class, WORLD_GAME_MODE_CLASS, I_CHAT_BASE_COMPONENT_CLASS).get() : null;
-
     }
 
     static Plugin plugin;
@@ -133,15 +137,11 @@ public class PlayerList
             plugin = Bukkit.getPluginManager().getPlugins()[0];
     }
 
-    private final static String[] colorcodeOrder = "0123456789abcdef".split("");
-    private final static String[] inviscodeOrder = { ",", ".", "\'", "`", " " };
-
     public static int SIZE_DEFAULT = 20;
     public static int SIZE_TWO = 40;
     public static int SIZE_THREE = 60;
     public static int SIZE_FOUR = 80;
 
-    private List<Object> datas = new ArrayList<>();
     private Map<Integer, String> datasOLD = new HashMap<Integer, String>();
 
     private UUID ownerUUID;
@@ -211,7 +211,7 @@ public class PlayerList
         int i = 0;
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            addExistingPlayer(i, player);
+            addValue(i, player.getName());
             i++;
         }
     }
@@ -219,38 +219,24 @@ public class PlayerList
     /**
      * Clears all players from the player's tablist.
      */
-    @SuppressWarnings("unchecked")
     public void clearPlayers()
     {
-        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-
-        for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
+        for (Player player : Bukkit.getServer().getOnlinePlayers())
         {
-            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
-            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
-            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-            //players.add(data);
+            sendNEWTabPackets(getPlayer(), player.getName(), 4);
         }
-        //sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
     }
 
     /**
      * Clears all the custom tabs from the player's tablist.
      */
-    @SuppressWarnings("unchecked")
     public void clearCustomTabs()
     {
-
-        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-        for (Object playerData : new ArrayList<>(datas))
+        for (String str : datasOLD.values())
         {
-            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
-            tabs[getIDFromName((String) ReflectionUtil.invokeMethod(gameProfile, "getName", null))] = "";
-            players.add(playerData);
+            sendNEWTabPackets(getPlayer(), str, 4);
         }
-        datas.clear();
-        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+        datasOLD.clear();
     }
 
     /**
@@ -272,48 +258,8 @@ public class PlayerList
      */
     public void updateSlot(int id, String newName)
     {
-        updateSlot(id, newName, false);
-    }
-
-    /**
-     * Use this to add a new player to the list
-     * 
-     * @param id
-     * @param name
-     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
-     *             the registered bounds. Use the "updateSlot" method to change a slot.
-     */
-    @Deprecated
-    private void addValue(int id, String name, boolean shouldUseSkin)
-    {
-        if (name.length() > 0
-                && Bukkit.getOfflinePlayer(name).hasPlayedBefore())
-        {
-            this.addValue(id, name,
-                    Bukkit.getOfflinePlayer(name).getUniqueId(), shouldUseSkin);
-        }
-        else
-            this.addValue(id, name, UUID.randomUUID(), shouldUseSkin);
-    }
-
-    /**
-     * Use this for changing a value at a specific tab.
-     * 
-     * @param id
-     * @param newName
-     */
-    public void updateSlot(int id, String newName, boolean usePlayersSkin)
-    {
-
-        for (int i = id; i < size; i++)
-        {
-            removeCustomTab(i, false);
-        }
-        for (int i = id; i < size; i++)
-        {
-            addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2), false);
-        }
-        // This is for pre 1.8, no textures needed
+        datasOLD.put(id, newName);
+        sendNEWTabPackets(getPlayer(), newName, 3);
     }
 
     /**
@@ -321,17 +267,9 @@ public class PlayerList
      * 
      * @param player
      */
-    @SuppressWarnings("unchecked")
     public void removePlayer(Player player)
     {
-
-        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-        Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player, "getProfile", new Class[0]));
-        Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player.getName());
-        Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-        players.add(data);
-        sendNEWTabPackets(player, packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+        sendNEWTabPackets(getPlayer(), player.getName(), 4);
     }
 
     /**
@@ -349,39 +287,10 @@ public class PlayerList
      * 
      * @param id
      */
-    @SuppressWarnings("unchecked")
     private void removeCustomTab(int id, boolean remove)
     {
-        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-        for (Object playerData : new ArrayList<>(datas))
-        {
-            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
-            String getname = (String) ReflectionUtil.invokeMethod(gameProfile, "getName", null);
-            if (getname.startsWith(getNameFromID(id)))
-            {
-                tabs[getIDFromName(getname)] = "";
-                players.add(playerData);
-                if (remove)
-                    datas.remove(playerData);
-                break;
-            }
-        }
-        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
-    }
-
-    /**
-     * Use this to add an existing offline player to a player's tablist. The name variable is so you can modify a
-     * player's name in the tablist. If you want the player-tab to be the same as the player's name, use the other
-     * method
-     * 
-     * @param id
-     * @param name
-     * @param player
-     */
-    public void addExistingPlayer(int id, String name, OfflinePlayer player)
-    {
-        addValue(id, name, player.getUniqueId(), true);
+        String str = datasOLD.get(id);
+        sendNEWTabPackets(getPlayer(), str, 4);
     }
 
     /**
@@ -389,39 +298,11 @@ public class PlayerList
      * 
      * @param id
      * @param name
-     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
-     *             the registered bounds. Use the "updateSlot" method to change a slot.
      */
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    private void addValue(int id, String name, UUID uuid, boolean updateProfToAddCustomSkin)
+    private void addValue(int id, String name)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
-        {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(uuid)), "getProfile", new Class[0]) : ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid, getNameFromID(id));
-            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, getNameFromID(id) + name);
-            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-            Object profile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(data, "a", new Class[0]));
-            String getname = (String) ReflectionUtil.invokeMethod(profile, "getName", null);
-            tabs[getIDFromName(getname)] = getname;
-            players.add(data);
-            datas.add(data);
-            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_ADD_PLAYER);
-        }
-
-    }
-
-    /**
-     * Use this to add an existing offline player to a player's tablist.
-     * 
-     * @param id
-     * @param player
-     */
-    public void addExistingPlayer(int id, OfflinePlayer player)
-    {
-        addExistingPlayer(id, player.getName(), player);
+        datasOLD.put(id, name);
+        sendNEWTabPackets(getPlayer(), name, 0);
     }
 
     /**
@@ -432,15 +313,15 @@ public class PlayerList
     {
         clearAll();
         for (int i = 0; i < size; i++)
-            updateSlot(i, "", false);
+            addValue(i, "");
     }
 
-    private static void sendNEWTabPackets(Player player, Object packet, List<?> players, Object action)
+    private static void sendNEWTabPackets(Player player, String name, int action)
     {
         try
         {
-            ReflectionUtil.setInstanceField(packet, "a", action);
-            ReflectionUtil.setInstanceField(packet, "b", players);
+            Packet packet = buildPacket(name, action);
+
             sendPacket(packet, player);
         }
         catch (Exception e)
@@ -451,17 +332,35 @@ public class PlayerList
 
     }
 
+    @SuppressWarnings("deprecation")
+    private static PacketPlayOutPlayerInfo buildPacket(String name, int action)
+    {
+        PacketPlayOutPlayerInfo packet = new PacketPlayOutPlayerInfo();
+        try
+        {
+            PLAYER_INFO_PACKET_ACTION.set(packet, action);
+            PLAYER_INFO_PACKET_PROFILE.set(packet, new GameProfile(UUID.randomUUID(), name));
+            PLAYER_INFO_PACKET_GAMEMODE.set(packet, GameMode.SURVIVAL.getValue());
+            PLAYER_INFO_PACKET_PING.set(packet, 0);
+            PLAYER_INFO_PACKET_USERNAME.set(packet, name);
+        }
+        catch (IllegalArgumentException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+        return packet;
+    }
+
     private static void sendPacket(Object packet, Player player)
     {
         Object handle = getHandle(player);
         Object playerConnection = ReflectionUtil.getInstanceField(handle, "playerConnection");
-        ReflectionUtil.invokeMethod(playerConnection, "sendPacket", new Class[] { PACKET_CLASS }, packet);
+        ReflectionUtil.invokeMethod(playerConnection, "sendPacket", new Class[] { Packet.class }, packet);
     }
 
-    private static Object getHandle(Player player)
+    private static net.minecraft.server.v1_7_R4.EntityPlayer getHandle(Player player)
     {
-        return ReflectionUtil.invokeMethod(CRAFTPLAYERCLASS.cast(player),
-                "getHandle", new Class[0]);
+        return ((CraftPlayer) player).getHandle();
     }
 
     /**
@@ -486,55 +385,6 @@ public class PlayerList
         return (col * 20) + row;
     }
 
-    private static String getNameFromID(int id)
-    {
-        String[] a = colorcodeOrder;
-        int size1 = 15;
-        if (!a())
-        {
-            a = inviscodeOrder;
-            size1 = 5;
-        }
-        String firstletter = a[id / size1];
-        String secondletter = a[id % size1];
-        if (a())
-            return ChatColor.getByChar(firstletter) + ""
-                    + ChatColor.getByChar(secondletter) + ChatColor.RESET;
-        return firstletter + secondletter;
-    }
-
-    private static int getIDFromName(String id)
-    {
-        String[] a = colorcodeOrder;
-        int size1 = 15;
-        int indexAdder = 0;
-        if (!a())
-        {
-            a = inviscodeOrder;
-            size1 = 5;
-            indexAdder = 1;
-        }
-        int total = 0;
-        for (int i = 0; i < a.length; i++)
-        {
-            if (a[i].equalsIgnoreCase(id.charAt(0 + indexAdder) + ""))
-            {
-                total = size1 * i;
-                break;
-            }
-        }
-        for (int i = 0; i < a.length; i++)
-        {
-            if (a[i].equalsIgnoreCase(id.charAt(1 + (indexAdder + indexAdder))
-                    + ""))
-            {
-                total += i;
-                break;
-            }
-        }
-        return total;
-    }
-
     private static void error()
     {
         Bukkit.broadcastMessage("PLEASE REPORT THIS ISSUE TO" + ChatColor.RED + " ZOMBIE_STRIKER" + ChatColor.RESET + " ON THE BUKKIT FORUMS");
@@ -545,12 +395,6 @@ public class PlayerList
      */
     public static class ReflectionUtil
     {
-        private static final String SERVER_VERSION;
-        static
-        {
-            SERVER_VERSION = "v1_7_R4";
-        }
-
         /**
          * Returns the NMS class.
          * 
@@ -562,27 +406,6 @@ public class PlayerList
             try
             {
                 return Class.forName("net.minecraft.server.v1_7_R4." + name);
-            }
-            catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        /**
-         * Returns the CraftBukkit class.
-         * 
-         * @param name The name of the class
-         * @return The CraftBukkit class or null if an error occurred
-         */
-
-        private static Class<?> getCraftbukkitClass(String name,
-                String packageName)
-        {
-            try
-            {
-                return Class.forName("org.bukkit.craftbukkit.v1_7_R4." + packageName + "." + name);
             }
             catch (ClassNotFoundException e)
             {
@@ -705,50 +528,6 @@ public class PlayerList
                 e.printStackTrace();
             }
             return null;
-        }
-
-        /**
-         * Returns an enum constant
-         * 
-         * @param enumClass The class of the enum
-         * @param name The name of the enum constant
-         * @return The enum entry or null
-         */
-        private static Object getEnumConstant(Class<?> enumClass, String name)
-        {
-            if (!enumClass.isEnum())
-                return null;
-            for (Object o : enumClass.getEnumConstants())
-                if (name.equals(invokeMethod(o, "name", new Class[0])))
-                    return o;
-            return null;
-        }
-
-        /**
-         * Returns the constructor
-         * 
-         * @param clazz The class
-         * @param params The Constructor parameters
-         * @return The Constructor or an empty Optional if there is none with these parameters
-         */
-        private static Optional<?> getConstructor(Class<?> clazz, Class<?>... params)
-        {
-            try
-            {
-                return Optional.of(clazz.getConstructor(params));
-            }
-            catch (NoSuchMethodException e)
-            {
-                try
-                {
-                    return Optional.of(clazz.getDeclaredConstructor(params));
-                }
-                catch (NoSuchMethodException e2)
-                {
-                    e2.printStackTrace();
-                }
-            }
-            return Optional.empty();
         }
 
         /**
