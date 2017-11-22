@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.desiremc.core.api.nbt.NBTItem;
+import com.desiremc.core.utils.ItemNames;
 
 public abstract class MenuItem extends MenuClickBehavior
 {
 
-    private MenuBase menu;
+    private MenuHolder menu;
     private int quantity;
     private MaterialData icon;
     private String text;
@@ -53,7 +53,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
         else
         {
-            throw new IllegalArgumentException("Item must have a display name.");
+            this.text = "§r" + ItemNames.lookup(is);
         }
         this.icon = is.getData();
         this.quantity = is.getAmount();
@@ -61,9 +61,9 @@ public abstract class MenuItem extends MenuClickBehavior
         if (is.hasItemMeta() && is.getItemMeta().hasLore())
         {
             descriptions = is.getItemMeta().getLore();
-        }        
+        }
     }
-    
+
     public MenuItem(String text, MaterialData icon)
     {
         this(text, icon, 1);
@@ -94,7 +94,7 @@ public abstract class MenuItem extends MenuClickBehavior
         this.data = data;
     }
 
-    public void addToMenu(MenuBase menu)
+    public void addToMenu(MenuHolder menu)
     {
         this.menu = menu;
     }
@@ -107,7 +107,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
     }
 
-    public MenuBase getMenu()
+    public MenuHolder getMenu()
     {
         return this.menu;
     }
@@ -161,10 +161,6 @@ public abstract class MenuItem extends MenuClickBehavior
             meta.setLore(this.descriptions);
             item.setItemMeta(meta);
         }
-
-        NBTItem nbt = new NBTItem(item);
-        nbt.setBoolean("Unbreakable", true);
-        item = nbt.getItem();
 
         return item;
     }

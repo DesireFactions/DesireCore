@@ -18,8 +18,9 @@ import org.spigotmc.CustomTimingsHandler;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.google.gson.Gson;
-import com.desiremc.google.gson.JsonObject;
+
+import net.minecraft.util.com.google.gson.Gson;
+import net.minecraft.util.com.google.gson.JsonObject;
 
 public class TimingsReportCommand extends ValidCommand
 {

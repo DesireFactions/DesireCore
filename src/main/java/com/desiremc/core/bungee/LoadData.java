@@ -11,8 +11,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 
-import com.desiremc.google.gson.Gson;
-import com.desiremc.google.gson.JsonSyntaxException;
+import net.minecraft.util.com.google.gson.Gson;
+import net.minecraft.util.com.google.gson.JsonSyntaxException;
 
 public class LoadData
 {

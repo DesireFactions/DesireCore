@@ -1,5 +1,14 @@
 package com.desiremc.core;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
@@ -54,19 +63,10 @@ import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.GadgetHandler;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.tablist.TabList;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -195,7 +195,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new PlayerListener());
         listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
-        listenerManager.addListener(new TabList());
+        //listenerManager.addListener(new TabList());
         listenerManager.addListener(new StaffListener());
         listenerManager.addListener(new AchievementListener());
 

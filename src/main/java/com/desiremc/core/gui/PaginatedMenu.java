@@ -417,7 +417,7 @@ public class PaginatedMenu extends MenuHolder
      * @param page the page the target item is on.
      * @param index the index on the page the target item is on.
      */
-    boolean removeMenuItem(int page, int index)
+    public boolean removeMenuItem(int page, int index)
     {
         if ((page < 0) || (page >= this.getPageCount())) { return false; }
 
