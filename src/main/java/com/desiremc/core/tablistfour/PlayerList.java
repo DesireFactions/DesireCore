@@ -82,17 +82,17 @@ public class PlayerList
         }
         try
         {
-            CHAT_SERIALIZER = ReflectionUtil.getNMSClass("IChatBaseComponent$ChatSerializer");
-        }
-        catch (Exception | Error e)
-        {
-            try
+            if (a())
+            {
+                CHAT_SERIALIZER = ReflectionUtil.getNMSClass("IChatBaseComponent$ChatSerializer");
+            }
+            else
             {
                 CHAT_SERIALIZER = ReflectionUtil.getNMSClass("ChatSerializer");
             }
-            catch (Exception | Error e2)
-            {
-            }
+        }
+        catch (Exception | Error e)
+        {
         }
         try
         {
@@ -113,7 +113,7 @@ public class PlayerList
 
         WORLD_GAME_MODE_NOT_SET = a() ? ReflectionUtil.getEnumConstant(WORLD_GAME_MODE_CLASS, "NOT_SET") : null;
         PACKET_PLAYER_INFO_DATA_CONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_DATA_CLASS, PACKET_PLAYER_INFO_CLASS, GAMEPROFILECLASS, int.class, WORLD_GAME_MODE_CLASS, I_CHAT_BASE_COMPONENT_CLASS).get() : null;
-        if (ReflectionUtil.isVersionHigherThan(1, 7))
+        if (a())
         {
             try
             {
@@ -902,7 +902,14 @@ public class PlayerList
         {
             try
             {
-                return Class.forName("com.mojang.authlib." + name);
+                if (a())
+                {
+                    return Class.forName("com.mojang.authlib." + name);
+                }
+                else
+                {
+                    return Class.forName("net.minecraft.util.com.mojang.authlib." + name);
+                }
             }
             catch (ClassNotFoundException e)
             {
