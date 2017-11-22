@@ -703,8 +703,7 @@ public class PlayerList
 
     private static void error()
     {
-        Bukkit.broadcastMessage("PLEASE REPORT THIS ISSUE TO" + ChatColor.RED
-                + " ZOMBIE_STRIKER" + ChatColor.RESET + " ON THE BUKKIT FORUMS");
+        Bukkit.broadcastMessage("PLEASE REPORT THIS ISSUE TO" + ChatColor.RED + " ZOMBIE_STRIKER" + ChatColor.RESET + " ON THE BUKKIT FORUMS");
     }
 
     /**
@@ -716,10 +715,10 @@ public class PlayerList
         static
         {
             String name = Bukkit.getServer().getClass().getName();
-            name = name.substring(name.indexOf("craftbukkit.")
-                    + "craftbukkit.".length());
+            name = name.substring(name.indexOf("craftbukkit.") + "craftbukkit.".length());
             name = name.substring(0, name.indexOf("."));
             SERVER_VERSION = name;
+            System.out.println("============ VERSION: " + SERVER_VERSION + " and " + Bukkit.getServer().getClass().getName());
         }
 
         private static boolean isVersionHigherThan(int mainVersion, int secondVersion)
