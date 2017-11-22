@@ -139,7 +139,10 @@ public class TabList
                         packet.getIntegers().write(0, 0);
                         packet.getIntegers().write(1, 0);
                         packet.getIntegers().write(2, -1);
-                        packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
+                        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                        {
+                            packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
+                        }
                         System.out.println("b");
                     }
                     try
