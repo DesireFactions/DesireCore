@@ -881,7 +881,7 @@ public class PlayerList
         {
             try
             {
-                return Class.forName("com.mojang.authlib." + name);
+                return Class.forName("net.minecraft.util.com.mojang.authlib." + name);
             }
             catch (ClassNotFoundException e)
             {
