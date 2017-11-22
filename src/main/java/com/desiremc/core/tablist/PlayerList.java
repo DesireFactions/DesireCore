@@ -38,7 +38,7 @@ public class PlayerList
         for (Player player : Bukkit.getOnlinePlayers())
         {
             System.out.println(player.getName());
-            connection.sendPacket(PacketPlayOutPlayerInfo.removePlayer(((CraftPlayer) player).getHandle()));
+            getHandle(getPlayer()).playerConnection.sendPacket(PacketPlayOutPlayerInfo.removePlayer(((CraftPlayer) player).getHandle()));
         }
 
         if (connection.networkManager.getVersion() > 5)
