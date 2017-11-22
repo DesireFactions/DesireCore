@@ -718,6 +718,10 @@ public class PlayerList
             name = name.substring(name.indexOf("craftbukkit.") + "craftbukkit.".length());
             name = name.substring(0, name.indexOf("."));
             SERVER_VERSION = name;
+            for (int i = 0; i < 10; i++)
+            {
+                System.out.println("=====================================");
+            }
             System.out.println("============ VERSION: " + SERVER_VERSION + " and " + Bukkit.getServer().getClass().getName());
         }
 
