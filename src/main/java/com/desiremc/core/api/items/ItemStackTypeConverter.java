@@ -15,10 +15,15 @@ import net.minecraft.util.com.google.common.io.BaseEncoding;
 
 public class ItemStackTypeConverter extends TypeConverter
 {
-    
+
     public ItemStackTypeConverter()
     {
-        super(ItemStack.class);
+        this(ItemStack.class);
+    }
+
+    public ItemStackTypeConverter(Class<?>... clazz)
+    {
+        super(clazz);
     }
 
     @Override
@@ -38,11 +43,11 @@ public class ItemStackTypeConverter extends TypeConverter
     @Override
     public Object decode(Class<?> arg0, Object arg1, MappedField arg2)
     {
-        ByteArrayInputStream input = new ByteArrayInputStream(BaseEncoding.base64().decode((String)arg1));
-        
+        ByteArrayInputStream input = new ByteArrayInputStream(BaseEncoding.base64().decode((String) arg1));
+
         NBTTagCompound tag = NBTCompressedStreamTools.a(input);
         net.minecraft.server.v1_7_R4.ItemStack nms = net.minecraft.server.v1_7_R4.ItemStack.createStack(tag);
-        
+
         return CraftItemStack.asBukkitCopy(nms);
     }
 
