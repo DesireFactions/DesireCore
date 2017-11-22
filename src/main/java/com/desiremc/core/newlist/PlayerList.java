@@ -68,7 +68,6 @@ public class PlayerList
             .getNMSClass("IChatBaseComponent") : null;
     private static final Constructor<?> PACKET_PLAYER_INFO_DATA_CONSTRUCTOR;
 
-    private static Class<?> PACKET_HEADER_FOOTER_CLASS;
     private static Constructor<?> PACKET_HEADER_FOOTER_CONSTRUCTOR = null;
     private static Class<?> CHAT_SERIALIZER;
 
@@ -133,17 +132,6 @@ public class PlayerList
 
         WORLD_GAME_MODE_NOT_SET = a() ? ReflectionUtil.getEnumConstant(WORLD_GAME_MODE_CLASS, "NOT_SET") : null;
         PACKET_PLAYER_INFO_DATA_CONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_DATA_CLASS, PACKET_PLAYER_INFO_CLASS, GAMEPROFILECLASS, int.class, WORLD_GAME_MODE_CLASS, I_CHAT_BASE_COMPONENT_CLASS).get() : null;
-        if (ReflectionUtil.isVersionHigherThan(1, 7))
-        {
-            try
-            {
-                PACKET_HEADER_FOOTER_CLASS = ReflectionUtil.getNMSClass("PacketPlayOutPlayerListHeaderFooter");
-                PACKET_HEADER_FOOTER_CONSTRUCTOR = PACKET_HEADER_FOOTER_CLASS.getConstructors()[0];
-            }
-            catch (Exception | Error e)
-            {
-            }
-        }
 
     }
 
@@ -788,8 +776,7 @@ public class PlayerList
             SERVER_VERSION = name;
         }
 
-        private static boolean isVersionHigherThan(int mainVersion,
-                int secondVersion)
+        private static boolean isVersionHigherThan(int mainVersion, int secondVersion)
         {
             String firstChar = SERVER_VERSION.substring(1, 2);
             int fInt = Integer.parseInt(firstChar);
@@ -798,8 +785,7 @@ public class PlayerList
             StringBuilder secondChar = new StringBuilder();
             for (int i = 3; i < 10; i++)
             {
-                if (SERVER_VERSION.charAt(i) == '_'
-                        || SERVER_VERSION.charAt(i) == '.')
+                if (SERVER_VERSION.charAt(i) == '_' || SERVER_VERSION.charAt(i) == '.')
                     break;
                 secondChar.append(SERVER_VERSION.charAt(i));
             }
