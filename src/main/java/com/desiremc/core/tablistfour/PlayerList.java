@@ -1,25 +1,49 @@
 package com.desiremc.core.tablistfour;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.json.simple.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.desiremc.core.tablistfour.PlayerList.ReflectionUtil;
 import com.google.common.base.Strings;
-import com.google.common.cache.*;
-import com.google.common.collect.*;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.collect.Maps;
 
 /*
  * Copyright (C) 2017 Zombie_Striker This program is free software; you can redistribute it and/or modify it under the
@@ -241,39 +265,29 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearPlayers()
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a())
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
             for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
             {
                 Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
-                Object[] array = (Object[]) ReflectionUtil.invokeMethod(
-                        CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
-                Object data = ReflectionUtil.instantiate(
-                        PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet,
-                        gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
+                Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
+                Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
                 players.add(data);
             }
-            sendNEWTabPackets(getPlayer(), packet, players,
-                    PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
         }
         else
         {
-            Object olp = ReflectionUtil.invokeMethod(Bukkit.getServer(),
-                    "getOnlinePlayers", null);
-            Object[] players = olp instanceof Collection ? ((Collection<?>) olp)
-                    .toArray() : (Object[]) olp;
+            Object olp = ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null);
+            Object[] players = olp instanceof Collection ? ((Collection<?>) olp).toArray() : (Object[]) olp;
             for (int i = 0; i < players.length; i++)
             {
                 try
                 {
-                    Object packet = ReflectionUtil
-                            .instantiate((Constructor<?>) ReflectionUtil
-                                    .getConstructor(PACKET_PLAYER_INFO_CLASS)
-                                    .get());
-                    sendOLDTabPackets(getPlayer(), packet,
-                            ((Player) players[i]).getName(), false);
+                    Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                    sendOLDTabPackets(getPlayer(), packet, ((Player) players[i]).getName(), false);
                 }
                 catch (Exception e)
                 {
@@ -290,7 +304,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearCustomTabs()
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a())
         {
             Object packet = ReflectionUtil
                     .instantiate((Constructor<?>) ReflectionUtil
@@ -389,7 +403,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void removePlayer(Player player)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a())
         {
             Object packet = ReflectionUtil
                     .instantiate((Constructor<?>) ReflectionUtil
@@ -443,7 +457,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     private void removeCustomTab(int id, boolean remove)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a())
         {
             Object packet = ReflectionUtil
                     .instantiate((Constructor<?>) ReflectionUtil
@@ -549,7 +563,7 @@ public class PlayerList
     private void addValue(int id, String name, UUID uuid,
             boolean updateProfToAddCustomSkin)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a())
         {
             Object packet = ReflectionUtil
                     .instantiate((Constructor<?>) ReflectionUtil
@@ -799,6 +813,7 @@ public class PlayerList
     public static class ReflectionUtil
     {
         private static final String SERVER_VERSION;
+        private static boolean spigot;
         static
         {
             String name = Bukkit.getServer().getClass().getName();
@@ -806,6 +821,21 @@ public class PlayerList
                     + "craftbukkit.".length());
             name = name.substring(0, name.indexOf("."));
             SERVER_VERSION = name;
+            try
+            {
+                Class.forName("org.spigotmc.SpigotConfig");
+                spigot = true;
+            }
+            catch (ClassNotFoundException ex)
+            {
+                spigot = false;
+            }
+        }
+
+        @SuppressWarnings("unused")
+        private static boolean isSpigot()
+        {   
+            return spigot;
         }
 
         private static boolean isVersionHigherThan(int mainVersion,
