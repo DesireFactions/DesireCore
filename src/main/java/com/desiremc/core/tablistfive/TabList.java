@@ -18,7 +18,7 @@ public class TabList
 
     private Player player;
 
-    private int defaultPing = 1000;
+    private int defaultPing = 0;
 
     protected TabList(Player player)
     {
@@ -106,9 +106,8 @@ public class TabList
         {
             ProtocolInjector.PacketTabHeader packet = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            return;
         }
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < getCount(); i++)
         {
             TabSlot slot = slots.get(i);
             if (slot != null)
@@ -189,11 +188,7 @@ public class TabList
 
     public void clear()
     {
-        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
-        {
-            return;
-        }
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < getCount(); i++)
         {
             TabSlot slot = toRemove.remove(i);
             if (slot != null)
@@ -263,6 +258,11 @@ public class TabList
                 }
             }
         }
+    }
+
+    private int getCount()
+    {
+        return TabAPI.getProtocolManager().getProtocolVersion(player) >= 47 ? 80 : 60;
     }
 
 }

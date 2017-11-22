@@ -1,13 +1,14 @@
 package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 
 import com.comphenix.protocol.events.PacketContainer;
 
 public class TabSlot
 {
 
-    TabSlot(TabList list, String prefix, String name, String suffix)
+    public TabSlot(TabList list, String prefix, String name, String suffix)
     {
         this.list = list;
 
@@ -19,7 +20,7 @@ public class TabSlot
         this.ping = list.getDefaultPing();
     }
 
-    TabSlot(TabList list, String name)
+    public TabSlot(TabList list, String name)
     {
         this.list = list;
 
@@ -29,12 +30,19 @@ public class TabSlot
         this.ping = list.getDefaultPing();
     }
 
-    TabList list;
-    boolean sent, toRemove;
+    private TabList list;
+    protected boolean sent;
+    protected boolean toRemove;
 
-    String prefix, name, suffix;
+    private UUID uuid;
+    private String prefix, name, suffix;
     private int ping;
 
+    public UUID getUniqueId()
+    {
+        return uuid;
+    }
+    
     public void setPing(int ping)
     {
         this.ping = ping;
