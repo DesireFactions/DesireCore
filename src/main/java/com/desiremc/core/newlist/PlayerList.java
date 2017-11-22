@@ -334,9 +334,13 @@ public class PlayerList
         else
         {
             for (int i = id; i < size; i++)
+            {
                 removeCustomTab(i, false);
+            }
             for (int i = id; i < size; i++)
+            {
                 addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2), false);
+            }
             // This is for pre 1.8, no textures needed
         }
     }
@@ -467,14 +471,14 @@ public class PlayerList
     @Deprecated
     private void addValue(int id, String name, boolean shouldUseSkin)
     {
-        if (name.length() > 0
-                && Bukkit.getOfflinePlayer(name).hasPlayedBefore())
+        if (name.length() > 0 && Bukkit.getOfflinePlayer(name).hasPlayedBefore())
         {
-            this.addValue(id, name,
-                    Bukkit.getOfflinePlayer(name).getUniqueId(), shouldUseSkin);
+            this.addValue(id, name, Bukkit.getOfflinePlayer(name).getUniqueId(), shouldUseSkin);
         }
         else
+        {
             this.addValue(id, name, UUID.randomUUID(), shouldUseSkin);
+        }
     }
 
     /**
@@ -487,48 +491,32 @@ public class PlayerList
      */
     @SuppressWarnings("unchecked")
     @Deprecated
-    private void addValue(int id, String name, UUID uuid,
-            boolean updateProfToAddCustomSkin)
+    private void addValue(int id, String name, UUID uuid, boolean updateProfToAddCustomSkin)
     {
         if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(uuid)), "getProfile", new Class[0])
-                    : ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid,
-                            getNameFromID(id));
-            Object[] array = (Object[]) ReflectionUtil.invokeMethod(
-                    CRAFT_CHAT_MESSAGE_CLASS, null, "fromString",
-                    new Class[] { String.class }, getNameFromID(id) + name);
-            Object data = ReflectionUtil.instantiate(
-                    PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile,
-                    1, WORLD_GAME_MODE_NOT_SET, array[0]);
+            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(uuid)), "getProfile", new Class[0]) : ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid, getNameFromID(id));
+            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, getNameFromID(id) + name);
+            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
             SkinCallBack call = new SkinCallBack()
             {
 
                 @Override
-                public void callBack(Skin skin, boolean successful,
-                        Exception exception)
+                public void callBack(Skin skin, boolean successful, Exception exception)
                 {
-                    Object profile = GAMEPROFILECLASS.cast(ReflectionUtil
-                            .invokeMethod(data, "a", new Class[0]));
+                    Object profile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(data, "a", new Class[0]));
                     if (successful)
                     {
                         try
                         {
-                            Object map = ReflectionUtil.invokeMethod(profile,
-                                    "getProperties", new Class[0]);
-                            if (skin.getBase64() != null
-                                    && skin.getSignedBase64() != null)
+                            Object map = ReflectionUtil.invokeMethod(profile, "getProperties", new Class[0]);
+                            if (skin.getBase64() != null && skin.getSignedBase64() != null)
                             {
-                                ReflectionUtil.invokeMethod(map, "removeAll",
-                                        new Class[] { String.class },
-                                        "textures");
+                                ReflectionUtil.invokeMethod(map, "removeAll", new Class[] { String.class }, "textures");
                                 // map.removeAll("textures");
-                                Object prop = ReflectionUtil.instantiate(
-                                        PROPERTY_CONSTRUCTOR, "textures",
-                                        skin.getBase64(),
-                                        skin.getSignedBase64());
+                                Object prop = ReflectionUtil.instantiate(PROPERTY_CONSTRUCTOR, "textures", skin.getBase64(), skin.getSignedBase64());
                                 Method m = null;
                                 for (Method mm : PROPERTY_MAP.getMethods())
                                     if (mm.getName().equals("put"))
@@ -548,13 +536,11 @@ public class PlayerList
                         {
                         }
                     }
-                    String getname = (String) ReflectionUtil.invokeMethod(
-                            profile, "getName", null);
+                    String getname = (String) ReflectionUtil.invokeMethod(profile, "getName", null);
                     tabs[getIDFromName(getname)] = getname;
                     players.add(data);
                     datas.add(data);
-                    sendNEWTabPackets(getPlayer(), packet, players,
-                            PACKET_PLAYER_INFO_ACTION_ADD_PLAYER);
+                    sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_ADD_PLAYER);
                 }
             };
             if (updateProfToAddCustomSkin)
@@ -571,11 +557,8 @@ public class PlayerList
         {
             try
             {
-                Object packet = ReflectionUtil
-                        .instantiate((Constructor<?>) ReflectionUtil
-                                .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-                sendOLDTabPackets(getPlayer(), packet,
-                        getNameFromID(id) + name, true);
+                Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                sendOLDTabPackets(getPlayer(), packet, getNameFromID(id) + name, true);
                 tabs[id] = name;
                 datasOLD.put(id, getNameFromID(id) + name);
             }
