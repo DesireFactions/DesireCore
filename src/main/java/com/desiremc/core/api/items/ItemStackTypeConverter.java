@@ -2,7 +2,6 @@ package com.desiremc.core.api.items;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Field;
 
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -63,42 +62,9 @@ public class ItemStackTypeConverter extends TypeConverter
         return tag;
     }
 
-    private static Field craftHandle;
-
     private net.minecraft.server.v1_7_R4.ItemStack getMinecraftStack(ItemStack stack)
     {
-        if (stack instanceof CraftItemStack)
-        {
-            try
-            {
-                return (net.minecraft.server.v1_7_R4.ItemStack) getCraftHandleField().get(stack);
-            }
-            catch (IllegalArgumentException | IllegalAccessException e)
-            {
-                return null;
-            }
-        }
-        else
-        {
-            return CraftItemStack.asNMSCopy(stack);
-        }
-    }
-
-    public static Field getCraftHandleField()
-    {
-        if (craftHandle == null)
-        {
-            try
-            {
-                craftHandle = CraftItemStack.class.getDeclaredField("handle");
-                craftHandle.setAccessible(true);
-            }
-            catch (NoSuchFieldException | SecurityException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        return craftHandle;
+        return CraftItemStack.asNMSCopy(stack);
     }
 
 }
