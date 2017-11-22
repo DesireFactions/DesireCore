@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.desiremc.core.api.nbt.NBTItem;
 import com.desiremc.core.utils.ItemNames;
 
 public abstract class MenuItem extends MenuClickBehavior
@@ -162,10 +161,6 @@ public abstract class MenuItem extends MenuClickBehavior
             meta.setLore(this.descriptions);
             item.setItemMeta(meta);
         }
-
-        NBTItem nbt = new NBTItem(item);
-        nbt.setBoolean("Unbreakable", true);
-        item = nbt.getItem();
 
         return item;
     }
