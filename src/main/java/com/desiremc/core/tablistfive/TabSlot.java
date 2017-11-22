@@ -150,4 +150,9 @@ public class TabSlot
         }
     }
 
+    protected void setUniqueId(UUID uuid)
+    {
+        this.uuid = uuid;
+    }
+
 }

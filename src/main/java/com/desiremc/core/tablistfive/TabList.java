@@ -2,6 +2,7 @@ package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.spigotmc.ProtocolInjector;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.FieldAccessException;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 
@@ -114,6 +116,12 @@ public class TabList
             {
                 System.out.println(i);
                 TabSlot slot = slots.get(i);
+                if (slot == null && TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                {
+                    slot = new TabSlot(this, "");
+                    slot.setUniqueId(UUID.randomUUID());
+                    slots.put(i, slot);
+                }
                 if (slot != null)
                 {
                     toRemove.put(i, slot);
@@ -131,6 +139,7 @@ public class TabList
                         packet.getIntegers().write(0, 0);
                         packet.getIntegers().write(1, 0);
                         packet.getIntegers().write(2, -1);
+                        packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
                         System.out.println("b");
                     }
                     try
@@ -156,6 +165,10 @@ public class TabList
                 }
                 else
                 {
+                    if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                    {
+                        throw new IllegalStateException("Problem with checking version.");
+                    }
                     String nullName = "§" + String.valueOf(i);
                     if (i >= 10)
                     {
