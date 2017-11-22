@@ -2,6 +2,7 @@ package com.desiremc.core.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -53,7 +54,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
         else
         {
-            throw new IllegalArgumentException("Item must have a display name.");
+            this.text = UUID.randomUUID().toString();
         }
         this.icon = is.getData();
         this.quantity = is.getAmount();
