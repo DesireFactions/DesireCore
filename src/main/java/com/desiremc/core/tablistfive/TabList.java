@@ -112,9 +112,11 @@ public class TabList
         {
             for (int i = 0; i < 60; i++)
             {
+                System.out.println(i);
                 TabSlot slot = slots.get(i);
                 if (slot != null)
                 {
+                    System.out.println("a");
                     toRemove.put(i, slot);
                     slot.sent = true;
                     PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
@@ -153,6 +155,7 @@ public class TabList
                 }
                 else
                 {
+                    System.out.println("b");
                     String nullName = "§" + String.valueOf(i);
                     if (i >= 10)
                     {
