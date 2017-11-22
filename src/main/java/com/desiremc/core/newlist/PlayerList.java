@@ -98,13 +98,11 @@ public class PlayerList
         }
         catch (Exception e)
         {
-            WORLD_GAME_MODE_CLASS = ReflectionUtil
-                    .getNMSClass("WorldSettings$EnumGamemode");
+            WORLD_GAME_MODE_CLASS = ReflectionUtil.getNMSClass("WorldSettings$EnumGamemode");
         }
         try
         {
-            CHAT_SERIALIZER = ReflectionUtil
-                    .getNMSClass("IChatBaseComponent$ChatSerializer");
+            CHAT_SERIALIZER = ReflectionUtil.getNMSClass("ChatSerializer");
         }
         catch (Exception | Error e)
         {
@@ -119,46 +117,28 @@ public class PlayerList
         try
         {
             PROPERTY = ReflectionUtil.getMojangAuthClass("properties.Property");
-            PROPERTY_CONSTRUCTOR = (Constructor<?>) ReflectionUtil
-                    .getConstructor(
-                            PROPERTY,
-                            new Class[] { String.class, String.class,
-                                    String.class })
-                    .get();
+            PROPERTY_CONSTRUCTOR = (Constructor<?>) ReflectionUtil.getConstructor(PROPERTY, new Class[] { String.class, String.class, String.class }).get();
         }
         catch (Exception | Error e)
         {
             try
             {
-                PROPERTY = ReflectionUtil
-                        .getOLDAuthlibClass("properties.Property");
-                PROPERTY_CONSTRUCTOR = (Constructor<?>) ReflectionUtil
-                        .getConstructor(
-                                PROPERTY,
-                                new Class[] { String.class, String.class,
-                                        String.class })
-                        .get();
+                PROPERTY = ReflectionUtil.getOLDAuthlibClass("properties.Property");
+                PROPERTY_CONSTRUCTOR = (Constructor<?>) ReflectionUtil.getConstructor(PROPERTY, new Class[] { String.class, String.class, String.class }).get();
             }
             catch (Exception | Error e2)
             {
             }
         }
 
-        WORLD_GAME_MODE_NOT_SET = a() ? ReflectionUtil.getEnumConstant(
-                WORLD_GAME_MODE_CLASS, "NOT_SET") : null;
-        PACKET_PLAYER_INFO_DATA_CONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil
-                .getConstructor(PACKET_PLAYER_INFO_DATA_CLASS,
-                        PACKET_PLAYER_INFO_CLASS, GAMEPROFILECLASS, int.class,
-                        WORLD_GAME_MODE_CLASS, I_CHAT_BASE_COMPONENT_CLASS)
-                .get() : null;
+        WORLD_GAME_MODE_NOT_SET = a() ? ReflectionUtil.getEnumConstant(WORLD_GAME_MODE_CLASS, "NOT_SET") : null;
+        PACKET_PLAYER_INFO_DATA_CONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_DATA_CLASS, PACKET_PLAYER_INFO_CLASS, GAMEPROFILECLASS, int.class, WORLD_GAME_MODE_CLASS, I_CHAT_BASE_COMPONENT_CLASS).get() : null;
         if (ReflectionUtil.isVersionHigherThan(1, 7))
         {
             try
             {
-                PACKET_HEADER_FOOTER_CLASS = ReflectionUtil
-                        .getNMSClass("PacketPlayOutPlayerListHeaderFooter");
-                PACKET_HEADER_FOOTER_CONSTRUCTOR = PACKET_HEADER_FOOTER_CLASS
-                        .getConstructors()[0];
+                PACKET_HEADER_FOOTER_CLASS = ReflectionUtil.getNMSClass("PacketPlayOutPlayerListHeaderFooter");
+                PACKET_HEADER_FOOTER_CONSTRUCTOR = PACKET_HEADER_FOOTER_CLASS.getConstructors()[0];
             }
             catch (Exception | Error e)
             {
@@ -173,8 +153,7 @@ public class PlayerList
         // It's hacky, I know, but atleast it gets a plugin instance.
         try
         {
-            File f = new File(Skin.class.getProtectionDomain().getCodeSource()
-                    .getLocation().toURI().getPath());
+            File f = new File(Skin.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             for (Plugin p : Bukkit.getPluginManager().getPlugins())
             {
                 if (f.getName().contains(p.getName()))
@@ -218,18 +197,14 @@ public class PlayerList
      */
     private static boolean a(Integer... update)
     {
-        return ReflectionUtil.isVersionHigherThan(1,
-                update.length > 0 ? update[0] : 8);
+        return ReflectionUtil.isVersionHigherThan(1, update.length > 0 ? update[0] : 8);
     }
 
     public void setHeaderFooter(String header, String footer)
     {
-        Object packet = ReflectionUtil
-                .instantiate(PACKET_HEADER_FOOTER_CONSTRUCTOR);
-        ReflectionUtil.setInstanceField(packet, "a",
-                invokeChatSerializerA(header));
-        ReflectionUtil.setInstanceField(packet, "b",
-                invokeChatSerializerA(footer));
+        Object packet = ReflectionUtil.instantiate(PACKET_HEADER_FOOTER_CONSTRUCTOR);
+        ReflectionUtil.setInstanceField(packet, "a", invokeChatSerializerA(header));
+        ReflectionUtil.setInstanceField(packet, "b", invokeChatSerializerA(footer));
         sendPacket(packet, Bukkit.getPlayer(this.ownerUUID));
     }
 
@@ -288,43 +263,27 @@ public class PlayerList
     {
         if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
-            Object packet = ReflectionUtil
-                    .instantiate((Constructor<?>) ReflectionUtil
-                            .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil
-                    .getInstanceField(packet, "b");
-            for (Player player2 : (Collection<? extends Player>) ReflectionUtil
-                    .invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+            for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
             {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil
-                        .invokeMethod(player2, "getProfile", new Class[0]));
-                Object[] array = (Object[]) ReflectionUtil.invokeMethod(
-                        CRAFT_CHAT_MESSAGE_CLASS, null, "fromString",
-                        new Class[] { String.class }, player2.getName());
-                Object data = ReflectionUtil.instantiate(
-                        PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet,
-                        gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
+                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
+                Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
+                Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
                 players.add(data);
             }
-            sendNEWTabPackets(getPlayer(), packet, players,
-                    PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
         }
         else
         {
-            Object olp = ReflectionUtil.invokeMethod(Bukkit.getServer(),
-                    "getOnlinePlayers", null);
-            Object[] players = olp instanceof Collection ? ((Collection<?>) olp)
-                    .toArray() : (Object[]) olp;
+            Object olp = ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null);
+            Object[] players = olp instanceof Collection ? ((Collection<?>) olp).toArray() : (Object[]) olp;
             for (int i = 0; i < players.length; i++)
             {
                 try
                 {
-                    Object packet = ReflectionUtil
-                            .instantiate((Constructor<?>) ReflectionUtil
-                                    .getConstructor(PACKET_PLAYER_INFO_CLASS)
-                                    .get());
-                    sendOLDTabPackets(getPlayer(), packet,
-                            ((Player) players[i]).getName(), false);
+                    Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                    sendOLDTabPackets(getPlayer(), packet, ((Player) players[i]).getName(), false);
                 }
                 catch (Exception e)
                 {
@@ -343,22 +302,16 @@ public class PlayerList
     {
         if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
-            Object packet = ReflectionUtil
-                    .instantiate((Constructor<?>) ReflectionUtil
-                            .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil
-                    .getInstanceField(packet, "b");
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
             for (Object playerData : new ArrayList<>(datas))
             {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil
-                        .invokeMethod(playerData, "a", new Class[0]));
-                tabs[getIDFromName((String) ReflectionUtil.invokeMethod(
-                        gameProfile, "getName", null))] = "";
+                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
+                tabs[getIDFromName((String) ReflectionUtil.invokeMethod(gameProfile, "getName", null))] = "";
                 players.add(playerData);
             }
             datas.clear();
-            sendNEWTabPackets(getPlayer(), packet, players,
-                    PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
         }
         else
         {
@@ -368,12 +321,8 @@ public class PlayerList
                     continue;
                 try
                 {
-                    Object packet = ReflectionUtil
-                            .instantiate((Constructor<?>) ReflectionUtil
-                                    .getConstructor(PACKET_PLAYER_INFO_CLASS)
-                                    .get());
-                    sendOLDTabPackets(getPlayer(), packet, datasOLD.get(i),
-                            false);
+                    Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                    sendOLDTabPackets(getPlayer(), packet, datasOLD.get(i), false);
                     tabs[i] = null;
                 }
                 catch (Exception e)
@@ -426,8 +375,7 @@ public class PlayerList
             for (int i = id; i < size; i++)
                 removeCustomTab(i, false);
             for (int i = id; i < size; i++)
-                addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2),
-                        false);
+                addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2), false);
             // This is for pre 1.8, no textures needed
         }
     }
@@ -442,30 +390,19 @@ public class PlayerList
     {
         if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
-            Object packet = ReflectionUtil
-                    .instantiate((Constructor<?>) ReflectionUtil
-                            .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil
-                    .getInstanceField(packet, "b");
-            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil
-                    .invokeMethod(player, "getProfile", new Class[0]));
-            Object[] array = (Object[]) ReflectionUtil.invokeMethod(
-                    CRAFT_CHAT_MESSAGE_CLASS, null, "fromString",
-                    new Class[] { String.class }, player.getName());
-            Object data = ReflectionUtil.instantiate(
-                    PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile,
-                    1, WORLD_GAME_MODE_NOT_SET, array[0]);
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player, "getProfile", new Class[0]));
+            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player.getName());
+            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
             players.add(data);
-            sendNEWTabPackets(player, packet, players,
-                    PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            sendNEWTabPackets(player, packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
         }
         else
         {
             try
             {
-                Object packet = ReflectionUtil
-                        .instantiate((Constructor<?>) ReflectionUtil
-                                .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
                 sendOLDTabPackets(player, packet, player.getName(), false);
             }
             catch (Exception e)
@@ -496,17 +433,12 @@ public class PlayerList
     {
         if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
-            Object packet = ReflectionUtil
-                    .instantiate((Constructor<?>) ReflectionUtil
-                            .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil
-                    .getInstanceField(packet, "b");
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
             for (Object playerData : new ArrayList<>(datas))
             {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil
-                        .invokeMethod(playerData, "a", new Class[0]));
-                String getname = (String) ReflectionUtil.invokeMethod(
-                        gameProfile, "getName", null);
+                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
+                String getname = (String) ReflectionUtil.invokeMethod(gameProfile, "getName", null);
                 if (getname.startsWith(getNameFromID(id)))
                 {
                     tabs[getIDFromName(getname)] = "";
@@ -516,16 +448,13 @@ public class PlayerList
                     break;
                 }
             }
-            sendNEWTabPackets(getPlayer(), packet, players,
-                    PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
         }
         else
         {
             try
             {
-                Object packet = ReflectionUtil
-                        .instantiate((Constructor<?>) ReflectionUtil
-                                .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+                Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
                 sendOLDTabPackets(getPlayer(), packet, datasOLD.get(id), false);
                 if (remove)
                 {
@@ -890,8 +819,7 @@ public class PlayerList
         {
             try
             {
-                return Class.forName("net.minecraft.server." + SERVER_VERSION
-                        + "." + name);
+                return Class.forName("net.minecraft.server." + SERVER_VERSION + "." + name);
             }
             catch (ClassNotFoundException e)
             {
