@@ -223,16 +223,15 @@ public class PlayerList
     public void clearPlayers()
     {
         Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+
         for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
         {
             Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
             Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
             Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-            players.add(data);
+            //players.add(data);
         }
-        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
-
+        //sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
     }
 
     /**
@@ -436,8 +435,7 @@ public class PlayerList
             updateSlot(i, "", false);
     }
 
-    private static void sendNEWTabPackets(Player player, Object packet,
-            List<?> players, Object action)
+    private static void sendNEWTabPackets(Player player, Object packet, List<?> players, Object action)
     {
         try
         {
