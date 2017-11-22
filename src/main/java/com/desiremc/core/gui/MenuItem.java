@@ -50,7 +50,7 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         if (is.hasItemMeta() && is.getItemMeta().hasDisplayName())
         {
-            this.text = is.getItemMeta().getDisplayName();
+            this.text = "§f" + is.getItemMeta().getDisplayName();
         }
         else
         {
@@ -62,9 +62,9 @@ public abstract class MenuItem extends MenuClickBehavior
         if (is.hasItemMeta() && is.getItemMeta().hasLore())
         {
             descriptions = is.getItemMeta().getLore();
-        }        
+        }
     }
-    
+
     public MenuItem(String text, MaterialData icon)
     {
         this(text, icon, 1);
