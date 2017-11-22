@@ -62,13 +62,6 @@ public class PlayerList
         return ReflectionUtil.invokeMethod(CHAT_SERIALIZER, null, "a", new Class[] { String.class }, "{\"text\":\"" + text + "\"}");
     }
 
-    // TODO: This bit of code has been added to check specifically for 1.7.10.
-    // update. Since this update has changes to it's spawnplayer packet, this
-    // hopefully will fix issues with player disconnection on that update
-    //
-    // http://wiki.vg/Protocol_History#14w04a
-    // ||ReflectionUtil.SERVER_VERSION.contains("7_R4")
-
     static
     {
         try
@@ -229,7 +222,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearPlayers()
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
@@ -268,7 +261,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearCustomTabs()
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
@@ -356,7 +349,7 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void removePlayer(Player player)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
             Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
             List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
@@ -497,22 +490,12 @@ public class PlayerList
     private void addValue(int id, String name, UUID uuid,
             boolean updateProfToAddCustomSkin)
     {
-        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
         {
-            Object packet = ReflectionUtil
-                    .instantiate((Constructor<?>) ReflectionUtil
-                            .getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil
-                    .getInstanceField(packet, "b");
-            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil
-                    .invokeMethod(getHandle(Bukkit.getPlayer(uuid)),
-                            "getProfile", new Class[0])
-                    :
-                    /*
-                     * ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(this.ownerUUID
-                     * )),"getProfile",new Class[0]);
-                     */
-                    ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid,
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(uuid)), "getProfile", new Class[0])
+                    : ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid,
                             getNameFromID(id));
             Object[] array = (Object[]) ReflectionUtil.invokeMethod(
                     CRAFT_CHAT_MESSAGE_CLASS, null, "fromString",
