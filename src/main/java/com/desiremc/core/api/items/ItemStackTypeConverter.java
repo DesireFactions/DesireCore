@@ -9,10 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.mongodb.morphia.converters.TypeConverter;
 import org.mongodb.morphia.mapping.MappedField;
 
-import com.desiremc.google.common.io.BaseEncoding;
-
 import net.minecraft.server.v1_7_R4.NBTCompressedStreamTools;
 import net.minecraft.server.v1_7_R4.NBTTagCompound;
+import net.minecraft.util.com.google.common.io.BaseEncoding;
 
 public class ItemStackTypeConverter extends TypeConverter
 {

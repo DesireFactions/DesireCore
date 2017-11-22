@@ -11,13 +11,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
-import com.desiremc.google.gson.stream.JsonWriter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
+import net.minecraft.util.com.google.gson.stream.JsonWriter;
+
 /**
- * Internal class: Represents a component of a JSON-serializable
- * {@link FancyMessage}.
+ * Internal class: Represents a component of a JSON-serializable {@link FancyMessage}.
  */
 final class MessagePart implements JsonRepresentedObject, ConfigurationSerializable, Cloneable
 {
@@ -79,15 +79,15 @@ final class MessagePart implements JsonRepresentedObject, ConfigurationSerializa
             String styleName;
             switch (style)
             {
-            case MAGIC:
-                styleName = "obfuscated";
-                break;
-            case UNDERLINE:
-                styleName = "underlined";
-                break;
-            default:
-                styleName = style.name().toLowerCase();
-                break;
+                case MAGIC:
+                    styleName = "obfuscated";
+                    break;
+                case UNDERLINE:
+                    styleName = "underlined";
+                    break;
+                default:
+                    styleName = style.name().toLowerCase();
+                    break;
             }
 
             builder.put(style, styleName);

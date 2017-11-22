@@ -1,6 +1,6 @@
 package com.desiremc.core.api.nbt;
 
-import com.google.gson.Gson;
+import net.minecraft.util.com.google.gson.Gson;
 
 public class GsonWrapper {
 
