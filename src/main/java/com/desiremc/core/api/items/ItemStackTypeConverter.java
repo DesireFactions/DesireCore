@@ -40,9 +40,9 @@ public class ItemStackTypeConverter extends TypeConverter
     }
 
     @Override
-    public Object decode(Class<?> arg0, Object arg1, MappedField arg2)
+    public Object decode(Class<?> targetClass, Object val, MappedField optionalExtraInfo)
     {
-        ByteArrayInputStream input = new ByteArrayInputStream(BaseEncoding.base64().decode(arg1.toString()));
+        ByteArrayInputStream input = new ByteArrayInputStream(BaseEncoding.base64().decode(val.toString()));
 
         NBTTagCompound tag = NBTCompressedStreamTools.a(input);
         net.minecraft.server.v1_7_R4.ItemStack nms = net.minecraft.server.v1_7_R4.ItemStack.createStack(tag);
