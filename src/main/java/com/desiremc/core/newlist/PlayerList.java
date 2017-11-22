@@ -65,8 +65,9 @@ public class PlayerList
     private static final Class<?> CRAFTPLAYERCLASS = ReflectionUtil.getCraftbukkitClass("CraftPlayer", "entity");
     private static final Object WORLD_GAME_MODE_NOT_SET;
     private static final Class<?> CRAFT_CHAT_MESSAGE_CLASS = a() ? ReflectionUtil.getCraftbukkitClass("CraftChatMessage", "util") : null;
-    private static final Class<?> PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS = a() ? ReflectionUtil.getNMSClass("PacketPlayOutPlayerInfo$EnumPlayerInfoAction") : null;
-    private static final Object PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER = a() ? ReflectionUtil.getEnumConstant(PACKET_PLAYER_INFO_PLAYER_ACTION_CLASS, "REMOVE_PLAYER") : null;
+    private static final Constructor<?> GAMEPROPHILECONSTRUCTOR = a() ? (Constructor<?>) ReflectionUtil.getConstructor(GAMEPROFILECLASS, UUID.class, String.class).get() : null;
+    private static final Object PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER = null;
+    private static final Object PACKET_PLAYER_INFO_ACTION_ADD_PLAYER = null;
     private static final Class<?> PACKET_CLASS = ReflectionUtil.getNMSClass("Packet");
     private static final Class<?> I_CHAT_BASE_COMPONENT_CLASS = a() ? ReflectionUtil.getNMSClass("IChatBaseComponent") : null;
     private static final Constructor<?> PACKET_PLAYER_INFO_DATA_CONSTRUCTOR;
@@ -145,7 +146,6 @@ public class PlayerList
 
     private UUID ownerUUID;
     private String[] tabs;
-    private boolean[] hasCustomTexture;
     private int size = 0;
 
     private static final HashMap<UUID, PlayerList> lookUpTable = new HashMap<>();
@@ -188,7 +188,6 @@ public class PlayerList
     {
         lookUpTable.put(this.ownerUUID = player.getUniqueId(), this);
         tabs = new String[80];
-        hasCustomTexture = new boolean[80];
         this.size = a() ? size : SIZE_DEFAULT;
     }
 
@@ -223,37 +222,17 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearPlayers()
     {
-        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+        for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
         {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            for (Player player2 : (Collection<? extends Player>) ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null))
-            {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
-                Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
-                Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-                players.add(data);
-            }
-            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player2, "getProfile", new Class[0]));
+            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player2.getName());
+            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
+            players.add(data);
         }
-        else
-        {
-            Object olp = ReflectionUtil.invokeMethod(Bukkit.getServer(), "getOnlinePlayers", null);
-            Object[] players = olp instanceof Collection ? ((Collection<?>) olp).toArray() : (Object[]) olp;
-            for (int i = 0; i < players.length; i++)
-            {
-                try
-                {
-                    Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-                    sendOLDTabPackets(getPlayer(), packet, ((Player) players[i]).getName(), false);
-                }
-                catch (Exception e)
-                {
-                    error();
-                    e.printStackTrace();
-                }
-            }
-        }
+        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+
     }
 
     /**
@@ -262,38 +241,17 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void clearCustomTabs()
     {
-        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+
+        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+        for (Object playerData : new ArrayList<>(datas))
         {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            for (Object playerData : new ArrayList<>(datas))
-            {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
-                tabs[getIDFromName((String) ReflectionUtil.invokeMethod(gameProfile, "getName", null))] = "";
-                players.add(playerData);
-            }
-            datas.clear();
-            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
+            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
+            tabs[getIDFromName((String) ReflectionUtil.invokeMethod(gameProfile, "getName", null))] = "";
+            players.add(playerData);
         }
-        else
-        {
-            for (int i = 0; i < size; i++)
-            {
-                if (!datasOLD.containsKey(i))
-                    continue;
-                try
-                {
-                    Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-                    sendOLDTabPackets(getPlayer(), packet, datasOLD.get(i), false);
-                    tabs[i] = null;
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            datasOLD.clear();
-        }
+        datas.clear();
+        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
     }
 
     /**
@@ -319,6 +277,27 @@ public class PlayerList
     }
 
     /**
+     * Use this to add a new player to the list
+     * 
+     * @param id
+     * @param name
+     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
+     *             the registered bounds. Use the "updateSlot" method to change a slot.
+     */
+    @Deprecated
+    private void addValue(int id, String name, boolean shouldUseSkin)
+    {
+        if (name.length() > 0
+                && Bukkit.getOfflinePlayer(name).hasPlayedBefore())
+        {
+            this.addValue(id, name,
+                    Bukkit.getOfflinePlayer(name).getUniqueId(), shouldUseSkin);
+        }
+        else
+            this.addValue(id, name, UUID.randomUUID(), shouldUseSkin);
+    }
+
+    /**
      * Use this for changing a value at a specific tab.
      * 
      * @param id
@@ -326,24 +305,16 @@ public class PlayerList
      */
     public void updateSlot(int id, String newName, boolean usePlayersSkin)
     {
-        if (a())
+
+        for (int i = id; i < size; i++)
         {
-            removeCustomTab(id, true);
-            addValue(id, newName, usePlayersSkin);
-            hasCustomTexture[id] = usePlayersSkin;
+            removeCustomTab(i, false);
         }
-        else
+        for (int i = id; i < size; i++)
         {
-            for (int i = id; i < size; i++)
-            {
-                removeCustomTab(i, false);
-            }
-            for (int i = id; i < size; i++)
-            {
-                addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2), false);
-            }
-            // This is for pre 1.8, no textures needed
+            addValue(i, (i == id) ? newName : datasOLD.get(i).substring(2), false);
         }
+        // This is for pre 1.8, no textures needed
     }
 
     /**
@@ -354,29 +325,14 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     public void removePlayer(Player player)
     {
-        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
-        {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player, "getProfile", new Class[0]));
-            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player.getName());
-            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
-            players.add(data);
-            sendNEWTabPackets(player, packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
-        }
-        else
-        {
-            try
-            {
-                Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-                sendOLDTabPackets(player, packet, player.getName(), false);
-            }
-            catch (Exception e)
-            {
-                error();
-                e.printStackTrace();
-            }
-        }
+
+        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+        Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(player, "getProfile", new Class[0]));
+        Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, player.getName());
+        Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
+        players.add(data);
+        sendNEWTabPackets(player, packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
     }
 
     /**
@@ -397,43 +353,22 @@ public class PlayerList
     @SuppressWarnings("unchecked")
     private void removeCustomTab(int id, boolean remove)
     {
-        if (a() && !ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+        List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+        for (Object playerData : new ArrayList<>(datas))
         {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
-            for (Object playerData : new ArrayList<>(datas))
+            Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
+            String getname = (String) ReflectionUtil.invokeMethod(gameProfile, "getName", null);
+            if (getname.startsWith(getNameFromID(id)))
             {
-                Object gameProfile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(playerData, "a", new Class[0]));
-                String getname = (String) ReflectionUtil.invokeMethod(gameProfile, "getName", null);
-                if (getname.startsWith(getNameFromID(id)))
-                {
-                    tabs[getIDFromName(getname)] = "";
-                    players.add(playerData);
-                    if (remove)
-                        datas.remove(playerData);
-                    break;
-                }
-            }
-            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
-        }
-        else
-        {
-            try
-            {
-                Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-                sendOLDTabPackets(getPlayer(), packet, datasOLD.get(id), false);
+                tabs[getIDFromName(getname)] = "";
+                players.add(playerData);
                 if (remove)
-                {
-                    tabs[id] = null;
-                    datasOLD.remove(id);
-                }
-            }
-            catch (Exception e)
-            {
-                error();
-                e.printStackTrace();
+                    datas.remove(playerData);
+                break;
             }
         }
+        sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_REMOVE_PLAYER);
     }
 
     /**
@@ -451,6 +386,35 @@ public class PlayerList
     }
 
     /**
+     * Use this to add a new player to the list
+     * 
+     * @param id
+     * @param name
+     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
+     *             the registered bounds. Use the "updateSlot" method to change a slot.
+     */
+    @SuppressWarnings("unchecked")
+    @Deprecated
+    private void addValue(int id, String name, UUID uuid, boolean updateProfToAddCustomSkin)
+    {
+        if (a() || ReflectionUtil.SERVER_VERSION.contains("7_R4"))
+        {
+            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
+            List<Object> players = (List<Object>) ReflectionUtil.getInstanceField(packet, "b");
+            Object gameProfile = Bukkit.getPlayer(uuid) != null ? ReflectionUtil.invokeMethod(getHandle(Bukkit.getPlayer(uuid)), "getProfile", new Class[0]) : ReflectionUtil.instantiate(GAMEPROPHILECONSTRUCTOR, uuid, getNameFromID(id));
+            Object[] array = (Object[]) ReflectionUtil.invokeMethod(CRAFT_CHAT_MESSAGE_CLASS, null, "fromString", new Class[] { String.class }, getNameFromID(id) + name);
+            Object data = ReflectionUtil.instantiate(PACKET_PLAYER_INFO_DATA_CONSTRUCTOR, packet, gameProfile, 1, WORLD_GAME_MODE_NOT_SET, array[0]);
+            Object profile = GAMEPROFILECLASS.cast(ReflectionUtil.invokeMethod(data, "a", new Class[0]));
+            String getname = (String) ReflectionUtil.invokeMethod(profile, "getName", null);
+            tabs[getIDFromName(getname)] = getname;
+            players.add(data);
+            datas.add(data);
+            sendNEWTabPackets(getPlayer(), packet, players, PACKET_PLAYER_INFO_ACTION_ADD_PLAYER);
+        }
+
+    }
+
+    /**
      * Use this to add an existing offline player to a player's tablist.
      * 
      * @param id
@@ -459,54 +423,6 @@ public class PlayerList
     public void addExistingPlayer(int id, OfflinePlayer player)
     {
         addExistingPlayer(id, player.getName(), player);
-    }
-
-    /**
-     * Use this to add a new player to the list
-     * 
-     * @param id
-     * @param name
-     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
-     *             the registered bounds. Use the "updateSlot" method to change a slot.
-     */
-    @Deprecated
-    private void addValue(int id, String name, boolean shouldUseSkin)
-    {
-        if (name.length() > 0 && Bukkit.getOfflinePlayer(name).hasPlayedBefore())
-        {
-            this.addValue(id, name, Bukkit.getOfflinePlayer(name).getUniqueId(), shouldUseSkin);
-        }
-        else
-        {
-            this.addValue(id, name, UUID.randomUUID(), shouldUseSkin);
-        }
-    }
-
-    /**
-     * Use this to add a new player to the list
-     * 
-     * @param id
-     * @param name
-     * @deprecated If all 80 slots have been taken, new values will not be shown and may have the potential to go out of
-     *             the registered bounds. Use the "updateSlot" method to change a slot.
-     */
-    @Deprecated
-    private void addValue(int id, String name, UUID uuid, boolean updateProfToAddCustomSkin)
-    {
-
-        try
-        {
-            Object packet = ReflectionUtil.instantiate((Constructor<?>) ReflectionUtil.getConstructor(PACKET_PLAYER_INFO_CLASS).get());
-            sendOLDTabPackets(getPlayer(), packet, getNameFromID(id) + name, true);
-            tabs[id] = name;
-            datasOLD.put(id, getNameFromID(id) + name);
-        }
-        catch (Exception e)
-        {
-            error();
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -537,30 +453,11 @@ public class PlayerList
 
     }
 
-    private static void sendOLDTabPackets(Player player, Object packet,
-            String name, boolean isOnline)
-    {
-        try
-        {
-            ReflectionUtil.setInstanceField(packet, "a", name);
-            ReflectionUtil.setInstanceField(packet, "b", isOnline);
-            ReflectionUtil.setInstanceField(packet, "c", ((short) 0));
-            sendPacket(packet, player);
-        }
-        catch (Exception e)
-        {
-            error();
-            e.printStackTrace();
-        }
-    }
-
     private static void sendPacket(Object packet, Player player)
     {
         Object handle = getHandle(player);
-        Object playerConnection = ReflectionUtil.getInstanceField(handle,
-                "playerConnection");
-        ReflectionUtil.invokeMethod(playerConnection, "sendPacket",
-                new Class[] { PACKET_CLASS }, packet);
+        Object playerConnection = ReflectionUtil.getInstanceField(handle, "playerConnection");
+        ReflectionUtil.invokeMethod(playerConnection, "sendPacket", new Class[] { PACKET_CLASS }, packet);
     }
 
     private static Object getHandle(Player player)
