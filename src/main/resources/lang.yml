@@ -1,5 +1,5 @@
 prefix:
-  text: '&7[&bHCF&7]'
+  text: '&7[&bDesire&7]'
   use: true
 list-header: '&c&m---------------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
