@@ -128,9 +128,7 @@ public class PlayerList
         return player;
     }
 
-    private static final int ADD = 0;
     private static final int UPDATE = 3;
-    private static final int REMOVE = 4;
 
     private static final Class<?> PACKET_PLAYER_INFO_CLASS = PacketPlayOutPlayerInfo.class;
     private static Field PLAYER_INFO_PACKET_ACTION;

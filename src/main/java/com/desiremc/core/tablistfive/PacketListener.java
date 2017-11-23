@@ -29,11 +29,6 @@ public class PacketListener extends PacketAdapter
         PacketContainer packet = event.getPacket();
         Player player = event.getPlayer();
 
-        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
-        {
-            //return;
-        }
-
         if (event.getPacketID() == Packets.Server.PLAYER_INFO)
         {
             int ping = packet.getIntegers().read(0);
@@ -80,11 +75,6 @@ public class PacketListener extends PacketAdapter
             }
         }
 
-        if (event.getPacketID() == Packets.Server.LOGIN)
-        {
-            packet.getIntegers().write(2, 60); //Force maximum TabList size
-            event.setPacket(packet);
-        }
     }
 
 }

@@ -20,7 +20,7 @@ public class TabList
 
     private Player player;
 
-    private int defaultPing = 0;
+    private int defaultPing = 10;
 
     private HashMap<Integer, TabSlot> slots = new HashMap<>();
     private HashMap<Integer, TabSlot> toRemove = new HashMap<>();
@@ -78,16 +78,16 @@ public class TabList
 
     public TabSlot setSlot(int slot, String name)
     {
-        TabSlot tabSlot = slots.get(slot);
-        if (tabSlot == null)
+        TabSlot tabSlot;
+        if ((tabSlot = slots.get(slot)) != null && tabSlot.getUniqueId() != null)
         {
-            tabSlot = new TabSlot(this, name);
-            slots.put(slot, tabSlot);
+            tabSlot = new TabSlot(this, name, tabSlot.getUniqueId());
         }
         else
         {
-            tabSlot.setName(name);
+            tabSlot = new TabSlot(this, name);
         }
+        slots.put(slot, tabSlot);
         return tabSlot;
     }
 
@@ -98,18 +98,16 @@ public class TabList
 
     public TabSlot setSlot(int slot, String prefix, String name, String suffix)
     {
-        TabSlot tabSlot = slots.get(slot);
-        if (tabSlot == null)
+        TabSlot tabSlot;
+        if ((tabSlot = slots.get(slot)) != null && tabSlot.getUniqueId() != null)
         {
-            tabSlot = new TabSlot(this, prefix, name, suffix);
-            slots.put(slot, tabSlot);
+            tabSlot = new TabSlot(this, prefix, name, suffix, tabSlot.getUniqueId());
         }
         else
         {
-            tabSlot.setPrefix(prefix);
-            tabSlot.setName(name);
-            tabSlot.setSuffix(suffix);
+            tabSlot = new TabSlot(this, prefix, name, suffix);
         }
+        slots.put(slot, tabSlot);
         return tabSlot;
     }
 
