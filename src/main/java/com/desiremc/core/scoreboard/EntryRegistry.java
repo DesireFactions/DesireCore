@@ -1,18 +1,17 @@
 package com.desiremc.core.scoreboard;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.scoreboard.common.EntryBuilder;
 import com.desiremc.core.scoreboard.type.Entry;
 import com.desiremc.core.scoreboard.type.Scoreboard;
 import com.desiremc.core.scoreboard.type.ScoreboardHandler;
 import com.desiremc.core.scoreboard.type.SimpleScoreboard;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EntryRegistry implements ScoreboardHandler
 {
@@ -28,7 +27,7 @@ public class EntryRegistry implements ScoreboardHandler
     @Override
     public String getTitle(Player player)
     {
-        return "§3Desire §cHCF";
+        return "&5&lDesire HCF";
     }
 
     @Override
