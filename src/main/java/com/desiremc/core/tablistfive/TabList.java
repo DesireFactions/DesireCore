@@ -2,6 +2,8 @@ package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -17,11 +19,21 @@ import net.minecraft.server.v1_7_R4.ChatSerializer;
 public class TabList
 {
 
+    private static final int PACKET_INFO_ACTION = 0;
+    private static final int PACKET_INFO_GAMEMODE = 1;
+    private static final int PACKET_INFO_PING = 2;
+    private static final int PACKET_INFO_PROFILE = 0;
+    private static final int PACKET_INFO_USERNAME = 0;
+
     private Player player;
+
+    private boolean old = TabAPI.getProtocolManager().getProtocolVersion(player) >= 20;
+
+    private HashMap<Integer, TabSlot> slots = new HashMap<>();
 
     private int defaultPing = 10;
 
-    private HashMap<Integer, TabSlot> slots = new HashMap<>();
+    private List<String> toRemove = new LinkedList<>();
 
     private String header = " ";
     private String footer = " ";
@@ -58,13 +70,15 @@ public class TabList
 
     public void clearSlot(int slot)
     {
-        TabSlot tabSlot = slots.remove(slot);
-        if (tabSlot == null)
+        TabSlot tabSlot = slots.get(slot);
+        
+        if (tabSlot.getPrefix() != null && !tabSlot.getPrefix().equals(""))
         {
-            return;
+            tabSlot.removePrefixAndSuffix();
+            tabSlot.setPrefix(null);
+            tabSlot.setSuffix(null);
         }
-
-        tabSlot.removePrefixAndSuffix();
+        
         tabSlot.setName(getNullName(slot));
         tabSlot.state = 3;
     }
@@ -84,6 +98,10 @@ public class TabList
             tabSlot.setPrefix(null);
             tabSlot.setSuffix(null);
         }
+        if (old)
+        {
+            toRemove.add(tabSlot.getName());
+        }
         tabSlot.setName(name);
         tabSlot.state = 3;
 
@@ -102,6 +120,14 @@ public class TabList
         if (tabSlot.getPrefix() != null && !tabSlot.getPrefix().equals(""))
         {
             tabSlot.updatePrefixAndSuffix(prefix, suffix);
+        }
+        else
+        {
+            tabSlot.createPrefixAndSuffix(prefix, suffix);
+        }
+        if (old)
+        {
+            toRemove.add(tabSlot.getName());
         }
         tabSlot.setPrefix(prefix);
         tabSlot.setName(name);
@@ -123,36 +149,49 @@ public class TabList
 
     public void send()
     {
-        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+        if (slots.size() != getCount())
         {
-            ProtocolInjector.PacketTabHeader packet = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-        }
-        for (int i = 0; i < getCount(); i++)
-        {
-            TabSlot slot = slots.get(i);
-            if (slot == null)
+            for (int i = 0; i < getCount(); i++)
             {
-                slot = new TabSlot(this, getNullName(i));
-                slots.put(i, slot);
+                slots.put(i, new TabSlot(this, getNullName(i)));
             }
-            if (slot != null)
+        }
+        if (old)
+        {
+            slots.values().forEach(x -> toRemove.add(x.getName()));
+            for (String str : toRemove)
             {
-                slot.sent = true;
                 PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                packet.getStrings().write(0, slot.getName());
-                packet.getIntegers().write(0, slot.state);
-                packet.getIntegers().write(1, 0);
-                packet.getIntegers().write(2, -1);
-                packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), slot.getName()));
-
+                packet.getStrings().write(PACKET_INFO_USERNAME, str);
+                packet.getIntegers().write(PACKET_INFO_ACTION, 4);
+                packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
+                packet.getIntegers().write(PACKET_INFO_PING, 0);
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
                 }
-                catch (InvocationTargetException e)
+                catch (InvocationTargetException ex)
                 {
-                    e.printStackTrace();
+                    ex.printStackTrace();
+                }
+            }
+            toRemove.clear();
+            TabSlot slot;
+            for (int i = 0; i < 60; i++)
+            {
+                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+                slot = slots.get(i);
+                packet.getStrings().write(PACKET_INFO_USERNAME, slot.getName());
+                packet.getIntegers().write(PACKET_INFO_ACTION, 0);
+                packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
+                packet.getIntegers().write(PACKET_INFO_PING, 0);
+                try
+                {
+                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                }
+                catch (InvocationTargetException ex)
+                {
+                    ex.printStackTrace();
                 }
                 if (slot.getPrefix() != null || slot.getSuffix() != null)
                 {
@@ -168,11 +207,38 @@ public class TabList
                 }
             }
         }
+        else
+        {
+            ProtocolInjector.PacketTabHeader headerFooterPacket = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
+            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(headerFooterPacket);
+            for (int i = 0; i < 80; i++)
+            {
+                TabSlot slot = slots.get(i);
+                if (slot.state != -1)
+                {
+                    PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+                    packet.getStrings().write(PACKET_INFO_USERNAME, slot.getName());
+                    packet.getIntegers().write(PACKET_INFO_ACTION, slot.state);
+                    packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
+                    packet.getIntegers().write(PACKET_INFO_PING, 0);
+                    packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(slot.getUniqueId(), slot.getName()));
+                    try
+                    {
+                        TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                    }
+                    catch (InvocationTargetException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                    slot.state = -1;
+                }
+            }
+        }
     }
 
     private int getCount()
     {
-        return TabAPI.getProtocolManager().getProtocolVersion(player) >= 47 ? 80 : 60;
+        return !old ? 80 : 60;
     }
 
     public void clearSlot(String match)
