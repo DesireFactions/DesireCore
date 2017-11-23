@@ -46,6 +46,15 @@ public class TempMuteCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
+        if (((String) args[2]).contains("-s"))
+        {
+            args[2] = ((String) args[2]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(LANG.renderMessage("mute.tempmute_message", "{duration}", DateUtils.formatDateDiff(time), "{target}", target.getName(), "{reason}", args[2], "{player}", sender.getName()));
+        }
+
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.MUTE);
@@ -54,8 +63,6 @@ public class TempMuteCommand extends ValidCommand
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setReason((String) args[2]);
         PunishmentHandler.getInstance().save(punishment);
-
-        Bukkit.broadcastMessage(LANG.renderMessage("mute.tempmute_message", "{duration}", DateUtils.formatDateDiff(time), "{target}", target.getName(), "{reason}", args[2], "{player}", sender.getName()));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

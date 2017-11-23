@@ -40,6 +40,15 @@ public class MuteCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
+        if (((String) args[1]).contains("-s"))
+        {
+            args[1] = ((String) args[1]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(LANG.renderMessage("mute.permmute_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
+        }
+
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.MUTE);
@@ -50,8 +59,6 @@ public class MuteCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
-
-        Bukkit.broadcastMessage(LANG.renderMessage("mute.permmute_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

@@ -29,8 +29,15 @@ public class KickCommand extends ValidCommand
         Player player = (Player) sender;
         Player target = (Player) args[0];
 
-        target.kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kick_message_target", "{player}", player.getName(), "{reason}", args[1]));
+        if (((String) args[1]).contains("-s"))
+        {
+            args[1] = ((String) args[1]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.kick_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
+        }
 
-        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.kick_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
+        target.kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kick_message_target", "{player}", player.getName(), "{reason}", args[1]));
     }
 }

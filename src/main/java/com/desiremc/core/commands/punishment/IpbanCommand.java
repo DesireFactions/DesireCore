@@ -35,6 +35,15 @@ public class IpbanCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
+        if (((String) args[1]).contains("-s"))
+        {
+            args[1] = ((String) args[1]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(LANG.renderMessage("ipban.ban_message", "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[1]));
+        }
+
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Punishment.Type.IP_BAN);
@@ -45,8 +54,6 @@ public class IpbanCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
-
-        Bukkit.broadcastMessage(LANG.renderMessage("ipban.ban_message", "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[1]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

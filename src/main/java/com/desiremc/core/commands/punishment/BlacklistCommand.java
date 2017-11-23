@@ -24,8 +24,7 @@ public class BlacklistCommand extends ValidCommand
 
     public BlacklistCommand()
     {
-        super("blacklist", "Blacklist a user from the server.", Rank.DEVELOPER, ValidCommand.ARITY_REQUIRED_VARIADIC, new
-                String[] {"target", "reason"});
+        super("blacklist", "Blacklist a user from the server.", Rank.DEVELOPER, ARITY_OPTIONAL, new String[] {"target", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
@@ -41,6 +40,15 @@ public class BlacklistCommand extends ValidCommand
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
 
+        if (((String) args[1]).contains("-s"))
+        {
+            args[1] = ((String) args[1]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(LANG.renderMessage("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[2]));
+        }
+
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.BAN);
@@ -51,8 +59,6 @@ public class BlacklistCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
-
-        Bukkit.broadcastMessage(LANG.renderMessageNoPrefix("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[2]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

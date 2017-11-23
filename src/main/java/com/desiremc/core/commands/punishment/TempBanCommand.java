@@ -47,6 +47,15 @@ public class TempBanCommand extends ValidCommand
         Session target = (Session) args[0];
         long time = (long) args[1];
 
+        if (((String) args[2]).contains("-s"))
+        {
+            args[2] = ((String) args[2]).replace("-s", "");
+        }
+        else
+        {
+            Bukkit.broadcastMessage(LANG.renderMessage("ban.tempban_message", "{duration}", DateUtils.formatDateDiff(time), "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[2]));
+        }
+
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.BAN);
@@ -57,8 +66,6 @@ public class TempBanCommand extends ValidCommand
         PunishmentHandler.getInstance().save(punishment);
 
         PunishmentHandler.getInstance().refreshPunishments(target);
-
-        Bukkit.broadcastMessage(LANG.renderMessage("ban.tempban_message", "{duration}", DateUtils.formatDateDiff(time), "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[2]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
