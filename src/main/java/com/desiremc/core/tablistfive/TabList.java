@@ -22,7 +22,7 @@ import net.minecraft.server.v1_7_R4.ChatSerializer;
 public class TabList
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static final int PACKET_INFO_ACTION = 0;
     public static final int PACKET_INFO_GAMEMODE = 1;
