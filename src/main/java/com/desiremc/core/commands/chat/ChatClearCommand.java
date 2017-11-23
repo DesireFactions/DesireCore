@@ -35,7 +35,7 @@ public class ChatClearCommand extends ValidCommand
                 continue;
             }
 
-            for (int i = 0; i < 75; i++)
+            for (int i = 0; i < 120; i++)
             {
                 p.sendMessage("");
             }
