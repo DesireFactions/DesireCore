@@ -6,18 +6,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.spigotmc.ProtocolInjector;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
-
-import net.minecraft.server.v1_7_R4.ChatSerializer;
 
 public class TabList
 {
@@ -39,10 +33,6 @@ public class TabList
     private int defaultPing = 10;
 
     private List<String> toRemoveName = new LinkedList<>();
-    private List<UUID> toRemoveUUID = new LinkedList<>();
-
-    private String header = " ";
-    private String footer = " ";
 
     protected TabList(Player instancePlayer)
     {
@@ -141,16 +131,6 @@ public class TabList
         return tabSlot;
     }
 
-    public void setHeader(String header)
-    {
-        this.header = (header != null && header.length() != 0) ? header : "\"\"";
-    }
-
-    public void setFooter(String footer)
-    {
-        this.footer = (footer != null && footer.length() != 0) ? footer : "\"\"";
-    }
-
     public void send()
     {
         if (DEBUG)
@@ -223,69 +203,6 @@ public class TabList
                     {
                         e.printStackTrace();
                     }
-                }
-            }
-        }
-        else
-        {
-            ProtocolInjector.PacketTabHeader headerFooterPacket = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
-            ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(headerFooterPacket);
-            slots.values().forEach(x -> toRemoveUUID.add(x.getUniqueId()));
-            for (UUID uuid : toRemoveUUID)
-            {
-                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                packet.getStrings().write(PACKET_INFO_USERNAME, "");
-                packet.getIntegers().write(PACKET_INFO_ACTION, 4);
-                packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                packet.getIntegers().write(PACKET_INFO_PING, -1);
-                packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(uuid, ""));
-                try
-                {
-                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
-                }
-                catch (InvocationTargetException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-            for (int i = count - 1; i >= 0; i--)
-            {
-                TabSlot slot = slots.get(i);
-                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                packet.getStrings().write(PACKET_INFO_USERNAME, slot.getName());
-                packet.getIntegers().write(PACKET_INFO_ACTION, 0);
-                packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                packet.getIntegers().write(PACKET_INFO_PING, -1);
-                packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(slot.getUniqueId(), slot.getName()));
-                if (DEBUG)
-                {
-                    System.out.println("TabList.send() send the packet.");
-                }
-                try
-                {
-                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
-                }
-                catch (InvocationTargetException ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-            for (Player player : Bukkit.getOnlinePlayers())
-            {
-                toRemoveUUID.add(player.getUniqueId());
-                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                packet.getStrings().write(PACKET_INFO_USERNAME, player.getName());
-                packet.getIntegers().write(PACKET_INFO_ACTION, 0);
-                packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                packet.getIntegers().write(PACKET_INFO_PING, -1);
-                packet.getGameProfiles().write(PACKET_INFO_PROFILE, WrappedGameProfile.fromPlayer(player));
-                try
-                {
-                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
-                }
-                catch (InvocationTargetException ex)
-                {
-                    ex.printStackTrace();
                 }
             }
         }

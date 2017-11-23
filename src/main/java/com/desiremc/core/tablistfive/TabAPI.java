@@ -3,6 +3,7 @@ package com.desiremc.core.tablistfive;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -14,14 +15,14 @@ import com.comphenix.protocol.events.PacketContainer;
 public class TabAPI
 {
 
-    private static HashMap<String, TabList> tabLists = new HashMap<>();
+    private static HashMap<UUID, TabList> tabLists = new HashMap<>();
 
     private static ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
     public static TabList createTabListForPlayer(Player player)
     {
         TabList list = new TabList(player);
-        tabLists.put(player.getName(), list);
+        tabLists.put(player.getUniqueId(), list);
         return list;
     }
 
@@ -32,12 +33,12 @@ public class TabAPI
 
     public static TabList getPlayerTabList(Player player)
     {
-        return tabLists.get(player.getName());
+        return tabLists.get(player.getUniqueId());
     }
 
     public static void removePlayer(Player player)
     {
-        tabLists.remove(player.getName());
+        tabLists.remove(player.getUniqueId());
     }
 
     public static PacketContainer buildTeamPacket(String name, String display, String prefix, String suffix, int flag, String... members)
