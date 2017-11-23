@@ -1,20 +1,12 @@
 package com.desiremc.core;
 
-import java.io.File;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
+import com.desiremc.core.commands.RenameCommand;
 import com.desiremc.core.commands.SuperSlimeCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
@@ -68,6 +60,14 @@ import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -188,6 +188,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new PingCommand("ping", "ms"));
         customCommandHandler.registerCommand(new RollbackCommand());
         customCommandHandler.registerCommand(new SuperSlimeCommand());
+        customCommandHandler.registerCommand(new RenameCommand());
     }
 
     private void registerListeners()

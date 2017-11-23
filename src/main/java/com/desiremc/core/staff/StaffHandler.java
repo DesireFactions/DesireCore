@@ -55,6 +55,7 @@ public class StaffHandler
     {
         staffInventories = new HashMap<>();
         deathInventories = new HashMap<>();
+        deathArmor = new HashMap<>();
         cpsTests = new HashMap<>();
         hiddenPlayers = new LinkedList<>();
         frozenPlayers = new ArrayList<>();
@@ -513,8 +514,15 @@ public class StaffHandler
 
     public void saveInventory(Player player)
     {
-        deathInventories.put(player.getUniqueId(), player.getInventory().getContents());
-        deathArmor.put(player.getUniqueId(), player.getInventory().getArmorContents());
+        if (player.getInventory().getContents() != null)
+        {
+            deathInventories.put(player.getUniqueId(), player.getInventory().getContents());
+        }
+
+        if (player.getInventory().getArmorContents() != null)
+        {
+            deathArmor.put(player.getUniqueId(), player.getInventory().getArmorContents());
+        }
     }
 
     public void restoreInventory(Session player, Session target)
