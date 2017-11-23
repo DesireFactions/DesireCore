@@ -82,12 +82,12 @@ public class TabList
         if (tabSlot == null)
         {
             tabSlot = new TabSlot(this, name);
+            slots.put(slot, tabSlot);
         }
         else
         {
             tabSlot.setName(name);
         }
-        slots.put(slot, tabSlot);
         return tabSlot;
     }
 
@@ -102,6 +102,7 @@ public class TabList
         if (tabSlot == null)
         {
             tabSlot = new TabSlot(this, prefix, name, suffix);
+            slots.put(slot, tabSlot);
         }
         else
         {
@@ -109,7 +110,6 @@ public class TabList
             tabSlot.setName(name);
             tabSlot.setSuffix(suffix);
         }
-        slots.put(slot, tabSlot);
         return tabSlot;
     }
 
