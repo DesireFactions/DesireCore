@@ -1,9 +1,9 @@
 package com.desiremc.core.validators;
 
+import com.desiremc.core.DesireCore;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.desiremc.core.DesireCore;
 
 public class ItemInHandValidator extends PlayerValidator
 {
@@ -17,7 +17,7 @@ public class ItemInHandValidator extends PlayerValidator
         }
 
         Player p = (Player) sender;
-        if (p.getItemInHand() == null)
+        if (p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
         {
             DesireCore.getLangHandler().sendString(sender, "item_in_hand");
             return false;

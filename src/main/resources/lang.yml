@@ -31,6 +31,7 @@ punishment_too_long: "You can't punish someone that long!"
 no_free_slots: '&7You have no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
+rename: "You have renamed the item in your hand to {name}."
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
