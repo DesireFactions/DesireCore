@@ -36,13 +36,13 @@ public abstract class ValidBaseCommand extends ValidCommand
         else
         {
             Session s = SessionHandler.getSession(sender);
-            if (s == null || s.getRank().getId() >= requiredRank.getId())
+            if (s != null && (s.getRank().getId() < getRequiredRank().getId() || s.getRank().getId() < sub.getRequiredRank().getId()))
             {
-                sub.run(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
+                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             }
             else
             {
-                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
+                sub.run(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
             }
         }
     }
