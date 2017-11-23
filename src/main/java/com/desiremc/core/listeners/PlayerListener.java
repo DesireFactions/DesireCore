@@ -36,7 +36,11 @@ public class PlayerListener implements Listener
     {
         if (StaffHandler.getInstance().isFrozen(event.getPlayer()))
         {
-            event.setCancelled(true);
+            String command = event.getMessage();
+            if (!command.startsWith("/msg") && !command.startsWith("/r"))
+            {
+                event.setCancelled(true);
+            }
         }
     }
 
