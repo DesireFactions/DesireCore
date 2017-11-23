@@ -29,41 +29,24 @@ public class PacketListener extends PacketAdapter
 
         if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO)
         {
-            int ping = packet.getIntegers().read(0);
-            if (ping != -1)
-            {
-                try
-                {
-                    ping = packet.getIntegers().read(2);
-                }
-                catch (Exception ex)
-                {
-                }
-            }
+            int ping = packet.getIntegers().read(TabList.PACKET_INFO_PING);
             if (ping == -1)
             {
                 TabList list = TabAPI.getPlayerTabList(player);
                 ping = list.getDefaultPing();
                 String name = packet.getStrings().read(0);
 
-                for (int i = 0; i < 60; i++)
+                for (TabSlot slot : list.getSlots())
                 {
-                    TabSlot slot = list.getSlot(i);
-                    if (slot != null && slot.getName().equals(name))
+                    if (slot != null && slot.getName() != null && slot.getName().equals(name))
                     {
                         ping = slot.getPing();
                         break;
                     }
                 }
 
-                try
-                {
-                    packet.getIntegers().write(2, ping);
-                }
-                catch (Exception ex)
-                {
-                    packet.getIntegers().write(0, ping);
-                }
+                packet.getIntegers().write(TabList.PACKET_INFO_PING, ping);
+
                 event.setPacket(packet);
                 return;
             }

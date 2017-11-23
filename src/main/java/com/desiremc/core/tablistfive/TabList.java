@@ -1,6 +1,7 @@
 package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,11 +22,11 @@ public class TabList
 
     private static final boolean DEBUG = true;
     
-    private static final int PACKET_INFO_ACTION = 0;
-    private static final int PACKET_INFO_GAMEMODE = 1;
-    private static final int PACKET_INFO_PING = 2;
-    private static final int PACKET_INFO_PROFILE = 0;
-    private static final int PACKET_INFO_USERNAME = 0;
+    public static final int PACKET_INFO_ACTION = 0;
+    public static final int PACKET_INFO_GAMEMODE = 1;
+    public static final int PACKET_INFO_PING = 2;
+    public static final int PACKET_INFO_PROFILE = 0;
+    public static final int PACKET_INFO_USERNAME = 0;
 
     private Player player;
 
@@ -184,7 +185,7 @@ public class TabList
                 packet.getStrings().write(PACKET_INFO_USERNAME, str);
                 packet.getIntegers().write(PACKET_INFO_ACTION, 4);
                 packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                packet.getIntegers().write(PACKET_INFO_PING, 0);
+                packet.getIntegers().write(PACKET_INFO_PING, -1);
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
@@ -203,7 +204,7 @@ public class TabList
                 packet.getStrings().write(PACKET_INFO_USERNAME, slot.getName());
                 packet.getIntegers().write(PACKET_INFO_ACTION, 0);
                 packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                packet.getIntegers().write(PACKET_INFO_PING, 0);
+                packet.getIntegers().write(PACKET_INFO_PING, -1);
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
@@ -243,7 +244,7 @@ public class TabList
                     packet.getStrings().write(PACKET_INFO_USERNAME, slot.getName());
                     packet.getIntegers().write(PACKET_INFO_ACTION, slot.state);
                     packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
-                    packet.getIntegers().write(PACKET_INFO_PING, 0);
+                    packet.getIntegers().write(PACKET_INFO_PING, -1);
                     packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(slot.getUniqueId(), slot.getName()));
                     if (DEBUG)
                     {
@@ -293,5 +294,10 @@ public class TabList
             name = "§" + (slot / 10) + "§" + (slot % 10);
         }
         return name;
+    }
+    
+    public Collection<TabSlot> getSlots()
+    {
+        return slots.values();
     }
 }
