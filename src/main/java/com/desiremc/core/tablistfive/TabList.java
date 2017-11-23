@@ -27,10 +27,7 @@ public class TabList
 
     private Player player;
 
-    private boolean old = ((CraftPlayer) player).getHandle()
-            .playerConnection
-            .networkManager
-            .getVersion() >= 20;
+    private boolean old;
 
     private HashMap<Integer, TabSlot> slots = new HashMap<>();
 
@@ -44,6 +41,7 @@ public class TabList
     protected TabList(Player player)
     {
         this.player = player;
+        old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() >= 20;
     }
 
     public TabSlot getSlot(int column, int row)
