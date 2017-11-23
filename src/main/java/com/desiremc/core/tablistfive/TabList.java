@@ -27,7 +27,10 @@ public class TabList
 
     private Player player;
 
-    private boolean old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() >= 20;
+    private boolean old = ((CraftPlayer) player).getHandle()
+            .playerConnection
+            .networkManager
+            .getVersion() >= 20;
 
     private HashMap<Integer, TabSlot> slots = new HashMap<>();
 
