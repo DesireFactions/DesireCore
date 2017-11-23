@@ -1,5 +1,6 @@
 package com.desiremc.core.tablistfive;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.PacketType;
@@ -26,6 +27,10 @@ public class PacketListener extends PacketAdapter
         }
         PacketContainer packet = event.getPacket();
         Player player = event.getPlayer();
+        if (((CraftPlayer)player).getHandle().playerConnection.networkManager.getVersion() >= 20)
+        {
+            return;
+        }
 
         if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO)
         {
