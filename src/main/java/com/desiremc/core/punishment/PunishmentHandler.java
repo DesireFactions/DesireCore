@@ -4,6 +4,10 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
+import org.bukkit.ChatColor;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import java.util.ArrayList;
@@ -102,6 +106,45 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
     public static PunishmentHandler getInstance()
     {
         return instance;
+    }
+
+    public String[] getMouseOverDetails(Session session)
+    {
+        Punishment punishment;
+
+        if (session.isIPBanned() != null)
+        {
+            punishment = session.isIPBanned();
+        }
+        else if (session.isBanned() != null)
+        {
+            punishment = session.isBanned();
+        }
+        else if (session.isMuted() != null)
+        {
+            punishment = session.isMuted();
+        }
+        else
+        {
+            punishment = null;
+        }
+
+
+        if (punishment == null)
+        {
+            return new String[] {
+                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO PUNISHMENT"
+            };
+        }
+        else
+        {
+            return new String[] {
+                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "Punishment Info",
+                    ChatColor.GRAY + "Type: " + ChatColor.YELLOW + StringUtils.capitalize(punishment.getType().name().replace("_", " ").toLowerCase()),
+                    ChatColor.GRAY + "Expires in: " + ChatColor.YELLOW + (punishment.isPermanent() ? "Permanent" : DateUtils.formatDateDiff(punishment.getExpirationTime())),
+                    ChatColor.GRAY + "Punished by: " + ChatColor.YELLOW + PlayerUtils.getPlayer(punishment.getIssuer()).getName()
+            };
+        }
     }
 
 }
