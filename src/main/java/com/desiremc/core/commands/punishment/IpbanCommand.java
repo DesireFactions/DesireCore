@@ -12,6 +12,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class IpbanCommand extends ValidCommand
@@ -20,8 +21,7 @@ public class IpbanCommand extends ValidCommand
 
     public IpbanCommand()
     {
-        super("ipban", "Permanently ip ban a user from the server.", Rank.ADMIN, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[] {"target", "reason"});
+        super("ipban", "Permanently ip ban a user from the server.", Rank.ADMIN, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
 
@@ -46,19 +46,11 @@ public class IpbanCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "ipban.ban_message",
-                "{player}", target.getName(),
-                "{reason}", args[1]);
+        Bukkit.broadcastMessage(LANG.renderMessage("ipban.ban_message", "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[1]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(("\n" + "&c&lYour IP is permanently banned from" +
-                    " the network!\n"
-                    + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
-                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                    .replace("{reason}", (String) args[1])
-                    .replace("{issuer}", session.getName())
-                    .replace("&", "§"));
+            target.getPlayer().kickPlayer(("\n" + "&c&lYour IP is permanently banned from the network!\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[1]).replace("{issuer}", session.getName()).replace("&", "§"));
         }
     }
 }

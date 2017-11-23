@@ -10,6 +10,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.PlayerIsBannedValidator;
 import com.desiremc.core.validators.PlayerIsNotBlacklistedValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class UnbanCommand extends ValidCommand
@@ -31,11 +32,12 @@ public class UnbanCommand extends ValidCommand
     {
         Session target = (Session) args[0];
 
-        LANG.sendRenderMessage(sender, "ban.unban_message", "{player}", target.getName());
         Punishment p = target.isBanned();
         p.setRepealed(true);
         PunishmentHandler.getInstance().save(p);
         PunishmentHandler.getInstance().refreshPunishments(target);
+
+        Bukkit.broadcastMessage(LANG.renderMessage("ban.unban_message", "{target}", target.getName(), "{player}", sender.getName()));
     }
 
 }

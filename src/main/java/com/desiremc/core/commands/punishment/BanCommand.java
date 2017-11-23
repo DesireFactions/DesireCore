@@ -13,6 +13,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class BanCommand extends ValidCommand
@@ -47,19 +48,11 @@ public class BanCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "ban.permban_message",
-                "{player}", target.getName(),
-                "{reason}", args[1]);
+        Bukkit.broadcastMessage(LANG.renderMessage("ban.permban_message", "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[1]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(("\n" + "&c&lYou are permanently banned from" +
-                    " the network!\n"
-                    + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
-                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                    .replace("{reason}", (String) args[1])
-                    .replace("{issuer}", session.getName())
-                    .replace("&", "§"));
+            target.getPlayer().kickPlayer(("\n" + "&c&lYou are permanently banned from the network!\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[1]).replace("{issuer}", session.getName()).replace("&", "§"));
         }
     }
 }

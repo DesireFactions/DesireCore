@@ -10,6 +10,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.PlayerIsMutedValidator;
 import com.desiremc.core.validators.PlayerIsNotBlacklistedValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class UnmuteCommand extends ValidCommand
@@ -36,7 +37,7 @@ public class UnmuteCommand extends ValidCommand
         PunishmentHandler.getInstance().save(p);
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "mute.unmute_message", "{player}", target.getName());
+        Bukkit.broadcastMessage(LANG.renderMessage("mute.unmute_message", "{target}", target.getName(), "{player}", sender.getName()));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

@@ -62,29 +62,28 @@ friend:
   no_friends: 'You currently have no friends.'
   not_friends: 'You are not friends with {player}.'
 ban:
-  tempban_message: '&7You have banned &e{player}&7 for {duration} for &e{reason}&7.'
-  permban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
-  unban_message: '&7You have unbanned &e{player}&7.'
+  tempban_message: '&7{player} has banned &e{target}&7 for {duration} for &e{reason}&7.'
+  permban_message: '&7{player} has permanently banned &e{target}&7 for &e{reason}&7.'
+  unban_message: '&7{player} has unbanned &e{target}&7.'
 ipban:
-  ban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
-  unban_message: '&7You have unbanned &e{player}&7.'
+  ban_message: '&7{player} has permanently IP banned &e{target}&7 for &e{reason}&7.'
+  unban_message: '&7{player} has unbanned &e{target}''s&7 IP.'
 mute:
-  tempmute_message: '&7You have muted &e{player}&7 for {duration} for &e{reason}&7.'
-  permmute_message: '&7You have permanently muted &e{player}&7 for &e{reason}&7.'
-  unmute_message: '&7You have unmuted &e{player}&7.'
+  tempmute_message: '&7{player} has muted &e{target}&7 for {duration} for &e{reason}&7.'
+  permmute_message: '&7{player} has permanently muted &e{target}&7 for &e{reason}&7.'
+  unmute_message: '&7{player} has unmuted &e{target}&7.'
   tempmute_message_target: '&7You have been muted by &e{player}&7 for {duration} for &e{reason}&7.'
   permmute_message_target: '&7You have been permanently muted by &e{player}&7 for &e{reason}&7.'
   unmute_message_target: '&7You have been unmuted by &e{player}&7.'
 blacklist:
-  blacklist_message: '&7You have blacklisted &e{player}&7 for &e{reason}&7.'
-  unblacklist_message: '&7You have unblacklisted &e{player}&7.'
-  permban_message_target: '&7You have been blacklisted by &e{player}&7 for &e{reason}&7.'
+  blacklist_message: '&7{player} has blacklisted &e{target}&7 for &e{reason}&7.'
+  unblacklist_message: '&7{player} has unblacklisted &e{target}&7.'
 warn:
-  warn_issued: 'You have warned {player} for {reason}'
+  warn_issued: '&7{player} has warned &e{target}&7 for &e{reason}&7.'
   warned: 'You have been warned by {player} for {reason}. The warning expires in {time}'
 kick:
-  kick_message_target: 'You have been kicked by {player} for {reason}'
-  kick_message: 'You have kicked {player} for {reason}'
+  kick_message_target: '&7You have been kicked by &e{player}&7 for &e{reason}&7.'
+  kick_message: '&7{player} has kicked &e{target}&7.'
 staff:
   cps-start: 'Starting clicks per second test for {player}. Result in 10 seconds.'
   cps-finish: '{player} had a CPS of {amount} over 10 seconds.'
