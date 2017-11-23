@@ -8,7 +8,6 @@ public enum Achievement
 
     FIRST_LOGIN("First Login", "Login to DesireHCF for the first time", 100),
     FIRST_FRIEND("First Friend", "Congratulations! You're making friends", 100),
-    FIRST_ENDERCHEST_OPEN("First EnderChest Open", "Open your ender chest for the first time!", 100),
     FIRST_USE_CROWBAR("First CrowBar Use", "Use a crowbar for the first time!", 100),
     FIRST_COMBAT("First Combat", "Enter Combat for the first time!", 250),
     FIRST_GAPPLE("First Gapple", "Use a Gapple for the first time!", 75);
