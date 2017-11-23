@@ -314,6 +314,14 @@ public class TabList
         packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
         packet.getIntegers().write(PACKET_INFO_PING, -1);
         packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+        try
+        {
+            TabAPI.getProtocolManager().sendServerPacket(player, packet);
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public void removeHiddenPlayer(Player player)
@@ -325,5 +333,13 @@ public class TabList
         packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
         packet.getIntegers().write(PACKET_INFO_PING, -1);
         packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+        try
+        {
+            TabAPI.getProtocolManager().sendServerPacket(player, packet);
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
