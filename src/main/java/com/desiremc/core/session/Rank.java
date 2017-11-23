@@ -16,9 +16,9 @@ public enum Rank
     MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
     SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
     ADMIN(9, "Admin", "§c§lADMIN", ChatColor.GREEN, ChatColor.RED),
-    MANAGER(9, "Manager", "§4§lMANAGER", ChatColor.GREEN, ChatColor.RED),
-    DEVELOPER(10, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
-    OWNER(11, "Owner", "§3§lOWNER", ChatColor.GREEN, ChatColor.RED);
+    MANAGER(10, "Manager", "§4§lMANAGER", ChatColor.GREEN, ChatColor.RED),
+    DEVELOPER(11, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
+    OWNER(12, "Owner", "§3§lOWNER", ChatColor.GREEN, ChatColor.RED);
 
     private final int id;
     private final String displayName;
