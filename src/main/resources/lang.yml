@@ -30,6 +30,7 @@ rank_too_high: "You can't set a players rank higher than your own."
 punishment_too_long: "You can't punish someone that long!"
 no_free_slots: '&7You have no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
+not_world: "That world does not exist."
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
