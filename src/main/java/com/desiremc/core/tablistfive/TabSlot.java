@@ -10,7 +10,7 @@ public class TabSlot
 
     private TabList list;
     protected boolean sent;
-    protected boolean toRemove;
+    protected int state;
 
     private UUID uuid;
     private String prefix, name, suffix;
@@ -115,8 +115,8 @@ public class TabSlot
         {
             return;
         }
-        if (toRemove || !sent)
-        { //2 teams with the same name causes client crash
+        if (state == 4 || !sent)
+        {
             return;
         }
         if (this.prefix != null || this.suffix != null)
@@ -141,12 +141,8 @@ public class TabSlot
 
     public void updatePrefixAndSuffix(String prefix, String suffix)
     {
-        if (TabAPI.getProtocolManager().getProtocolVersion(list.getPlayer()) >= 47)
+        if (state == 4 || !sent)
         {
-            return;
-        }
-        if (toRemove || !sent)
-        { //Updating prefix and suffix of team which doesn't exists causes client crash
             return;
         }
         if (this.prefix == null && this.suffix == null)
@@ -171,12 +167,8 @@ public class TabSlot
 
     public void removePrefixAndSuffix()
     {
-        if (TabAPI.getProtocolManager().getProtocolVersion(list.getPlayer()) >= 47)
+        if (state == 4 || (this.prefix == null && this.suffix == null) || !sent)
         {
-            return;
-        }
-        if (toRemove || (this.prefix == null && this.suffix == null) || !sent)
-        { //Removing team which doesn't exists causes client crash
             return;
         }
 

@@ -63,6 +63,7 @@ import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.GadgetHandler;
 import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.tablistfive.TabAPI;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
@@ -122,6 +123,7 @@ public class DesireCore extends JavaPlugin
         StatusManager.startPingTask();
         ReportHandler.initialize();
         GadgetHandler.initialize();
+        TabAPI.initialize();
 
         mongoWrapper.getDatastore().ensureIndexes();
 

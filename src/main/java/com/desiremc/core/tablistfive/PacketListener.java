@@ -2,20 +2,18 @@ package com.desiremc.core.tablistfive;
 
 import org.bukkit.entity.Player;
 
-import com.comphenix.protocol.Packets;
-import com.comphenix.protocol.events.ConnectionSide;
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.desiremc.core.DesireCore;
 
-@SuppressWarnings("deprecation")
 public class PacketListener extends PacketAdapter
 {
 
     public PacketListener()
     {
-        super(DesireCore.getInstance(), ConnectionSide.SERVER_SIDE, Packets.Server.PLAYER_INFO, Packets.Server.LOGIN);
+        super(DesireCore.getInstance(), PacketType.Play.Server.PLAYER_INFO, PacketType.Play.Server.LOGIN);
         TabAPI.getProtocolManager().addPacketListener(this);
     }
 
@@ -29,7 +27,7 @@ public class PacketListener extends PacketAdapter
         PacketContainer packet = event.getPacket();
         Player player = event.getPlayer();
 
-        if (event.getPacketID() == Packets.Server.PLAYER_INFO)
+        if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO)
         {
             int ping = packet.getIntegers().read(0);
             if (ping != -1)

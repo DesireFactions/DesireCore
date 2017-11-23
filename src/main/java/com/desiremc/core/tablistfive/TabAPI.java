@@ -39,7 +39,7 @@ public class TabAPI
     {
         tabLists.remove(player.getName());
     }
-    
+
     public static PacketContainer buildTeamPacket(String name, String display, String prefix, String suffix, int flag, String... members)
     {
         PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
@@ -47,6 +47,11 @@ public class TabAPI
         packet.getStrings().write(0, name).write(1, display).write(2, prefix).write(3, suffix);
         packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(members));
         return packet;
+    }
+
+    public static void initialize()
+    {
+        getProtocolManager().addPacketListener(new PacketListener());
     }
 
 }
