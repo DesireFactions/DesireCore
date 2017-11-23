@@ -41,7 +41,7 @@ public class TabList
     protected TabList(Player player)
     {
         this.player = player;
-        old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() >= 20;
+        old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() < 20;
     }
 
     public TabSlot getSlot(int column, int row)
