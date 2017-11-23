@@ -345,11 +345,11 @@ public class Session
         {
             DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
             DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.title");
-            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.name");
-            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.desc");
+            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.name", "{name}", achievement.getName());
+            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.desc", "{desc}", achievement.getDescription());
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.reward");
+                DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.reward", "{reward}", achievement.getReward());
             }
             DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
         }
