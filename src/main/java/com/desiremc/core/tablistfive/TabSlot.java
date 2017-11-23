@@ -24,11 +24,23 @@ public class TabSlot
     public TabSlot(TabList list, String prefix, String name, String suffix, UUID uuid)
     {
         this.list = list;
-
-        this.prefix = prefix.substring(0, Math.min(prefix.length(), 16)); //Limit to 16 chars to avoid client crash
+        if (prefix != null)
+        {
+            this.prefix = prefix.substring(0, Math.min(prefix.length(), 16));//Limit to 16 chars to avoid client crash
+        }
+        else
+        {
+            this.prefix = "";
+        }
         this.name = name.substring(0, Math.min(name.length(), 16)); //Limit to 16 chars to avoid client crash
-        this.suffix = suffix.substring(0, Math.min(suffix.length(), 16)); //Limit to 16 chars to avoid client crash
-
+        if (suffix != null)
+        {
+            this.suffix = suffix.substring(0, Math.min(suffix.length(), 16)); //Limit to 16 chars to avoid client crash
+        }
+        else
+        {
+            suffix = "";
+        }
         this.sent = false;
         this.ping = list.getDefaultPing();
 
@@ -183,7 +195,7 @@ public class TabSlot
     {
         this.uuid = uuid;
     }
-    
+
     public String getComplete()
     {
         return prefix + name + suffix;
