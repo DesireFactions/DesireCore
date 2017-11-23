@@ -21,7 +21,7 @@ public class TabList
 {
 
     private static final boolean DEBUG = true;
-    
+
     public static final int PACKET_INFO_ACTION = 0;
     public static final int PACKET_INFO_GAMEMODE = 1;
     public static final int PACKET_INFO_PING = 2;
@@ -279,7 +279,10 @@ public class TabList
                 key = entry.getKey();
             }
         }
-        clearSlot(key);
+        if (key != -1)
+        {
+            clearSlot(key);
+        }
     }
 
     private static String getNullName(int slot)
@@ -295,12 +298,12 @@ public class TabList
         }
         return name;
     }
-    
+
     public Collection<TabSlot> getSlots()
     {
         return slots.values();
     }
-    
+
     public boolean isOld()
     {
         return old;
@@ -323,7 +326,7 @@ public class TabList
             e.printStackTrace();
         }
     }
-    
+
     public void removeHiddenPlayer(Player player)
     {
 
