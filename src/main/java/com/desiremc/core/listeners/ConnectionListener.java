@@ -117,7 +117,6 @@ public class ConnectionListener implements Listener
         SessionHandler.endSession(session);
 
         StaffHandler.getInstance().disableStaffMode(player);
-        StaffHandler.getInstance().unFreeze(player);
         e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", player.getName()));
 
         PlayerUtils.removePlayer(player);
