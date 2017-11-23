@@ -10,7 +10,6 @@ public class TabSlot
 
     private TabList list;
     protected boolean sent;
-    protected int state;
 
     private UUID uuid;
     private String prefix, name, suffix;
@@ -115,7 +114,7 @@ public class TabSlot
         {
             return;
         }
-        if (state == 4 || !sent)
+        if (!sent)
         {
             return;
         }
@@ -141,7 +140,7 @@ public class TabSlot
 
     public void updatePrefixAndSuffix(String prefix, String suffix)
     {
-        if (state == 4 || !sent)
+        if (!sent)
         {
             return;
         }
@@ -167,7 +166,7 @@ public class TabSlot
 
     public void removePrefixAndSuffix()
     {
-        if (state == 4 || (this.prefix == null && this.suffix == null) || !sent)
+        if ((this.prefix == null && this.suffix == null) || !sent)
         {
             return;
         }
