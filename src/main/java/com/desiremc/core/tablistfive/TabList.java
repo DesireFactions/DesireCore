@@ -177,13 +177,15 @@ public class TabList
 
     public void clearSlot(String match)
     {
+        int key = -1;
         for (Entry<Integer, TabSlot> entry : slots.entrySet())
         {
             if (entry.getValue().getComplete().contains(match))
             {
-                clearSlot(entry.getKey());
+                key = entry.getKey();
             }
         }
+        clearSlot(key);
     }
 
     private static String getNullName(int slot)
