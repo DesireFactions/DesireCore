@@ -399,10 +399,15 @@ public class StaffHandler
 
     private void hidePlayer(Player p)
     {
+        Session session = SessionHandler.getSession(p.getUniqueId());
         Server server = DesireCore.getInstance().getServer();
         for (Player player : server.getOnlinePlayers())
         {
-            player.hidePlayer(p);
+            Session target = SessionHandler.getSession(player.getUniqueId());
+            if (target.getRank().getId() < session.getRank().getId())
+            {
+                player.hidePlayer(p);
+            }
         }
     }
 
