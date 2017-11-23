@@ -11,11 +11,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.PlayerIsIPBannedValidator;
 import com.desiremc.core.validators.PlayerIsNotBlacklistedValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-/**
- * Created by drkpr on 11/14/2017.
- */
 public class UnIpbanCommand extends ValidCommand
 {
     private static final LangHandler LANG = DesireCore.getLangHandler();
@@ -34,10 +32,11 @@ public class UnIpbanCommand extends ValidCommand
     {
         Session target = (Session) args[0];
 
-        LANG.sendRenderMessage(sender, "ipban.unban_message", "{player}", target.getName());
         Punishment p = PunishmentHandler.getInstance().getPunishment(target.getUniqueId(), Type.IP_BAN);
         p.setRepealed(true);
         PunishmentHandler.getInstance().save(p);
         PunishmentHandler.getInstance().refreshPunishments(target);
+
+        Bukkit.broadcastMessage(LANG.renderMessage("ipban.unban_message", "{target}", target.getName(), "{player}", sender.getName()));
     }
 }

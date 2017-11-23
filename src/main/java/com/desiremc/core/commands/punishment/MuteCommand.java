@@ -14,6 +14,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class MuteCommand extends ValidCommand
@@ -23,8 +24,7 @@ public class MuteCommand extends ValidCommand
 
     public MuteCommand()
     {
-        super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC,
-                new String[] {"target", "reason"});
+        super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
@@ -51,15 +51,11 @@ public class MuteCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "mute.permmute_message",
-                "{player}", target.getName(),
-                "{reason}", args[1]);
+        Bukkit.broadcastMessage(LANG.renderMessage("mute.permmute_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            LANG.sendRenderMessage(target, "mute.permmute_message_target",
-                    "{player}", session.getName(),
-                    "{reason}", args[1]);
+            LANG.sendRenderMessage(target, "mute.permmute_message_target", "{player}", session.getName(), "{reason}", args[1]);
         }
     }
 }

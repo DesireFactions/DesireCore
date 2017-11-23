@@ -10,6 +10,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.PlayerIsBannedValidator;
 import com.desiremc.core.validators.PlayerIsBlacklistedValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 
@@ -30,7 +31,7 @@ public class UnblacklistCommand extends ValidCommand
     {
         Session target = (Session) args[0];
 
-        LANG.sendRenderMessage(sender, "blacklist.unblacklist_message", "{player}", target.getName());
+        Bukkit.broadcastMessage(LANG.renderMessage("blacklist.unblacklist_message", "{target}", target.getName(), "{player}", sender.getName()));
 
         for (Punishment punishment : target.getActivePunishments())
         {

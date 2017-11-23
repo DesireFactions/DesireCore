@@ -17,6 +17,7 @@ import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.PunishmentTimeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class TempBanCommand extends ValidCommand
@@ -57,21 +58,12 @@ public class TempBanCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "ban.tempban_message",
-                "{duration}", DateUtils.formatDateDiff(time),
-                "{player}", target.getName(),
-                "{reason}", args[2]);
+        Bukkit.broadcastMessage(LANG.renderMessage("ban.tempban_message", "{duration}", DateUtils.formatDateDiff(time), "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[2]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(("\n" + "&c&lYou are banned from the " +
-                    "network!\n"
-                    + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
-                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                    .replace("{reason}", (String) args[2])
-                    .replace("{until}", DateUtils.formatDateDiff(time))
-                    .replace("{issuer}", session.getName())
-                    .replace("&", "§"));
+            target.getPlayer().kickPlayer(("\n" + "&c&lYou are banned from the network!\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[2]).replace("{until}", DateUtils.formatDateDiff(time)).replace("{issuer}",
+                    session.getName()).replace("&", "§"));
         }
     }
 

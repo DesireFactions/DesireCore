@@ -13,6 +13,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.PunishmentTimeValidator;
+import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import org.bukkit.command.CommandSender;
 
 public class RollbackCommand extends ValidCommand
@@ -28,7 +29,7 @@ public class RollbackCommand extends ValidCommand
         addParser(new PastTimeParser(), "time");
 
         addValidator(new PlayerValidator());
-        //addValidator(new SenderOutranksTargetValidator(), "target");
+        addValidator(new SenderOutranksTargetValidator(), "target");
         addValidator(new PunishmentTimeValidator(), "time");
     }
 

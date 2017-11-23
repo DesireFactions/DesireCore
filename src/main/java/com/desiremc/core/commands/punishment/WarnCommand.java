@@ -16,6 +16,7 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class WarnCommand extends ValidCommand
@@ -52,9 +53,7 @@ public class WarnCommand extends ValidCommand
         punishment.setReason((String) args[2]);
         PunishmentHandler.getInstance().save(punishment);
 
-        LANG.sendRenderMessage(sender, "warn.warn_issued",
-                "{player}", target.getName(),
-                "{reason}", args[2]);
+        Bukkit.broadcastMessage(LANG.renderMessage("warn.warn_issued", "{target}", target.getName(), "{reason}", args[2], "{player}", sender.getName()));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {

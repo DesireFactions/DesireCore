@@ -14,6 +14,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class BlacklistCommand extends ValidCommand
@@ -51,15 +52,11 @@ public class BlacklistCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        LANG.sendRenderMessage(sender, "blacklist.blacklist_message",
-                "{player}", target.getName(),
-                "{reason}", args[2]);
+        Bukkit.broadcastMessage(LANG.renderMessageNoPrefix("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[2]));
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            LANG.sendRenderMessage(target, "blacklist.blacklist_message_target",
-                    "{player}", session.getName(),
-                    "{reason}", args[2]);
+            target.getPlayer().kickPlayer(("\n" + "&c&lYou are permanently blacklisted from the network!\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[1]).replace("{issuer}", session.getName()).replace("&", "§"));
         }
     }
 }
