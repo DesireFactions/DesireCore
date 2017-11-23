@@ -248,7 +248,7 @@ public class TabList
                     ex.printStackTrace();
                 }
             }
-            for (int i = 0; i < count; i++)
+            for (int i = count - 1; i >= 0; i--)
             {
                 TabSlot slot = slots.get(i);
                 PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
@@ -278,7 +278,7 @@ public class TabList
                 packet.getIntegers().write(PACKET_INFO_ACTION, 0);
                 packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
                 packet.getIntegers().write(PACKET_INFO_PING, -1);
-                packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+                packet.getGameProfiles().write(PACKET_INFO_PROFILE, WrappedGameProfile.fromPlayer(player));
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
