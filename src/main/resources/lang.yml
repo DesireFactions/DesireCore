@@ -160,12 +160,12 @@ tokens:
   set: 'Your token amount is now {tokens}'
 achievement:
   award:
-    header: '&8----------------------------------------------------'
-    title: '&7               Achievement unlocked!                '
+    header: '&8&m----------------------------------------------------'
+    title: '&4&lDesireHCF &7Achievement unlocked!'
     name: '&7Name: &e{name}'
     desc: '&7Desc: &e{desc}'
-    reward: '&7Reward: &e{reward}'
-    footer: '&8----------------------------------------------------'
+    reward: '&7Reward: &e{reward} tokens!'
+    footer: '&8&m----------------------------------------------------'
 punishment:
   found: '[DesireHCF] Found punishment document for: {player}'
   type: '[DesireHCF] Punishment Type: {reason}'
