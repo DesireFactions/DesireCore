@@ -27,7 +27,7 @@ public class TabList
 
     private Player player;
 
-    private boolean old = TabAPI.getProtocolManager().getProtocolVersion(player) >= 20;
+    private boolean old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() >= 20;
 
     private HashMap<Integer, TabSlot> slots = new HashMap<>();
 
@@ -71,14 +71,14 @@ public class TabList
     public void clearSlot(int slot)
     {
         TabSlot tabSlot = slots.get(slot);
-        
+
         if (tabSlot.getPrefix() != null && !tabSlot.getPrefix().equals(""))
         {
             tabSlot.removePrefixAndSuffix();
             tabSlot.setPrefix(null);
             tabSlot.setSuffix(null);
         }
-        
+
         tabSlot.setName(getNullName(slot));
         tabSlot.state = 3;
     }
