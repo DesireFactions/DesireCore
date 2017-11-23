@@ -19,6 +19,8 @@ import net.minecraft.server.v1_7_R4.ChatSerializer;
 public class TabList
 {
 
+    private static final boolean DEBUG = true;
+    
     private static final int PACKET_INFO_ACTION = 0;
     private static final int PACKET_INFO_GAMEMODE = 1;
     private static final int PACKET_INFO_PING = 2;
@@ -150,12 +152,28 @@ public class TabList
 
     public void send()
     {
-        if (slots.size() != getCount())
+        if (DEBUG)
         {
+            System.out.println("TabList.send() called.");
+        }
+        int count = getCount();
+        if (DEBUG)
+        {
+            System.out.println("TabList.send() count: " + count);
+        }
+        if (slots.size() != count)
+        {
+            TabSlot slot;
             for (int i = 0; i < getCount(); i++)
             {
-                slots.put(i, new TabSlot(this, getNullName(i)));
+                slot = new TabSlot(this, getNullName(i));
+                slot.state = 0;
+                slots.put(i, slot);
             }
+        }
+        if (DEBUG)
+        {
+            System.out.println("TabList.send() slots size: " + slots.size());
         }
         if (old)
         {
@@ -178,7 +196,7 @@ public class TabList
             }
             toRemove.clear();
             TabSlot slot;
-            for (int i = 0; i < 60; i++)
+            for (int i = 0; i < count; i++)
             {
                 PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
                 slot = slots.get(i);
@@ -212,9 +230,13 @@ public class TabList
         {
             ProtocolInjector.PacketTabHeader headerFooterPacket = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(headerFooterPacket);
-            for (int i = 0; i < 80; i++)
+            for (int i = 0; i < count; i++)
             {
                 TabSlot slot = slots.get(i);
+                if (DEBUG)
+                {
+                    System.out.println("TabList.send() slot state: " + slot.state);
+                }
                 if (slot.state != -1)
                 {
                     PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
@@ -223,6 +245,10 @@ public class TabList
                     packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
                     packet.getIntegers().write(PACKET_INFO_PING, 0);
                     packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(slot.getUniqueId(), slot.getName()));
+                    if (DEBUG)
+                    {
+                        System.out.println("TabList.send() send the packet.");
+                    }
                     try
                     {
                         TabAPI.getProtocolManager().sendServerPacket(player, packet);
