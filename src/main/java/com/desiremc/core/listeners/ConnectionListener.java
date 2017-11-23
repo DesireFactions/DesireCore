@@ -80,6 +80,7 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event)
     {
+        event.setJoinMessage(null);
         if (DEBUG)
         {
             System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
@@ -101,7 +102,6 @@ public class ConnectionListener implements Listener
             session.getNameList().add(player.getName());
             session.setName(player.getName());
         }
-
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

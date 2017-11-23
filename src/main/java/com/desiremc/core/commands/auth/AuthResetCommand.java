@@ -5,6 +5,7 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.command.CommandSender;
 
 public class AuthResetCommand extends ValidCommand
@@ -24,6 +25,7 @@ public class AuthResetCommand extends ValidCommand
 
         target.setAuthKey("");
         target.setHasAuthorized(false);
+        SessionHandler.getInstance().save(target);
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "auth.reset", "{player}", target.getName());
     }
