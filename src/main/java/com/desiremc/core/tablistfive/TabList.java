@@ -10,6 +10,7 @@ import org.spigotmc.ProtocolInjector;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.FieldAccessException;
+import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 
@@ -109,7 +110,13 @@ public class TabList
         }
         for (int i = 0; i < getCount(); i++)
         {
+            System.out.println(i);
             TabSlot slot = slots.get(i);
+            if (slot == null && TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+            {
+                slot = new TabSlot(this, "");
+                slots.put(i, slot);
+            }
             if (slot != null)
             {
                 toRemove.put(i, slot);
@@ -120,12 +127,18 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
+                    System.out.println("a");
                 }
                 catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 0);
                     packet.getIntegers().write(1, 0);
                     packet.getIntegers().write(2, -1);
+                    if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                    {
+                        packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
+                    }
+                    System.out.println("b");
                 }
                 try
                 {
@@ -150,6 +163,10 @@ public class TabList
             }
             else
             {
+                if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                {
+                    throw new IllegalStateException("Problem with checking version.");
+                }
                 String nullName = "§" + String.valueOf(i);
                 if (i >= 10)
                 {
@@ -161,12 +178,14 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
+                    System.out.println("a");
                 }
                 catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 0);
                     packet.getIntegers().write(1, 0);
                     packet.getIntegers().write(2, -1);
+                    System.out.println("b");
                 }
                 try
                 {
@@ -188,6 +207,10 @@ public class TabList
 
     public void clear()
     {
+        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+        {
+            //return;
+        }
         for (int i = 0; i < getCount(); i++)
         {
             TabSlot slot = toRemove.remove(i);

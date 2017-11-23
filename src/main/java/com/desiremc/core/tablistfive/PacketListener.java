@@ -31,7 +31,7 @@ public class PacketListener extends PacketAdapter
 
         if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
         {
-            return;
+            //return;
         }
 
         if (event.getPacketID() == Packets.Server.PLAYER_INFO)

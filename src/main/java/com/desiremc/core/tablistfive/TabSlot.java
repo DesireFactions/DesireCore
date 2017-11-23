@@ -8,7 +8,20 @@ import com.comphenix.protocol.events.PacketContainer;
 public class TabSlot
 {
 
+    private TabList list;
+    protected boolean sent;
+    protected boolean toRemove;
+
+    private UUID uuid;
+    private String prefix, name, suffix;
+    private int ping;
+
     public TabSlot(TabList list, String prefix, String name, String suffix)
+    {
+        this(list, prefix, name, suffix, UUID.randomUUID());
+    }
+
+    public TabSlot(TabList list, String prefix, String name, String suffix, UUID uuid)
     {
         this.list = list;
 
@@ -18,9 +31,16 @@ public class TabSlot
 
         this.sent = false;
         this.ping = list.getDefaultPing();
+
+        this.uuid = uuid;
     }
 
     public TabSlot(TabList list, String name)
+    {
+        this(list, name, UUID.randomUUID());
+    }
+
+    public TabSlot(TabList list, String name, UUID uuid)
     {
         this.list = list;
 
@@ -28,21 +48,15 @@ public class TabSlot
 
         this.sent = false;
         this.ping = list.getDefaultPing();
+
+        this.uuid = uuid;
     }
-
-    private TabList list;
-    protected boolean sent;
-    protected boolean toRemove;
-
-    private UUID uuid;
-    private String prefix, name, suffix;
-    private int ping;
 
     public UUID getUniqueId()
     {
         return uuid;
     }
-    
+
     public void setPing(int ping)
     {
         this.ping = ping;
@@ -148,6 +162,11 @@ public class TabSlot
         {
             e.printStackTrace();
         }
+    }
+
+    protected void setUniqueId(UUID uuid)
+    {
+        this.uuid = uuid;
     }
 
 }
