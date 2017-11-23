@@ -18,6 +18,11 @@ public class TabSlot
 
     public TabSlot(TabList list, String prefix, String name, String suffix)
     {
+        this(list, prefix, name, suffix, UUID.randomUUID());
+    }
+
+    public TabSlot(TabList list, String prefix, String name, String suffix, UUID uuid)
+    {
         this.list = list;
 
         this.prefix = prefix.substring(0, Math.min(prefix.length(), 16)); //Limit to 16 chars to avoid client crash
@@ -26,9 +31,16 @@ public class TabSlot
 
         this.sent = false;
         this.ping = list.getDefaultPing();
+
+        this.uuid = uuid;
     }
 
     public TabSlot(TabList list, String name)
+    {
+        this(list, name, UUID.randomUUID());
+    }
+
+    public TabSlot(TabList list, String name, UUID uuid)
     {
         this.list = list;
 
@@ -36,6 +48,8 @@ public class TabSlot
 
         this.sent = false;
         this.ping = list.getDefaultPing();
+
+        this.uuid = uuid;
     }
 
     public UUID getUniqueId()

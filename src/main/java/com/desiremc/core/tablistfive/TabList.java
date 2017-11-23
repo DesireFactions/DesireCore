@@ -2,7 +2,6 @@ package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.UUID;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -108,93 +107,53 @@ public class TabList
         {
             ProtocolInjector.PacketTabHeader packet = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            //return;
         }
-        if (true || TabAPI.getProtocolManager().getProtocolVersion(player) < 47)
+        for (int i = 0; i < getCount(); i++)
         {
-            for (int i = 0; i < 60; i++)
+            System.out.println(i);
+            TabSlot slot = slots.get(i);
+            if (slot == null && TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
             {
-                System.out.println(i);
-                TabSlot slot = slots.get(i);
-                if (slot == null && TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                slot = new TabSlot(this, "");
+                slots.put(i, slot);
+            }
+            if (slot != null)
+            {
+                toRemove.put(i, slot);
+                slot.sent = true;
+                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+                packet.getStrings().write(0, slot.getName());
+                try
                 {
-                    slot = new TabSlot(this, "");
-                    slot.setUniqueId(UUID.randomUUID());
-                    slots.put(i, slot);
+                    packet.getBooleans().write(0, true);
+                    packet.getIntegers().write(0, -1);
+                    System.out.println("a");
                 }
-                if (slot != null)
+                catch (FieldAccessException ex)
                 {
-                    toRemove.put(i, slot);
-                    slot.sent = true;
-                    PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                    packet.getStrings().write(0, slot.getName());
-                    try
-                    {
-                        packet.getBooleans().write(0, true);
-                        packet.getIntegers().write(0, -1);
-                        System.out.println("a");
-                    }
-                    catch (FieldAccessException ex)
-                    {
-                        packet.getIntegers().write(0, 0);
-                        packet.getIntegers().write(1, 0);
-                        packet.getIntegers().write(2, -1);
-                        if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
-                        {
-                            packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
-                        }
-                        System.out.println("b");
-                    }
-                    try
-                    {
-                        TabAPI.getProtocolManager().sendServerPacket(player, packet);
-                    }
-                    catch (InvocationTargetException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    if (slot.getPrefix() != null || slot.getSuffix() != null)
-                    {
-                        PacketContainer team = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 0, slot.getName());
-                        try
-                        {
-                            TabAPI.getProtocolManager().sendServerPacket(player, team);
-                        }
-                        catch (InvocationTargetException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                else
-                {
+                    packet.getIntegers().write(0, 0);
+                    packet.getIntegers().write(1, 0);
+                    packet.getIntegers().write(2, -1);
                     if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
                     {
-                        throw new IllegalStateException("Problem with checking version.");
+                        packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
                     }
-                    String nullName = "§" + String.valueOf(i);
-                    if (i >= 10)
-                    {
-                        nullName = "§" + String.valueOf(i / 10) + "§" + String.valueOf(i % 10);
-                    }
-                    PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
-                    packet.getStrings().write(0, nullName);
+                    System.out.println("b");
+                }
+                try
+                {
+                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                }
+                catch (InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+                if (slot.getPrefix() != null || slot.getSuffix() != null)
+                {
+                    PacketContainer team = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 0, slot.getName());
                     try
                     {
-                        packet.getBooleans().write(0, true);
-                        packet.getIntegers().write(0, -1);
-                        System.out.println("a");
-                    }
-                    catch (FieldAccessException ex)
-                    {
-                        packet.getIntegers().write(0, 0);
-                        packet.getIntegers().write(1, 0);
-                        packet.getIntegers().write(2, -1);
-                        System.out.println("b");
-                    }
-                    try
-                    {
-                        TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                        TabAPI.getProtocolManager().sendServerPacket(player, team);
                     }
                     catch (InvocationTargetException e)
                     {
@@ -202,10 +161,41 @@ public class TabList
                     }
                 }
             }
-        }
-        else
-        {
-
+            else
+            {
+                if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
+                {
+                    throw new IllegalStateException("Problem with checking version.");
+                }
+                String nullName = "§" + String.valueOf(i);
+                if (i >= 10)
+                {
+                    nullName = "§" + String.valueOf(i / 10) + "§" + String.valueOf(i % 10);
+                }
+                PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+                packet.getStrings().write(0, nullName);
+                try
+                {
+                    packet.getBooleans().write(0, true);
+                    packet.getIntegers().write(0, -1);
+                    System.out.println("a");
+                }
+                catch (FieldAccessException ex)
+                {
+                    packet.getIntegers().write(0, 0);
+                    packet.getIntegers().write(1, 0);
+                    packet.getIntegers().write(2, -1);
+                    System.out.println("b");
+                }
+                try
+                {
+                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                }
+                catch (InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -221,7 +211,7 @@ public class TabList
         {
             //return;
         }
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < getCount(); i++)
         {
             TabSlot slot = toRemove.remove(i);
             if (slot != null)
@@ -291,6 +281,11 @@ public class TabList
                 }
             }
         }
+    }
+
+    private int getCount()
+    {
+        return TabAPI.getProtocolManager().getProtocolVersion(player) >= 47 ? 80 : 60;
     }
 
 }
