@@ -13,7 +13,7 @@ public class PacketListener extends PacketAdapter
 
     public PacketListener()
     {
-        super(DesireCore.getInstance(), PacketType.Play.Server.PLAYER_INFO, PacketType.Play.Server.LOGIN);
+        super(DesireCore.getInstance(), PacketType.Play.Server.PLAYER_INFO);
         TabAPI.getProtocolManager().addPacketListener(this);
     }
 

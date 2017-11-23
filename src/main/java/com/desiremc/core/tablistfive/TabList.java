@@ -300,4 +300,30 @@ public class TabList
     {
         return slots.values();
     }
+    
+    public boolean isOld()
+    {
+        return old;
+    }
+
+    public void addHiddenPlayer(Player player)
+    {
+        PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+        packet.getStrings().write(PACKET_INFO_USERNAME, player.getName());
+        packet.getIntegers().write(PACKET_INFO_ACTION, 0);
+        packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
+        packet.getIntegers().write(PACKET_INFO_PING, -1);
+        packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+    }
+    
+    public void removeHiddenPlayer(Player player)
+    {
+
+        PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+        packet.getStrings().write(PACKET_INFO_USERNAME, player.getName());
+        packet.getIntegers().write(PACKET_INFO_ACTION, 4);
+        packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
+        packet.getIntegers().write(PACKET_INFO_PING, -1);
+        packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+    }
 }
