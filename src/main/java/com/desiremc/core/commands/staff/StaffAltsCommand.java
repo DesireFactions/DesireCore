@@ -3,11 +3,14 @@ package com.desiremc.core.commands.staff;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -33,6 +36,7 @@ public class StaffAltsCommand extends ValidCommand
         if (alts.size() == 1)
         {
             LANG.sendRenderMessage(sender, "alts.none", "{player}", target.getName());
+            return;
         }
 
         LANG.sendRenderMessage(sender, "alts.header", "{player}", target.getName());
@@ -42,14 +46,12 @@ public class StaffAltsCommand extends ValidCommand
 
         for (Session session : alts)
         {
-            if (session.getOfflinePlayer().isOnline())
-            {
-                LANG.sendRenderMessageNoPrefix(sender, "alts.info_online", "{player}", session.getName());
-            }
-            else
-            {
-                LANG.sendRenderMessageNoPrefix(sender, "alts.info", "{player}", session.getName(), "{date}", DateUtils.formatDateDiff(session.getLastLogin()));
-            }
+            new FancyMessage(session.getName())
+                    .color(ChatColor.BLUE)
+                    .tooltip(PunishmentHandler.getInstance().getMouseOverDetails(session))
+                    .then((session.getOfflinePlayer().isOnline() ? " Online now" : " Last Seen: " + DateUtils.formatDateDiff(session.getLastLogin())))
+                    .color((session.getOfflinePlayer().isOnline() ? ChatColor.GREEN : ChatColor.RED))
+                    .send(sender);
         }
 
         LANG.sendRenderMessageNoPrefix(sender, "alts.spacer");
