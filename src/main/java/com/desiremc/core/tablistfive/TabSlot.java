@@ -62,9 +62,19 @@ public class TabSlot
         this.ping = ping;
     }
 
+    public int getPing()
+    {
+        return ping;
+    }
+
     public String getPrefix()
     {
         return prefix;
+    }
+
+    public void setPrefix(String prefix)
+    {
+        this.prefix = prefix;
     }
 
     public String getName()
@@ -72,14 +82,19 @@ public class TabSlot
         return name;
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
     public String getSuffix()
     {
         return suffix;
     }
 
-    public int getPing()
+    public void setSuffix(String suffix)
     {
-        return ping;
+        this.suffix = suffix;
     }
 
     public void createPrefixAndSuffix(String prefix, String suffix)
@@ -167,6 +182,11 @@ public class TabSlot
     protected void setUniqueId(UUID uuid)
     {
         this.uuid = uuid;
+    }
+    
+    public String getComplete()
+    {
+        return prefix + name + suffix;
     }
 
 }

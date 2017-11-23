@@ -2,6 +2,7 @@ package com.desiremc.core.tablistfive;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -21,16 +22,16 @@ public class TabList
 
     private int defaultPing = 0;
 
+    private HashMap<Integer, TabSlot> slots = new HashMap<>();
+    private HashMap<Integer, TabSlot> toRemove = new HashMap<>();
+
+    private String header = " ";
+    private String footer = " ";
+
     protected TabList(Player player)
     {
         this.player = player;
     }
-
-    HashMap<Integer, TabSlot> slots = new HashMap<>();
-    HashMap<Integer, TabSlot> toRemove = new HashMap<>();
-
-    String header = " ";
-    String footer = " ";
 
     public TabSlot getSlot(int column, int row)
     {
@@ -64,6 +65,9 @@ public class TabList
         {
             return;
         }
+        tabSlot.setPrefix("");
+        tabSlot.setName("");
+        tabSlot.setSuffix("");
         tabSlot.toRemove = true;
     }
 
@@ -74,7 +78,15 @@ public class TabList
 
     public TabSlot setSlot(int slot, String name)
     {
-        TabSlot tabSlot = new TabSlot(this, name);
+        TabSlot tabSlot = slots.get(slot);
+        if (tabSlot == null)
+        {
+            tabSlot = new TabSlot(this, name);
+        }
+        else
+        {
+            tabSlot.setName(name);
+        }
         slots.put(slot, tabSlot);
         return tabSlot;
     }
@@ -86,7 +98,17 @@ public class TabList
 
     public TabSlot setSlot(int slot, String prefix, String name, String suffix)
     {
-        TabSlot tabSlot = new TabSlot(this, prefix, name, suffix);
+        TabSlot tabSlot = slots.get(slot);
+        if (tabSlot == null)
+        {
+            tabSlot = new TabSlot(this, prefix, name, suffix);
+        }
+        else
+        {
+            tabSlot.setPrefix(prefix);
+            tabSlot.setName(name);
+            tabSlot.setSuffix(suffix);
+        }
         slots.put(slot, tabSlot);
         return tabSlot;
     }
@@ -110,7 +132,6 @@ public class TabList
         }
         for (int i = 0; i < getCount(); i++)
         {
-            System.out.println(i);
             TabSlot slot = slots.get(i);
             if (slot == null && TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
             {
@@ -127,7 +148,6 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
-                    System.out.println("a");
                 }
                 catch (FieldAccessException ex)
                 {
@@ -138,7 +158,6 @@ public class TabList
                     {
                         packet.getGameProfiles().write(0, new WrappedGameProfile(slot.getUniqueId(), ""));
                     }
-                    System.out.println("b");
                 }
                 try
                 {
@@ -178,14 +197,12 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
-                    System.out.println("a");
                 }
                 catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 0);
                     packet.getIntegers().write(1, 0);
                     packet.getIntegers().write(2, -1);
-                    System.out.println("b");
                 }
                 try
                 {
@@ -288,4 +305,15 @@ public class TabList
         return TabAPI.getProtocolManager().getProtocolVersion(player) >= 47 ? 80 : 60;
     }
 
+    public int getSlot(String match)
+    {
+        for (Entry<Integer, TabSlot> entry : slots.entrySet())
+        {
+            if (entry.getValue().getComplete().contains(match))
+            {
+                return entry.getKey();
+            }
+        }
+        return -1;
+    }
 }
