@@ -319,7 +319,7 @@ public class TabList
         packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
         try
         {
-            TabAPI.getProtocolManager().sendServerPacket(player, packet);
+            TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
         }
         catch (InvocationTargetException e)
         {
@@ -338,7 +338,7 @@ public class TabList
         packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
         try
         {
-            TabAPI.getProtocolManager().sendServerPacket(player, packet);
+            TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
         }
         catch (InvocationTargetException e)
         {
