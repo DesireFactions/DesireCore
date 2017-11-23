@@ -30,7 +30,7 @@ public class TabList
     public static final int PACKET_INFO_PROFILE = 0;
     public static final int PACKET_INFO_USERNAME = 0;
 
-    private Player player;
+    private Player instancePlayer;
 
     private boolean old;
 
@@ -44,10 +44,10 @@ public class TabList
     private String header = " ";
     private String footer = " ";
 
-    protected TabList(Player player)
+    protected TabList(Player instancePlayer)
     {
-        this.player = player;
-        old = ((CraftPlayer) player).getHandle().playerConnection.networkManager.getVersion() < 20;
+        this.instancePlayer = instancePlayer;
+        old = ((CraftPlayer) instancePlayer).getHandle().playerConnection.networkManager.getVersion() < 20;
     }
 
     public TabSlot getSlot(int column, int row)
@@ -72,7 +72,7 @@ public class TabList
 
     public Player getPlayer()
     {
-        return player;
+        return instancePlayer;
     }
 
     public void clearSlot(int slot)
@@ -187,7 +187,7 @@ public class TabList
                 packet.getIntegers().write(PACKET_INFO_PING, -1);
                 try
                 {
-                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
                 }
                 catch (InvocationTargetException ex)
                 {
@@ -206,7 +206,7 @@ public class TabList
                 packet.getIntegers().write(PACKET_INFO_PING, -1);
                 try
                 {
-                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
                 }
                 catch (InvocationTargetException ex)
                 {
@@ -217,7 +217,7 @@ public class TabList
                     PacketContainer team = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 0, slot.getName());
                     try
                     {
-                        TabAPI.getProtocolManager().sendServerPacket(player, team);
+                        TabAPI.getProtocolManager().sendServerPacket(getPlayer(), team);
                     }
                     catch (InvocationTargetException e)
                     {
@@ -229,7 +229,7 @@ public class TabList
         else
         {
             ProtocolInjector.PacketTabHeader headerFooterPacket = new ProtocolInjector.PacketTabHeader(ChatSerializer.a("{\"text\": \"" + header + "\"}"), ChatSerializer.a("{\"text\": \"" + footer + "\"}"));
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(headerFooterPacket);
+            ((CraftPlayer) getPlayer()).getHandle().playerConnection.sendPacket(headerFooterPacket);
             slots.values().forEach(x -> toRemoveUUID.add(x.getUniqueId()));
             for (UUID uuid : toRemoveUUID)
             {
@@ -241,7 +241,7 @@ public class TabList
                 packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(uuid, ""));
                 try
                 {
-                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
                 }
                 catch (InvocationTargetException ex)
                 {
@@ -263,7 +263,7 @@ public class TabList
                 }
                 try
                 {
-                    TabAPI.getProtocolManager().sendServerPacket(player, packet);
+                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
                 }
                 catch (InvocationTargetException ex)
                 {
@@ -279,6 +279,14 @@ public class TabList
                 packet.getIntegers().write(PACKET_INFO_GAMEMODE, 0);
                 packet.getIntegers().write(PACKET_INFO_PING, -1);
                 packet.getGameProfiles().write(PACKET_INFO_PROFILE, new WrappedGameProfile(player.getUniqueId(), player.getName()));
+                try
+                {
+                    TabAPI.getProtocolManager().sendServerPacket(getPlayer(), packet);
+                }
+                catch (InvocationTargetException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         }
     }
