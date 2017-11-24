@@ -33,6 +33,7 @@ invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
 rename: "You have renamed the item in your hand to {name}."
 already_sent_request: "You have already sent a friend request to this user."
+teamspeak: "Join us on TeamSpeak! ts.desirehcf.com"
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'

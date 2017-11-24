@@ -8,6 +8,7 @@ import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
 import com.desiremc.core.commands.RenameCommand;
 import com.desiremc.core.commands.SuperSlimeCommand;
+import com.desiremc.core.commands.TeamSpeakCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
 import com.desiremc.core.commands.auth.LoginCommand;
@@ -189,6 +190,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new RollbackCommand());
         customCommandHandler.registerCommand(new SuperSlimeCommand());
         customCommandHandler.registerCommand(new RenameCommand());
+        customCommandHandler.registerCommand(new TeamSpeakCommand("teamspeak", "ts"));
     }
 
     private void registerListeners()
