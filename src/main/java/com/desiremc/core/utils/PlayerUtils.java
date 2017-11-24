@@ -126,14 +126,16 @@ public class PlayerUtils
         return inRange;
     }
 
-    public static boolean hasEffect(Player player, PotionEffectType type)
+    public static PotionEffect getEffect(Player player, PotionEffectType type)
     {
         for (PotionEffect effect : player.getActivePotionEffects())
         {
             if (effect.getType().equals(type))
-                return true;
+            {
+                return effect;
+            }
         }
-        return false;
+        return null;
     }
 
 }
