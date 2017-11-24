@@ -107,6 +107,7 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onLogout(PlayerQuitEvent e)
     {
+        e.setQuitMessage(null);
         if (DEBUG)
         {
             System.out.println("onLogout(PlayerQuitEvent) called in ConnectionListener.");
@@ -117,8 +118,6 @@ public class ConnectionListener implements Listener
         SessionHandler.endSession(session);
 
         StaffHandler.getInstance().disableStaffMode(player);
-        e.setQuitMessage(DesireCore.getLangHandler().renderMessage("leave.message", "{player}", player.getName()));
-
         PlayerUtils.removePlayer(player);
     }
 }

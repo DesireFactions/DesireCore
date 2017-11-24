@@ -221,8 +221,6 @@ auth:
   authenticated: 'Access Granted. Welcome!'
   reset: 'You have reset {player}''s auth key. They will get another when they log in next.'
   allow: 'Allowed {player} to join the server.'
-leave:
-  message: '{player} has left the server.'
 chat:
   ignoring: '&7You are ignoring &c{target}&7.'
   ignored: '&c{target} &7is ignoring you.'
