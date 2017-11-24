@@ -16,7 +16,7 @@ import java.util.UUID;
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static Session console;
 
@@ -101,10 +101,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         }
         if (session.getSettings() == null || session.getSettings().size() == 0)
         {
-            System.out.println("Null: " + (session.getSettings()));
             session.assignDefaultSettings();
             session.save();
-            System.out.println("Size: " + (session.getSettings().size()));
         }
         if (cache)
         {
