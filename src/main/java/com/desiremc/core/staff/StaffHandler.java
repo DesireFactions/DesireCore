@@ -128,6 +128,7 @@ public class StaffHandler
         }
         LANG.sendString(p, "staff.staff-on");
         p.setGameMode(GameMode.CREATIVE);
+        p.setFoodLevel(20);
 
     }
 
