@@ -16,7 +16,7 @@ import com.comphenix.protocol.events.PacketContainer;
 public class TabList
 {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     public static final int PACKET_INFO_ACTION = 0;
     public static final int PACKET_INFO_GAMEMODE = 1;
@@ -135,7 +135,7 @@ public class TabList
     {
         if (DEBUG)
         {
-            System.out.println("TabList.send() called.");
+            System.out.println("TabList.send() called for player " + getPlayer().getName());
         }
         int count = getCount();
         if (DEBUG)
@@ -157,7 +157,16 @@ public class TabList
         }
         if (old)
         {
+            if (DEBUG)
+            {
+                System.out.println("TabList.send() is old version.");
+            }
             slots.values().forEach(x -> toRemoveName.add(x.getName()));
+            if (DEBUG)
+            {
+                System.out.println("TabList.send() toRemoveName size: " + toRemoveName.size());
+            }
+            int itSize = 0, itSize2= 0;
             for (String str : toRemoveName)
             {
                 PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
@@ -173,7 +182,13 @@ public class TabList
                 {
                     ex.printStackTrace();
                 }
+                itSize++;
             }
+            if (DEBUG)
+            {
+                System.out.println("TabList.send() toRemoveName iter count: " + itSize);
+            }
+            itSize = 0;
             toRemoveName.clear();
             TabSlot slot;
             for (int i = 0; i < count; i++)
@@ -192,6 +207,7 @@ public class TabList
                 {
                     ex.printStackTrace();
                 }
+                itSize++;
                 if (slot.getPrefix() != null || slot.getSuffix() != null)
                 {
                     PacketContainer team = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 0, slot.getName());
@@ -203,7 +219,14 @@ public class TabList
                     {
                         e.printStackTrace();
                     }
+                    itSize2++;
                 }
+            }
+
+            if (DEBUG)
+            {
+                System.out.println("TabList.send() add packet count: " + itSize);
+                System.out.println("TabList.send() team packet count: " + itSize2);
             }
         }
     }
