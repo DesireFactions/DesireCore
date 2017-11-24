@@ -191,21 +191,17 @@ public class StaffHandler
         return frozenPlayers.contains(p.getUniqueId());
     }
 
-    public void removeIsFrozenObject(Player p)
-    {
-        frozenPlayers.remove(p.getUniqueId());
-    }
-
-    public void unFreeze(Player target)
-    {
-        frozenPlayers.remove(target.getUniqueId());
-    }
-
     public void toggleFreeze(Player target, Player source)
     {
 
         Session targetSession = SessionHandler.getSession(target.getUniqueId());
         Session sourceSession = SessionHandler.getSession(source.getUniqueId());
+
+        if (targetSession.getRank().getId() >= sourceSession.getRank().getId())
+        {
+            DesireCore.getLangHandler().sendRenderMessage(source, "sender_doesnt_outrank");
+            return;
+        }
 
         if (isFrozen(target))
         {
