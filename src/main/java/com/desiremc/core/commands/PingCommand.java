@@ -34,6 +34,5 @@ public class PingCommand extends ValidCommand
             player = (Player) args[0];
             DesireCore.getLangHandler().sendRenderMessage(sender, "ping.other", "{ping}", ((CraftPlayer) player).getHandle().ping, "{player}", player.getName());
         }
-
     }
 }

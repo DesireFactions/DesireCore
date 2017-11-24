@@ -32,6 +32,7 @@ no_free_slots: '&7You have no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
 rename: "You have renamed the item in your hand to {name}."
+already_sent_request: "You have already sent a friend request to this user."
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
@@ -57,6 +58,7 @@ friend:
   no_longer_friend: 'You are no longer friends with {player}.'
   already_sent_request: 'You have already sent {player} a friend request.'
   sent_request: 'You have sent {player} a friend request.'
+  received_request: 'You have received a friend request from {player}.'
   both_friend_requested: 'You had a friend request from {player} so we added you both as friends.'
   denied_friend_request: 'You have denied {player}''s friend request.'
   no_request: 'You don''t have a friend request from {player}.'
@@ -64,6 +66,9 @@ friend:
   no_outgoing: 'You don''t have any outgoing friend requests.'
   no_friends: 'You currently have no friends.'
   not_friends: 'You are not friends with {player}.'
+  friends: '&7Current Friends: '
+  incoming_friends: '&7Incoming friend requests: '
+  outgoing_friends: '&7Outgoing friend requests: '
 ban:
   tempban_message: '&7{player} has banned &e{target}&7 for {duration} for &e{reason}&7.'
   permban_message: '&7{player} has permanently banned &e{target}&7 for &e{reason}&7.'

@@ -56,6 +56,9 @@ public class FriendUtils
         player.getIncomingFriendRequests().remove(target.getUniqueId());
         target.getOutgoingFriendRequests().remove(player.getUniqueId());
 
+        player.getOutgoingFriendRequests().remove(target.getUniqueId());
+        target.getIncomingFriendRequests().remove(player.getUniqueId());
+
         addFriend(player, target);
 
         saveRequests(player, target);

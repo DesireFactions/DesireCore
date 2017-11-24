@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.friends;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.FriendsAPI;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
@@ -9,7 +7,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.validators.SenderHasntSentFriendRequestValidator;
 import com.desiremc.core.validators.SenderNotFriendsValidator;
+import org.bukkit.command.CommandSender;
 
 public class FriendAddCommand extends ValidCommand
 {
@@ -20,6 +20,7 @@ public class FriendAddCommand extends ValidCommand
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new SenderNotFriendsValidator(), "target");
+        addValidator(new SenderHasntSentFriendRequestValidator(), "target");
     }
 
     @Override
