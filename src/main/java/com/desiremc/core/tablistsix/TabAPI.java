@@ -29,6 +29,11 @@ public class TabAPI
         return tabLists.get(player.getUniqueId());
     }
 
+    public static void removePlayer(Player player)
+    {
+        tabLists.remove(player.getUniqueId());
+    }
+    
     public static ProtocolManager getProtocolManager()
     {
         return ProtocolLibrary.getProtocolManager();

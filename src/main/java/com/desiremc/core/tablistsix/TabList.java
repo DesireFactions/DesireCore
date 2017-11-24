@@ -24,7 +24,6 @@ public class TabList
     HashMap<Integer, TabSlot> slots = new HashMap<>();
     HashMap<Integer, TabSlot> toRemove = new HashMap<>();
 
-
     public TabSlot getSlot(int column, int row)
     {
         return getSlot(column * (row - 1));
@@ -53,6 +52,15 @@ public class TabList
             return;
         }
         tabSlot.toRemove = true;
+    }
+
+    public void clearAllSlots()
+    {
+        for (TabSlot slot : slots.values())
+        {
+            slot.toRemove = true;
+        }
+        slots.clear();
     }
 
     public TabSlot setSlot(int column, int row, String name)
@@ -240,6 +248,16 @@ public class TabList
                 }
             }
         }
+    }
+
+    public Player getPlayer()
+    {
+        return player;
+    }
+
+    public boolean isOld()
+    {
+        return TabAPI.getProtocolManager().getProtocolVersion(getPlayer()) < 20;
     }
 
 }
