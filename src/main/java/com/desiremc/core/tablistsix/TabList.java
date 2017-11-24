@@ -1,6 +1,7 @@
 package com.desiremc.core.tablistsix;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
@@ -61,6 +62,11 @@ public class TabList
             slot.toRemove = true;
         }
         slots.clear();
+    }
+    
+    public Collection<TabSlot> getSlots()
+    {
+        return slots.values();
     }
 
     public TabSlot setSlot(int column, int row, String name)
