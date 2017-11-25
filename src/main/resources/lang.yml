@@ -89,7 +89,7 @@ blacklist:
   unblacklist_message: '&7{player} has unblacklisted &e{target}&7.'
 warn:
   warn_issued: '&7{player} has warned &e{target}&7 for &e{reason}&7.'
-  warned: 'You have been warned by {player} for {reason}. The warning expires in {time}'
+  warned: 'You have been warned by {player} for {reason}.'
 kick:
   kick_message_target: '&7You have been kicked by &e{player}&7 for &e{reason}&7.'
   kick_message: '&7{player} has kicked &e{target}&7.'

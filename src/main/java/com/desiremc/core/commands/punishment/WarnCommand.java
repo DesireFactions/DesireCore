@@ -5,14 +5,12 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
 import com.desiremc.core.parsers.StringParser;
-import com.desiremc.core.parsers.TimeParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
@@ -26,10 +24,9 @@ public class WarnCommand extends ValidCommand
 
     public WarnCommand()
     {
-        super("warn", "Warn a user on the server.", Rank.JRMOD, new String[] {"target", "time", "reason"});
+        super("warn", "Warn a user on the server.", Rank.JRMOD, new String[] {"target", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
-        addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
 
         addValidator(new PlayerValidator());
@@ -42,30 +39,27 @@ public class WarnCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
         Session target = (Session) args[0];
-        long time = (long) args[1];
 
-        if (((String) args[2]).contains("-s"))
+        if (((String) args[1]).contains("-s"))
         {
-            args[2] = ((String) args[2]).replace("-s", "");
+            args[1] = ((String) args[1]).replace("-s", "");
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("warn.warn_issued", "{target}", target.getName(), "{reason}", args[2], "{player}", sender.getName()));
+            Bukkit.broadcastMessage(LANG.renderMessage("warn.warn_issued", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
         }
 
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.WARN);
         punishment.setPunished(target.getUniqueId());
-        punishment.setExpirationTime(time);
         punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setReason((String) args[2]);
+        punishment.setReason((String) args[1]);
         PunishmentHandler.getInstance().save(punishment);
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
             LANG.sendRenderMessage(target, "warn.warned",
-                    "{time}", DateUtils.formatDateDiff(time),
                     "{player}", session.getName(),
                     "{reason}", args[2]);
         }
