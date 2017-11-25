@@ -387,6 +387,16 @@ public class Session
         }
     }
 
+    public void takeTokens(int tokens, boolean notify)
+    {
+        this.tokens -= tokens;
+        save();
+        if (notify)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.taken", "{tokens}", tokens + "");
+        }
+    }
+
     public void setTokens(int tokens)
     {
         this.tokens = tokens;

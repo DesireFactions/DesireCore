@@ -39,6 +39,7 @@ import com.desiremc.core.commands.staff.StaffReportsCommand;
 import com.desiremc.core.commands.staff.StaffRestoreCommand;
 import com.desiremc.core.commands.ticket.TicketCommand;
 import com.desiremc.core.commands.timings.TimingsCommand;
+import com.desiremc.core.commands.tokens.TokensCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
 import com.desiremc.core.handler.SlowChatHandler;
@@ -191,6 +192,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new SuperSlimeCommand());
         customCommandHandler.registerCommand(new RenameCommand());
         customCommandHandler.registerCommand(new TeamSpeakCommand("teamspeak", "ts"));
+        customCommandHandler.registerCommand(new TokensCommand());
     }
 
     private void registerListeners()
