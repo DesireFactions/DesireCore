@@ -46,7 +46,7 @@ public class BlacklistCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[2]));
+            Bukkit.broadcastMessage(LANG.renderMessage("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[1]));
         }
 
         Punishment punishment = new Punishment();
