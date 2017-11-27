@@ -89,7 +89,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             System.out.println("initializeSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
         }
-        Session session = instance.findOne("_id", uuid);
+        Session session = instance.get(uuid);
 
         if (session == null)
         {
