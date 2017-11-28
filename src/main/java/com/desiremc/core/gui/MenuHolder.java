@@ -101,6 +101,16 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
         return true;
     }
 
+    public void removeAllItems()
+    {
+        this.getInventory().clear();
+        for (MenuItem item : items)
+        {
+            item.removeFromMenu(this);
+        }
+        this.items = new MenuItem[getMaxItems()];
+    }
+
     public boolean removeMenuItem(int x, int y)
     {
         return this.removeMenuItem((y * 9) + x);
