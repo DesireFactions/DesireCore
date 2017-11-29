@@ -192,6 +192,7 @@ public class Cache<K, V> implements Map<K, V>
         Data<K, V> data = base.remove(key);
         if (data != null)
         {
+            data.getTask().cancel();
             removalListener.onRemoval(new RemovalNotification<K, V>(data.getKey(), data.getValue(), Cause.REMOVE));
         }
         return data == null ? null : data.getValue();
