@@ -719,7 +719,6 @@ public class ItemNames
         }
         String result;
         String key = Integer.toString(stack.getTypeId());
-        System.out.println(stack.getType());
         if (stack.getData().getData() != 0)
         {
             result = map.get(key + ":" + stack.getData().getData());

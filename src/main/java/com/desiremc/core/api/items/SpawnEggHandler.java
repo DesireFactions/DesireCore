@@ -15,28 +15,22 @@ public class SpawnEggHandler
 
     public static EntityType getType(ItemStack item)
     {
-        System.out.println(0);
         if (item.getData() instanceof SpawnEgg)
         {
-            System.out.println(1);
             SpawnEgg egg = (SpawnEgg) item.getData();
             return egg.getSpawnedType();
         }
-        System.out.println(2);
         return null;
     }
 
     public static ItemStack setType(ItemStack item, EntityType type)
     {
-        System.out.println(0);
         if (item.getData() instanceof SpawnEgg)
         {
-            System.out.println(1);
             SpawnEgg egg = (SpawnEgg) item.getData();
             egg.setSpawnedType(type);
             item.setData(egg);
         }
-        System.out.println(2);
         return item;
     }
 
