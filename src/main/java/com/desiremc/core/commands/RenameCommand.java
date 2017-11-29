@@ -37,6 +37,7 @@ public class RenameCommand extends ValidCommand
 
         player.updateInventory();
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "rename", "{name}", ChatColor.translateAlternateColorCodes('&', name));
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rename",
+                "{name}", ChatColor.translateAlternateColorCodes('&', name));
     }
 }
