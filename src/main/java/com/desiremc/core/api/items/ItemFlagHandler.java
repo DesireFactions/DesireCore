@@ -1,9 +1,5 @@
 package com.desiremc.core.api.items;
 
-import static com.desiremc.core.utils.ItemUtils.getCraftItemStack;
-import static com.desiremc.core.utils.ItemUtils.getHandle;
-import static com.desiremc.core.utils.ItemUtils.getTag;
-
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -24,28 +20,34 @@ public class ItemFlagHandler
 
     public static ItemStack addItemFlags(ItemStack item, Iterable<ItemFlag> hideFlags)
     {
-        CraftItemStack craft = getCraftItemStack(item);
-        NBTTagCompound tag = getTag(getHandle(craft));
+        NBTTagCompound tag = CraftItemStack.asNMSCopy(item).getTag();
+        if (tag == null)
+        {
+            tag = new NBTTagCompound();
+        }
         int hideFlag = getHideFlag(tag);
         for (ItemFlag flag : hideFlags)
         {
             hideFlag |= getBitModifier(flag);
         }
         tag.setInt(HIDEFLAGS, hideFlag);
-        return craft;
+        return CraftItemStack.asBukkitCopy(net.minecraft.server.v1_7_R4.ItemStack.createStack(tag));
     }
 
     public static ItemStack removeItemFlags(ItemStack item, ItemFlag... hideFlags)
     {
-        CraftItemStack craft = getCraftItemStack(item);
-        NBTTagCompound tag = getTag(getHandle(craft));
+        NBTTagCompound tag = CraftItemStack.asNMSCopy(item).getTag();
+        if (tag == null)
+        {
+            tag = new NBTTagCompound();
+        }
         int hideFlag = getHideFlag(tag);
         for (ItemFlag flag : hideFlags)
         {
             hideFlag &= ~getBitModifier(flag);
         }
         tag.setInt(HIDEFLAGS, hideFlag);
-        return craft;
+        return CraftItemStack.asBukkitCopy(net.minecraft.server.v1_7_R4.ItemStack.createStack(tag));
     }
 
     public static Set<ItemFlag> getItemFlags(ItemStack item)
@@ -66,7 +68,12 @@ public class ItemFlagHandler
     public static boolean hasItemFlag(ItemStack item, ItemFlag flag)
     {
         int bitModifier = getBitModifier(flag);
-        return (getHideFlag(getTag(getHandle(getCraftItemStack(item)))) & bitModifier) == bitModifier;
+        NBTTagCompound tag = CraftItemStack.asNMSCopy(item).getTag();
+        if (tag == null)
+        {
+            tag = new NBTTagCompound();
+        }
+        return (getHideFlag(tag) & bitModifier) == bitModifier;
     }
 
     private static int getHideFlag(NBTTagCompound tag)
