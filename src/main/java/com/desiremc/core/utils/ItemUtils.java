@@ -3,6 +3,7 @@ package com.desiremc.core.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +15,11 @@ import net.minecraft.util.com.google.common.io.BaseEncoding;
 public class ItemUtils
 {
     private static Field itemStackHandle = null;
+
+    public static ItemStack[] toArray(Collection<ItemStack> items)
+    {
+        return items.toArray(new ItemStack[items.size()]);
+    }
 
     public static CraftItemStack getCraftItemStack(ItemStack item)
     {
