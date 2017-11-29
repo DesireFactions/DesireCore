@@ -126,6 +126,13 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         return this.icon;
     }
+    
+    @SuppressWarnings("deprecation")
+    public void setIcon(MaterialData data)
+    {
+        this.icon = data;
+        this.data = data.getData();
+    }
 
     public String getText()
     {
