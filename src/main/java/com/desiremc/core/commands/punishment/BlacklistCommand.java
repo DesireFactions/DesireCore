@@ -24,7 +24,7 @@ public class BlacklistCommand extends ValidCommand
 
     public BlacklistCommand()
     {
-        super("blacklist", "Blacklist a user from the server.", Rank.DEVELOPER, ARITY_OPTIONAL, new String[] {"target", "reason"});
+        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN, ARITY_OPTIONAL, new String[] {"target", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");
