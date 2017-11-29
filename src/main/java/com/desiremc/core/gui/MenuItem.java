@@ -126,7 +126,7 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         return this.icon;
     }
-    
+
     @SuppressWarnings("deprecation")
     public void setIcon(MaterialData data)
     {
@@ -205,6 +205,19 @@ public abstract class MenuItem extends MenuClickBehavior
     public static MenuItem empty(String name, Material type, short data, int count)
     {
         MenuItem item = new MenuItem(name, new MaterialData(type, (byte) data), count, data)
+        {
+
+            @Override
+            public void onClick(Player player)
+            {
+            }
+        };
+        return item;
+    }
+
+    public static MenuItem empty(ItemStack is)
+    {
+        MenuItem item = new MenuItem(is)
         {
 
             @Override
