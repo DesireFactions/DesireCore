@@ -1,4 +1,4 @@
-package com.desiremc.core.tablistsix;
+package com.desiremc.core.tablist;
 
 import org.bukkit.entity.Player;
 

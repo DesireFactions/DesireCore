@@ -57,7 +57,7 @@ import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.GadgetHandler;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.tablistsix.TabAPI;
+import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
