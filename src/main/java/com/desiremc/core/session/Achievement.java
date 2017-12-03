@@ -7,7 +7,6 @@ public enum Achievement
 {
     FIRST_KOTH("There are many koths, but this one is mine", "Captured 1st koth", 100),
     FIRST_KILL("Existance deleted", "Kill another player.", 25),
-    FIRST_MAX_SWORD("Oooh shiny!", "Max out a diamond swords enchantment level.", 10),
     FIRST_GAPPLE("Hacks confirmed", "Eat your first gapple.", 10),
     FIRST_MINER("Diggy diggy hole!", "Equip the Miner class for the first time.", 10),
     FIRST_ROGUE("Now you see me, now you don't.", "Equip the Rogue class for the first time.", 10),
@@ -23,9 +22,10 @@ public enum Achievement
     FIRST_SEASON_WIN("Win the season", "Achieve rank #1 on the leaderboard at the end of the season", 0),
     FIRST_LOGIN("Here's Johnny!", "Login for the first time.", 5),
     FIRST_FRIEND("I dig you", "Make your first friend.", 10),
-    FIRST_END_FARM("End Farming", "Killed an enderman and creeper", 5),
+    FIRST_ENDERMAN("Don't stare at me.", "Kill an enderman", 5),
+    FIRST_CREEPER("Premature explosion", "Kill a creeper.", 5),
     FIRST_CROWBAR_USE("Crackin'", "Use your first Crowbar", 5),
-    FIRST_BREW("Bubbles!", "Brew your first potion.", 10);
+    FIRST_POTION_USE("Bubbles!", "Use your first potion.", 10);
 
     private String name;
     private String description;
