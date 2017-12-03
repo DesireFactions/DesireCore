@@ -61,6 +61,16 @@ public class FriendUtils
 
         addFriend(player, target);
 
+        if (!target.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            target.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
+
+        if (!player.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            player.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
+
         saveRequests(player, target);
     }
 
