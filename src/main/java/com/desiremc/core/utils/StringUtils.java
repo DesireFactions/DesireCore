@@ -74,12 +74,40 @@ public class StringUtils
 
     public static boolean isNullOrEmpty(String str)
     {
-        return str == null || str.equals("") || str.equals("\0");
+        return str == null || str.length() == 0;
     }
 
     public static boolean isWhitespace(String str)
     {
-        return str.length() == 0 || str.matches("\\s");
+        if (str == null)
+        {
+            return false;
+        }
+        final int sz = str.length();
+        for (int i = 0; i < sz; i++)
+        {
+            if (!Character.isWhitespace(str.charAt(i)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean containsAny(String search, String... strings)
+    {
+        if (isNullOrEmpty(search))
+        {
+            return false;
+        }
+        for (CharSequence searchCharSequence : strings)
+        {
+            if (net.minecraft.util.org.apache.commons.lang3.StringUtils.contains(search, searchCharSequence))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
