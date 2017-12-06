@@ -97,7 +97,7 @@ public class ChatUtils
         {
             s.getPlayer().sendMessage(error);
         }
-        TicketHandler.openTicket(Bukkit.getConsoleSender(), error.split("\n")[1]);
+        TicketHandler.openTicket(SessionHandler.getConsoleSession(), error.split("\n")[1]);
         Bukkit.getLogger().severe("===========================================");
         Bukkit.getLogger().severe("CATASTROPHIC FAILURE IN " + plugin.getName());
         Bukkit.getLogger().severe("CHECK TICKET OR ERRORS FOLDER WITHIN PLUGIN");

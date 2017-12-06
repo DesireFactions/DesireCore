@@ -56,11 +56,10 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         ValidCommand command = getCommand(label);
         if (command != null)
         {
-            Session s = SessionHandler.getSession(sender);
-            command.getValues().put(-1, Session.class, s);
-            if (s != null && s.getRank().getId() >= command.getRequiredRank().getId())
+            Session session = SessionHandler.getSession(sender);
+            if (session.getRank().getId() >= command.getRequiredRank().getId())
             {
-                command.process(sender, new String[] { label }, args);
+                command.process(session, new String[] { label }, args);
             }
             else
             {
@@ -82,7 +81,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         ValidCommand command = getCommand(alias);
         if (command != null)
         {
-            return command.processTabComplete(sender, args);
+            return command.processTabComplete(SessionHandler.getSession(sender), args);
         }
 
         return Arrays.asList();
@@ -241,7 +240,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
      * @param argument the beginning of the typed argument.
      * @return the name of all players visible to the sender.
      */
-    public static List<String> defaultTabComplete(CommandSender sender, String lastWord)
+    public static List<String> defaultTabComplete(Session sender, String lastWord)
     {
         // if the lastWord is null, something went wrong we should exit
         if (lastWord == null)

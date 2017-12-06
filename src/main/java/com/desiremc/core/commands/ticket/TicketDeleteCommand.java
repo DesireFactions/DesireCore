@@ -1,40 +1,40 @@
 package com.desiremc.core.commands.ticket;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.IntegerParser;
-import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.StringParser;
+import com.desiremc.core.newparsers.TicketParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.tickets.Ticket;
 import com.desiremc.core.tickets.TicketHandler;
-import com.desiremc.core.validators.TicketExistsValidator;
-import org.bukkit.command.CommandSender;
 
 public class TicketDeleteCommand extends ValidCommand
 {
 
     public TicketDeleteCommand()
     {
-        super("delete", "Delete a ticket with a comment.", Rank.MODERATOR, new String[]{"ticket", "response"}, new String[]{});
-        addValidator(new TicketExistsValidator(), "ticket");
-        addParser(new IntegerParser(), "ticket");
-        addParser(new StringParser(), "response");
+        super("close", "Delete a ticket with a comment.", Rank.MODERATOR);
+
+        addArgument(CommandArgumentBuilder.createBuilder(Ticket.class)
+                .setName("id")
+                .setParser(new TicketParser()).build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("response")
+                .setParser(new StringParser()).build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        StringBuilder sb = new StringBuilder();
+        TicketHandler.deleteTicket(sender, (Ticket) args.get(0).getValue(), (String) args.get(1).getValue());
 
-        if (args.length >= 2)
-        {
-            for (int i = 1; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
-
-        TicketHandler.deleteTicket(sender, TicketHandler.getTicket((int) args[0]), sb.toString().trim());
-
-        DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.delete", "{id}", args[0] + "");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.delete",
+                "{id}", ((Ticket) args.get(0).getValue()).getId());
     }
 }

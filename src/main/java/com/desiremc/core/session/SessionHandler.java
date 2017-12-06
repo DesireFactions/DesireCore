@@ -44,6 +44,25 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         console.assignConsole();
     }
 
+    /**
+     * Checks if the given session is the console.
+     * 
+     * @param session the console to check.
+     * @return {@code true} if the session is the console. Otherwise returns {@code false}.
+     */
+    public static boolean isConsole(Session session)
+    {
+        return session == console;
+    }
+
+    /**
+     * @return the console's session instance.
+     */
+    public static Session getConsoleSession()
+    {
+        return console;
+    }
+
     public static Session getSession(CommandSender sender)
     {
         if (sender instanceof Player)

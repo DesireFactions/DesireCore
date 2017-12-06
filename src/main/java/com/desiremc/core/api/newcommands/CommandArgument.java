@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -55,10 +53,9 @@ public class CommandArgument<T>
      * @param argument the raw string argument to be processed.
      * @return {@code true} if the process was successful. Otherwise, returns {@code false}.
      */
-    protected boolean process(CommandSender sender, String[] label, String argument)
+    protected boolean process(Session sender, String[] label, String argument)
     {
-        Session session = command.getSenderSession(sender);
-        if (session != null && (hasRequiredRank() && session.getRank().getId() < getRequiredRank().getId()))
+        if (hasRequiredRank() && sender.getRank().getId() < getRequiredRank().getId())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             return false;
@@ -89,7 +86,7 @@ public class CommandArgument<T>
      * @param sender the sender who is tab-completing.
      * @return all argument options.
      */
-    protected List<String> getRecommendations(CommandSender sender, String lastWord)
+    protected List<String> getRecommendations(Session sender, String lastWord)
     {
         List<String> recommendations = parser.getRecommendations(sender, lastWord);
         if (recommendations == null)

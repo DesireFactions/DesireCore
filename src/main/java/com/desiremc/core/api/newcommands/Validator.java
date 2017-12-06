@@ -1,6 +1,6 @@
 package com.desiremc.core.api.newcommands;
 
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.session.Session;
 
 public interface Validator<T>
 {
@@ -14,6 +14,6 @@ public interface Validator<T>
      * @param arg the argument to be validated.
      * @return {@code true} if the argument is valid. Otherwise returns {@code false}.
      */
-    public boolean validateArgument(CommandSender sender, String[] label, T arg);
+    public boolean validateArgument(Session sender, String[] label, T arg);
 
 }

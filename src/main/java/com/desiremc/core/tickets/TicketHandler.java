@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -13,7 +12,6 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
 
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
@@ -31,7 +29,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         instance = this;
 
         tickets = new HashMap<>();
-        
+
         List<Ticket> query = find(createQuery().where("status='OPEN'")).asList();
         for (Ticket t : query)
         {
@@ -39,15 +37,15 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         }
     }
 
-    public static void openTicket(CommandSender sender, String text)
+    public static void openTicket(Session sender, String text)
     {
-        Ticket ticket = new Ticket(PlayerUtils.getUUIDFromSender(sender), text);
+        Ticket ticket = new Ticket(sender.getUniqueId(), text);
         ticket.setId(instance.getNextId());
         instance.save(ticket);
         tickets.put(ticket.getId(), ticket);
     }
 
-    public static void closeTicket(CommandSender closer, Ticket ticket, String response)
+    public static void closeTicket(Session closer, Ticket ticket, String response)
     {
         ticket.setClosed(System.currentTimeMillis());
         ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
@@ -55,7 +53,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         ticket.setStatus(Ticket.Status.CLOSED);
     }
 
-    public static void deleteTicket(CommandSender closer, Ticket ticket, String response)
+    public static void deleteTicket(Session closer, Ticket ticket, String response)
     {
         ticket.setClosed(System.currentTimeMillis());
         ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());

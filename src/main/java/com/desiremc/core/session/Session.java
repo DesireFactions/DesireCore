@@ -1,15 +1,14 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -19,10 +18,13 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -96,6 +98,30 @@ public class Session
         ignoring = new LinkedList<>();
     }
 
+    /**
+     * Get the CommandSender associated with this Session. Using this instead of getPlayer makes it safe to always use
+     * this, even when dealing with the console sending commands.
+     * 
+     * @return the {@link CommandSender} of this session.
+     */
+    public CommandSender getSender()
+    {
+        if (SessionHandler.isConsole(this))
+        {
+            return Bukkit.getConsoleSender();
+        }
+        else
+        {
+            return getPlayer();
+        }
+    }
+
+    /**
+     * Gets the {@link Player} associated with this Session. If this is the console's session, it will throw an
+     * {@link IllegalStateException}.
+     * 
+     * @return the {@link Player} of this session.
+     */
     public Player getPlayer()
     {
         if (player == null)
@@ -344,12 +370,12 @@ public class Session
         if (inform)
         {
             DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
-            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.title");
-            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.name", "{name}", achievement.getName());
-            DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.desc", "{desc}", achievement.getDescription());
+            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.title");
+            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.name", "{name}", achievement.getName());
+            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.desc", "{desc}", achievement.getDescription());
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(player, "achievement.award.reward", "{reward}", achievement.getReward());
+                DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.reward", "{reward}", achievement.getReward());
             }
             DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
         }

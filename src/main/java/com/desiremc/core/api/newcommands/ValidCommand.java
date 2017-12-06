@@ -6,9 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -102,11 +99,11 @@ public abstract class ValidCommand
      * @param label the label from which the command was sent
      * @param rawArguments the unparsed and non-validated arguments.
      */
-    protected void process(CommandSender sender, String[] label, String[] rawArguments)
+    protected void process(Session sender, String[] label, String[] rawArguments)
     {
-        if (rawArguments.length < getMinimumLength())
+        if (rawArguments.length < getMinimumLength() || rawArguments.length > getMaximumLength())
         {
-            DesireCore.getLangHandler().sendUsageMessage(sender, StringUtils.compile(label), (Object[]) getArgumentNames());
+            DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
 
@@ -114,6 +111,14 @@ public abstract class ValidCommand
         for (int i = 0; i < rawArguments.length; i++)
         {
             argument = getArgument(i);
+
+            // this should never happen, it is here exclusively to prevent potential errors that were not caught with exceptions earlier
+            if (argument == null)
+            {
+                DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
+                return;
+            }
+
             if (!argument.process(sender, label, !argument.hasVariableLength() ? rawArguments[i] : StringUtils.compile(Arrays.copyOfRange(rawArguments, i, rawArguments.length))))
             {
                 return;
@@ -126,8 +131,8 @@ public abstract class ValidCommand
         catch (Exception ex)
         {
             ex.printStackTrace();
-            sender.sendMessage("§4An error occured. Contact a staff member immediately.");
-            TicketHandler.openTicket(Bukkit.getConsoleSender(), "An error occured running the command " + StringUtils.compile(label) + ". Contact a developer.");
+            sender.getSender().sendMessage("§4An error occured. Contact a staff member immediately.");
+            TicketHandler.openTicket(SessionHandler.getConsoleSession(), "An error occured running the command " + StringUtils.compile(label) + ". Contact a developer.");
         }
         arguments.forEach(arg -> arg.clearValue());
         clearTable();
@@ -142,7 +147,7 @@ public abstract class ValidCommand
      * @param rawArguments the arguments already typed by the player.
      * @return the suggestions for tab complete.
      */
-    public List<String> processTabComplete(CommandSender sender, String[] rawArguments)
+    public List<String> processTabComplete(Session sender, String[] rawArguments)
     {
         Iterator<CommandArgument<?>> it = arguments.iterator();
         int i = 0;
@@ -154,7 +159,7 @@ public abstract class ValidCommand
         }
         if (argument != null)
         {
-            if (!argument.hasRequiredRank() || getSenderSession(sender).getRank().getId() >= argument.getRequiredRank().getId())
+            if (!argument.hasRequiredRank() || sender.getRank().getId() >= argument.getRequiredRank().getId())
             {
                 return argument.getRecommendations(sender, rawArguments[rawArguments.length - 1]);
             }
@@ -169,7 +174,7 @@ public abstract class ValidCommand
         }
     }
 
-    public abstract void validRun(CommandSender sender, String[] label, List<CommandArgument<?>> arguments);
+    public abstract void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments);
 
     /**
      * The table of the already processed values. -1 corresponds to the sender. Every other number corresponds to the
@@ -180,19 +185,6 @@ public abstract class ValidCommand
     public Table<Integer, Class<?>, Object> getValues()
     {
         return values;
-    }
-
-    /**
-     * @return the most recent session instance of the sender.
-     */
-    public Session getSenderSession(CommandSender sender)
-    {
-        Object obj = values.get(-1, Session.class);
-        if (obj != null)
-        {
-            return (Session) obj;
-        }
-        return SessionHandler.getSession(sender);
     }
 
     /**
@@ -235,6 +227,25 @@ public abstract class ValidCommand
             }
         }
         return minimumLength;
+    }
+
+    /**
+     * The highest possible length that the number of raw arguments is capable of being. For non-variable-length
+     * commands, this is the size of all the arguments. For variable-length commands, it is {@link Integer#MAX_VALUE}.
+     * 
+     * @return the maximum length of the raw command arguments.
+     */
+    private int getMaximumLength()
+    {
+        if (arguments.size() == 0)
+        {
+            return 0;
+        }
+        if (CollectionUtils.getLast(arguments).hasVariableLength())
+        {
+            return Integer.MAX_VALUE;
+        }
+        return arguments.size();
     }
 
     /**

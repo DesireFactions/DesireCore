@@ -3,8 +3,7 @@ package com.desiremc.core.newparsers;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
@@ -15,29 +14,29 @@ public class SessionParser implements Parser<Session>
 {
 
     @Override
-    public Session parseArgument(CommandSender sender, String[] label, String argument)
+    public Session parseArgument(Session sender, String[] label, String rawArgument)
     {
-        Player p = Bukkit.getPlayerExact(argument);
-        Session s;
-        if (p == null)
+        Session argument;
+        OfflinePlayer op = Bukkit.getPlayerExact(rawArgument);
+        if (op == null)
         {
-            s = SessionHandler.findOfflinePlayerByName(argument);
+            argument = SessionHandler.findOfflinePlayerByName(rawArgument);
         }
         else
         {
-            s = SessionHandler.getSession(p.getUniqueId());
+            argument = SessionHandler.getSession(op.getUniqueId());
         }
-        if (s == null)
+        if (argument == null)
         {
-            DesireCore.getLangHandler().sendString(sender, "player-not-found");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "player-not-found");
             return null;
         }
 
-        return s;
+        return argument;
     }
 
     @Override
-    public List<String> getRecommendations(CommandSender sender, String str)
+    public List<String> getRecommendations(Session sender, String str)
     {
         return null;
     }

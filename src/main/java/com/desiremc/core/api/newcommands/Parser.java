@@ -2,7 +2,7 @@ package com.desiremc.core.api.newcommands;
 
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.session.Session;
 
 public interface Parser<T>
 {
@@ -15,16 +15,16 @@ public interface Parser<T>
      * @param argument the argument to be parsed.
      * @return the successfully parsed argument.
      */
-    public T parseArgument(CommandSender sender, String[] label, String argument);
+    public T parseArgument(Session sender, String[] label, String rawArgument);
 
     /**
      * Get tab complete recommendations for an argument with this given parser. If the default is wanted, it exists in
-     * {@link CommandHandler#defaultTabComplete(CommandSender, String)}.
+     * {@link CommandHandler#defaultTabComplete(Session, String)}.
      * 
      * @param sender the sender of the tab complete.
      * @param str the content of the item so far.
      * @return the recommendations.
      */
-    public List<String> getRecommendations(CommandSender sender, String lastWord);
+    public List<String> getRecommendations(Session sender, String lastWord);
 
 }

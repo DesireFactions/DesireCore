@@ -1,43 +1,47 @@
 package com.desiremc.core.commands.punishment;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerParser;
-import com.desiremc.core.parsers.StringParser;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import java.util.List;
+
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.newparsers.StringParser;
+import com.desiremc.core.newvalidators.SenderOutranksTargetValidator;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 
 public class KickCommand extends ValidCommand
 {
 
     public KickCommand()
     {
-        super("kick", "Kick a user from the server.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
+        super("kick", "Kick a user from the server.", Rank.JRMOD);
 
-        addParser(new PlayerParser(), "target");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class).setName("target").setParser(new SessionParser()).addValidator(new SenderOutranksTargetValidator()).build());
+        addArgument(CommandArgumentBuilder.createBuilder(String.class).setName("reason").setParser(new StringParser()).build());
 
-        addValidator(new SenderOutranksTargetValidator(), "target");
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Player player = (Player) sender;
-        Player target = (Player) args[0];
+        Session target = (Session) args.get(0).getValue();
+        String reason = (String) args.get(1).getValue();
 
-        if (((String) args[1]).contains("-s"))
+        if (reason.contains("-s"))
         {
-            args[1] = ((String) args[1]).replace("-s", "");
+            reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "kick.silent", "{target}", target.getName(), "{reason}", reason);
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.kick_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.broadcast", "{target}", target.getName(), "{reason}", reason, "{player}", sender.getName()));
         }
 
-        target.kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kick_message_target", "{player}", player.getName(), "{reason}", args[1]));
+        target.getPlayer().kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kicked", "{player}", sender.getName(), "{reason}", reason));
     }
 }

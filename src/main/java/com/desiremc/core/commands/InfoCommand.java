@@ -2,8 +2,6 @@ package com.desiremc.core.commands;
 
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -22,15 +20,15 @@ public class InfoCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(CommandSender sender, String label[], List<CommandArgument<?>> args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Session target = (Session) args.get(0).getValue();
         DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "info.header-footer");
-        DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(sender, "info.name", "{player}", target.getName());
-        DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(sender, "info.uuid", "{uuid}", target.getUniqueId().toString());
-        DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(sender, "info.ip", "{ip}", target.getIp());
-        DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(sender, "info.tokens", "{tokens}", target.getTokens() + "");
-        DesireCore.getLangHandler().sendRenderMessageCenteredeNoPrefix(sender, "info.status", "{status}", getStatus(target));
+        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.name", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.uuid", "{uuid}", target.getUniqueId().toString());
+        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.ip", "{ip}", target.getIp());
+        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.tokens", "{tokens}", target.getTokens() + "");
+        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.status", "{status}", getStatus(target));
         DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "info.header-footer");
     }
 

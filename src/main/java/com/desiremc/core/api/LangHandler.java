@@ -85,15 +85,46 @@ public class LangHandler extends FileHandler
         return renderString(super.getString(string), args);
     }
 
+    /**
+     * Sends a render message without the prefix being added on.
+     * 
+     * @param sender the person to receive the message.
+     * @param string the message to retrieve from the language file.
+     * @param args the arguments to replace.
+     */
     public void sendRenderMessageNoPrefix(CommandSender sender, String string, Object... args)
     {
         sender.sendMessage(renderString(super.getString(string), args));
     }
 
-    public void sendRenderMessageCenteredeNoPrefix(CommandSender sender, String string, Object... args)
+    /**
+     * @param sender the person to receive the message.
+     * @param string the message to retrieve from the language file.
+     * @param args the arguments to replace.
+     * @see #sendRenderMessageNoPrefix(CommandSender, String, Object...)
+     */
+    public void sendRenderMessageNoPrefix(Session sender, String string, Object... args)
+    {
+        sendRenderMessageNoPrefix(sender.getSender(), string, args);
+    }
+
+    /**
+     * Send a render message that is centered and without a prefix.
+     * 
+     * @param sender the person to receive the message.
+     * @param string the message to retrieve from the language file.
+     * @param args the arguments to replace.
+     */
+    public void sendRenderMessageCenteredNoPrefix(CommandSender sender, String string, Object... args)
     {
         ChatUtils.sendCenteredMessage(sender, renderString(super.getString(string), args));
     }
+    
+    public void sendRenderMessageCenteredNoPrefix(Session sender, String string, Object... args)
+    {
+        sendRenderMessageCenteredNoPrefix(sender.getSender(), string, args);
+    }
+    
 
     /**
      * Shorthand to send getString to {@link CommandSender}
@@ -148,18 +179,18 @@ public class LangHandler extends FileHandler
 
     public void sendRenderMessage(Session s, String string, Object... args)
     {
-        sendRenderMessage(s.getPlayer(), string, args);
+        sendRenderMessage(s.getSender(), string, args);
     }
 
     public void sendRenderMessage(Session s, String string, boolean center, Object... args)
     {
         if (center)
         {
-            ChatUtils.sendCenteredMessage(s.getPlayer(), renderMessage(string, args));
+            ChatUtils.sendCenteredMessage(s.getSender(), renderMessage(string, args));
         }
         else
         {
-            s.getPlayer().sendMessage(renderMessage(string, args));
+            s.getSender().sendMessage(renderMessage(string, args));
         }
     }
 
