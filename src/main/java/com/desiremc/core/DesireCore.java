@@ -1,8 +1,18 @@
 package com.desiremc.core;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
+import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
@@ -62,14 +72,6 @@ import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -119,6 +121,7 @@ public class DesireCore extends JavaPlugin
         MenuAPI.initialize();
         ListenerManager.initialize();
         CustomCommandHandler.initialize();
+        CommandHandler.initialize();
         SessionHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
@@ -160,7 +163,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new SettingsCommand());
         customCommandHandler.registerCommand(new FriendsCommand());
         customCommandHandler.registerCommand(new ReportCommand());
-        customCommandHandler.registerCommand(new InfoCommand());
         customCommandHandler.registerCommand(new RankCommand());
         customCommandHandler.registerCommand(new BlacklistCommand());
         customCommandHandler.registerCommand(new UnblacklistCommand());
@@ -193,6 +195,9 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new RenameCommand());
         customCommandHandler.registerCommand(new TeamSpeakCommand("teamspeak", "ts"));
         customCommandHandler.registerCommand(new TokensCommand());
+
+        CommandHandler commandHandler = CommandHandler.getInstance();
+        commandHandler.registerCommand(new InfoCommand());
     }
 
     private void registerListeners()
