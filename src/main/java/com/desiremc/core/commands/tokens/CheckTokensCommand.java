@@ -1,24 +1,33 @@
 package com.desiremc.core.commands.tokens;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import org.bukkit.command.CommandSender;
 
 public class CheckTokensCommand extends ValidCommand
 {
     public CheckTokensCommand()
     {
-        super("check", "Check a players tokens.", Rank.ADMIN, new String[] {"target"});
-        addParser(new PlayerSessionParser(), "target");
+        super("check", "Check a players tokens.", Rank.GUEST);
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .setRequiredRank(Rank.JRMOD)
+                .setOptional()
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.check", "{amount}", target.getTokens(), "{player}", target.getName());
     }
