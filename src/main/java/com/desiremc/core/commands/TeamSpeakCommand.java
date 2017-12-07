@@ -1,19 +1,22 @@
 package com.desiremc.core.commands;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.session.Session;
 
 public class TeamSpeakCommand extends ValidCommand
 {
-    public TeamSpeakCommand(String name, String... aliases)
+    public TeamSpeakCommand()
     {
-        super(name, "List our TeamSpeak IP.", Rank.GUEST, new String[] {}, aliases);
+        super("teamspeak", "List our TeamSpeak IP.", Rank.GUEST, new String[] { "ts", "voip" });
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
         DesireCore.getLangHandler().sendRenderMessage(sender, "teamspeak");
     }
