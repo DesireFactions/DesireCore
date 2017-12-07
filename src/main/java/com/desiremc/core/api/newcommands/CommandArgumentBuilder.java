@@ -61,6 +61,18 @@ public class CommandArgumentBuilder<T>
     }
 
     /**
+     * Adds a sender validator to be used by the argument.
+     * 
+     * @param senderValidator the new sender validator.
+     * @return the same builder.
+     */
+    public CommandArgumentBuilder<T> addSenderValidator(SenderValidator senderValidator)
+    {
+        argument.addSenderValidator(senderValidator);
+        return this;
+    }
+
+    /**
      * Marks this argument as optional. It defaults to false which is why there is no option to disable it as each
      * option should only be set once.
      * 
