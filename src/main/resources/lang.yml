@@ -199,10 +199,10 @@ ticket:
   only_id: '&7You can only reference tickets by number.'
   open: '&7You have opened a new ticket. Staff will get to it soon.'
   delete: '&7You have deleted ticket #{id}.'
-  closed: '&7You have closed ticket #{id}.'
-  not_found: 'Ticket #{id} does not exist.'
+  close: '&7You have closed ticket #{id}.'
+  not_found: '&7Ticket #{id} does not exist.'
   header_footer: '&8&m----------------------------------------------------'
-  list: '&6#&7{id}: &6Opened by: &7{player} &6Reason: &7{reason}'
+  list: '&6{id}: &eOpened by: &7{player} &eReason: &7{reason}'
 tickets:
   open: 'There are {number} tickets open.'
 agui:

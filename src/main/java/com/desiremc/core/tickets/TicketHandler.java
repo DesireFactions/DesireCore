@@ -40,25 +40,33 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     public static void openTicket(Session sender, String text)
     {
         Ticket ticket = new Ticket(sender.getUniqueId(), text);
+
         ticket.setId(instance.getNextId());
-        instance.save(ticket);
+        ticket.save();
+
         tickets.put(ticket.getId(), ticket);
     }
 
     public static void closeTicket(Session closer, Ticket ticket, String response)
     {
-        ticket.setClosed(System.currentTimeMillis());
-        ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
-        ticket.setResponse(response);
         ticket.setStatus(Ticket.Status.CLOSED);
+        processClose(closer, ticket, response);
     }
 
     public static void deleteTicket(Session closer, Ticket ticket, String response)
     {
+        ticket.setStatus(Ticket.Status.DELETED);
+        processClose(closer, ticket, response);
+    }
+
+    private static void processClose(Session closer, Ticket ticket, String response)
+    {
         ticket.setClosed(System.currentTimeMillis());
         ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
         ticket.setResponse(response);
-        ticket.setStatus(Ticket.Status.DELETED);
+        ticket.save();
+
+        tickets.remove(ticket.getId());
     }
 
     @Override

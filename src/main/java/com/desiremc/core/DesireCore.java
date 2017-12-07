@@ -187,7 +187,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnmuteCommand());
         customCommandHandler.registerCommand(new IpbanCommand());
         customCommandHandler.registerCommand(new UnIpbanCommand());
-        customCommandHandler.registerCommand(new PingCommand("ping", "ms"));
         customCommandHandler.registerCommand(new RollbackCommand());
         customCommandHandler.registerCommand(new SuperSlimeCommand());
         customCommandHandler.registerCommand(new RenameCommand());
@@ -198,6 +197,7 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new KickCommand());
         commandHandler.registerCommand(new InfoCommand());
         commandHandler.registerCommand(new TicketCommand());
+        commandHandler.registerCommand(new PingCommand());
     }
 
     private void registerListeners()

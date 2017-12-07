@@ -25,7 +25,11 @@ public class CommandArgument<T>
 
     protected boolean variableLength;
 
+    protected boolean allowsConsole;
+
     protected int ordinal;
+
+    protected List<SenderValidator> senderValidators;
 
     protected List<Validator<T>> validators;
 
@@ -40,6 +44,7 @@ public class CommandArgument<T>
      */
     protected CommandArgument()
     {
+        this.senderValidators = new LinkedList<>();
         this.validators = new LinkedList<>();
     }
 
@@ -60,6 +65,15 @@ public class CommandArgument<T>
             DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
             return false;
         }
+
+        for (SenderValidator senderValidator : senderValidators)
+        {
+            if (!senderValidator.validate(sender))
+            {
+                return false;
+            }
+        }
+
         value = parser.parseArgument(sender, label, argument);
 
         if (value == null)
@@ -94,20 +108,6 @@ public class CommandArgument<T>
             recommendations = CommandHandler.defaultTabComplete(sender, lastWord);
         }
         return recommendations;
-    }
-
-    /**
-     * Gets the value that was just parsed and validated.
-     * 
-     * @return the value.
-     */
-    public T getValue()
-    {
-        if (value == null)
-        {
-            throw new IllegalStateException("Argument has not been processed.");
-        }
-        return value;
     }
 
     /**
@@ -196,6 +196,26 @@ public class CommandArgument<T>
     }
 
     /**
+     * Returns a view of the sender validators. This view can't be changed, and will throw exception if it is attempted.
+     * 
+     * @return the sender validators for this argument
+     */
+    public List<SenderValidator> getSenderValidators()
+    {
+        return Collections.unmodifiableList(senderValidators);
+    }
+
+    /**
+     * Adds a new sender validator to the argument.
+     * 
+     * @param senderValidator the new sender validator.
+     */
+    public void addSenderValidator(SenderValidator senderValidator)
+    {
+        this.senderValidators.add(senderValidator);
+    }
+
+    /**
      * Gets where in the order of arguments this argument falls for a particular command. The default is -1, so if -1 is
      * returned it means that this argument has not yet been assigned to a command.
      * 
@@ -218,7 +238,23 @@ public class CommandArgument<T>
     }
 
     /**
-     * @return whether or not this argument has a variable length.
+     * @return {@code true} if this argument can't be used by console. Otherwise returns {@code false}.
+     */
+    public boolean allowsConsole()
+    {
+        return allowsConsole;
+    }
+
+    /**
+     * @param status {@code true} if this argument can't be used by console.
+     */
+    public void setAllowsConsole(boolean status)
+    {
+        this.allowsConsole = status;
+    }
+
+    /**
+     * @return {@code true} if this argument has variable length. Otherwise returns {@code false}.
      */
     public boolean hasVariableLength()
     {
@@ -226,7 +262,7 @@ public class CommandArgument<T>
     }
 
     /**
-     * @param status whether or not the argument is of variable length.
+     * @param status {@code true} if this argument has variable length.
      */
     public void setVariableLength(boolean status)
     {
@@ -270,6 +306,38 @@ public class CommandArgument<T>
             throw new IllegalStateException("Name can only be set once.");
         }
         this.name = name;
+    }
+
+    /**
+     * This should only be used to check if an optional argument has a value.
+     * 
+     * @return {@code true} if this argument has a value.
+     */
+    public boolean hasValue()
+    {
+        return value != null;
+    }
+
+    /**
+     * Gets the value that was just parsed and validated.
+     * 
+     * @return the value.
+     */
+    public T getValue()
+    {
+        if (value == null)
+        {
+            throw new IllegalStateException("Argument has not been processed.");
+        }
+        return value;
+    }
+
+    /**
+     * @return the command this argument belongs to.
+     */
+    protected ValidCommand getCommand()
+    {
+        return command;
     }
 
     /**

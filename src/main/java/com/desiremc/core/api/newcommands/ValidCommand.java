@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.desiremc.core.DesireCore;
@@ -25,7 +26,11 @@ public abstract class ValidCommand
 
     protected Rank requiredRank;
 
+    protected boolean blocksConsole;
+
     protected String[] aliases;
+
+    protected LinkedList<SenderValidator> senderValidators;
 
     protected ArrayList<CommandArgument<?>> arguments;
 
@@ -38,14 +43,17 @@ public abstract class ValidCommand
      * @param name the name of the command.
      * @param description the description of the command.
      * @param requiredRank the required rank for the command.
+     * @param blocksConsole if this command is unusable by the console.
      * @param aliases the aliases of the command.
      */
-    protected ValidCommand(String name, String description, Rank requiredRank, String[] aliases)
+    protected ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole, String[] aliases)
     {
         this.name = name;
         this.description = description;
         this.requiredRank = requiredRank;
+        this.blocksConsole = blocksConsole;
         this.aliases = aliases;
+        this.senderValidators = new LinkedList<>();
         this.arguments = new ArrayList<>();
         this.values = HashBasedTable.create();
         for (int i = 0; i < aliases.length; i++)
@@ -55,27 +63,29 @@ public abstract class ValidCommand
     }
 
     /**
-     * Constructs a new command without any aliases and the rank of {@link Rank#GUEST}.
-     * 
-     * @param name the name of the command.
-     * @param description the description of the command.
-     * @see #ValidCommand(String, String, String[])
-     */
-    protected ValidCommand(String name, String description)
-    {
-        this(name, description, Rank.GUEST, new String[0]);
-    }
-
-    /**
      * Constructs a new command without any aliases.
      * 
      * @param name the name of the command.
      * @param description the description of the command.
      * @param requiredRank the required rank for the command.
+     * @param blocksConsole if this command is unusable by the console.
      */
-    protected ValidCommand(String name, String description, Rank requiredRank)
+    protected ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole)
     {
-        this(name, description, requiredRank, new String[0]);
+        this(name, description, requiredRank, blocksConsole, new String[0]);
+    }
+
+    /**
+     * Constructs a new command that is usable by the console.
+     * 
+     * @param name the name of the command.
+     * @param description the description of the command.
+     * @param requiredRank the required rank for the command.
+     * @param aliases the aliases of the command.
+     */
+    protected ValidCommand(String name, String description, Rank requiredRank, String[] aliases)
+    {
+        this(name, description, requiredRank, false, aliases);
     }
 
     /**
@@ -83,11 +93,61 @@ public abstract class ValidCommand
      * 
      * @param name the name of the command.
      * @param description the description of the command.
+     * @param blocksConsole if this command is unusable by the console.
+     * @param aliases the aliases of the command.
+     */
+    protected ValidCommand(String name, String description, boolean blocksConsole, String[] aliases)
+    {
+        this(name, description, Rank.GUEST, blocksConsole, aliases);
+    }
+
+    /**
+     * Constructs a new command without any aliases and is usable by the console.
+     * 
+     * @param name the name of the command.
+     * @param description the description of the command.
+     * @param requiredRank the required rank for the command.
+     */
+    protected ValidCommand(String name, String description, Rank requiredRank)
+    {
+        this(name, description, requiredRank, false, new String[0]);
+    }
+
+    /**
+     * Constructs a new command without any aliases and the rank of {@link Rank#GUEST}.
+     * 
+     * @param name the name of the command.
+     * @param description the description of the command.
+     * @param blocksConsole if this command is unusable by the console.
+     * @see #ValidCommand(String, String, String[])
+     */
+    protected ValidCommand(String name, String description, boolean blocksConsole)
+    {
+        this(name, description, Rank.GUEST, blocksConsole, new String[0]);
+    }
+
+    /**
+     * Constructs a new command with the rank of {@link Rank#GUEST} and is usable by the console.
+     * 
+     * @param name the name of the command.
+     * @param description the description of the command.
      * @param aliases the aliases of the command.
      */
     protected ValidCommand(String name, String description, String[] aliases)
     {
-        this(name, description, Rank.GUEST, aliases);
+        this(name, description, Rank.GUEST, false, aliases);
+    }
+
+    /**
+     * Constructs a new command without any aliases, the rank of {@link Rank#GUEST}, and is usable by the console.
+     * 
+     * @param name the name of the command.
+     * @param description the description of the command.
+     * @see #ValidCommand(String, String, String[])
+     */
+    protected ValidCommand(String name, String description)
+    {
+        this(name, description, Rank.GUEST, false, new String[0]);
     }
 
     /**
@@ -106,6 +166,19 @@ public abstract class ValidCommand
             DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
+        for (SenderValidator senderValidator : senderValidators)
+        {
+            if (!senderValidator.validate(sender))
+            {
+                return;
+            }
+        }
+
+        if (rawArguments.length == 0 && blocksConsole())
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
+            return;
+        }
 
         CommandArgument<?> argument;
         for (int i = 0; i < rawArguments.length; i++)
@@ -116,6 +189,12 @@ public abstract class ValidCommand
             if (argument == null)
             {
                 DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
+                return;
+            }
+
+            if (blocksConsole() && SessionHandler.isConsole(sender) && !argument.allowsConsole())
+            {
+                DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
                 return;
             }
 
@@ -132,7 +211,7 @@ public abstract class ValidCommand
         {
             ex.printStackTrace();
             sender.getSender().sendMessage("§4An error occured. Contact a staff member immediately.");
-            TicketHandler.openTicket(SessionHandler.getConsoleSession(), "An error occured running the command " + StringUtils.compile(label) + ". Contact a developer.");
+            TicketHandler.openTicket(SessionHandler.getConsoleSession(), "Error running /" + StringUtils.compile(label) + ". Contact a dev.");
         }
         arguments.forEach(arg -> arg.clearValue());
         clearTable();
@@ -249,34 +328,6 @@ public abstract class ValidCommand
     }
 
     /**
-     * Return an unmodifiable view of the arguments for this command. To add a new argument use
-     * {@link #addArgument(CommandArgument)}. To remove an existing argument use
-     * {@link #removeArgument(CommandArgument)}.
-     * 
-     * @return the current existing arguments.
-     */
-    public List<CommandArgument<?>> getArguments()
-    {
-        return Collections.unmodifiableList(arguments);
-    }
-
-    /**
-     * @param ordinal the ordinal.
-     * @return the argument at the given ordinal.
-     */
-    public CommandArgument<?> getArgument(int ordinal)
-    {
-        for (CommandArgument<?> argument : arguments)
-        {
-            if (argument.getOrdinal() == ordinal)
-            {
-                return argument;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Adds a new argument to be used by the command. Will throw an {@link IllegalArgumentException} in one of two
      * cases. First, if the given argument is required and the previous argument is not optional. Second, if the
      * argument before it is of variable length. Both of these cases are not supported as there is no perfect way to
@@ -284,7 +335,7 @@ public abstract class ValidCommand
      * 
      * @param argument the new argument
      */
-    public void addArgument(CommandArgument<?> argument)
+    protected void addArgument(CommandArgument<?> argument)
     {
         if (arguments.size() != 0)
         {
@@ -309,7 +360,7 @@ public abstract class ValidCommand
      * @param argument the existing argument.
      * @return whether or not the argument still existed.
      */
-    public boolean removeArgument(CommandArgument<?> argument)
+    protected boolean removeArgument(CommandArgument<?> argument)
     {
         return arguments.remove(argument);
     }
@@ -320,9 +371,37 @@ public abstract class ValidCommand
      * @param argumentName the name of the argument.
      * @return whether or not the argument existed.
      */
-    public boolean removeArgument(String argumentName)
+    protected boolean removeArgument(String argumentName)
     {
         return removeArgument(getArgument(argumentName));
+    }
+
+    /**
+     * Return an unmodifiable view of the arguments for this command. To add a new argument use
+     * {@link #addArgument(CommandArgument)}. To remove an existing argument use
+     * {@link #removeArgument(CommandArgument)}.
+     * 
+     * @return the current existing arguments.
+     */
+    public List<CommandArgument<?>> getArguments()
+    {
+        return Collections.unmodifiableList(arguments);
+    }
+
+    /**
+     * @param ordinal the ordinal.
+     * @return the argument at the given ordinal.
+     */
+    protected CommandArgument<?> getArgument(int ordinal)
+    {
+        for (CommandArgument<?> argument : arguments)
+        {
+            if (argument.getOrdinal() == ordinal)
+            {
+                return argument;
+            }
+        }
+        return null;
     }
 
     /**
@@ -346,35 +425,13 @@ public abstract class ValidCommand
     }
 
     /**
-     * @return the rank required to run this command.
-     */
-    public Rank getRequiredRank()
-    {
-        return requiredRank;
-    }
-
-    /**
-     * Returns the name of the command. This is what is used to register the command within Bukkit, as well as the
-     * primary way to reference the command elsewhere. There is no method to change this, and if it is changed via
-     * reflection, that change will not be reflected within Bukkit's command system.
+     * Adds a validator to be run on the player before the command itself starts processing the information.
      * 
-     * @return the name of the command.
+     * @param senderValidator the new validator
      */
-    public String getName()
+    protected void addSenderValidator(SenderValidator senderValidator)
     {
-        return name.toLowerCase();
-    }
-
-    /**
-     * Returns the description of the command. This is given to Bukkit when the command is properly registered within
-     * their system. There is no method to change this, and if it is changed via reflection, that change will not be
-     * reflected within Bukkit's command system.
-     * 
-     * @return the description of the command.
-     */
-    public String getDescription()
-    {
-        return description;
+        senderValidators.add(senderValidator);
     }
 
     /**
@@ -383,7 +440,7 @@ public abstract class ValidCommand
      * @param label the label of the command.
      * @return {@code true} if the parameter matches the command. Otherwise, returns {@code false}.
      */
-    public boolean matches(String label)
+    protected boolean matches(String label)
     {
         label = label.toLowerCase();
         if (label == null)
@@ -408,7 +465,7 @@ public abstract class ValidCommand
      * @param start the start of the alias to search for.
      * @return the name or alias that starts with the given string.
      */
-    public String getMatchingAlias(String start)
+    protected String getMatchingAlias(String start)
     {
         start = start.toLowerCase();
         if (name.startsWith(start))
@@ -431,6 +488,46 @@ public abstract class ValidCommand
     public String[] getAliases()
     {
         return aliases;
+    }
+
+    /**
+     * @return {@code true} if this command is unusable by the console unless overridden by an argument.
+     */
+    public boolean blocksConsole()
+    {
+        return blocksConsole;
+    }
+
+    /**
+     * @return the rank required to run this command.
+     */
+    public Rank getRequiredRank()
+    {
+        return requiredRank;
+    }
+
+    /**
+     * Returns the description of the command. This is given to Bukkit when the command is properly registered within
+     * their system. There is no method to change this, and if it is changed via reflection, that change will not be
+     * reflected within Bukkit's command system.
+     * 
+     * @return the description of the command.
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * Returns the name of the command. This is what is used to register the command within Bukkit, as well as the
+     * primary way to reference the command elsewhere. There is no method to change this, and if it is changed via
+     * reflection, that change will not be reflected within Bukkit's command system.
+     * 
+     * @return the name of the command.
+     */
+    public String getName()
+    {
+        return name.toLowerCase();
     }
 
 }

@@ -11,7 +11,7 @@ public class CommandArgumentBuilder<T>
     {
         argument = new CommandArgument<>();
     }
-    
+
     /**
      * Sets the name for the argument.
      * 
@@ -61,8 +61,8 @@ public class CommandArgumentBuilder<T>
     }
 
     /**
-     * Marks this argument as optional. It defaults to true which is why there is no option to disable it as each option
-     * should only be set once.
+     * Marks this argument as optional. It defaults to false which is why there is no option to disable it as each
+     * option should only be set once.
      * 
      * @return the same builder.
      */
@@ -73,7 +73,7 @@ public class CommandArgumentBuilder<T>
     }
 
     /**
-     * Marks this argument as having variable length. It defaults to true which is why there is no option to disable it
+     * Marks this argument as having variable length. It defaults to false which is why there is no option to disable it
      * as each option should only be set to once.
      * 
      * @return the same builder.
@@ -81,6 +81,18 @@ public class CommandArgumentBuilder<T>
     public CommandArgumentBuilder<T> setVariableLength()
     {
         argument.setVariableLength(true);
+        return this;
+    }
+
+    /**
+     * Marks this argument as not usable by the console. It defaults to false which is why there is no option to disable
+     * it as each option should only be set once.
+     * 
+     * @return the same builder
+     */
+    public CommandArgumentBuilder<T> setAllowsConsole()
+    {
+        argument.setAllowsConsole(true);
         return this;
     }
 

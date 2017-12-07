@@ -22,13 +22,15 @@ public class TicketListCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
+        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "ticket.header_footer");
         for (Ticket ticket : TicketHandler.getAllTickets())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.list",
+            DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "ticket.list",
                     "{id}", ticket.getId(),
                     "{player}", PlayerUtils.getName(ticket.getPlayer()),
                     "{reason}", ticket.getText());
 
         }
+        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "ticket.header_footer");
     }
 }
