@@ -189,8 +189,11 @@ info:
   ip: '&9IP: &c{ip}'
   tokens: '&9Tokens: &c{tokens}'
   status: '&9Status: &c{status}'
-  banned: '&9Banned: &c{time}'
-  muted: '&9Muted: &c{time}'
+  ipbanned: '&cIP Banned'
+  permbanned: '&cPermanently Banned'
+  banned: '&cBanned for {time}'
+  permmuted: '&cPermanently Muted'
+  muted: '&cMuted for {time}'
   normal: '&cNormal'
 ticket:
   only_id: '&7You can only reference tickets by number.'
