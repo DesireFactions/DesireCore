@@ -124,6 +124,10 @@ public class Session
      */
     public Player getPlayer()
     {
+        if (SessionHandler.isConsole(this))
+        {
+            return null;
+        }
         if (player == null)
         {
             player = PlayerUtils.getPlayer(uuid);
