@@ -189,15 +189,15 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new UnIpbanCommand());
         customCommandHandler.registerCommand(new RollbackCommand());
         customCommandHandler.registerCommand(new SuperSlimeCommand());
-        customCommandHandler.registerCommand(new RenameCommand());
-        customCommandHandler.registerCommand(new TeamSpeakCommand("teamspeak", "ts"));
-        customCommandHandler.registerCommand(new TokensCommand());
 
         CommandHandler commandHandler = CommandHandler.getInstance();
         commandHandler.registerCommand(new KickCommand());
         commandHandler.registerCommand(new InfoCommand());
         commandHandler.registerCommand(new TicketCommand());
         commandHandler.registerCommand(new PingCommand());
+        commandHandler.registerCommand(new RenameCommand());
+        commandHandler.registerCommand(new TeamSpeakCommand());
+        commandHandler.registerCommand(new TokensCommand());
     }
 
     private void registerListeners()
