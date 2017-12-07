@@ -261,7 +261,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         for (Player player : Bukkit.getOnlinePlayers())
         {
             // if the sender is not a player or if the player can see the target, add them
-            if ((playerSender == null || playerSender.canSee(player)) && (lastWord.equals("") || lastWord.startsWith(player.getName().toLowerCase())))
+            if ((playerSender == null || playerSender.canSee(player)) && (lastWord.equals("") || player.getName().toLowerCase().startsWith(lastWord)))
             {
                 values.add(player.getName());
             }
