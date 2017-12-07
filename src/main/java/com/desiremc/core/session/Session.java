@@ -419,7 +419,7 @@ public class Session
 
     public void takeTokens(int tokens, boolean notify)
     {
-        this.tokens -= tokens;
+        this.tokens -= Math.min(tokens, this.tokens);
         save();
         if (notify)
         {
