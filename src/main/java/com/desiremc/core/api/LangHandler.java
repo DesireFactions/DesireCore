@@ -1,5 +1,6 @@
 package com.desiremc.core.api;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -78,6 +80,26 @@ public class LangHandler extends FileHandler
     public String renderMessage(String string, Object... args)
     {
         return renderString(getString(string), args);
+    }
+
+    public void sendRenderList(CommandSender sender, String string, Object... args)
+    {
+        List<String> messages = DesireCore.getLangHandler().getStringList(string);
+
+        for (String s : messages)
+        {
+            sender.sendMessage(renderMessage(s, args));
+        }
+    }
+
+    public void sendRenderList(Session session, String string, Object... args)
+    {
+        List<String> messages = DesireCore.getLangHandler().getStringList(string);
+
+        for (String s : messages)
+        {
+            session.getPlayer().sendMessage(renderMessage(s, args));
+        }
     }
 
     public String renderMessageNoPrefix(String string, Object... args)
