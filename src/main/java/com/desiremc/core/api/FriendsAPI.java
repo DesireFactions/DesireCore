@@ -1,15 +1,12 @@
 package com.desiremc.core.api;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.FriendUtils;
-import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.List;
 import java.util.UUID;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.FriendUtils;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class FriendsAPI
 {
@@ -72,9 +69,9 @@ public class FriendsAPI
         LANG.sendRenderMessage(sender, "friend.denied_friend_request", "{player}", target.getName());
     }
 
-    public static void list(CommandSender sender)
+    public static void list(Session sender)
     {
-        List<UUID> friends = SessionHandler.getSession(sender).getFriends();
+        List<UUID> friends = sender.getFriends();
         LANG.sendRenderMessageNoPrefix(sender, "list-header");
         StringBuilder sb = new StringBuilder();
         sb.append(LANG.renderMessageNoPrefix("friend.friends"));
@@ -94,9 +91,9 @@ public class FriendsAPI
         LANG.sendRenderMessageNoPrefix(sender, "list-header");
     }
 
-    public static void listIncomming(Player sender)
+    public static void listIncomming(Session sender)
     {
-        List<UUID> friends = SessionHandler.getSession(sender).getIncomingFriendRequests();
+        List<UUID> friends = sender.getIncomingFriendRequests();
         LANG.sendRenderMessageNoPrefix(sender, "list-header");
         StringBuilder sb = new StringBuilder();
         sb.append(LANG.renderMessageNoPrefix("friend.incoming_friends"));
@@ -116,9 +113,9 @@ public class FriendsAPI
         LANG.sendRenderMessageNoPrefix(sender, "list-header");
     }
 
-    public static void listOutgoing(Player sender)
+    public static void listOutgoing(Session sender)
     {
-        List<UUID> friends = SessionHandler.getSession(sender).getOutgoingFriendRequests();
+        List<UUID> friends = sender.getOutgoingFriendRequests();
         LANG.sendRenderMessageNoPrefix(sender, "list-header");
         StringBuilder sb = new StringBuilder();
         sb.append(LANG.renderMessageNoPrefix("friend.outgoing_friends"));

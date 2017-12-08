@@ -31,7 +31,6 @@ no_free_slots: '&7You have no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
 rename: "You have renamed the item in your hand to {name}."
-already_sent_request: "You have already sent a friend request to this user."
 teamspeak: "Join us on TeamSpeak! ts.desirehcf.com"
 string:
   too_long: '&7That string is too long.'
@@ -57,7 +56,6 @@ friend:
   accepted_friend_request: 'You accepted a friend request from {player}.'
   are_now_friend: 'You are now friends with {player}.'
   no_longer_friend: 'You are no longer friends with {player}.'
-  already_sent_request: 'You have already sent {player} a friend request.'
   sent_request: 'You have sent {player} a friend request.'
   received_request: 'You have received a friend request from {player}.'
   both_friend_requested: 'You had a friend request from {player} so we added you both as friends.'
@@ -70,6 +68,7 @@ friend:
   friends: '&7Current Friends: '
   incoming_friends: '&7Incoming friend requests: '
   outgoing_friends: '&7Outgoing friend requests: '
+  already_sent_request: '&7You have already sent &e{player}&7 a friend request.'
 ban:
   tempban_message: '&7{player} has banned &e{target}&7 for {duration} for &e{reason}&7.'
   permban_message: '&7{player} has permanently banned &e{target}&7 for &e{reason}&7.'

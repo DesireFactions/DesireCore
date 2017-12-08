@@ -1,35 +1,36 @@
 package com.desiremc.core.commands.friends;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.api.FriendsAPI;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.newvalidators.friends.SenderHasFriendRequestValidator;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderHasFriendRequestValidator;
 
 public class FriendAcceptCommand extends ValidCommand
 {
 
     public FriendAcceptCommand()
     {
-        super("accept", "Accept a friend request.", Rank.GUEST, new String[] { "target" }, "confirm");
-        addParser(new PlayerSessionParser(), "target");
+        super("accept", "Accept a friend request.", Rank.GUEST, true, new String[] { "confirm" });
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderHasFriendRequestValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderHasFriendRequestValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
-        Session session = SessionHandler.getSession(sender);
+        Session target = (Session) args.get(0).getValue();
 
-        FriendsAPI.acceptRequest(session, target);
+        FriendsAPI.acceptRequest(sender, target);
     }
 
 }

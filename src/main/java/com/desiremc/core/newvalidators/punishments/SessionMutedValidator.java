@@ -1,4 +1,4 @@
-package com.desiremc.core.newvalidators;
+package com.desiremc.core.newvalidators.punishments;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Validator;

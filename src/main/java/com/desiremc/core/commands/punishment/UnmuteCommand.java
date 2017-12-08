@@ -10,7 +10,7 @@ import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.newparsers.SessionParser;
 import com.desiremc.core.newparsers.StringParser;
-import com.desiremc.core.newvalidators.SessionMutedValidator;
+import com.desiremc.core.newvalidators.punishments.SessionMutedValidator;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
