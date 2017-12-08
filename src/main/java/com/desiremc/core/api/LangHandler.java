@@ -98,7 +98,7 @@ public class LangHandler extends FileHandler
 
         for (String s : messages)
         {
-            session.getPlayer().sendMessage(renderMessage(s, args));
+            session.getSender().sendMessage(renderMessage(s, args));
         }
     }
 
