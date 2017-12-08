@@ -167,7 +167,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new BlacklistCommand());
         customCommandHandler.registerCommand(new UnblacklistCommand());
         customCommandHandler.registerCommand(new StaffCommand());
-        customCommandHandler.registerCommand(new ChatCommand());
         customCommandHandler.registerCommand(new TempBanCommand());
         customCommandHandler.registerCommand(new BanCommand());
         customCommandHandler.registerCommand(new UnbanCommand());
@@ -198,6 +197,7 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new MuteCommand());
         commandHandler.registerCommand(new UnmuteCommand());
         commandHandler.registerCommand(new TempMuteCommand());
+        commandHandler.registerCommand(new ChatCommand());
     }
 
     private void registerListeners()

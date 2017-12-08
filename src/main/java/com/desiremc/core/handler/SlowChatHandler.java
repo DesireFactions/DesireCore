@@ -25,7 +25,7 @@ public class SlowChatHandler implements Listener
 
     public SlowChatHandler()
     {
-        TIMER = DesireCore.getConfigHandler().getInteger("staff.chat-slow");
+        TIMER = DesireCore.getConfigHandler().getInteger("staff.chat_slow");
         history = new Cache<>(TIMER, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
@@ -54,7 +54,8 @@ public class SlowChatHandler implements Listener
         if (history.containsKey(player.getUniqueId()))
         {
             event.setCancelled(true);
-            DesireCore.getLangHandler().sendRenderMessage(session, "staff.chat-slowed", "{time}", DateUtils.formatDateDiff(history.get(player.getUniqueId())));
+            DesireCore.getLangHandler().sendRenderMessage(session, "staff.chat_slowed",
+                    "{time}", DateUtils.formatDateDiff(history.get(player.getUniqueId())));
         }
         history.put(player.getUniqueId(), System.currentTimeMillis() + (TIMER * 1000));
     }

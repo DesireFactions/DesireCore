@@ -102,13 +102,13 @@ staff:
   cps-finish: '{player} had a CPS of {amount} over 10 seconds.'
   cps-already-running: 'There is already a clicks per second test for {player} running.'
   froze-target: 'You have frozen {player}.'
-  staff-on: 'You have toggled staff mode on.'
-  staff-off: 'You have toggled staff mode off.'
+  staff_on: 'You have toggled staff mode on.'
+  staff_off: 'You have toggled staff mode off.'
   staff-chat-on: 'You are now in staff chat.'
   staff-chat-off: 'You have left staff chat.'
   staff-chat-format: '&c[SC] &f{name}&7: {message}'
-  chat-cleared: 'You have cleared chat.'
-  chat-cleared-all: '{player} has cleared chat.'
+  chat_cleared: '&7You have cleared chat.'
+  chat_cleared_broadcast: '&7{player} has cleared chat.'
   chat-on: 'You have turned chat back on.'
   chat-off: 'You have turned chat off.'
   set-invisible: 'You are now invisible.'
@@ -122,9 +122,9 @@ staff:
   restore-target: '{player} has restored your inventory.'
   invalid-block: "You are not pointing to a valid block"
   no-free-space: "There is no free space available for teleport."
-  chat-slow-on: "Chat has been slowed."
-  chat-slow-off: "Chat is no longer slowed."
-  chat-slowed: "Warning! Chat has been slowed, please wait {time}."
+  chat_slow_on: "Chat has been slowed."
+  chat_slow_off: "Chat is no longer slowed."
+  chat_slowed: "Warning! Chat has been slowed, please wait {time}."
 report:
   reported: 'You have reported {player} for {reason}.'
   getreport:

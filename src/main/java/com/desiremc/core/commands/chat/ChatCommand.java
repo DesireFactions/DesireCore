@@ -1,6 +1,6 @@
 package com.desiremc.core.commands.chat;
 
-import com.desiremc.core.api.command.ValidBaseCommand;
+import com.desiremc.core.api.newcommands.ValidBaseCommand;
 import com.desiremc.core.session.Rank;
 
 public class ChatCommand extends ValidBaseCommand
