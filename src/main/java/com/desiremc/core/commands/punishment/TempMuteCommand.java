@@ -52,7 +52,7 @@ public class TempMuteCommand extends ValidCommand
     {
         ;
         Session target = (Session) args.get(0).getValue();
-        long time = (long) args.get(1).getValue();
+        long time = (Long) args.get(1).getValue();
         String reason = (String) args.get(2).getValue();
 
         if (reason.contains("-s"))

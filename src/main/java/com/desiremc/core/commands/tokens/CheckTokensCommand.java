@@ -29,6 +29,8 @@ public class CheckTokensCommand extends ValidCommand
     {
         Session target = (Session) args.get(0).getValue();
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.check", "{amount}", target.getTokens(), "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.check",
+                "{amount}", target.getTokens(),
+                "{player}", target.getName());
     }
 }

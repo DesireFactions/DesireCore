@@ -25,7 +25,7 @@ public class AddTokensCommand extends ValidCommand
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
         Session target = (Session) args.get(0).getValue();
-        int amount = (int) args.get(1).getValue();
+        int amount = (Integer) args.get(1).getValue();
 
         target.addTokens(amount, true);
 
