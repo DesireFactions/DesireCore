@@ -1,8 +1,10 @@
 package com.desiremc.core.api.newcommands;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.CollectionUtils;
 
 public interface Parser<T>
 {
@@ -26,5 +28,22 @@ public interface Parser<T>
      * @return the recommendations.
      */
     public List<String> getRecommendations(Session sender, String lastWord);
+
+    public static void pruneSuggestions(List<String> values, String lastWord)
+    {
+        if (values == null || values.size() == 0 || CollectionUtils.isImmutable(values))
+        {
+            return;
+        }
+        lastWord = lastWord.toLowerCase();
+        Iterator<String> it = values.iterator();
+        while (it.hasNext())
+        {
+            if (!it.next().toLowerCase().startsWith(lastWord))
+            {
+                it.remove();
+            }
+        }
+    }
 
 }
