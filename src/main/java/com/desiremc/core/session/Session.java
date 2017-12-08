@@ -134,9 +134,14 @@ public class Session
         }
         if (player == null || !player.isOnline())
         {
-            throw new IllegalStateException("Player is offline.");
+            throw new IllegalStateException("Session is console or player is offline.");
         }
         return player;
+    }
+
+    public boolean isPlayer()
+    {
+        return !SessionHandler.isConsole(this);
     }
 
     public OfflinePlayer getOfflinePlayer()
@@ -155,11 +160,6 @@ public class Session
             player = (Player) op;
         }
         return op;
-    }
-
-    public void setPlayer(Player player)
-    {
-        this.player = player;
     }
 
     @IdGetter
@@ -522,6 +522,10 @@ public class Session
         save();
     }
 
+    /**
+     * Saves this record to the database asynchronously as to prevent the thread from freezing. Even though it is
+     * asynchronous, it should be used sparingly and not on a timer.
+     */
     public void save()
     {
         Bukkit.getScheduler().runTaskAsynchronously(DesireCore.getInstance(), new Runnable()
