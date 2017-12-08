@@ -1,32 +1,31 @@
 package com.desiremc.core.commands.chat;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
 
 public class ChatToggleCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public ChatToggleCommand()
     {
-        super("toggle", "Toggle chat on or off.", Rank.ADMIN, new String[] {});
+        super("toggle", "Toggle chat on or off.", Rank.SRMOD);
     }
 
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
         if (StaffHandler.getInstance().chatDisabled())
         {
-            LANG.sendRenderMessage(sender, "staff.chat-on");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_on");
         }
         else
         {
-            LANG.sendRenderMessage(sender, "staff.chat-off");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_off");
         }
         StaffHandler.getInstance().toggleChat();
     }

@@ -247,7 +247,6 @@ public class Session
     public void setRank(Rank rank)
     {
         this.rank = rank;
-        save();
     }
 
     public List<Punishment> getActivePunishments()
@@ -523,9 +522,16 @@ public class Session
         save();
     }
 
-    protected void save()
+    public void save()
     {
-        SessionHandler.getInstance().save(this);
+        Bukkit.getScheduler().runTaskAsynchronously(DesireCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                SessionHandler.getInstance().save(Session.this);
+            }
+        });
     }
 
 }

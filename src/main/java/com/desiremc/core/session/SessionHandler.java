@@ -1,17 +1,19 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.RedBlackTree;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
@@ -22,9 +24,9 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     private static SessionHandler instance;
 
-    private RedBlackTree<UUID, Session> sessions;
+    private HashMap<UUID, Session> sessions;
 
-    private RedBlackTree<UUID, Session> staff;
+    private HashMap<UUID, Session> staff;
 
     public SessionHandler()
     {
@@ -32,8 +34,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(Session.class);
 
-        sessions = new RedBlackTree<>();
-        staff = new RedBlackTree<>();
+        sessions = new HashMap<>();
+        staff = new HashMap<>();
 
         startConsoleSession();
     }
@@ -206,28 +208,44 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return session;
     }
 
-    public Iterable<Session> getSessions()
+    /**
+     * @return all connected sessions.
+     */
+    public static Iterable<Session> getSessions()
     {
-        return sessions.values();
+        return instance.sessions.values();
     }
 
-    public Iterable<Session> getStaff()
+    /**
+     * @return all staff sessions excluding console.
+     */
+    public static Iterable<Session> getStaff()
     {
-        return staff.values();
+        return instance.staff.values();
     }
 
-    public void removeStaff(UUID uuid)
+    /**
+     * @return all non-staff sessions.
+     */
+    public static Iterable<Session> getNonStaff()
     {
-        staff.delete(uuid);
+        LinkedList<Session> nonStaff = new LinkedList<>(instance.sessions.values());
+        nonStaff.removeAll(instance.staff.values());
+        return nonStaff;
+    }
+
+    public static void removeStaff(UUID uuid)
+    {
+        instance.staff.remove(uuid);
     }
 
     public static boolean endSession(Session s)
     {
         s.setTotalPlayed(s.getTotalPlayed() + System.currentTimeMillis() - s.getLastLogin());
         s.setLastLogin(System.currentTimeMillis());
-        instance.staff.delete(s.getUniqueId());
+        instance.staff.remove(s.getUniqueId());
         instance.save(s);
-        instance.sessions.delete(s.getUniqueId());
+        instance.sessions.remove(s.getUniqueId());
         // TODO change this return type
         return true;
     }

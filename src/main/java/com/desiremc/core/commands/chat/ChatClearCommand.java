@@ -1,47 +1,35 @@
 package com.desiremc.core.commands.chat;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class ChatClearCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public ChatClearCommand()
     {
-        super("clear", "Clear all chat", Rank.MODERATOR, new String[] {});
+        super("clear", "Clear all chat", Rank.MODERATOR);
     }
 
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        for (Player p : Bukkit.getOnlinePlayers())
+        for (Session session : SessionHandler.getSessions())
         {
-            Session session = SessionHandler.getSession(p.getUniqueId());
-
-            if (session.getRank().isStaff())
+            if (!session.getRank().isStaff())
             {
-                if (!session.getName().equalsIgnoreCase(sender.getName()))
+                for (int i = 0; i < 120; i++)
                 {
-                    LANG.sendRenderMessage(session, "staff.chat-cleared-all", "{player}", sender.getName());
+                    session.getSender().sendMessage("");
                 }
-                continue;
             }
-
-            for (int i = 0; i < 120; i++)
-            {
-                p.sendMessage("");
-            }
-
-            LANG.sendRenderMessage(session, "staff.chat-cleared-all", "{player}", sender.getName());
+            DesireCore.getLangHandler().sendRenderMessage(session, "staff.chat_cleared_broadcast", "{player}", sender.getName());
         }
-        LANG.sendRenderMessage(sender, "staff.chat-cleared");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_cleared");
     }
 }

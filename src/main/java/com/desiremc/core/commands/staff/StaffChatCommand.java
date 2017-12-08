@@ -53,9 +53,10 @@ public class StaffChatCommand extends ValidCommand
             }
 
             String message = sb.toString().trim();
-            String parsed = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", p
-                    .getName(), "{message}", ChatColor.translateAlternateColorCodes('&', message));
-            for (Session target : SessionHandler.getInstance().getStaff())
+            String parsed = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format",
+                    "{name}", p.getName(),
+                    "{message}", ChatColor.translateAlternateColorCodes('&', message));
+            for (Session target : SessionHandler.getStaff())
             {
                 target.getPlayer().sendMessage(parsed);
             }
