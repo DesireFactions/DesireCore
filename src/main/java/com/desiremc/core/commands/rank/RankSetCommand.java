@@ -37,23 +37,11 @@ public class RankSetCommand extends ValidCommand
 
         if (target.getRank().isStaff() && !rank.isStaff())
         {
-            SessionHandler.getInstance().removeStaff(target.getUniqueId());
+            SessionHandler.removeStaff(target.getUniqueId());
         }
 
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() rank before: " + target.getRank().getDisplayName());
-        }
         target.setRank(rank);
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() rank after: " + target.getRank().getDisplayName());
-        }
-
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() query after save: " + SessionHandler.getSession(target.getUniqueId()).getRank().getDisplayName());
-        }
+        target.save();
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
 

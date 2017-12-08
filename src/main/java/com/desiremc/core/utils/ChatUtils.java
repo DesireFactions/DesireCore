@@ -93,7 +93,7 @@ public class ChatUtils
     public static void sendStaffMessage(Exception ex, JavaPlugin plugin)
     {
         String error = processException(ex, plugin);
-        for (Session s : SessionHandler.getInstance().getStaff())
+        for (Session s : SessionHandler.getStaff())
         {
             s.getPlayer().sendMessage(error);
         }

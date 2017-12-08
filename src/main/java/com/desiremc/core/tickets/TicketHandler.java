@@ -73,7 +73,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     public void run()
     {
         Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
-        for (Session s : SessionHandler.getInstance().getSessions())
+        for (Session s : SessionHandler.getSessions())
         {
             if (s.getRank().getId() >= Rank.MODERATOR.getId())
             {
