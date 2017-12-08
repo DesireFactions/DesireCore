@@ -91,7 +91,7 @@ public abstract class ValidBaseCommand extends ValidCommand
     {
         if (rawArguments.length == 1)
         {
-            return getSubCommandNames(rawArguments[0]);
+            return getSubCommandNames(sender, rawArguments[0]);
         }
         else
         {
@@ -135,14 +135,17 @@ public abstract class ValidBaseCommand extends ValidCommand
      * @param start the beginning of the label.
      * @return the command labels if any are found.
      */
-    public List<String> getSubCommandNames(String start)
+    public List<String> getSubCommandNames(Session sender, String start)
     {
         List<String> commandNames = new LinkedList<>();
+        if (getRequiredRank().getId() > sender.getRank().getId())
+        {
+            return commandNames;
+        }
         String match;
         for (ValidCommand sub : subCommands)
         {
-            match = sub.getMatchingAlias(start);
-            if (match != null)
+            if ((match = sub.getMatchingAlias(start)) != null && sub.getRequiredRank().getId() <= sender.getRank().getId())
             {
                 commandNames.add(match);
             }
