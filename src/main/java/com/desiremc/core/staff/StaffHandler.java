@@ -217,9 +217,8 @@ public class StaffHandler
         {
             frozenPlayers.add(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.frozen", "{player}", source.getName());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target
-                    .getName());
+            DesireCore.getLangHandler().sendRenderList(targetSession, "staff.frozen", "{player}", source.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target.getName());
         }
     }
 

@@ -115,7 +115,13 @@ staff:
   set-visible: 'You are now visible.'
   target-frozen: 'You have froze {player}.'
   target-unfrozen: 'You have unfroze {player}.'
-  frozen: 'You have been frozen by {player}.'
+  frozen:
+    - "&c&l&m---------------------------------------"
+    - 'You have been frozen by a staff member.'
+    - 'If you disconnect you will be BANNED.'
+    - 'Please connect to our Teamspeak.'
+    - 'ts.desirehcf.com'
+    - "&c&l&m---------------------------------------"
   unfrozen: 'You have been unfrozen by {player}.'
   no-restore: '{player} does not have an inventory to restore.'
   restore: 'You have restored {player}''s inventory.'
