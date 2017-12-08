@@ -1,60 +1,71 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
-import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.newparsers.StringParser;
+import com.desiremc.core.newvalidators.SenderNotTargetValidator;
+import com.desiremc.core.newvalidators.SenderOutranksTargetValidator;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderNotTargetValidator;
-import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class MuteCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public MuteCommand()
     {
-        super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
+        super("mute", "Permanently mute a user on the server.", Rank.MODERATOR, new String[] { "target", "reason" });
 
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderNotTargetValidator(), "target");
-        addValidator(new SenderOutranksTargetValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
+
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
+        String reason = (String) args.get(1).getValue();
 
-        if (((String) args[1]).contains("-s"))
+        if (reason.contains("-s"))
         {
-            args[1] = ((String) args[1]).replace("-s", "");
+            reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.perm_silent",
+                    "{target}", target.getName(),
+                    "{reason}", reason);
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("mute.permmute_message", "{target}", target.getName(), "{reason}", args[1], "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.perm_broadcast",
+                    "{target}", target.getName(),
+                    "{reason}", reason,
+                    "{player}", sender.getName()));
         }
 
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.MUTE);
         punishment.setPunished(target.getUniqueId());
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setReason((String) args[1]);
+        punishment.setIssuer(sender.getUniqueId());
+        punishment.setReason(reason);
         punishment.setPermanent(true);
         PunishmentHandler.getInstance().save(punishment);
 
@@ -62,7 +73,9 @@ public class MuteCommand extends ValidCommand
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            LANG.sendRenderMessage(target, "mute.permmute_message_target", "{player}", session.getName(), "{reason}", args[1]);
+            DesireCore.getLangHandler().sendRenderMessage(target, "mute.perm_target",
+                    "{player}", sender.getName(),
+                    "{reason}", reason);
         }
     }
 }

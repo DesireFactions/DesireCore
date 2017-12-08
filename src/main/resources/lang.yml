@@ -9,7 +9,6 @@ only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 not_banned: '{player} is not banned.'
 not_ip_banned: '{player} is not IP banned.'
-not_muted: '{player} is not muted.'
 not_blacklisted: '{player} is not blacklisted.'
 blacklisted: '{player} is blacklisted. They can''t be unbanned.'
 no_season_data: 'Could not find Season data for &e{faction}'
@@ -28,7 +27,6 @@ cant_to_self: 'You can''t do that to yourself!'
 player-not-found: 'That player does not exist!'
 not_online: "That player is not online."
 rank_too_high: "You can't set a players rank higher than your own."
-punishment_too_long: "You can't punish someone that long!"
 no_free_slots: '&7You have no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
@@ -39,8 +37,9 @@ string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
 number:
-  too_large: '&7That number is too large.'
-  too_small: '&7That number is too small.'
+  invalid: '&c{value}&7 is invalid.'
+  too_large: '&c{value}&7 is too large.'
+  too_small: '&c{value}&7 is too small.'
 set_end:
   exit: '&8[&c&l*&8]&7 You have set end exit!'
   spawn: '&8[&c&l*&8]&7 You have set end spawn!'
@@ -79,12 +78,15 @@ ipban:
   ban_message: '&7{player} has permanently IP banned &e{target}&7 for &e{reason}&7.'
   unban_message: '&7{player} has unbanned &e{target}''s&7 IP.'
 mute:
-  tempmute_message: '&7{player} has muted &e{target}&7 for {duration} for &e{reason}&7.'
-  permmute_message: '&7{player} has permanently muted &e{target}&7 for &e{reason}&7.'
-  unmute_message: '&7{player} has unmuted &e{target}&7.'
-  tempmute_message_target: '&7You have been muted by &e{player}&7 for {duration} for &e{reason}&7.'
-  permmute_message_target: '&7You have been permanently muted by &e{player}&7 for &e{reason}&7.'
-  unmute_message_target: '&7You have been unmuted by &e{player}&7.'
+  temp_broadcast: '&7{player} has muted &e{target}&7 for &e{duration} &7for &e{reason}&7.'
+  temp_silent: '&7You have muted &e{target}&7 for &e{duration}&7.'
+  perm_broadcast: '&7{player} has permanently muted &e{target}&7 for &e{reason}&7.'
+  perm_silent: '&7You have permanently muted &e{target}&7 for &e{reason}&7.'
+  temp_target: '&7You have been muted by &e{player}&7 for &e{duration}&7 for &e{reason}&7.'
+  perm_target: '&7You have been permanently muted by &e{player}&7 for &e{reason}&7.'
+  unmute: '&7{player} has unmuted &e{target}&7.'
+  unmute_target: '&7You have been unmuted by &e{player}&7.'
+  not_muted: '&e{target}&7 is not muted.'
 blacklist:
   blacklist_message: '&7{player} has blacklisted &e{target}&7 for &e{reason}&7.'
   unblacklist_message: '&7{player} has unblacklisted &e{target}&7.'
@@ -182,6 +184,8 @@ punishment:
   found: '[DesireHCF] Found punishment document for: {player}'
   type: '[DesireHCF] Punishment Type: {reason}'
   notfound: '[DesireHCF] Punishment document was not found for: {player}'
+  too_short: '&7You have to give a punishment time.'
+  too_long: '&7You can''t punish someone for that long.'
 info:
   header-footer: "&c&l&m---------------------------------------"
   name: '&9{player}'

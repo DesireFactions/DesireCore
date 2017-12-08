@@ -175,8 +175,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new AchievementCommand());
         customCommandHandler.registerCommand(new LoginCommand());
         customCommandHandler.registerCommand(new AuthCommand());
-        customCommandHandler.registerCommand(new MuteCommand());
-        customCommandHandler.registerCommand(new TempMuteCommand());
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
         customCommandHandler.registerCommand(new StaffFreezeCommand());
@@ -184,7 +182,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
         customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
         customCommandHandler.registerCommand(new StaffAltsCommand("alts"));
-        customCommandHandler.registerCommand(new UnmuteCommand());
         customCommandHandler.registerCommand(new IpbanCommand());
         customCommandHandler.registerCommand(new UnIpbanCommand());
         customCommandHandler.registerCommand(new RollbackCommand());
@@ -198,6 +195,9 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new RenameCommand());
         commandHandler.registerCommand(new TeamSpeakCommand());
         commandHandler.registerCommand(new TokensCommand());
+        commandHandler.registerCommand(new MuteCommand());
+        commandHandler.registerCommand(new UnmuteCommand());
+        commandHandler.registerCommand(new TempMuteCommand());
     }
 
     private void registerListeners()

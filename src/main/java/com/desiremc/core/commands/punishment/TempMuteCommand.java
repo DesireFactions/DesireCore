@@ -1,58 +1,76 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
-import com.desiremc.core.parsers.StringParser;
-import com.desiremc.core.parsers.TimeParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.newparsers.StringParser;
+import com.desiremc.core.newparsers.TimeParser;
+import com.desiremc.core.newvalidators.NumberSizeValidator;
+import com.desiremc.core.newvalidators.SenderNotTargetValidator;
+import com.desiremc.core.newvalidators.SenderOutranksTargetValidator;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.PunishmentTimeValidator;
-import com.desiremc.core.validators.SenderNotTargetValidator;
-import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class TempMuteCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public TempMuteCommand()
     {
-        super("tempmute", "Temporarily mute a user on the server.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "time", "reason"});
+        super("tempmute", "Temporarily mute a user on the server.", Rank.JRMOD);
 
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new TimeParser(), "time");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderNotTargetValidator(), "target");
-        addValidator(new SenderOutranksTargetValidator(), "target");
-        addValidator(new PunishmentTimeValidator(), "time");
+        addArgument(CommandArgumentBuilder.createBuilder(Number.class)
+                .setName("time")
+                .setParser(new TimeParser())
+                .addValidator(new NumberSizeValidator(0, 1209600000, "punishment.too_low", "punishment.too_high"))
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
-        long time = (long) args[1];
+        ;
+        Session target = (Session) args.get(0).getValue();
+        long time = (long) args.get(1).getValue();
+        String reason = (String) args.get(2).getValue();
 
-        if (((String) args[2]).contains("-s"))
+        if (reason.contains("-s"))
         {
-            args[2] = ((String) args[2]).replace("-s", "");
+            reason = reason.replace("-s", "");
+
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.temp_silent",
+                    "{target}", target.getName(),
+                    "{reason}", reason,
+                    "{duration}", DateUtils.formatDateDiff(time));
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("mute.tempmute_message", "{duration}", DateUtils.formatDateDiff(time), "{target}", target.getName(), "{reason}", args[2], "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.temp_broadcast",
+                    "{target}", target.getName(),
+                    "{reason}", reason,
+                    "{duration}", DateUtils.formatDateDiff(time),
+                    "{player}", sender.getName()));
         }
 
         Punishment punishment = new Punishment();
@@ -60,13 +78,16 @@ public class TempMuteCommand extends ValidCommand
         punishment.setType(Type.MUTE);
         punishment.setPunished(target.getUniqueId());
         punishment.setExpirationTime(time);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setReason((String) args[2]);
+        punishment.setIssuer(sender.getUniqueId());
+        punishment.setReason(reason);
         PunishmentHandler.getInstance().save(punishment);
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            LANG.sendRenderMessage(target, "mute.tempmute_message_target", "{duration}", DateUtils.formatDateDiff(time), "{player}", session.getName(), "{reason}", args[2]);
+            DesireCore.getLangHandler().sendRenderMessage(target, "mute.temp_target",
+                    "{duration}", DateUtils.formatDateDiff(time),
+                    "{player}", sender.getName(),
+                    "{reason}", reason);
         }
     }
 
