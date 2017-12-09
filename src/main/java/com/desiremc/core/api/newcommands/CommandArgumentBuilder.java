@@ -116,6 +116,10 @@ public class CommandArgumentBuilder<T>
      */
     public CommandArgument<T> build()
     {
+        if (argument.getName() == null)
+        {
+            throw new IllegalArgumentException("Argument name not set");
+        }
         if (argument.getParser() == null)
         {
             throw new IllegalStateException("Argument parser not set.");

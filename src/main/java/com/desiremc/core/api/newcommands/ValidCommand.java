@@ -295,7 +295,7 @@ public abstract class ValidCommand
      * 
      * @return the minimum length of the raw command arguments.
      */
-    private int getMinimumLength()
+    protected int getMinimumLength()
     {
         int minimumLength = 0;
         for (CommandArgument<?> argument : arguments)
@@ -314,7 +314,7 @@ public abstract class ValidCommand
      * 
      * @return the maximum length of the raw command arguments.
      */
-    private int getMaximumLength()
+    protected int getMaximumLength()
     {
         if (arguments.size() == 0)
         {
