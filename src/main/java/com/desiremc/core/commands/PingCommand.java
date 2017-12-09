@@ -19,7 +19,12 @@ public class PingCommand extends ValidCommand
     {
         super("ping", "View your ping.", Rank.GUEST, true, new String[] { "ms" });
 
-        addArgument(CommandArgumentBuilder.createBuilder(Player.class).setName("target").setParser(new PlayerParser()).setOptional().setAllowsConsole().build());
+        addArgument(CommandArgumentBuilder.createBuilder(Player.class)
+                .setName("target")
+                .setParser(new PlayerParser())
+                .setOptional()
+                .setAllowsConsole()
+                .build());
     }
 
     @Override
