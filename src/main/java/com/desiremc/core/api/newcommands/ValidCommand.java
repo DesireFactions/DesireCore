@@ -69,6 +69,7 @@ public abstract class ValidCommand
      * @param description the description of the command.
      * @param requiredRank the required rank for the command.
      * @param blocksConsole if this command is unusable by the console.
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole)
     {
@@ -82,6 +83,7 @@ public abstract class ValidCommand
      * @param description the description of the command.
      * @param requiredRank the required rank for the command.
      * @param aliases the aliases of the command.
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, Rank requiredRank, String[] aliases)
     {
@@ -95,6 +97,7 @@ public abstract class ValidCommand
      * @param description the description of the command.
      * @param blocksConsole if this command is unusable by the console.
      * @param aliases the aliases of the command.
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, boolean blocksConsole, String[] aliases)
     {
@@ -107,6 +110,7 @@ public abstract class ValidCommand
      * @param name the name of the command.
      * @param description the description of the command.
      * @param requiredRank the required rank for the command.
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, Rank requiredRank)
     {
@@ -119,7 +123,7 @@ public abstract class ValidCommand
      * @param name the name of the command.
      * @param description the description of the command.
      * @param blocksConsole if this command is unusable by the console.
-     * @see #ValidCommand(String, String, String[])
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, boolean blocksConsole)
     {
@@ -132,6 +136,7 @@ public abstract class ValidCommand
      * @param name the name of the command.
      * @param description the description of the command.
      * @param aliases the aliases of the command.
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description, String[] aliases)
     {
@@ -143,7 +148,7 @@ public abstract class ValidCommand
      * 
      * @param name the name of the command.
      * @param description the description of the command.
-     * @see #ValidCommand(String, String, String[])
+     * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
     protected ValidCommand(String name, String description)
     {
@@ -253,6 +258,15 @@ public abstract class ValidCommand
         }
     }
 
+    /**
+     * Runs the command after all processing has already been completed. The label is an array of the label used by this
+     * command as well as any parent command. The arguments will always be there, whether they are used or not. To check
+     * if optional arguments were used, call the method {@link CommandArgument#hasValue()}.
+     * 
+     * @param sender the sender of the command.
+     * @param label the label of the command.
+     * @param arguments the arguments of the command.
+     */
     public abstract void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments);
 
     /**

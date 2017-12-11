@@ -1,11 +1,6 @@
 package com.desiremc.core.listeners;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,18 +11,51 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.events.PlayerChunkMoveEvent;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BukkitUtils;
+
+import net.md_5.bungee.api.ChatColor;
+
 public class PlayerListener implements Listener
 {
     private static final boolean DEBUG = false;
 
-    @EventHandler
-    public void onFrozenPlayerMove(PlayerMoveEvent event)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockChange(PlayerMoveEvent event)
+    {
+        PlayerBlockMoveEvent blockMoveEvent = null;
+        if (BukkitUtils.differentChunk(event.getFrom(), event.getTo()))
+        {
+            blockMoveEvent = new PlayerChunkMoveEvent(event.getPlayer(), event.getFrom(), event.getTo());
+        }
+        else if (BukkitUtils.differentBlock(event.getFrom(), event.getTo()))
+        {
+            blockMoveEvent = new PlayerBlockMoveEvent(event.getPlayer(), event.getFrom(), event.getTo());
+        }
+        if (blockMoveEvent != null)
+        {
+            Bukkit.getPluginManager().callEvent(blockMoveEvent);
+            if (blockMoveEvent.isCancelled())
+            {
+                event.setCancelled(true);
+            }
+            event.setFrom(blockMoveEvent.getFrom());
+            event.setTo(blockMoveEvent.getTo());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFrozenPlayerMove(PlayerBlockMoveEvent event)
     {
         if (StaffHandler.getInstance().isFrozen(event.getPlayer()))
         {
-            Player p = event.getPlayer();
-
-            p.teleport(event.getFrom());
+            event.getPlayer().teleport(event.getFrom());
         }
     }
 

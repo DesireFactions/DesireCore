@@ -27,7 +27,7 @@ cant_to_self: 'You can''t do that to yourself!'
 player-not-found: 'That player does not exist!'
 not_online: "That player is not online."
 rank_too_high: "You can't set a players rank higher than your own."
-no_free_slots: '&7You have no free inventory slots.'
+no_free_slots: '&7{target} {have/has} no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
 rename: "You have renamed the item in your hand to {name}."
@@ -39,6 +39,8 @@ number:
   invalid: '&c{value}&7 is invalid.'
   too_large: '&c{value}&7 is too large.'
   too_small: '&c{value}&7 is too small.'
+boolean:
+  invalid: '&c{value}&7 is invalid.'
 set_end:
   exit: '&8[&c&l*&8]&7 You have set end exit!'
   spawn: '&8[&c&l*&8]&7 You have set end spawn!'

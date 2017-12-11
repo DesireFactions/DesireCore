@@ -12,7 +12,7 @@ public interface Validator<T>
      * @param sender the sender of the command.
      * @param label the label of the command
      * @param arg the argument to be validated.
-     * @return {@code true} if the argument is valid. Otherwise returns {@code false}.
+     * @return {@code true} if the argument is valid. {@code false} of the argument is not valid.
      */
     public boolean validateArgument(Session sender, String[] label, T arg);
 

@@ -98,22 +98,9 @@ public class Session
         ignoring = new LinkedList<>();
     }
 
-    /**
-     * Get the CommandSender associated with this Session. Using this instead of getPlayer makes it safe to always use
-     * this, even when dealing with the console sending commands.
-     * 
-     * @return the {@link CommandSender} of this session.
-     */
-    public CommandSender getSender()
+    public boolean isPlayer()
     {
-        if (SessionHandler.isConsole(this))
-        {
-            return Bukkit.getConsoleSender();
-        }
-        else
-        {
-            return getPlayer();
-        }
+        return !SessionHandler.isConsole(this);
     }
 
     /**
@@ -139,9 +126,22 @@ public class Session
         return player;
     }
 
-    public boolean isPlayer()
+    /**
+     * Checks if the player is online.
+     * 
+     * @return {@code true} if the player is online. {@code false} otherwise.
+     */
+    public boolean isOnline()
     {
-        return !SessionHandler.isConsole(this);
+        try
+        {
+            getPlayer();
+            return true;
+        }
+        catch (IllegalStateException ex)
+        {
+            return false;
+        }
     }
 
     public OfflinePlayer getOfflinePlayer()
@@ -160,6 +160,39 @@ public class Session
             player = (Player) op;
         }
         return op;
+    }
+
+    /**
+     * Get the CommandSender associated with this Session. Using this instead of getPlayer makes it safe to always use
+     * this, even when dealing with the console sending commands.
+     * 
+     * @return the {@link CommandSender} of this session.
+     */
+    public CommandSender getSender()
+    {
+        if (SessionHandler.isConsole(this))
+        {
+            return Bukkit.getConsoleSender();
+        }
+        else
+        {
+            return getPlayer();
+        }
+    }
+
+    /**
+     * Convenience method for {@link CommandSender#sendMessage(String)}. The message will not be sent if the message is
+     * null.
+     * 
+     * @param message the message to send to the sender.
+     */
+    public void sendMessage(String message)
+    {
+        if (message == null)
+        {
+            return;
+        }
+        getSender().sendMessage(message);
     }
 
     @IdGetter
