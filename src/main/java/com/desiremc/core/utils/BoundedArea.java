@@ -88,8 +88,7 @@ public class BoundedArea
      * Check if the given location is within the bounded area.
      * 
      * @param location the location to check.
-     * @return {@code true} if this location is within the bounded area.<br>
-     *         {@code false} otherwise.
+     * @return {@code true} if this location is within the bounded area.
      */
     public boolean contains(Location location)
     {
@@ -98,6 +97,25 @@ public class BoundedArea
             return false;
         }
         if (location.getX() >= getMinX() && location.getX() <= getMaxX() && location.getZ() >= getMinZ() && location.getZ() <= getMaxZ())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the given block column is within the bounded area.
+     * 
+     * @param location the block column to check.
+     * @return {@code true} if this block column is within the bounded area.
+     */
+    public boolean contains(BlockColumn blockColumn)
+    {
+        if (blockColumn.getWorld() != getWorld())
+        {
+            return false;
+        }
+        if (blockColumn.getX() >= getMinX() && blockColumn.getX() <= getMaxX() && blockColumn.getZ() >= getMinZ() && blockColumn.getZ() <= getMaxZ())
         {
             return true;
         }

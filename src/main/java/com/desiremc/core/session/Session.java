@@ -379,6 +379,10 @@ public class Session
         return achievements;
     }
 
+    /**
+     * @param achievement the achievement
+     * @return {@code true} if the player has the achievement.
+     */
     public boolean hasAchievement(Achievement achievement)
     {
         for (Achievement a : achievements)
@@ -391,6 +395,12 @@ public class Session
         return false;
     }
 
+    /**
+     * Give a player an achievement as well as reward them with the tokens.
+     * 
+     * @param achievement the achievement.
+     * @param inform whether to inform the player or not.
+     */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
         if (hasAchievement(achievement))
