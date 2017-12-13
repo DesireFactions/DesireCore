@@ -17,8 +17,13 @@ public class AddTokensCommand extends ValidCommand
     {
         super("add", "Add tokens to a player.", Rank.ADMIN);
 
-        addArgument(CommandArgumentBuilder.createBuilder(Session.class).setName("target").setParser(new SessionParser()).build());
-        addArgument(CommandArgumentBuilder.createBuilder(Integer.class).setName("amount").setParser(new PositiveIntegerParser()).build());
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser()).build());
+        
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("amount")
+                .setParser(new PositiveIntegerParser()).build());
     }
 
     @Override

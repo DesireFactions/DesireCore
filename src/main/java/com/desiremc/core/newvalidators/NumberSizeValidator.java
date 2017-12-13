@@ -6,13 +6,13 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Validator;
 import com.desiremc.core.session.Session;
 
-public class NumberSizeValidator implements Validator<Number>
+public class NumberSizeValidator<T extends Number> implements Validator<T>
 {
 
     private static final DecimalFormat format = new DecimalFormat("0.##");
 
-    private Number low;
-    private Number high;
+    private T low;
+    private T high;
 
     private String tooLow;
     private String tooHigh;
@@ -23,7 +23,7 @@ public class NumberSizeValidator implements Validator<Number>
      * @param low the lower bound.
      * @param high the upper bound.
      */
-    public NumberSizeValidator(Number low, Number high)
+    public NumberSizeValidator(T low, T high)
     {
         this(low, high, "number.invalid");
     }
@@ -35,7 +35,7 @@ public class NumberSizeValidator implements Validator<Number>
      * @param high the upper bound.
      * @param message the universal error message.
      */
-    public NumberSizeValidator(Number low, Number high, String message)
+    public NumberSizeValidator(T low, T high, String message)
     {
         this(low, high, message, message);
     }
@@ -49,7 +49,7 @@ public class NumberSizeValidator implements Validator<Number>
      * @param tooLow
      * @param tooHigh
      */
-    public NumberSizeValidator(Number low, Number high, String tooLow, String tooHigh)
+    public NumberSizeValidator(T low, T high, String tooLow, String tooHigh)
     {
         this.low = low;
         this.high = high;
@@ -66,7 +66,7 @@ public class NumberSizeValidator implements Validator<Number>
     }
 
     @Override
-    public boolean validateArgument(Session sender, String[] label, Number arg)
+    public boolean validateArgument(Session sender, String[] label, T arg)
     {
         double val = arg.doubleValue();
 

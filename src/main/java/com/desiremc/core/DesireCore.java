@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -72,6 +73,7 @@ import com.desiremc.core.tickets.TicketHandler;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 public class DesireCore extends JavaPlugin
 {
@@ -249,6 +251,17 @@ public class DesireCore extends JavaPlugin
         return SERVER;
     }
 
+    public static WorldEditPlugin getWorldEdit()
+    {
+        Plugin p = Bukkit.getPluginManager().getPlugin("WorldEdit");
+        if (p == null)
+        {
+            System.out.println("This could would crash if that were to happen.");
+            return null;
+        }
+        return (WorldEditPlugin) p;
+    }
+    
     public static boolean toggleTimings()
     {
         useTimings = !useTimings;
