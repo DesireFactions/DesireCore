@@ -88,7 +88,7 @@ public final class EntryBuilder
 
     private EntryBuilder next(String key, String value, UUID uuid)
     {
-        entries.add(new Entry(key, "§7: §c" + value, uuid, entries.size() + 1));
+        entries.add(new Entry(key, "§c" + value, uuid, entries.size() + 1));
         return this;
     }
 
