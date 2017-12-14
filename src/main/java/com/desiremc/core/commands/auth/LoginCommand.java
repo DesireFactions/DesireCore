@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.auth;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.listeners.AuthListener;
@@ -12,6 +10,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.validators.AuthCodeValidator;
 import com.desiremc.core.validators.PlayerIsAuthBlockedValidator;
 import com.desiremc.core.validators.PlayerValidator;
+import org.bukkit.command.CommandSender;
 
 public class LoginCommand extends ValidCommand
 {
@@ -33,6 +32,7 @@ public class LoginCommand extends ValidCommand
 
         AuthListener.authBlocked.remove(session.getUniqueId());
         session.setHasAuthorized(true);
+        SessionHandler.getInstance().save(session);
         DesireCore.getLangHandler().sendRenderMessage(session, "auth.authenticated");
     }
 
