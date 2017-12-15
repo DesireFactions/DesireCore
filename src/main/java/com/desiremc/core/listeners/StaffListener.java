@@ -1,5 +1,6 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.commands.staff.StaffReportsCommand;
 import com.desiremc.core.staff.Gadget;
 import com.desiremc.core.staff.GadgetHandler;
 import com.desiremc.core.staff.StaffHandler;
@@ -154,7 +155,7 @@ public class StaffListener implements Listener
                         event.setCancelled(true);
                         break;
                     case "reports":
-                        StaffHandler.getInstance().openReportsGUI(event.getPlayer());
+                        StaffHandler.getInstance().openReportsGUI(event.getPlayer(), StaffReportsCommand.getPage(event.getPlayer()));
                         event.setCancelled(true);
                         break;
                     case "teleporter":

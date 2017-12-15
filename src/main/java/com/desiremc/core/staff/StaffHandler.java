@@ -47,8 +47,6 @@ public class StaffHandler
     private boolean chatDisabled = false;
     private boolean chatSlowed = false;
 
-    private HashMap<UUID, Integer> pages;
-
     private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public StaffHandler()
@@ -61,7 +59,6 @@ public class StaffHandler
         frozenPlayers = new ArrayList<>();
         staffChat = new ArrayList<>();
         numCPSTests = 0;
-        pages = new HashMap<>();
     }
 
     public static void initialize()
@@ -408,7 +405,7 @@ public class StaffHandler
         }
     }
 
-    public void openReportsGUI(Player p)
+    public void openReportsGUI(Player p, int page)
     {
         Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("report.inventory.title"));
 
@@ -416,7 +413,7 @@ public class StaffHandler
 
         boolean next = true;
         int itemsPerPage = 45;
-        int startingIndex = (pages.getOrDefault(p.getUniqueId(), 1) - 1) * itemsPerPage;
+        int startingIndex = (page - 1) * itemsPerPage;
         int endingIndex = startingIndex + itemsPerPage;
 
         if (endingIndex > reports.size())
@@ -470,7 +467,7 @@ public class StaffHandler
             inv.setItem(53, nextItem);
         }
 
-        if (pages.getOrDefault(p.getUniqueId(), 1) != 1)
+        if (page != 1)
         {
             ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("report.inventory.back.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
@@ -491,21 +488,6 @@ public class StaffHandler
         }
 
         p.openInventory(inv);
-    }
-
-    public void addPage(Player p)
-    {
-        UUID uuid = p.getUniqueId();
-
-        pages.put(uuid, pages.getOrDefault(uuid, 1) + 1);
-        StaffHandler.getInstance().openReportsGUI(p);
-    }
-
-    public void minusPage(Player p)
-    {
-        UUID uuid = p.getUniqueId();
-        pages.put(uuid, pages.getOrDefault(uuid, 1) - 1);
-        StaffHandler.getInstance().openReportsGUI(p);
     }
 
     public void saveInventory(Player player)

@@ -2,6 +2,7 @@ package com.desiremc.core.listeners;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.commands.staff.StaffReportsCommand;
 import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Session;
@@ -61,7 +62,7 @@ public class InventoryListener implements Listener
 
                 report.setResolved(true);
                 p.closeInventory();
-                StaffHandler.getInstance().openReportsGUI(p);
+                StaffHandler.getInstance().openReportsGUI(p, StaffReportsCommand.getPage(p));
                 break;
             }
         }
@@ -81,13 +82,13 @@ public class InventoryListener implements Listener
         if (event.getSlot() == 53)
         {
             p.closeInventory();
-            StaffHandler.getInstance().addPage(p);
+            StaffReportsCommand.addPage(p);
         }
 
         if (event.getSlot() == 45)
         {
             p.closeInventory();
-            StaffHandler.getInstance().minusPage(p);
+            StaffReportsCommand.minusPage(p);
         }
     }
 

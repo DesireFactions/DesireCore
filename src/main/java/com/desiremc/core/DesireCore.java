@@ -1,15 +1,5 @@
 package com.desiremc.core;
 
-import java.io.File;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
@@ -27,6 +17,7 @@ import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
 import com.desiremc.core.commands.punishment.BanCommand;
 import com.desiremc.core.commands.punishment.BlacklistCommand;
+import com.desiremc.core.commands.punishment.HistoryCommand;
 import com.desiremc.core.commands.punishment.IpbanCommand;
 import com.desiremc.core.commands.punishment.KickCommand;
 import com.desiremc.core.commands.punishment.MuteCommand;
@@ -54,9 +45,9 @@ import com.desiremc.core.commands.tokens.TokensCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
 import com.desiremc.core.handler.SlowChatHandler;
-import com.desiremc.core.listeners.AchievementListener;
 import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
+import com.desiremc.core.listeners.GUIListener;
 import com.desiremc.core.listeners.InventoryListener;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.listeners.PlayerListener;
@@ -74,6 +65,15 @@ import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -200,6 +200,7 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new TempMuteCommand());
         commandHandler.registerCommand(new ChatCommand());
         commandHandler.registerCommand(new FriendsCommand());
+        commandHandler.registerCommand(new HistoryCommand());
     }
 
     private void registerListeners()
@@ -211,7 +212,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new AuthListener());
         //listenerManager.addListener(new TabList());
         listenerManager.addListener(new StaffListener());
-        listenerManager.addListener(new AchievementListener());
+        listenerManager.addListener(new GUIListener());
 
         listenerManager.addListener(new SlowChatHandler());
     }

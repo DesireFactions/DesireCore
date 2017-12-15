@@ -57,6 +57,11 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         return punishments.get(0);
     }
 
+    public List<Punishment> getPunishments(UUID uuid)
+    {
+        return PunishmentHandler.getInstance().createQuery().field("punished").equal(uuid).asList();
+    }
+
     public List<String> getAllIpBans()
     {
         List<String> ips = new ArrayList<>();

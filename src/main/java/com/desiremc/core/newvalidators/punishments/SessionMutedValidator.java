@@ -10,10 +10,9 @@ public class SessionMutedValidator implements Validator<Session>
     @Override
     public boolean validateArgument(Session sender, String[] label, Session arg)
     {
-        if (arg.isMuted() != null)
+        if (arg.isMuted() == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.not_muted",
-                    "{target}", arg.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.not_muted", "{target}", arg.getName());
             return false;
         }
         return true;
