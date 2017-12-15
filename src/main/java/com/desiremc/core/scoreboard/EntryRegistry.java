@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -143,11 +144,11 @@ public class EntryRegistry implements ScoreboardHandler
     public static class PlayerEntry
     {
 
-        private HashMap<String, String> entries;
+        private LinkedHashMap<String, String> entries;
 
         public PlayerEntry()
         {
-            this.entries = new HashMap<>();
+            this.entries = new LinkedHashMap<>();
         }
 
         public String getEntry(String key)
