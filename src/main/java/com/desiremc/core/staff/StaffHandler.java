@@ -123,7 +123,7 @@ public class StaffHandler
         {
             p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
         }
-        LANG.sendString(p, "staff.staff-on");
+        LANG.sendRenderMessage(p, "staff.staff_on");
         p.setGameMode(GameMode.CREATIVE);
         p.setFoodLevel(20);
 
@@ -159,7 +159,7 @@ public class StaffHandler
             p.getInventory().setContents(staffInventories.get(p.getUniqueId()));
             staffInventories.remove(p.getUniqueId());
             p.setGameMode(GameMode.SURVIVAL);
-            LANG.sendString(p, "staff.staff-off");
+            LANG.sendRenderMessage(p, "staff.staff_off");
         }
     }
 
