@@ -12,13 +12,13 @@ public enum Rank
     COMMODORE(3, "Commodore", "§b❂", ChatColor.WHITE, ChatColor.AQUA),
     GRANDMASTER(4, "Grandmaster", "§d✹", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
-    JRMOD(6, "Junior_Moderator", "§e§l❤", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
-    MODERATOR(7, "Moderator", "§2§l✺", ChatColor.WHITE, ChatColor.BLUE, "mod"),
-    SRMOD(8, "Senior_Mod", "§e§l✹", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
-    ADMIN(9, "Admin", "§c§l☆", ChatColor.GREEN, ChatColor.RED),
-    MANAGER(10, "Manager", "§4§l✪", ChatColor.GREEN, ChatColor.RED),
-    DEVELOPER(11, "Developer", "§9§l✺", ChatColor.GREEN, ChatColor.RED, "dev"),
-    OWNER(12, "Owner", "§3§l✪", ChatColor.GREEN, ChatColor.RED);
+    JRMOD(6, "Junior_Moderator", "§e§lJR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
+    MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
+    SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
+    ADMIN(9, "Admin", "§c§lADMIN", ChatColor.GREEN, ChatColor.RED),
+    MANAGER(10, "Manager", "§4§lMANAGER", ChatColor.GREEN, ChatColor.RED),
+    DEVELOPER(11, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
+    OWNER(12, "Owner", "§3§lOWNER", ChatColor.GREEN, ChatColor.RED);
 
     private final int id;
     private final String displayName;
