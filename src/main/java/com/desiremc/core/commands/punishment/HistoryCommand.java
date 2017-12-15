@@ -39,7 +39,7 @@ public class HistoryCommand extends ValidCommand
 
     public HistoryCommand()
     {
-        super("history", "Get punishment information about a player.", Rank.ADMIN);
+        super("history", "Get punishment information about a player.", Rank.JRMOD);
 
         addArgument(CommandArgumentBuilder.createBuilder(Session.class).setName("target").setParser(new SessionParser()).build());
     }
