@@ -12,7 +12,7 @@ public class StaffInvisibilityCommand extends ValidCommand
 
     public StaffInvisibilityCommand()
     {
-        super("invisibility", "Toggle invisibility.", Rank.JRMOD, new String[] {}, "invisible", "invis");
+        super("invisibility", "Toggle invisibility.", Rank.HELPER, new String[] {}, "invisible", "invis");
 
         addValidator(new PlayerValidator());
     }

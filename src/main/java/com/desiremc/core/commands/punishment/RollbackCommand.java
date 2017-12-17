@@ -23,7 +23,7 @@ public class RollbackCommand extends ValidCommand
 
     public RollbackCommand()
     {
-        super("rollback", "Rollback all punishments from a user within a time period.", Rank.JRMOD, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "time"});
+        super("rollback", "Rollback all punishments from a user within a time period.", Rank.HELPER, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "time"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new PastTimeParser(), "time");

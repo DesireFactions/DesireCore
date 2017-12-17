@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -20,13 +16,16 @@ import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class TempMuteCommand extends ValidCommand
 {
 
     public TempMuteCommand()
     {
-        super("tempmute", "Temporarily mute a user on the server.", Rank.JRMOD);
+        super("tempmute", "Temporarily mute a user on the server.", Rank.HELPER);
 
         addArgument(CommandArgumentBuilder.createBuilder(Session.class)
                 .setName("target")

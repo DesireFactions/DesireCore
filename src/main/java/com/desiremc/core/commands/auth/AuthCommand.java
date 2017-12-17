@@ -8,7 +8,7 @@ public class AuthCommand extends ValidBaseCommand
 
     public AuthCommand()
     {
-        super("auth", "Authorization system.", Rank.JRMOD, "authorize", "authorization");
+        super("auth", "Authorization system.", Rank.HELPER, "authorize", "authorization");
         addSubCommand(new AuthAllowCommand());
         addSubCommand(new AuthResetCommand());
     }

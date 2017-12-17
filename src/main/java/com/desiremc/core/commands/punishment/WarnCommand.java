@@ -24,7 +24,7 @@ public class WarnCommand extends ValidCommand
 
     public WarnCommand()
     {
-        super("warn", "Warn a user on the server.", Rank.JRMOD, ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
+        super("warn", "Warn a user on the server.", Rank.HELPER, ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
 
         addParser(new PlayerSessionParser(), "target");
         addParser(new StringParser(), "reason");

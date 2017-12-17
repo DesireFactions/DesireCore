@@ -14,7 +14,7 @@ public class StaffRestoreCommand extends ValidCommand
 {
     public StaffRestoreCommand(String name, String... aliases)
     {
-        super(name, "Restore a players inventory.", Rank.JRMOD, new String[] { "target" }, aliases);
+        super(name, "Restore a players inventory.", Rank.HELPER, new String[] {"target"}, aliases);
 
         addParser(new PlayerSessionParser(), "target");
 

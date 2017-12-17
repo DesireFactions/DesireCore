@@ -12,7 +12,7 @@ public enum Rank
     COMMODORE(3, "Commodore", "§b❂", ChatColor.WHITE, ChatColor.AQUA),
     GRANDMASTER(4, "Grandmaster", "§d✹", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
-    JRMOD(6, "Junior_Moderator", "§e§lJR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "jr", "jrmod", "jr_mod"),
+    HELPER(6, "Helper", "§e§lHELPER", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
     MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
     SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
     ADMIN(9, "Admin", "§c§lADMIN", ChatColor.GREEN, ChatColor.RED),
@@ -64,7 +64,7 @@ public enum Rank
 
     public boolean isStaff()
     {
-        return getId() >= JRMOD.getId();
+        return getId() >= HELPER.getId();
     }
 
     public boolean isDonor()

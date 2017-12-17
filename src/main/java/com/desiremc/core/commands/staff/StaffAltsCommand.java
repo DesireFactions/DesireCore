@@ -21,7 +21,7 @@ public class StaffAltsCommand extends ValidCommand
 
     public StaffAltsCommand(String name, String... aliases)
     {
-        super(name, "List all alts of a player.", Rank.JRMOD, new String[] {"target"}, aliases);
+        super(name, "List all alts of a player.", Rank.HELPER, new String[] {"target"}, aliases);
         addParser(new PlayerSessionParser(), "target");
 
     }

@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.tokens;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -9,6 +7,8 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.newparsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class CheckTokensCommand extends ValidCommand
 {
@@ -19,7 +19,7 @@ public class CheckTokensCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(Session.class)
                 .setName("target")
                 .setParser(new SessionParser())
-                .setRequiredRank(Rank.JRMOD)
+                .setRequiredRank(Rank.HELPER)
                 .setOptional()
                 .build());
     }

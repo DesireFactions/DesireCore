@@ -8,7 +8,7 @@ public class StaffCommand extends ValidBaseCommand
 
     public StaffCommand()
     {
-        super("staff", "staff tools", Rank.JRMOD);
+        super("staff", "staff tools", Rank.HELPER);
         addSubCommand(new StaffModeCommand("mode", "toggle", "mod"));
         addSubCommand(new StaffFreezeCommand());
         addSubCommand(new StaffCPSCommand());

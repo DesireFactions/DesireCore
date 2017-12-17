@@ -17,7 +17,7 @@ public class LoginCommand extends ValidCommand
 
     public LoginCommand()
     {
-        super("login", "Authenticate with Google Auth.", Rank.JRMOD, new String[] { "code" });
+        super("login", "Authenticate with Google Auth.", Rank.HELPER, new String[] {"code"});
         addParser(new IntegerParser(), "code");
 
         addValidator(new PlayerValidator());
