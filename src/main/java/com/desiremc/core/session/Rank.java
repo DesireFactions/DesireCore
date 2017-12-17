@@ -4,6 +4,9 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.StringUtils;
 import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum Rank
 {
 
@@ -101,6 +104,18 @@ public enum Rank
             }
         }
         return null;
+    }
+
+    public static List<String> getRanks()
+    {
+        List<String> names = new ArrayList<>();
+
+        for (Rank rank : values())
+        {
+            names.add(StringUtils.capitalize(rank.name().toLowerCase().replace("_", " ")));
+        }
+
+        return names;
     }
 
 }

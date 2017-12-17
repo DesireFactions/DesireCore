@@ -17,7 +17,7 @@ import java.util.UUID;
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static Session console;
 
