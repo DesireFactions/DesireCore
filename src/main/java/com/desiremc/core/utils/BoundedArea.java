@@ -6,14 +6,17 @@ import org.bukkit.World;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Transient;
 
+import com.github.davidmoten.rtree.geometry.Geometry;
+import com.github.davidmoten.rtree.geometry.Rectangle;
+
 @Embedded
-public class BoundedArea
+public class BoundedArea implements Rectangle
 {
 
-    private int minX;
-    private int minZ;
-    private int maxX;
-    private int maxZ;
+    private int x1;
+    private int z1;
+    private int x2;
+    private int z2;
 
     private String world;
 
@@ -25,7 +28,7 @@ public class BoundedArea
      */
     public int getMinX()
     {
-        return minX;
+        return x1;
     }
 
     /**
@@ -33,7 +36,7 @@ public class BoundedArea
      */
     public void setMinX(int minX)
     {
-        this.minX = minX;
+        this.x1 = minX;
     }
 
     /**
@@ -41,7 +44,7 @@ public class BoundedArea
      */
     public int getMinZ()
     {
-        return minZ;
+        return z1;
     }
 
     /**
@@ -49,7 +52,7 @@ public class BoundedArea
      */
     public void setMinZ(int minZ)
     {
-        this.minZ = minZ;
+        this.z1 = minZ;
     }
 
     /**
@@ -57,7 +60,7 @@ public class BoundedArea
      */
     public int getMaxX()
     {
-        return maxX;
+        return x2;
     }
 
     /**
@@ -65,7 +68,7 @@ public class BoundedArea
      */
     public void setMaxX(int maxX)
     {
-        this.maxX = maxX;
+        this.x2 = maxX;
     }
 
     /**
@@ -73,7 +76,7 @@ public class BoundedArea
      */
     public int getMaxZ()
     {
-        return maxZ;
+        return z2;
     }
 
     /**
@@ -81,7 +84,7 @@ public class BoundedArea
      */
     public void setMaxZ(int maxZ)
     {
-        this.maxZ = maxZ;
+        this.z2 = maxZ;
     }
 
     /**
@@ -141,6 +144,90 @@ public class BoundedArea
     {
         this.parsedWorld = parsedWorld;
         this.world = parsedWorld.getName();
+    }
+
+    @Override
+    public double distance(Rectangle arg0)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean intersects(Rectangle arg0)
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public Rectangle mbr()
+    {
+        return this;
+    }
+
+    @Override
+    public Geometry geometry()
+    {
+        return this;
+    }
+
+    @Override
+    public Rectangle add(Rectangle arg0)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public float area()
+    {
+        return (x2() - x1()) * (y2() - y1());
+    }
+
+    @Override
+    public boolean contains(double x, double y)
+    {
+        return x >= x1() && x <= x2() && y >= y1() && y <= y2();
+    }
+
+    @Override
+    public float intersectionArea(Rectangle r)
+    {
+        if (!intersects(r))
+            return 0;
+        else
+            return GeometryUtils.create(Math.max(x1(), r.x1()), Math.max(y1(), r.y1()), Math.min(x2, r.x2()), Math.min(y2(), r.y2())).area();
+    }
+
+    @Override
+    public float perimeter()
+    {
+        return 2 * (x2() - x1()) + 2 * (y2() - y1());
+    }
+
+    @Override
+    public float x1()
+    {
+        return x1;
+    }
+
+    @Override
+    public float x2()
+    {
+        return x2;
+    }
+
+    @Override
+    public float y1()
+    {
+        return z1;
+    }
+
+    @Override
+    public float y2()
+    {
+        return z2;
     }
 
 }

@@ -263,7 +263,7 @@ public class DesireCore extends JavaPlugin
         }
         return (WorldEditPlugin) p;
     }
-    
+
     public static boolean toggleTimings()
     {
         useTimings = !useTimings;

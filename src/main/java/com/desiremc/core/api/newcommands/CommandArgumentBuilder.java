@@ -97,8 +97,8 @@ public class CommandArgumentBuilder<T>
     }
 
     /**
-     * Marks this argument as not usable by the console. It defaults to false which is why there is no option to disable
-     * it as each option should only be set once.
+     * Marks this argument as usable by the console. It defaults to false which is why there is no option to disable it
+     * as each option should only be set once.
      * 
      * @return the same builder
      */
