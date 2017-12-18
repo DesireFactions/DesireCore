@@ -126,7 +126,7 @@ public class StaffHandler
         LANG.sendRenderMessage(p, "staff.staff_on");
         p.setGameMode(GameMode.CREATIVE);
         p.setFoodLevel(20);
-
+        toggleInvisibility(p, true);
     }
 
     public boolean inStaffChat(Player p)
