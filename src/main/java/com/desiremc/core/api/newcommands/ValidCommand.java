@@ -1,12 +1,5 @@
 package com.desiremc.core.api.newcommands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -16,6 +9,13 @@ import com.desiremc.core.utils.CollectionUtils;
 import com.desiremc.core.utils.StringUtils;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class ValidCommand
 {
@@ -179,7 +179,7 @@ public abstract class ValidCommand
             }
         }
 
-        if (rawArguments.length == 0 && blocksConsole())
+        if (rawArguments.length == 0 && blocksConsole() && SessionHandler.isConsole(sender))
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
             return;
