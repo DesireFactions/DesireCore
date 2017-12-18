@@ -1,31 +1,33 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.dao.BasicDAO;
-
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
+
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
-
-    private static final boolean DEBUG = false;
 
     private static Session console;
 
     private static SessionHandler instance;
 
-    private HashMap<UUID, Session> sessions;
+    private static HashMap<UUID, Session> sessions;
 
-    private HashMap<UUID, Session> staff;
+    private static HashMap<UUID, Session> onlineSessions;
+
+    private static HashMap<UUID, Session> onlineStaff;
 
     public SessionHandler()
     {
@@ -34,9 +36,47 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(Session.class);
 
         sessions = new HashMap<>();
-        staff = new HashMap<>();
+        onlineSessions = new HashMap<>();
+        onlineStaff = new HashMap<>();
+        for (Session session : find())
+        {
+            updateSession(session);
+            sessions.put(session.getUniqueId(), session);
+            if (session.isOnline())
+            {
+                onlineSessions.put(session.getUniqueId(), session);
+            }
+            if (session.getRank().isStaff())
+            {
+                onlineStaff.put(session.getUniqueId(), session);
+            }
+        }
 
         startConsoleSession();
+    }
+
+    private static boolean applyExternalData(Session session)
+    {
+        boolean needSave = false;
+        if (session.getSettings() == null || session.getSettings().size() == 0)
+        {
+            session.assignDefaultSettings();
+            needSave = true;
+        }
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("punished").equal(session.getUniqueId())
+                .field("repealed").notEqual(true)
+                .field("expirationTime").greaterThan(System.currentTimeMillis())
+                .asList();
+        session.setActivePunishments(punishments);
+        return needSave;
+    }
+
+    public static boolean updateSession(Session session)
+    {
+        Session database = getInstance().findOne("_id", session.getUniqueId());
+        session.applyValues(database);
+        return applyExternalData(session);
     }
 
     private static void startConsoleSession()
@@ -64,11 +104,17 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return console;
     }
 
+    /**
+     * Get the session by the given CommandSender. Will return null if the sender is neither a player or the console.
+     * 
+     * @param sender the command sender.
+     * @return the session.
+     */
     public static Session getSession(CommandSender sender)
     {
         if (sender instanceof Player)
         {
-            return getSession(((Player) sender).getUniqueId());
+            return getOnlineSession(((Player) sender).getUniqueId());
         }
         else if (sender instanceof ConsoleCommandSender)
         {
@@ -80,130 +126,85 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         }
     }
 
-    public static Session getSession(UUID uuid)
+    /**
+     * @param uuid the uuid of the player
+     * @return the online session.
+     */
+    public static Session getOnlineSession(UUID uuid)
     {
-        if (DEBUG)
-        {
-            System.out.println("getSession(UUID) called with value " + uuid.toString() + ".");
-        }
-        Session session = instance.sessions.get(uuid);
-
-        if (session != null)
-        {
-            if (DEBUG)
-            {
-                System.out.println("getSession(UUID) found a logged in user.");
-            }
-            return session;
-        }
-        if (DEBUG)
-        {
-            System.out.println("getSession(UUID) did not find a logged in user.");
-        }
-        return initializeSession(uuid, false);
+        return onlineSessions.get(uuid);
+    }
+    
+    public static Session getGeneralSession(UUID uuid)
+    {
+         return sessions.get(uuid);
     }
 
-    public static Session initializeSession(UUID uuid, boolean cache)
+    public static Session initializeSession(Player player)
     {
-        if (DEBUG)
-        {
-            System.out.println("initializeSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
-        }
+        UUID uuid = player.getUniqueId();
         Session session = instance.get(uuid);
 
+        boolean needSave = false;
+        
         if (session == null)
         {
-            if (DEBUG)
-            {
-                System.out.println("initializeSession(UUID, boolean) non-existing player.");
-            }
             session = createSession(uuid);
         }
-        if (session.getSettings() == null || session.getSettings().size() == 0)
+        else
         {
-            session.assignDefaultSettings();
+            needSave = updateSession(session);
+        }
+
+        String ip = player.getAddress().getAddress().getHostAddress();
+        if (!session.getIp().equalsIgnoreCase(ip))
+        {
+            session.getIpList().add(ip);
+            session.setIp(ip);
+            needSave = true;
+        }
+
+        if (!session.getName().equalsIgnoreCase(player.getName()))
+        {
+            session.getNameList().add(player.getName());
+            session.setName(player.getName());
+            needSave = true;
+        }
+        
+        if (needSave)
+        {
             session.save();
         }
-        if (cache)
-        {
-            if (DEBUG)
-            {
-                System.out.println("initializeSession(UUID, boolean) cached player in sessions.");
-            }
-            instance.sessions.put(uuid, session);
-            if (session.getRank().isStaff())
-            {
-                if (DEBUG)
-                {
-                    System.out.println("initializeSession(UUID, boolean) is staff member.");
-                }
-                instance.staff.put(uuid, session);
-            }
-        }
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(session.getUniqueId())
-                .field("repealed").notEqual(true)
-                .field("expirationTime").greaterThan(System.currentTimeMillis())
-                .asList();
-        session.setActivePunishments(punishments);
-        if (DEBUG)
-        {
-            System.out.println("initializeSession(UUID, boolean) set punishments and returned.");
-        }
+        
+        onlineSessions.put(session.getUniqueId(), session);
+
         return session;
     }
 
     public static Session findOfflinePlayerByName(String name)
     {
-        Session session = instance.findOne("name", name);
-        if (session == null)
+        for (Session session : sessions.values())
         {
-            return null;
+            if (session.getName().equals(name))
+            {
+                return session;
+            }
         }
-
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(session.getUniqueId())
-                .field("expirationTime").greaterThan(System.currentTimeMillis())
-                .asList();
-
-        session.setActivePunishments(punishments);
-
-        return session;
+        return null;
     }
 
     private static Session createSession(UUID uuid)
     {
-        if (DEBUG)
-        {
-            System.out.println("createSession(UUID) called with value " + uuid.toString() + ".");
-        }
         Player p = PlayerUtils.getPlayer(uuid);
         if (p == null)
         {
-            if (DEBUG)
-            {
-                System.out.println("createSession(UUID) could not find player.");
-            }
             return null;
         }
 
-        if (DEBUG)
-        {
-            System.out.println("createSession(UUID) set defaults.");
-        }
         Session session = new Session();
         session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
+        session.save();
 
-        if (DEBUG)
-        {
-            System.out.println("createSession(UUID) saved to database.");
-        }
-        instance.save(session);
-
-        if (DEBUG)
-        {
-            System.out.println("createSession(UUID) returned.");
-        }
         return session;
     }
 
@@ -212,40 +213,41 @@ public class SessionHandler extends BasicDAO<Session, UUID>
      */
     public static Iterable<Session> getSessions()
     {
-        return instance.sessions.values();
+        return sessions.values().stream().filter(x -> x.isOnline())::iterator;
     }
 
     /**
-     * @return all staff sessions excluding console.
+     * @return all online staff sessions excluding console.
      */
-    public static Iterable<Session> getStaff()
+    public static Collection<Session> getStaff()
     {
-        return instance.staff.values();
+        return onlineStaff.values();
     }
 
     /**
-     * @return all non-staff sessions.
+     * @return all online non-staff sessions.
      */
-    public static Iterable<Session> getNonStaff()
+    public static Iterable<Session> getOnlineNonStaff()
     {
-        LinkedList<Session> nonStaff = new LinkedList<>(instance.sessions.values());
-        nonStaff.removeAll(instance.staff.values());
+        LinkedList<Session> nonStaff = new LinkedList<>(onlineSessions.values());
+        nonStaff.removeAll(onlineStaff.values());
         return nonStaff;
     }
 
     public static void removeStaff(UUID uuid)
     {
-        instance.staff.remove(uuid);
+        onlineStaff.remove(uuid);
     }
 
-    public static boolean endSession(Session s)
+    public static boolean endSession(Session session)
     {
-        s.setTotalPlayed(s.getTotalPlayed() + System.currentTimeMillis() - s.getLastLogin());
-        s.setLastLogin(System.currentTimeMillis());
-        instance.staff.remove(s.getUniqueId());
-        instance.save(s);
-        instance.sessions.remove(s.getUniqueId());
-        // TODO change this return type
+        session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
+        session.setLastLogin(System.currentTimeMillis());
+        session.save();
+
+        onlineStaff.remove(session.getUniqueId());
+        sessions.remove(session.getUniqueId());
+        // TODO change return type
         return true;
     }
 

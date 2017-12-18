@@ -23,7 +23,7 @@ public class PlayerSessionParser implements ArgumentParser
         }
         else
         {
-            s = SessionHandler.getSession(p.getUniqueId());
+            s = SessionHandler.getOnlineSession(p.getUniqueId());
         }
         if (s == null)
         {

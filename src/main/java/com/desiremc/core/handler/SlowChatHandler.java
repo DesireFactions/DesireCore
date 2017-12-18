@@ -44,7 +44,7 @@ public class SlowChatHandler implements Listener
         }
 
         Player player = event.getPlayer();
-        Session session = SessionHandler.getSession(player.getUniqueId());
+        Session session = SessionHandler.getOnlineSession(player.getUniqueId());
 
         if (session.getRank().isStaff())
         {

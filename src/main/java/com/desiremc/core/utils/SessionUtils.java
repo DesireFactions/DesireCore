@@ -34,7 +34,7 @@ public class SessionUtils
         {
             return null;
         }
-        Session s = SessionHandler.getSession(uuid);
+        Session s = SessionHandler.getGeneralSession(uuid);
         return s == null ? null : s.getRank();
     }
 

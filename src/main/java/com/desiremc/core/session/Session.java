@@ -10,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
@@ -69,10 +68,10 @@ public class Session
 
     private List<UUID> friends;
 
-    @Embedded("incoming_friend_requests")
+    @Property("incoming_friend_requests")
     private List<UUID> incomingFriendRequests;
 
-    @Embedded("outgoing_friend_requests")
+    @Property("outgoing_friend_requests")
     private List<UUID> outgoingFriendRequests;
 
     private int tokens;
@@ -212,6 +211,26 @@ public class Session
         this.settings = new HashMap<>();
         this.assignDefaultSettings();
         this.ip = ip;
+    }
+
+    protected void applyValues(Session session)
+    {
+        name = session.name;
+        nameList = session.nameList;
+        rank = session.rank;
+        ip = session.ip;
+        ipList = session.ipList;
+        firstLogin = session.firstLogin;
+        lastLogin = session.lastLogin;
+        totalPlayed = session.totalPlayed;
+        authKey = session.authKey;
+        achievements = session.achievements;
+        ignoring = session.ignoring;
+        friends = session.friends;
+        incomingFriendRequests = session.incomingFriendRequests;
+        outgoingFriendRequests = session.outgoingFriendRequests;
+        tokens = session.tokens;
+        settings = session.settings;
     }
 
     protected void checkDefaults()

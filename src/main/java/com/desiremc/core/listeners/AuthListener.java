@@ -40,7 +40,7 @@ public class AuthListener implements Listener
             System.out.println("AuthListener.onJoin(PlayerJoinEvent) called in AuthListener.");
         }
         Player p = event.getPlayer();
-        Session session = SessionHandler.getSession(p.getUniqueId());
+        Session session = SessionHandler.getOnlineSession(p.getUniqueId());
 
         if (!session.getRank().isStaff())
         {

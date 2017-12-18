@@ -3,7 +3,7 @@ package com.desiremc.core.newparsers;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
@@ -17,14 +17,14 @@ public class SessionParser implements Parser<Session>
     public Session parseArgument(Session sender, String[] label, String rawArgument)
     {
         Session argument;
-        OfflinePlayer op = Bukkit.getPlayerExact(rawArgument);
-        if (op == null)
+        Player player = Bukkit.getPlayerExact(rawArgument);
+        if (player == null)
         {
             argument = SessionHandler.findOfflinePlayerByName(rawArgument);
         }
         else
         {
-            argument = SessionHandler.getSession(op.getUniqueId());
+            argument = SessionHandler.getOnlineSession(player.getUniqueId());
         }
         if (argument == null)
         {

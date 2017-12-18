@@ -38,7 +38,7 @@ public class ReportGetCommand extends ValidCommand
             {
                 DesireCore.getLangHandler().sendRenderMessage(session.getPlayer(), msg,
                         "{date}", DateUtils.formatDateDiff(report.getIssued()),
-                        "{player}", SessionHandler.getSession(report.getIssuer()).getName(),
+                        "{player}", SessionHandler.getGeneralSession(report.getIssuer()).getName(),
                         "{reason}", report.getReason());
             }
         }

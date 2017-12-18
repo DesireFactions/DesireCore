@@ -72,7 +72,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
 
         for (Punishment p : punishments)
         {
-            Session session = SessionHandler.getSession(p.getPunished());
+            Session session = SessionHandler.getGeneralSession(p.getPunished());
             ips.add(session.getIp());
         }
 
@@ -87,7 +87,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
 
         for (Punishment p : punishments)
         {
-            Session session = SessionHandler.getSession(p.getPunished());
+            Session session = SessionHandler.getGeneralSession(p.getPunished());
             if (session.getIp().equalsIgnoreCase(ip))
             {
                 return p;

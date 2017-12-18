@@ -53,8 +53,8 @@ public class InventoryListener implements Listener
             ItemStack item = event.getCurrentItem();
             for (Report report : ReportHandler.getInstance().getAllReports(true))
             {
-                Session reported = SessionHandler.getSession(report.getReported());
-                Session issuer = SessionHandler.getSession(report.getIssuer());
+                Session reported = SessionHandler.getGeneralSession(report.getReported());
+                Session issuer = SessionHandler.getGeneralSession(report.getIssuer());
 
                 if (!reported.getName().equalsIgnoreCase(item.getItemMeta().getDisplayName())) continue;
                 if (!listContainsString(item.getItemMeta().getLore(), report.getReason())) continue;

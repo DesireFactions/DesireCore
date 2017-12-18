@@ -79,7 +79,7 @@ public class ChatUtils
 
     public static String getNameWithRankColor(UUID uuid, boolean prefix)
     {
-        Session session = SessionHandler.getSession(uuid);
+        Session session = SessionHandler.getGeneralSession(uuid);
         if (prefix)
         {
             return session.getRank().getMain() + session.getRank().getPrefix() + ChatColor.GRAY + session.getName() + ChatColor.RESET;

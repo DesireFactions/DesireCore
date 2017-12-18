@@ -192,8 +192,8 @@ public class StaffHandler
     public void toggleFreeze(Player target, Player source)
     {
 
-        Session targetSession = SessionHandler.getSession(target.getUniqueId());
-        Session sourceSession = SessionHandler.getSession(source.getUniqueId());
+        Session targetSession = SessionHandler.getOnlineSession(target.getUniqueId());
+        Session sourceSession = SessionHandler.getOnlineSession(source.getUniqueId());
 
         if (targetSession.getRank().getId() >= sourceSession.getRank().getId())
         {
@@ -222,7 +222,7 @@ public class StaffHandler
     public void useLaunch(PlayerInteractEvent e)
     {
         Player player = e.getPlayer();
-        Session session = SessionHandler.getSession(player.getUniqueId());
+        Session session = SessionHandler.getOnlineSession(player.getUniqueId());
 
         TargetBlock aiming = new TargetBlock(player, 1000, 0.2);
         Block block = aiming.getTargetBlock();
@@ -393,11 +393,11 @@ public class StaffHandler
 
     private void hidePlayer(Player p)
     {
-        Session session = SessionHandler.getSession(p.getUniqueId());
+        Session session = SessionHandler.getOnlineSession(p.getUniqueId());
         Server server = DesireCore.getInstance().getServer();
         for (Player player : server.getOnlinePlayers())
         {
-            Session target = SessionHandler.getSession(player.getUniqueId());
+            Session target = SessionHandler.getOnlineSession(player.getUniqueId());
             if (target.getRank().getId() < session.getRank().getId())
             {
                 player.hidePlayer(p);
@@ -424,8 +424,8 @@ public class StaffHandler
 
         for (Report report : reports.subList(startingIndex, endingIndex))
         {
-            Session reported = SessionHandler.getSession(report.getReported());
-            Session issuer = SessionHandler.getSession(report.getIssuer());
+            Session reported = SessionHandler.getGeneralSession(report.getReported());
+            Session issuer = SessionHandler.getGeneralSession(report.getIssuer());
             String reason = report.getReason();
             long time = report.getIssued();
 

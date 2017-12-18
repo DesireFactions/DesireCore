@@ -73,7 +73,7 @@ public class HistoryCommand extends ValidCommand
 
         for (Punishment punishment : punishments.subList(startingIndex, endingIndex))
         {
-            String issuer = punishment.getIssuer().toString().equalsIgnoreCase(DesireCore.getConsoleUUID().toString()) ? "Console" : SessionHandler.getSession(punishment.getIssuer()).getName();
+            String issuer = punishment.getIssuer().toString().equalsIgnoreCase(DesireCore.getConsoleUUID().toString()) ? "Console" : SessionHandler.getGeneralSession(punishment.getIssuer()).getName();
             String reason = punishment.getReason();
             String type = StringUtils.capitalize(punishment.getType().name().toLowerCase().replace("_", " "));
             String repealed = BooleanUtils.toString(punishment.isRepealed(), "true", "false");

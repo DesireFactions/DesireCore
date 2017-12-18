@@ -88,20 +88,7 @@ public class ConnectionListener implements Listener
         Player player = event.getPlayer();
         PlayerUtils.addPlayer(player);
 
-        String ip = player.getAddress().getAddress().getHostAddress();
-        Session session = SessionHandler.initializeSession(event.getPlayer().getUniqueId(), true);
-
-        if (!session.getIp().equalsIgnoreCase(ip))
-        {
-            session.getIpList().add(ip);
-            session.setIp(ip);
-        }
-
-        if (!session.getName().equalsIgnoreCase(player.getName()))
-        {
-            session.getNameList().add(player.getName());
-            session.setName(player.getName());
-        }
+        SessionHandler.initializeSession(player);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
