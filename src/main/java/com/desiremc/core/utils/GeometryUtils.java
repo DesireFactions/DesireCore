@@ -6,7 +6,7 @@ import com.github.davidmoten.rtree.geometry.Rectangle;
 public class GeometryUtils
 {
 
-    public static double distanceSquared(float x1, float y1, float x2, float y2, float a1, float b1, float a2, float b2)
+    public static double distance(float x1, float y1, float x2, float y2, float a1, float b1, float a2, float b2)
     {
         if (intersects(x1, y1, x2, y2, a1, b1, a2, b2))
         {
@@ -25,10 +25,10 @@ public class GeometryUtils
 
         double yDifference = max(0, mostDownY1 == mostUpY1 ? 0 : mostUpY1 - mostDownY2);
 
-        return xDifference * xDifference + yDifference * yDifference;
+        return Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     }
 
-    private static boolean intersects(float x1, float y1, float x2, float y2, float a1, float b1, float a2, float b2)
+    public static boolean intersects(float x1, float y1, float x2, float y2, float a1, float b1, float a2, float b2)
     {
         return x1 <= a2 && a1 <= x2 && y1 <= b2 && b1 <= y2;
     }
@@ -49,6 +49,11 @@ public class GeometryUtils
     public static Rectangle create(float x1, float y1, float x2, float y2)
     {
         return Geometries.rectangle(x1, y1, x2, y2);
+    }
+
+    public static int getArea(BlockColumn pointOne, BlockColumn pointTwo)
+    {
+        return (int) new BoundedArea(pointOne, pointTwo).area();
     }
 
 }

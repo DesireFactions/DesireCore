@@ -33,10 +33,19 @@ public class BlockColumn implements Rectangle
      */
     public BlockColumn(int x, int z, World world)
     {
-        super();
         this.x = x;
         this.z = z;
         this.world = world;
+    }
+
+    /**
+     * @param block the block
+     */
+    public BlockColumn(Block block)
+    {
+        this.x = block.getX();
+        this.z = block.getZ();
+        this.world = block.getWorld();
     }
 
     /**
@@ -109,7 +118,7 @@ public class BlockColumn implements Rectangle
     @Override
     public double distance(Rectangle r)
     {
-        return GeometryUtils.distanceSquared(x, z, x, z, r.x1(), r.y1(), r.x2(), r.y2());
+        return GeometryUtils.distance(x, z, x, z, r.x1(), r.y1(), r.x2(), r.y2());
     }
 
     @Override

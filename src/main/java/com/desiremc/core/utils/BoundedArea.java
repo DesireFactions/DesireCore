@@ -23,6 +23,24 @@ public class BoundedArea implements Rectangle
     @Transient
     private World parsedWorld;
 
+    public BoundedArea(int x1, int x2, int z1, int z2)
+    {
+        this.x1 = Math.min(x1, x2);
+        this.x2 = Math.max(x1, x2);
+        this.z1 = Math.min(z1, z2);
+        this.z2 = Math.max(z1, z2);
+    }
+
+    public BoundedArea(BlockColumn pointOne, BlockColumn pointTwo)
+    {
+        this(pointOne.getX(), pointTwo.getX(), pointOne.getZ(), pointTwo.getZ());
+    }
+
+    public BoundedArea(float min, float min2, float max, float max2)
+    {
+        this((int) min, (int) min2, (int) max, (int) max2);
+    }
+
     /**
      * @return the minX
      */
@@ -147,17 +165,15 @@ public class BoundedArea implements Rectangle
     }
 
     @Override
-    public double distance(Rectangle arg0)
+    public double distance(Rectangle r)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return GeometryUtils.distance(x1(), y1(), x2(), y2(), r.x1(), r.y1(), r.x2(), r.y2());
     }
 
     @Override
-    public boolean intersects(Rectangle arg0)
+    public boolean intersects(Rectangle r)
     {
-        // TODO Auto-generated method stub
-        return false;
+        return GeometryUtils.intersects(x1(), y1(), x2(), y2(), r.x1(), r.y1(), r.x2(), r.y2());
     }
 
     @Override
@@ -173,10 +189,9 @@ public class BoundedArea implements Rectangle
     }
 
     @Override
-    public Rectangle add(Rectangle arg0)
+    public Rectangle add(Rectangle r)
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new BoundedArea(Math.min(x1(), r.x1()), Math.min(y1(), r.y1()), Math.max(x2(), r.x2()), Math.max(y2(), r.y2()));
     }
 
     @Override
