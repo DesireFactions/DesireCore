@@ -7,7 +7,7 @@ import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
 
-public class TimeParser implements Parser<Number>
+public class TimeParser implements Parser<Long>
 {
 
     @Override

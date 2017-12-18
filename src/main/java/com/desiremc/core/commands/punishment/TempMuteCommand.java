@@ -34,10 +34,10 @@ public class TempMuteCommand extends ValidCommand
                 .addValidator(new SenderOutranksTargetValidator())
                 .build());
 
-        addArgument(CommandArgumentBuilder.createBuilder(Number.class)
+        addArgument(CommandArgumentBuilder.createBuilder(Long.class)
                 .setName("time")
                 .setParser(new TimeParser())
-                .addValidator(new NumberSizeValidator(0, 1209600000, "punishment.too_low", "punishment.too_high"))
+                .addValidator(new NumberSizeValidator<Long>(0l, 1209600000l, "punishment.too_low", "punishment.too_high"))
                 .build());
 
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
