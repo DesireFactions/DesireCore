@@ -1,6 +1,7 @@
 package com.desiremc.core.listeners;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
@@ -89,6 +90,11 @@ public class ConnectionListener implements Listener
         PlayerUtils.addPlayer(player);
 
         SessionHandler.initializeSession(player);
+
+        if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
+        {
+            player.teleport(SpawnCommand.spawnLocation);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

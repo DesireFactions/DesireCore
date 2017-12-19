@@ -4,12 +4,21 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.punishment.HistoryCommand;
 import com.desiremc.core.commands.staff.StaffReportsCommand;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class GUIListener implements Listener
 {
@@ -105,5 +114,57 @@ public class GUIListener implements Listener
             p.closeInventory();
             StaffReportsCommand.minusPage(p);
         }
+    }
+
+    @EventHandler
+    public void onReportsClick(InventoryClickEvent event)
+    {
+        if (event.getInventory() == null || event.getClickedInventory() == null || event.getCurrentItem() == null
+                || event.getCurrentItem().getType() == Material.AIR)
+        {
+            return;
+        }
+
+        Inventory inv = event.getClickedInventory();
+
+        if (!inv.getTitle().equalsIgnoreCase(DesireCore.getLangHandler().renderMessageNoPrefix("report.inventory.title")))
+        {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        Player p = (Player) event.getWhoClicked();
+
+        if (event.getClick().equals(ClickType.DOUBLE_CLICK))
+        {
+            ItemStack item = event.getCurrentItem();
+            for (Report report : ReportHandler.getInstance().getAllReports(true))
+            {
+                Session reported = SessionHandler.getGeneralSession(report.getReported());
+                Session issuer = SessionHandler.getGeneralSession(report.getIssuer());
+
+                if (!reported.getName().equalsIgnoreCase(item.getItemMeta().getDisplayName())) continue;
+                if (!listContainsString(item.getItemMeta().getLore(), report.getReason())) continue;
+                if (!listContainsString(item.getItemMeta().getLore(), issuer.getName())) continue;
+
+                report.setResolved(true);
+                p.closeInventory();
+                StaffHandler.getInstance().openReportsGUI(p, StaffReportsCommand.getPage(p));
+                break;
+            }
+        }
+    }
+
+    private boolean listContainsString(List<String> list, String string)
+    {
+        for (String s : list)
+        {
+            if (s.contains(string))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

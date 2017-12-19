@@ -1,5 +1,15 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.commands.spawn.SpawnCommand;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.events.PlayerChunkMoveEvent;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BukkitUtils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,17 +20,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.events.PlayerBlockMoveEvent;
-import com.desiremc.core.events.PlayerChunkMoveEvent;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.BukkitUtils;
-
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerListener implements Listener
 {
@@ -112,6 +112,12 @@ public class PlayerListener implements Listener
                 s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
         }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event)
+    {
+        event.setRespawnLocation(SpawnCommand.spawnLocation);
     }
 
 }

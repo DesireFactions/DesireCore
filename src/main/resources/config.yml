@@ -78,3 +78,11 @@ gadgets:
     name: "&bExamine"
     lore:
       - "&7Inspects the inventory of the player that was clicked."
+spawn:
+  x: 0
+  y: 100
+  z: 0
+  yaw: 0
+  pitch: 0
+  world: world
+spawn-on-join: false

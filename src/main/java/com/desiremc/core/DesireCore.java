@@ -32,6 +32,8 @@ import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.settings.SettingsCommand;
+import com.desiremc.core.commands.spawn.SetSpawnCommand;
+import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.commands.staff.StaffAltsCommand;
 import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
@@ -49,7 +51,6 @@ import com.desiremc.core.handler.SlowChatHandler;
 import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.GUIListener;
-import com.desiremc.core.listeners.InventoryListener;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.listeners.PlayerListener;
 import com.desiremc.core.listeners.StaffListener;
@@ -202,6 +203,8 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new ChatCommand());
         commandHandler.registerCommand(new FriendsCommand());
         commandHandler.registerCommand(new HistoryCommand());
+        commandHandler.registerCommand(new SpawnCommand());
+        commandHandler.registerCommand(new SetSpawnCommand());
     }
 
     private void registerListeners()
@@ -209,7 +212,6 @@ public class DesireCore extends JavaPlugin
         ListenerManager listenerManager = ListenerManager.getInstace();
         listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new PlayerListener());
-        listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
         //listenerManager.addListener(new TabList());
         listenerManager.addListener(new StaffListener());

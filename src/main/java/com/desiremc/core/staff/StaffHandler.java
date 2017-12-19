@@ -288,7 +288,13 @@ public class StaffHandler
         }
 
         Player randomPlayer = players.get(new Random().nextInt(players.size()));
-        staffPlayer.teleport(randomPlayer);
+
+        Location loc = randomPlayer.getLocation();
+
+        loc.setYaw(staffPlayer.getLocation().getYaw());
+        loc.setPitch(staffPlayer.getLocation().getPitch());
+
+        staffPlayer.teleport(loc);
     }
 
     public void useInvisibility(PlayerInteractEvent e)

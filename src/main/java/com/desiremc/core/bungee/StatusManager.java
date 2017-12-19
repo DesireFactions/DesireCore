@@ -1,13 +1,12 @@
 package com.desiremc.core.bungee;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.desiremc.core.DesireCore;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.desiremc.core.DesireCore;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class StatusManager
 {
@@ -24,7 +23,7 @@ public class StatusManager
     {
         if (servers.containsKey(server))
         {
-            return ((ServerStatus) servers.get(server)).isOnline();
+            return servers.get(server).isOnline();
         }
         return false;
     }
@@ -33,7 +32,7 @@ public class StatusManager
     {
         if (servers.containsKey(server))
         {
-            return ((ServerStatus) servers.get(server)).getOnlinePlayers();
+            return servers.get(server).getOnlinePlayers();
         }
         return 0;
     }
@@ -42,7 +41,7 @@ public class StatusManager
     {
         if (servers.containsKey(server))
         {
-            return ((ServerStatus) servers.get(server)).getMaxPlayers();
+            return servers.get(server).getMaxPlayers();
         }
         return 0;
     }
@@ -51,12 +50,12 @@ public class StatusManager
     {
         if (servers.containsKey(server))
         {
-            return (ServerStatus) servers.get(server);
+            return servers.get(server);
         }
         return null;
     }
 
-    public static void updateStatus(String server, boolean online, int onlinePlayers, int maxPlayers)
+    private static void updateStatus(String server, boolean online, int onlinePlayers, int maxPlayers)
     {
         ServerStatus serverStatus = new ServerStatus(server);
         serverStatus.setMaxPlayers(maxPlayers);
