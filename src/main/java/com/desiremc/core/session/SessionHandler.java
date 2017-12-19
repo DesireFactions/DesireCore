@@ -38,21 +38,6 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         sessions = new HashMap<>();
         onlineSessions = new HashMap<>();
         onlineStaff = new HashMap<>();
-        for (Session session : find())
-        {
-            updateSession(session);
-            sessions.put(session.getUniqueId(), session);
-            if (session.isOnline())
-            {
-                onlineSessions.put(session.getUniqueId(), session);
-            }
-            if (session.getRank().isStaff())
-            {
-                onlineStaff.put(session.getUniqueId(), session);
-            }
-        }
-
-        startConsoleSession();
     }
 
     private static boolean applyExternalData(Session session)
@@ -134,10 +119,10 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         return onlineSessions.get(uuid);
     }
-    
+
     public static Session getGeneralSession(UUID uuid)
     {
-         return sessions.get(uuid);
+        return sessions.get(uuid);
     }
 
     public static Session initializeSession(Player player)
@@ -146,7 +131,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         Session session = instance.get(uuid);
 
         boolean needSave = false;
-        
+
         if (session == null)
         {
             session = createSession(uuid);
@@ -170,12 +155,12 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             session.setName(player.getName());
             needSave = true;
         }
-        
+
         if (needSave)
         {
             session.save();
         }
-        
+
         onlineSessions.put(session.getUniqueId(), session);
 
         return session;
@@ -259,6 +244,29 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static void initialize()
     {
         instance = new SessionHandler();
+
+        for (Session session : instance.find())
+        {
+            updateSession(session);
+            sessions.put(session.getUniqueId(), session);
+            if (session.isOnline())
+            {
+                onlineSessions.put(session.getUniqueId(), session);
+            }
+            if (session.getRank().isStaff())
+            {
+                onlineStaff.put(session.getUniqueId(), session);
+            }
+        }
+        
+        System.out.println("Session size: " + sessions.size());
+        for (UUID uuid : sessions.keySet())
+        {
+            System.out.println(uuid);
+        }
+        System.out.println("=================");
+
+        startConsoleSession();
     }
 
 }

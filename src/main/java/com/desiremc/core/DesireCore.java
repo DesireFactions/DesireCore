@@ -116,16 +116,16 @@ public class DesireCore extends JavaPlugin
 
         mongoWrapper = new MongoWrapper();
 
+        PunishmentHandler.initialize();
+        SessionHandler.initialize();
         NMSClasses.initialize();
         NMSFields.initialize();
-        PunishmentHandler.initialize();
         ScoreboardRegistry.initialize();
         EntryRegistry.initialize();
         MenuAPI.initialize();
         ListenerManager.initialize();
         CustomCommandHandler.initialize();
         CommandHandler.initialize();
-        SessionHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
         StatusManager.startPingTask();
