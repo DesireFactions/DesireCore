@@ -1,15 +1,5 @@
 package com.desiremc.core;
 
-import java.io.File;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
@@ -54,6 +44,7 @@ import com.desiremc.core.commands.timings.TimingsCommand;
 import com.desiremc.core.commands.tokens.TokensCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
+import com.desiremc.core.handler.CommandBlocker;
 import com.desiremc.core.handler.SlowChatHandler;
 import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
@@ -75,6 +66,15 @@ import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -179,7 +179,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TimingsCommand());
         customCommandHandler.registerCommand(new StaffChatCommand("sc"));
         customCommandHandler.registerCommand(new StaffFreezeCommand());
-        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
+        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
         customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
         customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
         customCommandHandler.registerCommand(new StaffAltsCommand("alts"));
@@ -216,6 +216,7 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new GUIListener());
 
         listenerManager.addListener(new SlowChatHandler());
+        listenerManager.addListener(new CommandBlocker());
     }
 
     public MongoWrapper getMongoWrapper()
