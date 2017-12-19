@@ -156,7 +156,7 @@ public class DateUtils
                 Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND
         };
         String[] names = new String[] {
-                "year", "years", "month", "months", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds"
+                "y", "y", "m", "m", "d", "d", "h", "h", "m", "m", "s", "s"
         };
         int accuracy = 0;
         for (int i = 0; i < types.length; i++)
@@ -169,7 +169,7 @@ public class DateUtils
             if (diff > 0)
             {
                 accuracy++;
-                sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+                sb.append(" ").append(diff).append("").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
             }
         }
         if (sb.length() == 0)

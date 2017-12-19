@@ -11,6 +11,7 @@ import com.desiremc.core.validators.AuthCodeValidator;
 import com.desiremc.core.validators.PlayerIsAuthBlockedValidator;
 import com.desiremc.core.validators.PlayerValidator;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class LoginCommand extends ValidCommand
 {
@@ -30,7 +31,7 @@ public class LoginCommand extends ValidCommand
     {
         Session session = SessionHandler.getSession(sender);
 
-        AuthListener.authBlocked.remove(session.getUniqueId());
+        AuthListener.authBlocked.remove(((Player) sender).getUniqueId());
         session.setHasAuthorized(true);
         SessionHandler.getInstance().save(session);
         DesireCore.getLangHandler().sendRenderMessage(session, "auth.authenticated");
