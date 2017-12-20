@@ -56,4 +56,9 @@ public class GeometryUtils
         return (int) new BoundedArea(pointOne, pointTwo).area();
     }
 
+    public static BoundedArea getBoundedArea(BlockColumn pointOne, BlockColumn pointTwo)
+    {
+        return new BoundedArea(pointOne, pointTwo);
+    }
+
 }

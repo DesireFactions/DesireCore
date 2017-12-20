@@ -245,4 +245,14 @@ public class BoundedArea implements Rectangle
         return z2;
     }
 
+    public float getLength()
+    {
+        return y2() - y1();
+    }
+
+    public float getWidth()
+    {
+        return x2() - x1();
+    }
+
 }
