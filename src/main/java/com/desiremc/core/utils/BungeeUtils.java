@@ -10,12 +10,12 @@ import com.google.common.io.ByteStreams;
 public class BungeeUtils
 {
 
-    public static void sendToHub(Player p)
+    public static void sendToHub(Player player)
     {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(StatusManager.getLeastPopulous());
-        p.sendPluginMessage(DesireCore.getInstance(), "BungeeCord", out.toByteArray());
+        player.sendPluginMessage(DesireCore.getInstance(), "BungeeCord", out.toByteArray());
     }
     
 }
