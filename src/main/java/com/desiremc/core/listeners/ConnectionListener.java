@@ -1,5 +1,14 @@
 package com.desiremc.core.listeners;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.punishment.Punishment;
@@ -10,28 +19,13 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectionListener implements Listener
 {
 
-    private static final boolean DEBUG = false;
-
     @EventHandler
     public void onLogin(final AsyncPlayerPreLoginEvent event)
     {
-        if (DEBUG)
-        {
-            System.out.println("onLogin(PlayerLoginEvent) called in ConnectionListener.");
-        }
-
         String ip = event.getAddress().getHostAddress();
 
         if (PunishmentHandler.getInstance().getAllIpBans().contains(ip))
@@ -43,9 +37,9 @@ public class ConnectionListener implements Listener
                             " the network!\n"
                             + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
                             + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                            .replace("{reason}", ipban.getReason())
-                            .replace("{issuer}", PlayerUtils.getName(ipban.getIssuer()))
-                            .replace("&", "§"));
+                                    .replace("{reason}", ipban.getReason())
+                                    .replace("{issuer}", PlayerUtils.getName(ipban.getIssuer()))
+                                    .replace("&", "§"));
             return;
         }
 
@@ -59,9 +53,9 @@ public class ConnectionListener implements Listener
                                 " the network!\n"
                                 + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"
                                 + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                                .replace("{reason}", ban.getReason())
-                                .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
-                                .replace("&", "§"));
+                                        .replace("{reason}", ban.getReason())
+                                        .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
+                                        .replace("&", "§"));
             }
             else
             {
@@ -70,10 +64,10 @@ public class ConnectionListener implements Listener
                                 "network!\n"
                                 + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n"
                                 + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
-                                .replace("{reason}", ban.getReason())
-                                .replace("{until}", DateUtils.formatDateDiff(ban.getExpirationTime()))
-                                .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
-                                .replace("&", "§"));
+                                        .replace("{reason}", ban.getReason())
+                                        .replace("{until}", DateUtils.formatDateDiff(ban.getExpirationTime()))
+                                        .replace("{issuer}", PlayerUtils.getName(ban.getIssuer()))
+                                        .replace("&", "§"));
             }
         }
     }
@@ -82,10 +76,6 @@ public class ConnectionListener implements Listener
     public void onJoin(PlayerJoinEvent event)
     {
         event.setJoinMessage(null);
-        if (DEBUG)
-        {
-            System.out.println("onJoin(PlayerJoinEvent) called in ConnectionListener.");
-        }
         Player player = event.getPlayer();
         PlayerUtils.addPlayer(player);
 
@@ -101,10 +91,6 @@ public class ConnectionListener implements Listener
     public void onLogout(PlayerQuitEvent e)
     {
         e.setQuitMessage(null);
-        if (DEBUG)
-        {
-            System.out.println("onLogout(PlayerQuitEvent) called in ConnectionListener.");
-        }
 
         Player player = e.getPlayer();
         Session session = SessionHandler.getSession(player);
