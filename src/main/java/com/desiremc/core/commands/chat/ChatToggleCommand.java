@@ -1,13 +1,14 @@
 package com.desiremc.core.commands.chat;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class ChatToggleCommand extends ValidCommand
 {
@@ -22,10 +23,12 @@ public class ChatToggleCommand extends ValidCommand
         if (StaffHandler.getInstance().chatDisabled())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_on");
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_on_broadcast", "{player}", sender.getName()));
         }
         else
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_off");
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_off_broadcast", "{player}", sender.getName()));
         }
         StaffHandler.getInstance().toggleChat();
     }
