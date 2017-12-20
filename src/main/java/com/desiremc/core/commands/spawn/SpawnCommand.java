@@ -34,15 +34,7 @@ public class SpawnCommand extends ValidCommand
     {
         Player player = args.get(0).hasValue() ? (Player) args.get(0) : sender.getPlayer();
 
-        FileHandler config = DesireCore.getConfigHandler();
-        Location spawnLocation = new Location(Bukkit.getWorld(config.getString("spawn.world")),
-                config.getDouble("spawn.x"),
-                config.getDouble("spawn.y"),
-                config.getDouble("spawn.z"),
-                config.getDouble("spawn.yaw").floatValue(),
-                config.getDouble("spawn.pitch").floatValue());
-
-        player.teleport(spawnLocation);
+        player.teleport(getSpawnLocation());
 
         if (args.get(0).hasValue())
         {
@@ -54,5 +46,16 @@ public class SpawnCommand extends ValidCommand
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.confirm");
         }
+    }
+
+    public static Location getSpawnLocation()
+    {
+        FileHandler config = DesireCore.getConfigHandler();
+        return new Location(Bukkit.getWorld(config.getString("spawn.world")),
+                config.getDouble("spawn.x"),
+                config.getDouble("spawn.y"),
+                config.getDouble("spawn.z"),
+                config.getDouble("spawn.yaw").floatValue(),
+                config.getDouble("spawn.pitch").floatValue());
     }
 }

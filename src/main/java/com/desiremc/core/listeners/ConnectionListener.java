@@ -83,7 +83,7 @@ public class ConnectionListener implements Listener
 
         if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
         {
-            player.teleport(SpawnCommand.spawnLocation);
+            player.teleport(SpawnCommand.getSpawnLocation());
         }
     }
 

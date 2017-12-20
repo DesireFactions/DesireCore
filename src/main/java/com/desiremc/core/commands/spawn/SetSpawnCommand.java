@@ -33,8 +33,6 @@ public class SetSpawnCommand extends ValidCommand
         config.setDouble("spawn.yaw", loc.getYaw());
         config.setString("spawn.world", loc.getWorld().getName());
 
-        SpawnCommand.spawnLocation = loc;
-
         DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.set");
     }
 }

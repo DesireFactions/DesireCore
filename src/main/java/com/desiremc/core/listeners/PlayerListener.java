@@ -117,7 +117,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
     {
-        event.setRespawnLocation(SpawnCommand.spawnLocation);
+        event.setRespawnLocation(SpawnCommand.getSpawnLocation());
     }
 
 }
