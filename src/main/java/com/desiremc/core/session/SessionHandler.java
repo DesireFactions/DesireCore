@@ -128,7 +128,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static Session initializeSession(Player player)
     {
         UUID uuid = player.getUniqueId();
-        Session session = instance.get(uuid);
+        Session session = sessions.get(uuid);
 
         boolean needSave = false;
 
@@ -190,6 +190,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
         session.save();
 
+        sessions.put(uuid, session);
+
         return session;
     }
 
@@ -204,7 +206,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     /**
      * @return all online staff sessions excluding console.
      */
-    public static Collection<Session> getStaff()
+    public static Collection<Session> getOnlineStaff()
     {
         return onlineStaff.values();
     }
@@ -252,13 +254,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
             if (session.isOnline())
             {
                 onlineSessions.put(session.getUniqueId(), session);
-            }
-            if (session.getRank().isStaff())
-            {
-                onlineStaff.put(session.getUniqueId(), session);
+                if (session.getRank().isStaff())
+                {
+                    onlineStaff.put(session.getUniqueId(), session);
+                }
             }
         }
-        
+
         System.out.println("Session size: " + sessions.size());
         for (UUID uuid : sessions.keySet())
         {

@@ -92,7 +92,7 @@ public class PlayerListener implements Listener
         {
             event.setCancelled(true);
             String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", player.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
-            for (Session target : SessionHandler.getStaff())
+            for (Session target : SessionHandler.getOnlineStaff())
             {
                 target.getPlayer().sendMessage(message);
             }
@@ -105,7 +105,7 @@ public class PlayerListener implements Listener
             return;
         }
 
-        for (Session s : SessionHandler.getStaff())
+        for (Session s : SessionHandler.getOnlineStaff())
         {
             if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSetting(SessionSetting.MENTIONS))
             {
