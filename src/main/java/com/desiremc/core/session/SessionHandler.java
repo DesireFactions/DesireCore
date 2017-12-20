@@ -134,11 +134,15 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
         if (session == null)
         {
+            System.out.println("Created session.");
             session = createSession(uuid);
         }
         else
         {
+            System.out.println("Updated session.");
+            System.out.println("Starting rank: " + session.getRank().getDisplayName());
             needSave = updateSession(session);
+            System.out.println("Ending rank: " + session.getRank());
         }
 
         String ip = player.getAddress().getAddress().getHostAddress();
