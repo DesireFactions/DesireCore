@@ -28,7 +28,7 @@ public class SpawnCommand extends ValidCommand
                 .setName("target")
                 .setParser(new PlayerParser())
                 .setOptional()
-                .setRequiredRank(Rank.MODERATOR)
+                .setRequiredRank(Rank.HELPER)
                 .build());
     }
 
