@@ -117,7 +117,7 @@ public class StringUtils
         StringBuilder sb = new StringBuilder();
         if (useCommas)
         {
-            sb.append("#,###");
+            sb.append("#,##0");
         }
         else
         {
