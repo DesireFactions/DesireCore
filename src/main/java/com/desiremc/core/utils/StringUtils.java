@@ -1,5 +1,7 @@
 package com.desiremc.core.utils;
 
+import java.text.DecimalFormat;
+
 public class StringUtils
 {
 
@@ -108,6 +110,28 @@ public class StringUtils
             }
         }
         return false;
+    }
+
+    public static String formatNumber(Number number, int decimalPlaces, boolean useCommas)
+    {
+        StringBuilder sb = new StringBuilder();
+        if (useCommas)
+        {
+            sb.append("#,###");
+        }
+        else
+        {
+            sb.append("0");
+        }
+        if (decimalPlaces > 0)
+        {
+            sb.append('.');
+            for (int i = 0; i < decimalPlaces; i++)
+            {
+                sb.append('0');
+            }
+        }
+        return new DecimalFormat(sb.toString()).format(number);
     }
 
 }
