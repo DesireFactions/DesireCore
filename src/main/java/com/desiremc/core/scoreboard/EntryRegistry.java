@@ -28,7 +28,7 @@ public class EntryRegistry implements ScoreboardHandler
     @Override
     public String getTitle(Player player)
     {
-        return "&5&lDesire HCF";
+        return "&5&lDesireHCF";
     }
 
     @Override
