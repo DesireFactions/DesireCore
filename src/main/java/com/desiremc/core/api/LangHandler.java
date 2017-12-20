@@ -261,7 +261,7 @@ public class LangHandler extends FileHandler
 
         for (int i = 0; i < args.length; i += 2)
         {
-            string = string.replace(args[i].toString(), CollectionUtils.firstNonNull(args[i + 1].toString(), ""));
+            string = string.replace(args[i].toString(), CollectionUtils.firstNonNull(args[i + 1], "").toString());
         }
 
         return string;
