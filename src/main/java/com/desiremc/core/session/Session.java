@@ -411,7 +411,7 @@ public class Session
     {
         for (Achievement a : achievements)
         {
-            if (achievement == a)
+            if (achievement.getId() == a.getId())
             {
                 return true;
             }
