@@ -1,11 +1,5 @@
 package com.desiremc.core.commands.spawn;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -14,6 +8,11 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.newparsers.PlayerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class SpawnCommand extends ValidCommand
 {
@@ -30,6 +29,11 @@ public class SpawnCommand extends ValidCommand
                 .setOptional()
                 .setRequiredRank(Rank.HELPER)
                 .build());
+
+        spawnLocation = new Location(Bukkit.getWorld(DesireCore.getConfigHandler().getString("spawn.world")),
+                DesireCore.getConfigHandler().getDouble("spawn.x"), DesireCore.getConfigHandler().getDouble("spawn.y"),
+                DesireCore.getConfigHandler().getDouble("spawn.z"), DesireCore.getConfigHandler().getDouble("spawn.yaw").floatValue(),
+                DesireCore.getConfigHandler().getDouble("spawn.pitch").floatValue());
     }
 
     @Override
