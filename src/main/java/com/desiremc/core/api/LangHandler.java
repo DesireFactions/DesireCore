@@ -3,6 +3,8 @@ package com.desiremc.core.api;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
+import com.google.common.base.MoreObjects;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -141,12 +143,11 @@ public class LangHandler extends FileHandler
     {
         ChatUtils.sendCenteredMessage(sender, renderString(super.getString(string), args));
     }
-    
+
     public void sendRenderMessageCenteredNoPrefix(Session sender, String string, Object... args)
     {
         sendRenderMessageCenteredNoPrefix(sender.getSender(), string, args);
     }
-    
 
     /**
      * Shorthand to send getString to {@link CommandSender}
@@ -260,7 +261,7 @@ public class LangHandler extends FileHandler
 
         for (int i = 0; i < args.length; i += 2)
         {
-            string = string.replace(args[i].toString(), args[i + 1].toString());
+            string = string.replace(args[i].toString(), MoreObjects.firstNonNull(args[i + 1].toString(), ""));
         }
 
         return string;
