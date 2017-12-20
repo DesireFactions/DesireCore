@@ -102,7 +102,14 @@ public class Session
 
     public boolean isPlayer()
     {
-        return !SessionHandler.isConsole(this);
+        try
+        {
+            return getPlayer() != null;
+        }
+        catch (IllegalStateException ex)
+        {
+            return false;
+        }
     }
 
     /**
