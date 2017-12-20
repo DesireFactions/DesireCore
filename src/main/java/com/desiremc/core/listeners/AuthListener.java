@@ -1,11 +1,10 @@
 package com.desiremc.core.listeners;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.warrenstrange.googleauth.GoogleAuthenticator;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,11 +17,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.warrenstrange.googleauth.GoogleAuthenticator;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class AuthListener implements Listener
 {
@@ -58,6 +57,7 @@ public class AuthListener implements Listener
                 System.out.println("AuthListener.onJoin(PlayerJoinEvent) generated new auth key.");
             }
             session.setAuthKey(auth.createCredentials().getKey());
+            session.setHasAuthorizedIP(false);
 
             sendAuthKey(session);
         }
@@ -71,11 +71,19 @@ public class AuthListener implements Listener
                 }
                 sendAuthKey(session);
             }
-            else if (!session.hasNewIp())
+            else if (session.hasNewIp())
             {
                 if (DEBUG)
                 {
-                    System.out.println("AuthListener.onJoin(PlayerJoinEvent) player does not have a new IP.");
+                    System.out.println("AuthListener.onJoin(PlayerJoinEvent) player does have a new IP.");
+                }
+                session.setHasAuthorizedIP(false);
+            }
+            else if (session.hasAuthorizedIP())
+            {
+                if (authBlocked.contains(p.getUniqueId()))
+                {
+                    authBlocked.remove(p.getUniqueId());
                 }
                 return;
             }
@@ -85,6 +93,7 @@ public class AuthListener implements Listener
             System.out.println("AuthListener.onJoin(PlayerJoinEvent) forcing player to auth.");
         }
         forceAuth(session);
+        session.save();
     }
 
     @EventHandler
@@ -142,7 +151,10 @@ public class AuthListener implements Listener
 
     private void forceAuth(Session session)
     {
-        authBlocked.add(session.getUniqueId());
+        if (!authBlocked.contains(session.getUniqueId()))
+        {
+            authBlocked.add(session.getUniqueId());
+        }
 
         DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
     }
@@ -159,8 +171,7 @@ public class AuthListener implements Listener
         try
         {
             return String.format(googleFormat, username, URLEncoder.encode("144.217.11.123", "UTF-8"), secret);
-        }
-        catch (UnsupportedEncodingException ex)
+        } catch (UnsupportedEncodingException ex)
         {
             return null;
         }

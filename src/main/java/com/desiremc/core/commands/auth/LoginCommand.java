@@ -33,7 +33,8 @@ public class LoginCommand extends ValidCommand
 
         AuthListener.authBlocked.remove(((Player) sender).getUniqueId());
         session.setHasAuthorized(true);
-        SessionHandler.getInstance().save(session);
+        session.setHasAuthorizedIP(true);
+        session.save();
         DesireCore.getLangHandler().sendRenderMessage(session, "auth.authenticated");
     }
 

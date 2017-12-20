@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.rank;
 
-import com.desiremc.core.validators.RankSetValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerSessionParser;
@@ -12,6 +8,11 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.validators.RankSetValidator;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import ru.tehkode.permissions.PermissionUser;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class RankSetCommand extends ValidCommand
 {
@@ -39,6 +40,11 @@ public class RankSetCommand extends ValidCommand
         {
             SessionHandler.removeStaff(target.getUniqueId());
         }
+
+        PermissionUser user = PermissionsEx.getUser(target.getPlayer());
+
+        user.removeGroup(target.getRank().name());
+        user.addGroup(rank.name());
 
         target.setRank(rank);
         target.save();
