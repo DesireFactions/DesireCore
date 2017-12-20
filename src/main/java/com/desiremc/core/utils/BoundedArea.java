@@ -33,7 +33,14 @@ public class BoundedArea implements Rectangle
 
     public BoundedArea(BlockColumn pointOne, BlockColumn pointTwo)
     {
-        this(pointOne.getX(), pointTwo.getX(), pointOne.getZ(), pointTwo.getZ());
+        if (pointOne == null || pointTwo == null)
+        {
+            throw new IllegalArgumentException("Neither point can be null.");
+        }
+        this.x1 = Math.min(pointOne.getX(), pointTwo.getX());
+        this.x2 = Math.max(pointOne.getX(), pointTwo.getX());
+        this.z1 = Math.min(pointOne.getZ(), pointTwo.getZ());
+        this.z2 = Math.max(pointOne.getZ(), pointTwo.getZ());
     }
 
     public BoundedArea(float min, float min2, float max, float max2)
@@ -247,12 +254,12 @@ public class BoundedArea implements Rectangle
 
     public float getLength()
     {
-        return y2() - y1();
+        return y2() - y1() + 1;
     }
 
     public float getWidth()
     {
-        return x2() - x1();
+        return x2() - x1() + 1;
     }
 
 }
