@@ -46,7 +46,7 @@ public abstract class ValidCommand
      * @param blocksConsole if this command is unusable by the console.
      * @param aliases the aliases of the command.
      */
-    protected ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole, String[] aliases)
+    public ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole, String[] aliases)
     {
         this.name = name;
         this.description = description;
@@ -71,7 +71,7 @@ public abstract class ValidCommand
      * @param blocksConsole if this command is unusable by the console.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole)
+    public ValidCommand(String name, String description, Rank requiredRank, boolean blocksConsole)
     {
         this(name, description, requiredRank, blocksConsole, new String[0]);
     }
@@ -85,7 +85,7 @@ public abstract class ValidCommand
      * @param aliases the aliases of the command.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, Rank requiredRank, String[] aliases)
+    public ValidCommand(String name, String description, Rank requiredRank, String[] aliases)
     {
         this(name, description, requiredRank, false, aliases);
     }
@@ -99,7 +99,7 @@ public abstract class ValidCommand
      * @param aliases the aliases of the command.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, boolean blocksConsole, String[] aliases)
+    public ValidCommand(String name, String description, boolean blocksConsole, String[] aliases)
     {
         this(name, description, Rank.GUEST, blocksConsole, aliases);
     }
@@ -112,7 +112,7 @@ public abstract class ValidCommand
      * @param requiredRank the required rank for the command.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, Rank requiredRank)
+    public ValidCommand(String name, String description, Rank requiredRank)
     {
         this(name, description, requiredRank, false, new String[0]);
     }
@@ -125,7 +125,7 @@ public abstract class ValidCommand
      * @param blocksConsole if this command is unusable by the console.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, boolean blocksConsole)
+    public ValidCommand(String name, String description, boolean blocksConsole)
     {
         this(name, description, Rank.GUEST, blocksConsole, new String[0]);
     }
@@ -138,7 +138,7 @@ public abstract class ValidCommand
      * @param aliases the aliases of the command.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description, String[] aliases)
+    public ValidCommand(String name, String description, String[] aliases)
     {
         this(name, description, Rank.GUEST, false, aliases);
     }
@@ -150,7 +150,7 @@ public abstract class ValidCommand
      * @param description the description of the command.
      * @see #ValidCommand(String, String, Rank, boolean, String[])
      */
-    protected ValidCommand(String name, String description)
+    public ValidCommand(String name, String description)
     {
         this(name, description, Rank.GUEST, false, new String[0]);
     }

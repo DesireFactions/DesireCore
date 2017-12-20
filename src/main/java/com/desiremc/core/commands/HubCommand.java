@@ -10,7 +10,7 @@ import com.desiremc.core.utils.BungeeUtils;
 public class HubCommand extends ValidCommand
 {
 
-    protected HubCommand()
+    public HubCommand()
     {
         super("hub", "Sends you to the hub.", true);
     }
