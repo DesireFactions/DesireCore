@@ -137,4 +137,17 @@ public class CollectionUtils
         return method;
     }
 
+    @SafeVarargs
+    public static <T> T firstNonNull(T... values)
+    {
+        for (T value : values)
+        {
+            if (value != null)
+            {
+                return value;
+            }
+        }
+        return null;
+    }
+
 }

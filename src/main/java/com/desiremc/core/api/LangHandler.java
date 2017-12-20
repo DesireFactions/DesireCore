@@ -1,17 +1,17 @@
 package com.desiremc.core.api;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.utils.ChatUtils;
-import com.google.common.base.MoreObjects;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.CollectionUtils;
 
 /**
  * @author Michael Ziluck
@@ -261,7 +261,7 @@ public class LangHandler extends FileHandler
 
         for (int i = 0; i < args.length; i += 2)
         {
-            string = string.replace(args[i].toString(), MoreObjects.firstNonNull(args[i + 1].toString(), ""));
+            string = string.replace(args[i].toString(), CollectionUtils.firstNonNull(args[i + 1].toString(), ""));
         }
 
         return string;
