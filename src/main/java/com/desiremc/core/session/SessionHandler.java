@@ -128,7 +128,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static Session initializeSession(Player player)
     {
         UUID uuid = player.getUniqueId();
-        Session session = instance.get(uuid);
+        Session session = sessions.get(uuid);
 
         boolean needSave = false;
 
@@ -189,6 +189,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         Session session = new Session();
         session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
         session.save();
+        
+        sessions.put(uuid, session);
 
         return session;
     }
