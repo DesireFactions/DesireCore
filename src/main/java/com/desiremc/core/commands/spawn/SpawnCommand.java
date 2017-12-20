@@ -21,7 +21,7 @@ public class SpawnCommand extends ValidCommand
 
     public SpawnCommand()
     {
-        super("spawn", "Teleport to the server spawn.", Rank.GUEST, true);
+        super("spawn", "Teleport to the server spawn.", Rank.HELPER, true);
 
         addArgument(CommandArgumentBuilder.createBuilder(Player.class)
                 .setName("target")

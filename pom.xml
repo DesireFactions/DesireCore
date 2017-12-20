@@ -39,6 +39,11 @@
 			<artifactId>worldedit-bukkit</artifactId>
 			<version>6.1.5</version>
 		</dependency>
+		<dependency>
+			<groupId>ru.tehkode</groupId>
+			<artifactId>PermissionsEx</artifactId>
+			<version>1.22.6</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -48,6 +53,10 @@
 		<repository>
 			<id>sk89q-repo</id>
 			<url>http://maven.sk89q.com/repo/</url>
+		</repository>
+		<repository>
+			<id>pex-repo</id>
+			<url>http://pex-repo.aoeu.xyz</url>
 		</repository>
 	</repositories>
 	<build>

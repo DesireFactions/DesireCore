@@ -36,11 +36,6 @@ public class CommandBlocker implements Listener
                 {
                     try
                     {
-                        Session session = SessionHandler.getSession(event.getPlayer());
-                        if (session.getRank().isManager())
-                        {
-                            return;
-                        }
                         PacketContainer packet = event.getPacket();
                         String message = (packet.getSpecificModifier(String.class).read(0)).toLowerCase();
                         if (((message.startsWith("/")) && (!message.contains(" "))) || ((message.startsWith("/ver")) && (!message.contains("  "))) || ((message.startsWith("/version")) && (!message.contains("  "))) || ((message.startsWith("/?")) && (!message.contains("  "))) || ((message.startsWith("/about")) && (!message.contains("  "))) || ((message
@@ -64,15 +59,12 @@ public class CommandBlocker implements Listener
         Session session = SessionHandler.getSession(player);
         String[] msg = event.getMessage().split(" ");
 
-        if (!session.getRank().isManager())
+        for (String s : blocked)
         {
-            for (String s : blocked)
+            if (msg[0].equalsIgnoreCase("/" + s))
             {
-                if (msg[0].equalsIgnoreCase("/" + s))
-                {
-                    DesireCore.getLangHandler().sendRenderMessage(session, "no_permissions");
-                    event.setCancelled(true);
-                }
+                DesireCore.getLangHandler().sendRenderMessage(session, "no_permissions");
+                event.setCancelled(true);
             }
         }
     }
