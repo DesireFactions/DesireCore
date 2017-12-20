@@ -17,8 +17,6 @@ import java.util.List;
 public class SpawnCommand extends ValidCommand
 {
 
-    public static Location spawnLocation;
-
     public SpawnCommand()
     {
         super("spawn", "Teleport to the server spawn.", Rank.GUEST, true);
@@ -29,11 +27,6 @@ public class SpawnCommand extends ValidCommand
                 .setOptional()
                 .setRequiredRank(Rank.HELPER)
                 .build());
-
-        spawnLocation = new Location(Bukkit.getWorld(DesireCore.getConfigHandler().getString("spawn.world")),
-                DesireCore.getConfigHandler().getDouble("spawn.x"), DesireCore.getConfigHandler().getDouble("spawn.y"),
-                DesireCore.getConfigHandler().getDouble("spawn.z"), DesireCore.getConfigHandler().getDouble("spawn.yaw").floatValue(),
-                DesireCore.getConfigHandler().getDouble("spawn.pitch").floatValue());
     }
 
     @Override
