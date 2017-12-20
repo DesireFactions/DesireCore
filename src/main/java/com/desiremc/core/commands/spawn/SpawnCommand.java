@@ -1,5 +1,11 @@
 package com.desiremc.core.commands.spawn;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -8,11 +14,6 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.newparsers.PlayerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class SpawnCommand extends ValidCommand
 {
@@ -29,21 +30,20 @@ public class SpawnCommand extends ValidCommand
                 .setOptional()
                 .setRequiredRank(Rank.MODERATOR)
                 .build());
-
-        FileHandler config = DesireCore.getConfigHandler();
-
-        spawnLocation = new Location(Bukkit.getWorld(config.getString("spawn.world")),
-                config.getDouble("spawn.x"),
-                config.getDouble("spawn.y"),
-                config.getDouble("spawn.z"),
-                config.getDouble("spawn.yaw").floatValue(),
-                config.getDouble("spawn.pitch").floatValue());
     }
 
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Player player = args.get(0).hasValue() ? (Player) args.get(0) : sender.getPlayer();
+
+        FileHandler config = DesireCore.getConfigHandler();
+        Location spawnLocation = new Location(Bukkit.getWorld(config.getString("spawn.world")),
+                config.getDouble("spawn.x"),
+                config.getDouble("spawn.y"),
+                config.getDouble("spawn.z"),
+                config.getDouble("spawn.yaw").floatValue(),
+                config.getDouble("spawn.pitch").floatValue());
 
         player.teleport(spawnLocation);
 
