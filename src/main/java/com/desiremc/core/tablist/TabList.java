@@ -1,29 +1,30 @@
 package com.desiremc.core.tablist;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.reflect.FieldAccessException;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.bukkit.entity.Player;
-
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.reflect.FieldAccessException;
-
 public class TabList
 {
 
-    Player player;
+    private static final boolean DEBUG = true;
 
-    int defaultPing = 1000;
+    public Player player;
 
-    TabList(Player player)
+    public int defaultPing = 1000;
+
+    public TabList(Player player)
     {
         this.player = player;
     }
 
-    HashMap<Integer, TabSlot> slots = new HashMap<>();
-    HashMap<Integer, TabSlot> toRemove = new HashMap<>();
+    private HashMap<Integer, TabSlot> slots = new HashMap<>();
+    private HashMap<Integer, TabSlot> toRemove = new HashMap<>();
 
     public TabSlot getSlot(int column, int row)
     {
@@ -63,7 +64,7 @@ public class TabList
         }
         slots.clear();
     }
-    
+
     public Collection<TabSlot> getSlots()
     {
         return slots.values();
@@ -95,8 +96,16 @@ public class TabList
 
     public void send()
     {
+        if (DEBUG)
+        {
+            System.out.println("TabList.send() called.");
+        }
         if (TabAPI.getProtocolManager().getProtocolVersion(player) >= 47)
         {
+            if (DEBUG)
+            {
+                System.out.println("TabList.send() returning, player version >= 47.");
+            }
             return;
         }
         for (int i = 0; i < 60; i++)
@@ -104,6 +113,10 @@ public class TabList
             TabSlot slot = slots.get(i);
             if (slot != null)
             {
+                if (DEBUG)
+                {
+                    System.out.println("TabList.send() slot: " + i + " != null");
+                }
                 toRemove.put(i, slot);
                 slot.sent = true;
                 PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
@@ -112,18 +125,20 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
-                }
-                catch (FieldAccessException ex)
+                } catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 0);
                     packet.getIntegers().write(1, 0);
                     packet.getIntegers().write(2, -1);
+                    if (DEBUG)
+                    {
+                        System.out.println("TabList.send() slot: " + i + " != null, FAE");
+                    }
                 }
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
-                }
-                catch (InvocationTargetException e)
+                } catch (InvocationTargetException e)
                 {
                     e.printStackTrace();
                 }
@@ -133,8 +148,7 @@ public class TabList
                     try
                     {
                         TabAPI.getProtocolManager().sendServerPacket(player, team);
-                    }
-                    catch (InvocationTargetException e)
+                    } catch (InvocationTargetException e)
                     {
                         e.printStackTrace();
                     }
@@ -142,6 +156,10 @@ public class TabList
             }
             else
             {
+                if (DEBUG)
+                {
+                    System.out.println("TabList.send() slot: " + i + " == null");
+                }
                 String nullName = "§" + String.valueOf(i);
                 if (i >= 10)
                 {
@@ -153,18 +171,20 @@ public class TabList
                 {
                     packet.getBooleans().write(0, true);
                     packet.getIntegers().write(0, -1);
-                }
-                catch (FieldAccessException ex)
+                } catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 0);
                     packet.getIntegers().write(1, 0);
                     packet.getIntegers().write(2, -1);
+                    if (DEBUG)
+                    {
+                        System.out.println("TabList.send() slot: " + i + " == null, FAE");
+                    }
                 }
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
-                }
-                catch (InvocationTargetException e)
+                } catch (InvocationTargetException e)
                 {
                     e.printStackTrace();
                 }
@@ -196,8 +216,7 @@ public class TabList
                     try
                     {
                         TabAPI.getProtocolManager().sendServerPacket(player, team);
-                    }
-                    catch (InvocationTargetException e)
+                    } catch (InvocationTargetException e)
                     {
                         e.printStackTrace();
                     }
@@ -208,8 +227,7 @@ public class TabList
                 {
                     packet.getBooleans().write(0, false);
                     packet.getIntegers().write(0, -1);
-                }
-                catch (FieldAccessException ex)
+                } catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 4);
                     packet.getIntegers().write(1, 0);
@@ -218,8 +236,7 @@ public class TabList
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
-                }
-                catch (InvocationTargetException e)
+                } catch (InvocationTargetException e)
                 {
                     e.printStackTrace();
                 }
@@ -237,8 +254,7 @@ public class TabList
                 {
                     packet.getBooleans().write(0, false);
                     packet.getIntegers().write(0, -1);
-                }
-                catch (FieldAccessException ex)
+                } catch (FieldAccessException ex)
                 {
                     packet.getIntegers().write(0, 4);
                     packet.getIntegers().write(1, 0);
@@ -247,8 +263,7 @@ public class TabList
                 try
                 {
                     TabAPI.getProtocolManager().sendServerPacket(player, packet);
-                }
-                catch (InvocationTargetException e)
+                } catch (InvocationTargetException e)
                 {
                     e.printStackTrace();
                 }
