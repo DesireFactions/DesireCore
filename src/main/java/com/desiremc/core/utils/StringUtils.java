@@ -50,10 +50,10 @@ public class StringUtils
         }
 
         final int newCodePoints[] = new int[strLen]; // cannot be longer than
-                                                    // the char array
+        // the char array
         int outOffset = 0;
         newCodePoints[outOffset++] = newCodePoint; // copy the first codepoint
-        for (int inOffset = Character.charCount(firstCodepoint); inOffset < strLen;)
+        for (int inOffset = Character.charCount(firstCodepoint); inOffset < strLen; )
         {
             final int codepoint = str.codePointAt(inOffset);
             newCodePoints[outOffset++] = codepoint; // copy the remaining ones
@@ -132,6 +132,21 @@ public class StringUtils
             }
         }
         return new DecimalFormat(sb.toString()).format(number);
+    }
+
+    public static String doubleFormat(double number)
+    {
+        String formatted;
+
+        if (number % 1 == 0)
+        {
+            formatted = Integer.toString((int) number);
+        }
+        else
+        {
+            formatted = Double.toString(number);
+        }
+        return formatted;
     }
 
 }
