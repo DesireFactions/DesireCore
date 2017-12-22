@@ -27,7 +27,16 @@ public class CheckTokensCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session target = (Session) args.get(0).getValue();
+        Session target;
+
+        if (!args.get(0).hasValue())
+        {
+            target = sender;
+        }
+        else
+        {
+            target = (Session) args.get(0).getValue();
+        }
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.check",
                 "{amount}", target.getTokens(),
