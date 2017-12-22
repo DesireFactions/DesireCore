@@ -1,17 +1,16 @@
 package com.desiremc.core.api;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.CollectionUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -20,7 +19,6 @@ public class LangHandler extends FileHandler
 {
 
     private String prefix;
-    private boolean usePrefix;
 
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also loads the prefix.
@@ -30,11 +28,7 @@ public class LangHandler extends FileHandler
     public LangHandler(File file, JavaPlugin plugin)
     {
         super(file, plugin);
-        usePrefix = super.getBoolean("prefix.use");
-        if (usePrefix)
-        {
-            prefix = super.getString("prefix.text");
-        }
+        prefix = "&b&lDesire &8»";
 
     }
 
@@ -63,7 +57,7 @@ public class LangHandler extends FileHandler
 
     /**
      * Gets a string without a prefix.
-     * 
+     *
      * @param string the reference.
      * @return the formatted string.
      */
@@ -111,10 +105,10 @@ public class LangHandler extends FileHandler
 
     /**
      * Sends a render message without the prefix being added on.
-     * 
+     *
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
+     * @param args   the arguments to replace.
      */
     public void sendRenderMessageNoPrefix(CommandSender sender, String string, Object... args)
     {
@@ -124,7 +118,7 @@ public class LangHandler extends FileHandler
     /**
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
+     * @param args   the arguments to replace.
      * @see #sendRenderMessageNoPrefix(CommandSender, String, Object...)
      */
     public void sendRenderMessageNoPrefix(Session sender, String string, Object... args)
@@ -134,10 +128,10 @@ public class LangHandler extends FileHandler
 
     /**
      * Send a render message that is centered and without a prefix.
-     * 
+     *
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
+     * @param args   the arguments to replace.
      */
     public void sendRenderMessageCenteredNoPrefix(CommandSender sender, String string, Object... args)
     {
@@ -247,9 +241,9 @@ public class LangHandler extends FileHandler
 
     /**
      * Render a string with the proper parameters.
-     * 
+     *
      * @param string the rendered string.
-     * @param args the placeholders and proper content.
+     * @param args   the placeholders and proper content.
      * @return the rendered string.
      */
     public String renderString(String string, Object... args)

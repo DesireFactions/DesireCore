@@ -1,6 +1,3 @@
-prefix:
-  text: '&7[&bDesire&7]'
-  use: true
 list-header: '&c&m---------------------------------'
 usage-message: '`&7[&6Usage&7] &e{usage}&e'
 not_time: '&7Time format used is invalid.'
