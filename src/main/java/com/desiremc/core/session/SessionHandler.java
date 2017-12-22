@@ -1,20 +1,19 @@
 package com.desiremc.core.session;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
@@ -159,6 +158,11 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         if (needSave)
         {
             session.save();
+        }
+
+        if (session.getRank().isStaff())
+        {
+            onlineStaff.put(session.getUniqueId(), session);
         }
 
         onlineSessions.put(session.getUniqueId(), session);
