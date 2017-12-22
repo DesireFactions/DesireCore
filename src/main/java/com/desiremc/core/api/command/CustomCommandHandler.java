@@ -29,8 +29,6 @@ import java.util.Map;
 public class CustomCommandHandler implements CommandExecutor
 {
 
-    private static final boolean DEBUG = true;
-
     private static CustomCommandHandler instance;
 
     private static SimpleCommandMap commandMapInstance = getCommandMap();
@@ -45,17 +43,9 @@ public class CustomCommandHandler implements CommandExecutor
         ValidCommand command = getCustomCommand(label);
         if (command != null)
         {
-            if (DEBUG)
-            {
-                System.out.println("CustomCommandHandler.onCommand() - command not null.");
-            }
             Session s = SessionHandler.getSession(sender);
             if (s != null && s.getRank().getId() >= command.getRequiredRank().getId())
             {
-                if (DEBUG)
-                {
-                    System.out.println("CustomCommandHandler.onCommand() - Successfully ran command.");
-                }
                 command.run(sender, label, args);
             }
             else
@@ -67,10 +57,6 @@ public class CustomCommandHandler implements CommandExecutor
         }
         else
         {
-            if (DEBUG)
-            {
-                System.out.println("CustomCommandHandler.onCommand() - command null.");
-            }
             return false;
         }
 
