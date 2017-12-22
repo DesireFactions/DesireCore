@@ -1,15 +1,8 @@
 package com.desiremc.core.api.command;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,15 +13,23 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Michael Ziluck
  */
 public class CustomCommandHandler implements CommandExecutor
 {
+
+    private static final boolean DEBUG = true;
 
     private static CustomCommandHandler instance;
 
@@ -44,9 +45,17 @@ public class CustomCommandHandler implements CommandExecutor
         ValidCommand command = getCustomCommand(label);
         if (command != null)
         {
+            if (DEBUG)
+            {
+                System.out.println("CustomCommandHandler.onCommand() - command not null.");
+            }
             Session s = SessionHandler.getSession(sender);
             if (s != null && s.getRank().getId() >= command.getRequiredRank().getId())
             {
+                if (DEBUG)
+                {
+                    System.out.println("CustomCommandHandler.onCommand() - Successfully ran command.");
+                }
                 command.run(sender, label, args);
             }
             else
@@ -58,6 +67,10 @@ public class CustomCommandHandler implements CommandExecutor
         }
         else
         {
+            if (DEBUG)
+            {
+                System.out.println("CustomCommandHandler.onCommand() - command null.");
+            }
             return false;
         }
 
