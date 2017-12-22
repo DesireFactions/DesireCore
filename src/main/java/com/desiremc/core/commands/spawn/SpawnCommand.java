@@ -32,7 +32,7 @@ public class SpawnCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player player = args.get(0).hasValue() ? (Player) args.get(0) : sender.getPlayer();
+        Player player = args.get(0).hasValue() ? (Player) args.get(0).getValue() : sender.getPlayer();
 
         player.teleport(getSpawnLocation());
 
