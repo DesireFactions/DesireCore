@@ -4,6 +4,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.CollectionUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,8 +29,7 @@ public class LangHandler extends FileHandler
     public LangHandler(File file, JavaPlugin plugin)
     {
         super(file, plugin);
-        prefix = "&b&lDesire &8»";
-
+        prefix = ChatColor.translateAlternateColorCodes('&', "&b&lDesire &8»");
     }
 
     public String getPrefix()
@@ -108,7 +108,7 @@ public class LangHandler extends FileHandler
      *
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args   the arguments to replace.
+     * @param args the arguments to replace.
      */
     public void sendRenderMessageNoPrefix(CommandSender sender, String string, Object... args)
     {
@@ -118,7 +118,7 @@ public class LangHandler extends FileHandler
     /**
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args   the arguments to replace.
+     * @param args the arguments to replace.
      * @see #sendRenderMessageNoPrefix(CommandSender, String, Object...)
      */
     public void sendRenderMessageNoPrefix(Session sender, String string, Object... args)
@@ -131,7 +131,7 @@ public class LangHandler extends FileHandler
      *
      * @param sender the person to receive the message.
      * @param string the message to retrieve from the language file.
-     * @param args   the arguments to replace.
+     * @param args the arguments to replace.
      */
     public void sendRenderMessageCenteredNoPrefix(CommandSender sender, String string, Object... args)
     {
@@ -243,7 +243,7 @@ public class LangHandler extends FileHandler
      * Render a string with the proper parameters.
      *
      * @param string the rendered string.
-     * @param args   the placeholders and proper content.
+     * @param args the placeholders and proper content.
      * @return the rendered string.
      */
     public String renderString(String string, Object... args)
