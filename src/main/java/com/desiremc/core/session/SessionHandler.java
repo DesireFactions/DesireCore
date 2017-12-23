@@ -157,7 +157,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
         if (needSave)
         {
-            SessionHandler.getInstance().save(session);
+            session.save();
         }
 
         if (session.getRank().isStaff())
