@@ -4,18 +4,19 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.SessionParser;
-import com.desiremc.core.newparsers.StringParser;
-import com.desiremc.core.newparsers.TimeParser;
-import com.desiremc.core.newvalidators.NumberSizeValidator;
-import com.desiremc.core.newvalidators.SenderNotTargetValidator;
-import com.desiremc.core.newvalidators.SenderOutranksTargetValidator;
+import com.desiremc.core.parsers.SessionParser;
+import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.parsers.TimeParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.validators.NumberSizeValidator;
+import com.desiremc.core.validators.SenderNotTargetValidator;
+import com.desiremc.core.validators.SenderOutranksTargetValidator;
+
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -49,7 +50,6 @@ public class TempMuteCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        ;
         Session target = (Session) args.get(0).getValue();
         long time = (Long) args.get(1).getValue();
         String reason = (String) args.get(2).getValue();

@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -16,8 +17,10 @@ import org.bukkit.command.RemoteConsoleCommandSender;
 import org.spigotmc.CustomTimingsHandler;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 
 import net.minecraft.util.com.google.gson.Gson;
 import net.minecraft.util.com.google.gson.JsonObject;
@@ -41,7 +44,7 @@ public class TimingsReportCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         long sampleTime = System.nanoTime() - timingStart;
         File timingFolder = new File("timings");
@@ -60,7 +63,7 @@ public class TimingsReportCommand extends ValidCommand
             fileTimings.println(Bukkit.spigot().getConfig().saveToString());
             fileTimings.println("</spigotConfig>");
 
-            new PasteThread(sender, bout).start();
+            new PasteThread(sender.getSender(), bout).start();
             return;
         }
         finally

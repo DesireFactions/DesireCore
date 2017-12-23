@@ -5,7 +5,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;

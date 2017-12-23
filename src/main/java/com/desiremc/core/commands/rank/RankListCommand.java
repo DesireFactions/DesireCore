@@ -1,26 +1,33 @@
 package com.desiremc.core.commands.rank;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
-import com.desiremc.core.api.RankAPI;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 
 /**
- * @author Ryan Radomski
+ * @author Michael Ziluck
  */
 public class RankListCommand extends ValidCommand
 {
 
     public RankListCommand()
     {
-        super("list", "list all the ranks", Rank.GUEST, new String[] {});
+        super("list", "List all the ranks", Rank.GUEST, new String[] {});
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        RankAPI.listRanks(sender);
+        for (Rank rank : Rank.values())
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "rank.list",
+                    "{color}", rank.getColor().toString(),
+                    "{rank}", rank.getDisplayName());
+        }
     }
 
 }

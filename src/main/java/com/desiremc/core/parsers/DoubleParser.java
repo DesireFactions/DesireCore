@@ -1,25 +1,33 @@
 package com.desiremc.core.parsers;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ArgumentParser;
+import com.desiremc.core.api.newcommands.Parser;
+import com.desiremc.core.session.Session;
 
-public class DoubleParser implements ArgumentParser
+public class DoubleParser implements Parser<Double>
 {
 
     @Override
-    public Double parseArgument(CommandSender sender, String label, String arg)
+    public Double parseArgument(Session sender, String[] label, String rawArgument)
     {
+        double val;
         try
         {
-            return Double.parseDouble(arg);
-        }
-        catch (NumberFormatException ex)
+            val = Double.parseDouble(rawArgument);
+        } catch (NumberFormatException ex)
         {
-            DesireCore.getLangHandler().sendString(sender, "arg_not_number");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number");
             return null;
         }
+        return val;
+    }
+
+    @Override
+    public List<String> getRecommendations(Session sender, String lastWord)
+    {
+        return null;
     }
 
 }

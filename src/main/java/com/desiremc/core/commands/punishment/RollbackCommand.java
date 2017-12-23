@@ -1,44 +1,48 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PastTimeParser;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
+import com.desiremc.core.parsers.TimeParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.PunishmentTimeValidator;
+import com.desiremc.core.validators.NumberSizeValidator;
+import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.command.CommandSender;
 
 public class RollbackCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public RollbackCommand()
     {
-        super("rollback", "Rollback all punishments from a user within a time period.", Rank.HELPER, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] {"target", "time"});
+        super("rollback", "Rollback punishments from a user in a time period.", Rank.HELPER);
 
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new PastTimeParser(), "time");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderOutranksTargetValidator(), "target");
-        addValidator(new PunishmentTimeValidator(), "time");
+        addArgument(CommandArgumentBuilder.createBuilder(Long.class)
+                .setName("time")
+                .setParser(new TimeParser())
+                .addValidator(new NumberSizeValidator<Long>(0l, 1209600000l, "punishment.too_low", "punishment.too_high"))
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
-        long time = (long) args[1];
+        Session target = (Session) args.get(0).getValue();
+        long time = (Long) args.get(1).getValue();
 
         for (Punishment punishment : PunishmentHandler.getInstance().getAllPunishments(target.getUniqueId(), time))
         {
@@ -46,6 +50,8 @@ public class RollbackCommand extends ValidCommand
             PunishmentHandler.getInstance().save(punishment);
         }
 
-        LANG.sendRenderMessage(session, "rollback.finished", "{player}", target.getName(), "{time}", DateUtils.formatDateDiff(time));
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rollback.finished",
+                "{player}", target.getName(),
+                "{time}", DateUtils.formatDateDiff(time));
     }
 }

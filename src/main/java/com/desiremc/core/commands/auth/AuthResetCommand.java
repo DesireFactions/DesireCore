@@ -1,11 +1,14 @@
 package com.desiremc.core.commands.auth;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import org.bukkit.command.CommandSender;
 
 public class AuthResetCommand extends ValidCommand
 {
@@ -14,13 +17,16 @@ public class AuthResetCommand extends ValidCommand
     {
         super("reset", "Authenticate with Google Auth.", Rank.ADMIN, new String[] { "target" });
 
-        addParser(new PlayerSessionParser(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
         target.setAuthKey("");
         target.setHasAuthorized(false);

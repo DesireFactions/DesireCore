@@ -1,9 +1,14 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.parsers.TimeParser;
 import com.desiremc.core.punishment.Punishment;
@@ -11,49 +16,55 @@ import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.PunishmentTimeValidator;
+import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class TempBanCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public TempBanCommand()
     {
-        super("tempban", "Temporarily ban a user from the server.", Rank.HELPER, ValidCommand
-                .ARITY_REQUIRED_VARIADIC, new String[] {"target", "time", "reason"});
+        super("tempban", "Temporarily ban a user from the server.", Rank.HELPER);
 
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new TimeParser(), "time");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderNotTargetValidator(), "target");
-        addValidator(new SenderOutranksTargetValidator(), "target");
-        addValidator(new PunishmentTimeValidator(), "time");
+        addArgument(CommandArgumentBuilder.createBuilder(Long.class)
+                .setName("time")
+                .setParser(new TimeParser())
+                .addValidator(new NumberSizeValidator<Long>(0l, 1209600000l, "punishment.too_low", "punishment.too_high"))
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
-        long time = (long) args[1];
+        Session target = (Session) args.get(0).getValue();
+        long time = (Long) args.get(1).getValue();
+        String reason = (String) args.get(2).getValue();
 
-        if (((String) args[2]).contains("-s"))
+        if (reason.contains("-s"))
         {
-            args[2] = ((String) args[2]).replace("-s", "");
+            reason = reason.replace("-s", "");
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("ban.tempban_message", "{duration}", DateUtils.formatDateDiff(time), "{player}", sender.getName(), "{target}", target.getName(), "{reason}", args[2]));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.tempban_message",
+                    "{duration}", DateUtils.formatDateDiff(time),
+                    "{player}", sender.getName(),
+                    "{target}", target.getName(),
+                    "{reason}", reason));
         }
 
         Punishment punishment = new Punishment();
@@ -61,16 +72,22 @@ public class TempBanCommand extends ValidCommand
         punishment.setType(Type.BAN);
         punishment.setPunished(target.getUniqueId());
         punishment.setExpirationTime(time);
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setReason((String) args[2]);
-        PunishmentHandler.getInstance().save(punishment);
+        punishment.setIssuer(sender.getUniqueId());
+        punishment.setReason(reason);
+        punishment.save();
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(("\n" + "&c&lYou are banned from the network!\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[2]).replace("{until}", DateUtils.formatDateDiff(time)).replace("{issuer}",
-                    session.getName()).replace("&", "§"));
+            target.getPlayer().kickPlayer(("&c&lYou are banned from the network!\n"
+                    + "&cReason: &7{reason}\n"
+                    + "&cUntil: &7{until}\n"
+                    + "&cBanned By: &7{issuer}\n"
+                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
+                            .replace("{reason}", (String) reason)
+                            .replace("{until}", DateUtils.formatDateDiff(time))
+                            .replace("{issuer}", sender.getName()).replace("&", "§"));
         }
     }
 

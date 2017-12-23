@@ -1,30 +1,21 @@
 package com.desiremc.core.validators;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.CommandValidator;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.utils.SessionUtils;
+import com.desiremc.core.api.newcommands.Validator;
+import com.desiremc.core.session.Session;
 
-public class SenderOutranksTargetValidator extends CommandValidator
+public class SenderOutranksTargetValidator implements Validator<Session>
 {
 
     @Override
-    public boolean validateArgument(CommandSender sender, String label, Object arg)
+    public boolean validateArgument(Session sender, String[] label, Session arg)
     {
-        Rank senderRank = SessionUtils.getRank(sender);
-        Rank targetRank = SessionUtils.getRank(arg);
-
-        if (senderRank.compareTo(targetRank) > 0)
-        {
-            return true;
-        }
-        else
+        if (sender.getRank().getId() <= arg.getRank().getId())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "sender_doesnt_outrank");
             return false;
         }
+        return true;
     }
 
 }

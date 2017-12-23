@@ -6,10 +6,10 @@ import com.desiremc.core.api.FriendsAPI;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.SessionParser;
-import com.desiremc.core.newvalidators.friends.SenderHasFriendRequestValidator;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.validators.friends.SenderHasFriendRequestValidator;
 
 public class FriendAcceptCommand extends ValidCommand
 {

@@ -1,24 +1,22 @@
 package com.desiremc.core.commands.achievement;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
 
 public class AchievementCommand extends ValidCommand
 {
@@ -29,15 +27,13 @@ public class AchievementCommand extends ValidCommand
 
     public AchievementCommand()
     {
-        super("achievements", "Open the Achievement GUI", Rank.GUEST, new String[] {});
-        addValidator(new PlayerValidator());
+        super("achievements", "Open the Achievement GUI", true);
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session player = SessionHandler.getSession(sender);
-        openAchievementsGUI(player);
+        openAchievementsGUI(sender);
     }
 
     private void openAchievementsGUI(Session session)

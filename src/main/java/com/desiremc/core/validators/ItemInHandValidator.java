@@ -1,26 +1,31 @@
 package com.desiremc.core.validators;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.CommandValidator;
-
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class ItemInHandValidator extends CommandValidator
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.newcommands.SenderValidator;
+import com.desiremc.core.session.Session;
+
+public class ItemInHandValidator implements SenderValidator
 {
 
     @Override
-    public boolean validateArgument(CommandSender sender, String label, Object arg)
+    public boolean validate(Session sender)
     {
-        Player p = (Player) sender;
-        if (p.getItemInHand() == null || p.getItemInHand().getType().equals(Material.AIR))
+        Player player = sender.getPlayer();
+        if (player == null)
         {
-            DesireCore.getLangHandler().sendString(sender, "item_in_hand");
+            return false;
+        }
+        if (player.getItemInHand() == null || player.getItemInHand().getType() == Material.AIR)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "item_in_hand");
             return false;
         }
 
         return true;
+
     }
 
 }

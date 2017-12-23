@@ -1,41 +1,44 @@
 package com.desiremc.core.commands.auth;
 
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.listeners.AuthListener;
-import com.desiremc.core.parsers.IntegerParser;
+import com.desiremc.core.parsers.PositiveIntegerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.AuthCodeValidator;
-import com.desiremc.core.validators.PlayerIsAuthBlockedValidator;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.desiremc.core.validators.auth.AuthCodeValidator;
+import com.desiremc.core.validators.auth.PlayerAuthBlockedValidator;
 
 public class LoginCommand extends ValidCommand
 {
 
     public LoginCommand()
     {
-        super("login", "Authenticate with Google Auth.", Rank.HELPER, new String[] {"code"});
-        addParser(new IntegerParser(), "code");
+        super("login", "Authenticate with Google Auth.", Rank.HELPER, true);
 
-        addValidator(new PlayerValidator());
-        addValidator(new PlayerIsAuthBlockedValidator());
-        addValidator(new AuthCodeValidator(), "code");
+        addSenderValidator(new PlayerAuthBlockedValidator());
+
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("code")
+                .setParser(new PositiveIntegerParser())
+                .addValidator(new AuthCodeValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-
         AuthListener.authBlocked.remove(((Player) sender).getUniqueId());
-        session.setHasAuthorized(true);
-        session.setHasAuthorizedIP(true);
-        session.save();
-        DesireCore.getLangHandler().sendRenderMessage(session, "auth.authenticated");
+        sender.setHasAuthorized(true);
+        sender.setHasAuthorizedIP(true);
+        sender.save();
+        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.authenticated");
     }
 
 }

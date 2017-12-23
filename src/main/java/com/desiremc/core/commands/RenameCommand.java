@@ -11,10 +11,10 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.StringParser;
-import com.desiremc.core.newvalidators.ItemInHandValidator;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.validators.ItemInHandValidator;
 
 public class RenameCommand extends ValidCommand
 {

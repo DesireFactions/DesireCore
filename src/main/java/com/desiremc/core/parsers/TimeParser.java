@@ -1,26 +1,33 @@
 package com.desiremc.core.parsers;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ArgumentParser;
+import com.desiremc.core.api.newcommands.Parser;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
 
-public class TimeParser implements ArgumentParser
+public class TimeParser implements Parser<Long>
 {
 
     @Override
-    public Object parseArgument(CommandSender sender, String label, String arg)
+    public Long parseArgument(Session sender, String[] label, String rawArgument)
     {
         try
         {
-            return DateUtils.parseDateDiff(arg, true);
+            return DateUtils.parseDateDiff(rawArgument, true);
         }
         catch (Exception e)
         {
-            DesireCore.getLangHandler().sendString(sender, "not_time");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_time");
             return null;
         }
+    }
+
+    @Override
+    public List<String> getRecommendations(Session sender, String lastWord)
+    {
+        return null;
     }
 
 }

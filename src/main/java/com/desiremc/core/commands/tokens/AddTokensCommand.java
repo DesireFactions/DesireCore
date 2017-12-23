@@ -6,8 +6,8 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.PositiveIntegerParser;
-import com.desiremc.core.newparsers.SessionParser;
+import com.desiremc.core.parsers.PositiveIntegerParser;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 

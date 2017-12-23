@@ -1,6 +1,6 @@
 package com.desiremc.core.commands.report;
 
-import com.desiremc.core.api.command.ValidBaseCommand;
+import com.desiremc.core.api.newcommands.ValidBaseCommand;
 import com.desiremc.core.commands.staff.StaffReportsCommand;
 import com.desiremc.core.session.Rank;
 

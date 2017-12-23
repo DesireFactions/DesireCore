@@ -8,13 +8,13 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.SessionParser;
-import com.desiremc.core.newparsers.StringParser;
-import com.desiremc.core.newvalidators.punishments.SessionMutedValidator;
+import com.desiremc.core.parsers.SessionParser;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.validators.punishments.SessionMutedValidator;
 
 public class UnmuteCommand extends ValidCommand
 {

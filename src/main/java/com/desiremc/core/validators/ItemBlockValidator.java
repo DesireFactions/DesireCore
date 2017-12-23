@@ -1,32 +1,20 @@
 package com.desiremc.core.validators;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.CommandValidator;
+import com.desiremc.core.api.newcommands.Validator;
+import com.desiremc.core.session.Session;
 
-public class ItemBlockValidator extends CommandValidator
+public class ItemBlockValidator implements Validator<MaterialData>
 {
 
     @Override
-    public boolean validateArgument(CommandSender sender, String label, Object arg)
+    public boolean validateArgument(Session sender, String[] label, MaterialData arg)
     {
-        MaterialData data = null;
-        if (arg instanceof ItemStack)
+        if (!arg.getItemType().isBlock())
         {
-            ItemStack is = (ItemStack) arg;
-            data = is.getData();
-        }
-        else if (arg instanceof MaterialData)
-        {
-            data = (MaterialData) arg;
-        }
-        
-        if (!data.getItemType().isBlock()) 
-        {
-            DesireCore.getLangHandler().sendString(sender, "not_block");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_block");
             return false;
         }
         return true;

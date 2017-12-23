@@ -1,11 +1,10 @@
 package com.desiremc.core.api;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
-
 
 public class StaffAPI
 {
@@ -13,9 +12,9 @@ public class StaffAPI
     private static final LangHandler LANG = DesireCore.getLangHandler();
     private static final StaffHandler STAFF = StaffHandler.getInstance();
 
-    public static void freeze(CommandSender sender, Player player)
+    public static void freeze(Session sender, Player player)
     {
-        STAFF.toggleFreeze(player, (Player) sender);
+        STAFF.toggleFreeze(player, sender);
     }
 
     public static void toggleStaffMode(Player sender)
@@ -23,7 +22,7 @@ public class StaffAPI
         STAFF.toggleStaffMode(sender);
     }
 
-    public static void clicksPerSecondTest(CommandSender sender, Player player)
+    public static void clicksPerSecondTest(Session sender, Player player)
     {
         if (STAFF.CPSTest(player))
         {

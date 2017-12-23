@@ -1,25 +1,25 @@
 package com.desiremc.core.commands.staff;
 
+import java.util.List;
+
 import com.desiremc.core.api.StaffAPI;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.desiremc.core.session.Session;
 
 public class StaffModeCommand extends ValidCommand
 {
 
     public StaffModeCommand(String name, String... aliases)
     {
-        super(name, "Toggle staff mode", Rank.HELPER, new String[] {}, aliases);
-        addValidator(new PlayerValidator());
+        super(name, "Toggle staff mode", Rank.HELPER, true, aliases);
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        StaffAPI.toggleStaffMode((Player) sender);
+        StaffAPI.toggleStaffMode(sender.getPlayer());
     }
 
 }

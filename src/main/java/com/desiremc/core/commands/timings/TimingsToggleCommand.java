@@ -1,10 +1,12 @@
 package com.desiremc.core.commands.timings;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 
 public class TimingsToggleCommand extends ValidCommand
 {
@@ -15,7 +17,7 @@ public class TimingsToggleCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         if (DesireCore.toggleTimings())
         {

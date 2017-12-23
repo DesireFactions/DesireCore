@@ -1,33 +1,34 @@
 package com.desiremc.core.commands.staff;
 
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import java.util.List;
+
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.validators.PlayerSessionIsOnlineValidator;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.validators.SessionOnlineValidator;
 
 public class StaffRestoreCommand extends ValidCommand
 {
     public StaffRestoreCommand(String name, String... aliases)
     {
-        super(name, "Restore a players inventory.", Rank.HELPER, new String[] {"target"}, aliases);
+        super(name, "Restore a players inventory.", Rank.HELPER, true, aliases);
 
-        addParser(new PlayerSessionParser(), "target");
-
-        addValidator(new PlayerValidator());
-        addValidator(new PlayerSessionIsOnlineValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SessionOnlineValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session player = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
-        StaffHandler.getInstance().restoreInventory(player, target);
+        StaffHandler.getInstance().restoreInventory(sender, target);
     }
 }

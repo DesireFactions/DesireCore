@@ -5,7 +5,7 @@ import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.PlayerParser;
+import com.desiremc.core.parsers.PlayerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import org.bukkit.Bukkit;

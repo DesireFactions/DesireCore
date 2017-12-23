@@ -1,28 +1,26 @@
 package com.desiremc.core.commands.staff;
 
+import java.util.List;
+
 import com.desiremc.core.api.StaffAPI;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.desiremc.core.session.Session;
 
 public class StaffInvisibilityCommand extends ValidCommand
 {
 
     public StaffInvisibilityCommand()
     {
-        super("invisibility", "Toggle invisibility.", Rank.HELPER, new String[] {}, "invisible", "invis");
+        super("invisibility", "Toggle invisibility.", Rank.HELPER, true, new String[] { "invisible", "invis" });
 
-        addValidator(new PlayerValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player p = (Player) sender;
-
-        StaffAPI.toggleInvisibility(p, false);
+        StaffAPI.toggleInvisibility(sender.getPlayer(), false);
     }
 
 }

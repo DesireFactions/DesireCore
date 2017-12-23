@@ -1,14 +1,13 @@
 package com.desiremc.core.staff;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.thread.ClicksPerSecondThread;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.TargetBlock;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,13 +22,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.thread.ClicksPerSecondThread;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.TargetBlock;
 
 public class StaffHandler
 {
@@ -129,9 +130,9 @@ public class StaffHandler
         toggleInvisibility(p, true);
     }
 
-    public boolean inStaffChat(Player p)
+    public boolean inStaffChat(UUID uuid)
     {
-        return staffChat.contains(p.getUniqueId());
+        return staffChat.contains(uuid);
     }
 
     public List<UUID> getAllInStaffChat()
@@ -139,15 +140,15 @@ public class StaffHandler
         return staffChat;
     }
 
-    public void toggleStaffChat(Player p)
+    public void toggleStaffChat(UUID uuid)
     {
-        if (inStaffChat(p))
+        if (inStaffChat(uuid))
         {
-            staffChat.remove(p.getUniqueId());
+            staffChat.remove(uuid);
         }
         else
         {
-            staffChat.add(p.getUniqueId());
+            staffChat.add(uuid);
         }
     }
 
@@ -189,7 +190,7 @@ public class StaffHandler
         return frozenPlayers.contains(p.getUniqueId());
     }
 
-    public void toggleFreeze(Player target, Player source)
+    public void toggleFreeze(Player target, Session source)
     {
 
         Session targetSession = SessionHandler.getOnlineSession(target.getUniqueId());
@@ -205,8 +206,7 @@ public class StaffHandler
         {
             frozenPlayers.remove(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName
-                    ());
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName());
             DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target
                     .getName());
         }
@@ -357,12 +357,12 @@ public class StaffHandler
         numCPSTests++;
     }
 
-    public void useFreeze(PlayerInteractEntityEvent e)
+    public void useFreeze(PlayerInteractEntityEvent event)
     {
-        if (e.getRightClicked() instanceof Player)
+        if (event.getRightClicked() instanceof Player)
         {
-            Player p = (Player) e.getRightClicked();
-            toggleFreeze(p, e.getPlayer());
+            Player p = (Player) event.getRightClicked();
+            toggleFreeze(p, SessionHandler.getSession(event.getPlayer()));
         }
     }
 

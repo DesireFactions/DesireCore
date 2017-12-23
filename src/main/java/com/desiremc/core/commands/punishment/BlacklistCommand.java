@@ -1,68 +1,82 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 
 public class BlacklistCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public BlacklistCommand()
     {
-        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN, ARITY_OPTIONAL, new String[] {"target", "reason"});
+        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN);
 
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderNotTargetValidator(), "target");
-        addValidator(new SenderOutranksTargetValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .setVariableLength()
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
+        String reason = (String) args.get(1).getValue();
 
-        if (((String) args[1]).contains("-s"))
+        if (reason.contains("-s"))
         {
-            args[1] = ((String) args[1]).replace("-s", "");
+            reason = reason.replace("-s", "");
         }
         else
         {
-            Bukkit.broadcastMessage(LANG.renderMessage("blacklist.blacklist_message", "{player}", sender.getName(), "target}", target.getName(), "{reason}", args[1]));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.blacklist_message",
+                    "{player}", sender.getName(),
+                    "target}", target.getName(),
+                    "{reason}", reason));
         }
 
         Punishment punishment = new Punishment();
         punishment.setIssued(System.currentTimeMillis());
         punishment.setType(Type.BAN);
         punishment.setPunished(target.getUniqueId());
-        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
-        punishment.setReason((String) args[1]);
+        punishment.setIssuer(sender.getUniqueId());
+        punishment.setReason(reason);
         punishment.setBlacklisted(true);
-        PunishmentHandler.getInstance().save(punishment);
+        punishment.save();
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
         if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
         {
-            target.getPlayer().kickPlayer(("\n" + "&c&lYou are permanently blacklisted from the network!\n" + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n" + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules").replace("{reason}", (String) args[1]).replace("{issuer}", session.getName()).replace("&", "§"));
+            target.getPlayer().kickPlayer(("&c&lYou are permanently blacklisted from the network!\n"
+                    + "&cReason: &7{reason}\n"
+                    + "&cBanned By: &7{issuer}\n"
+                    + "&7Visit &ehttps://desirehcf.com/rules&7 for our terms and rules")
+                            .replace("{reason}", reason)
+                            .replace("{issuer}", sender.getName())
+                            .replace("&", "§"));
         }
     }
 }

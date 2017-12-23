@@ -1,15 +1,23 @@
 package com.desiremc.core;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.HubCommand;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
 import com.desiremc.core.commands.RenameCommand;
-import com.desiremc.core.commands.SuperSlimeCommand;
 import com.desiremc.core.commands.TeamSpeakCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
@@ -68,15 +76,6 @@ import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -126,7 +125,6 @@ public class DesireCore extends JavaPlugin
         EntryRegistry.initialize();
         MenuAPI.initialize();
         ListenerManager.initialize();
-        CustomCommandHandler.initialize();
         CommandHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
@@ -164,33 +162,30 @@ public class DesireCore extends JavaPlugin
 
     private void registerCommands()
     {
-        CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new SettingsCommand());
-        customCommandHandler.registerCommand(new ReportCommand());
-        customCommandHandler.registerCommand(new RankCommand());
-        customCommandHandler.registerCommand(new BlacklistCommand());
-        customCommandHandler.registerCommand(new UnblacklistCommand());
-        customCommandHandler.registerCommand(new StaffCommand());
-        customCommandHandler.registerCommand(new TempBanCommand());
-        customCommandHandler.registerCommand(new BanCommand());
-        customCommandHandler.registerCommand(new UnbanCommand());
-        customCommandHandler.registerCommand(new WarnCommand());
-        customCommandHandler.registerCommand(new AchievementCommand());
-        customCommandHandler.registerCommand(new LoginCommand());
-        customCommandHandler.registerCommand(new AuthCommand());
-        customCommandHandler.registerCommand(new TimingsCommand());
-        customCommandHandler.registerCommand(new StaffChatCommand("sc"));
-        customCommandHandler.registerCommand(new StaffFreezeCommand());
-        customCommandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
-        customCommandHandler.registerCommand(new StaffRestoreCommand("inv"));
-        customCommandHandler.registerCommand(new StaffReportsCommand("reports"));
-        customCommandHandler.registerCommand(new StaffAltsCommand("alts"));
-        customCommandHandler.registerCommand(new IpbanCommand());
-        customCommandHandler.registerCommand(new UnIpbanCommand());
-        customCommandHandler.registerCommand(new RollbackCommand());
-        customCommandHandler.registerCommand(new SuperSlimeCommand());
-
         CommandHandler commandHandler = CommandHandler.getInstance();
+        commandHandler.registerCommand(new SettingsCommand());
+        commandHandler.registerCommand(new ReportCommand());
+        commandHandler.registerCommand(new RankCommand());
+        commandHandler.registerCommand(new BlacklistCommand());
+        commandHandler.registerCommand(new UnblacklistCommand());
+        commandHandler.registerCommand(new StaffCommand());
+        commandHandler.registerCommand(new TempBanCommand());
+        commandHandler.registerCommand(new BanCommand());
+        commandHandler.registerCommand(new UnbanCommand());
+        commandHandler.registerCommand(new WarnCommand());
+        commandHandler.registerCommand(new AchievementCommand());
+        commandHandler.registerCommand(new LoginCommand());
+        commandHandler.registerCommand(new AuthCommand());
+        commandHandler.registerCommand(new TimingsCommand());
+        commandHandler.registerCommand(new StaffChatCommand("sc"));
+        commandHandler.registerCommand(new StaffFreezeCommand());
+        commandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
+        commandHandler.registerCommand(new StaffRestoreCommand("inv"));
+        commandHandler.registerCommand(new StaffReportsCommand("reports"));
+        commandHandler.registerCommand(new StaffAltsCommand("alts"));
+        commandHandler.registerCommand(new IpbanCommand());
+        commandHandler.registerCommand(new UnIpbanCommand());
+        commandHandler.registerCommand(new RollbackCommand());
         commandHandler.registerCommand(new KickCommand());
         commandHandler.registerCommand(new InfoCommand());
         commandHandler.registerCommand(new TicketCommand());

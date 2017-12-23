@@ -1,28 +1,34 @@
 package com.desiremc.core.commands.staff;
 
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.api.StaffAPI;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.PlayerParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.desiremc.core.session.Session;
 
 public class StaffFollowCommand extends ValidCommand
 {
 
     public StaffFollowCommand()
     {
-        super("follow", "Follow a player", Rank.HELPER, new String[] {"target"}, "mount", "ride", "leash", "lead");
-        addParser(new PlayerParser(), "target");
-        
-        addValidator(new PlayerValidator());
+        super("follow", "Follow a player", Rank.HELPER, true, new String[] { "mount", "ride", "leash", "lead" });
+
+        addArgument(CommandArgumentBuilder.createBuilder(Player.class)
+                .setName("target")
+                .setParser(new PlayerParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        StaffAPI.mount((Player) sender, (Player) args[0]);
+        StaffAPI.mount(sender.getPlayer(), (Player) args.get(0).getValue());
     }
 
 }

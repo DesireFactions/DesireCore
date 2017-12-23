@@ -1,14 +1,16 @@
 package com.desiremc.core.commands.staff;
 
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import org.bukkit.command.CommandSender;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.UUID;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.staff.StaffHandler;
 
 public class StaffReportsCommand extends ValidCommand
 {
@@ -17,35 +19,32 @@ public class StaffReportsCommand extends ValidCommand
 
     public StaffReportsCommand(String name, String... aliases)
     {
-        super(name, "Open reports GUI", Rank.HELPER, new String[] {}, aliases);
-        addValidator(new PlayerValidator());
+        super(name, "Open reports GUI", Rank.HELPER, true, aliases);
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player p = (Player) sender;
-
-        StaffHandler.getInstance().openReportsGUI(p, pages.getOrDefault(p.getUniqueId(), 1));
+        StaffHandler.getInstance().openReportsGUI(sender.getPlayer(), pages.getOrDefault(sender.getUniqueId(), 1));
     }
 
-    public static void addPage(Player p)
+    public static void addPage(Player player)
     {
-        UUID uuid = p.getUniqueId();
+        UUID uuid = player.getUniqueId();
 
         pages.put(uuid, pages.getOrDefault(uuid, 1) + 1);
-        StaffHandler.getInstance().openReportsGUI(p, pages.getOrDefault(p.getUniqueId(), 1));
+        StaffHandler.getInstance().openReportsGUI(player, pages.getOrDefault(player.getUniqueId(), 1));
     }
 
-    public static void minusPage(Player p)
+    public static void minusPage(Player player)
     {
-        UUID uuid = p.getUniqueId();
+        UUID uuid = player.getUniqueId();
         pages.put(uuid, pages.getOrDefault(uuid, 1) - 1);
-        StaffHandler.getInstance().openReportsGUI(p, pages.getOrDefault(p.getUniqueId(), 1));
+        StaffHandler.getInstance().openReportsGUI(player, pages.getOrDefault(player.getUniqueId(), 1));
     }
 
-    public static int getPage(Player p)
+    public static int getPage(Player player)
     {
-        return pages.getOrDefault(p.getUniqueId(), 1);
+        return pages.getOrDefault(player.getUniqueId(), 1);
     }
 }
