@@ -129,15 +129,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         UUID uuid = player.getUniqueId();
         Session session = sessions.get(uuid);
 
-        boolean needSave = false;
-
         if (session == null)
         {
             session = createSession(uuid);
         }
         else
         {
-            needSave = updateSession(session);
+            updateSession(session);
         }
 
         String ip = player.getAddress().getAddress().getHostAddress();
@@ -145,20 +143,15 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             session.getIpList().add(ip);
             session.setIp(ip);
-            needSave = true;
         }
 
         if (!session.getName().equalsIgnoreCase(player.getName()))
         {
             session.getNameList().add(player.getName());
             session.setName(player.getName());
-            needSave = true;
         }
 
-        if (needSave)
-        {
-            session.save();
-        }
+        session.save();
 
         if (session.getRank().isStaff())
         {
