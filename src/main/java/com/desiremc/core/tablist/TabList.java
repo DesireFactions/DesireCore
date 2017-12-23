@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class TabList
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public Player player;
 
