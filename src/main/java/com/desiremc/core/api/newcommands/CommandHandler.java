@@ -60,6 +60,8 @@ public class CommandHandler implements CommandExecutor, TabCompleter
             if (session.getRank().getId() >= command.getRequiredRank().getId())
             {
                 command.process(session, new String[] { label }, args);
+                // TODO
+                System.out.println("Processed command on onCommand");
             }
             else
             {
@@ -70,6 +72,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         }
         else
         {
+            DesireCore.getInstance().getLogger().severe("CommandHandler got passed a command that does not exist.");
             return false;
         }
         return true;

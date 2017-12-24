@@ -175,6 +175,8 @@ public abstract class ValidCommand
         {
             if (!senderValidator.validate(sender))
             {
+                // TODO
+                System.out.println("Failed a sender validator");
                 return;
             }
         }
@@ -205,6 +207,8 @@ public abstract class ValidCommand
 
             if (!argument.process(sender, label, !argument.hasVariableLength() ? rawArguments[i] : StringUtils.compile(Arrays.copyOfRange(rawArguments, i, rawArguments.length))))
             {
+                // TODO 
+                System.out.println("argument process failed");
                 return;
             }
         }
