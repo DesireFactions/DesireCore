@@ -1,8 +1,8 @@
 package com.desiremc.core.session;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,9 +66,9 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static boolean updateSessionFromDatabase(Session session)
     {
         Session database = getInstance().findOne("_id", session.getUniqueId());
-        
+
         session.applyValues(database);
-        
+
         return applyExternalData(session);
     }
 
@@ -150,7 +150,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             session.save();
         }
-        
+
         session.setOnline(true);
 
         if (session.getRank().isStaff())
@@ -195,9 +195,9 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     /**
      * @return all connected sessions.
      */
-    public static Iterable<Session> getSessions()
+    public static Collection<Session> getOnlineSessions()
     {
-        return sessions.values().stream().filter(x -> x.isOnline())::iterator;
+        return Collections.unmodifiableCollection(onlineSessions.values());
     }
 
     /**
@@ -206,16 +206,6 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static Collection<Session> getOnlineStaff()
     {
         return onlineStaff.values();
-    }
-
-    /**
-     * @return all online non-staff sessions.
-     */
-    public static Iterable<Session> getOnlineNonStaff()
-    {
-        LinkedList<Session> nonStaff = new LinkedList<>(onlineSessions.values());
-        nonStaff.removeAll(onlineStaff.values());
-        return nonStaff;
     }
 
     public static void removeStaff(UUID uuid)

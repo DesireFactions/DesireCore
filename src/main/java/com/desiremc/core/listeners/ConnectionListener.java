@@ -79,8 +79,7 @@ public class ConnectionListener implements Listener
         Player player = event.getPlayer();
         PlayerUtils.addPlayer(player);
 
-        Session session = SessionHandler.initializeSession(player);
-        System.out.println("Should be true: " + session.isOnline());
+        SessionHandler.initializeSession(player);
         
         if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
         {

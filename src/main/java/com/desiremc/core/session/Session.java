@@ -418,14 +418,7 @@ public class Session
      */
     public boolean hasAchievement(Achievement achievement)
     {
-        for (Achievement a : achievements)
-        {
-            if (achievement.getId() == a.getId())
-            {
-                return true;
-            }
-        }
-        return false;
+        return achievements.contains(achievement);
     }
 
     /**
@@ -464,12 +457,12 @@ public class Session
             addTokens(achievement.getReward(), false);
         }
 
-        FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix() + " " + player.getName() + " " +
-                "has received the achievement ")
-                        .color(ChatColor.WHITE)
-                        .then(achievement.getName())
-                        .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
-                        .color(ChatColor.WHITE);
+        FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix())
+                .then(player.getName() + " has earned the achievement ")
+                .color(ChatColor.WHITE)
+                .then(achievement.getName())
+                .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
+                .color(ChatColor.LIGHT_PURPLE);
 
         for (Player target : Bukkit.getOnlinePlayers())
         {

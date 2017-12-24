@@ -19,7 +19,7 @@ public class ChatClearCommand extends ValidCommand
 
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        for (Session session : SessionHandler.getSessions())
+        for (Session session : SessionHandler.getOnlineSessions())
         {
             if (!session.getRank().isStaff())
             {

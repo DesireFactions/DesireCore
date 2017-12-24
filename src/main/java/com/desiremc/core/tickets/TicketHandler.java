@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 
@@ -73,21 +72,19 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     public void run()
     {
         Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
-        for (Session s : SessionHandler.getSessions())
+        for (Session session : SessionHandler.getOnlineStaff())
         {
-            if (s.getRank().getId() >= Rank.MODERATOR.getId())
-            {
-                DesireCore.getLangHandler().sendRenderMessage(s, "tickets.open", "{number}", String.valueOf(openTickets));
-            }
+            DesireCore.getLangHandler().sendRenderMessage(session, "tickets.open",
+                    "{number}", String.valueOf(openTickets));
         }
     }
 
     private int getNextId()
     {
-        Ticket t = createQuery().order("-id").get();
-        if (t != null)
+        Ticket ticket = createQuery().order("-id").get();
+        if (ticket != null)
         {
-            return t.getId() + 1;
+            return ticket.getId() + 1;
         }
         else
         {
