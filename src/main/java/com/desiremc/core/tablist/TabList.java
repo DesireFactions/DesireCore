@@ -121,7 +121,7 @@ public class TabList
      */
     public TabSlot setSlot(int row, int column, String name)
     {
-        return setSlot((column * 3) + row, name);
+        return setSlot((row * 3) + column, name);
     }
 
     /**
@@ -134,7 +134,7 @@ public class TabList
     public TabSlot setSlot(int slot, String name)
     {
         TabSlot tabSlot = slots.get(slot);
-        System.out.println("Before " + slot + ": '" + tabSlot.getPrefix() + "'");
+        System.out.println("\nBefore " + slot + ": '" + tabSlot.getPrefix() + "'");
         if (name.length() < 16)
         {
             tabSlot.setPrefix(name.substring(0, name.length()));
