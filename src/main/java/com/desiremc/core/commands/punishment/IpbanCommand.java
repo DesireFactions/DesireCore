@@ -67,7 +67,7 @@ public class IpbanCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             target.getPlayer().kickPlayer(("&c&lYour IP is permanently banned from the network!\n"
                     + "&cReason: &7{reason}\n" + "&cBanned By: &7{issuer}\n"

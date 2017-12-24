@@ -81,7 +81,7 @@ public class TempMuteCommand extends ValidCommand
         punishment.setReason(reason);
         PunishmentHandler.getInstance().save(punishment);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "mute.temp_target",
                     "{duration}", DateUtils.formatDateDiff(time),

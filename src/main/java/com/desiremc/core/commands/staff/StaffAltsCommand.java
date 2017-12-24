@@ -52,8 +52,8 @@ public class StaffAltsCommand extends ValidCommand
             new FancyMessage(session.getName())
                     .color(ChatColor.BLUE)
                     .tooltip(PunishmentHandler.getInstance().getMouseOverDetails(session))
-                    .then((session.getOfflinePlayer().isOnline() ? " Online now" : " Last Seen: " + DateUtils.formatDateDiff(session.getLastLogin())) + " ago.")
-                    .color((session.getOfflinePlayer().isOnline() ? ChatColor.GREEN : ChatColor.RED))
+                    .then((session.isOnline() ? " Online now" : " Last Seen: " + DateUtils.formatDateDiff(session.getLastLogin())) + " ago.")
+                    .color((session.isOnline() ? ChatColor.GREEN : ChatColor.RED))
                     .send(sender.getSender());
         }
 

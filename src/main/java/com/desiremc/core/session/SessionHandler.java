@@ -1,24 +1,31 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
+
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
 
-    private static Session console;
+    private static final Session console;
+
+    static
+    {
+        console = new Session();
+        console.assignConsole();
+    }
 
     private static SessionHandler instance;
 
@@ -56,28 +63,13 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         return needSave;
     }
 
-    public static boolean updateSession(Session session)
+    public static boolean updateSessionFromDatabase(Session session)
     {
         Session database = getInstance().findOne("_id", session.getUniqueId());
+        
         session.applyValues(database);
+        
         return applyExternalData(session);
-    }
-
-    private static void startConsoleSession()
-    {
-        console = new Session();
-        console.assignConsole();
-    }
-
-    /**
-     * Checks if the given session is the console.
-     * 
-     * @param session the console to check.
-     * @return {@code true} if the session is the console. Otherwise returns {@code false}.
-     */
-    public static boolean isConsole(Session session)
-    {
-        return session == console;
     }
 
     /**
@@ -126,18 +118,17 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static Session initializeSession(Player player)
     {
-        UUID uuid = player.getUniqueId();
-        Session session = sessions.get(uuid);
+        Session session = sessions.get(player.getUniqueId());
 
         boolean needSave = false;
 
         if (session == null)
         {
-            session = createSession(uuid);
+            session = createSession(player.getUniqueId());
         }
         else
         {
-            needSave = updateSession(session);
+            needSave = updateSessionFromDatabase(session);
         }
 
         String ip = player.getAddress().getAddress().getHostAddress();
@@ -159,6 +150,8 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         {
             session.save();
         }
+        
+        session.setOnline(true);
 
         if (session.getRank().isStaff())
         {
@@ -234,6 +227,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
         session.setLastLogin(System.currentTimeMillis());
+        session.setOnline(false);
         session.save();
 
         onlineStaff.remove(session.getUniqueId());
@@ -251,28 +245,11 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         instance = new SessionHandler();
 
+        sessions.clear();
         for (Session session : instance.find())
         {
-            updateSession(session);
             sessions.put(session.getUniqueId(), session);
-            if (session.isOnline())
-            {
-                onlineSessions.put(session.getUniqueId(), session);
-                if (session.getRank().isStaff())
-                {
-                    onlineStaff.put(session.getUniqueId(), session);
-                }
-            }
         }
-
-        System.out.println("Session size: " + sessions.size());
-        for (UUID uuid : sessions.keySet())
-        {
-            System.out.println(uuid);
-        }
-        System.out.println("=================");
-
-        startConsoleSession();
     }
 
 }

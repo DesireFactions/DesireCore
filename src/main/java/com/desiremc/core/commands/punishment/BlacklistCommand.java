@@ -68,7 +68,7 @@ public class BlacklistCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             target.getPlayer().kickPlayer(("&c&lYou are permanently blacklisted from the network!\n"
                     + "&cReason: &7{reason}\n"

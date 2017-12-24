@@ -66,7 +66,7 @@ public class WarnCommand extends ValidCommand
         punishment.setReason(reason);
         PunishmentHandler.getInstance().save(punishment);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "warn.warned",
                     "{player}", sender.getName(),

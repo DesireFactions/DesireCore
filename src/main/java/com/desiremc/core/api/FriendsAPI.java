@@ -17,7 +17,7 @@ public class FriendsAPI
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "friend.accepted_friend_request", "{player}", target.getName());
 
-        if (target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "friend.are_now_friend", "{player}", sender.getName());
         }
@@ -28,7 +28,7 @@ public class FriendsAPI
         FriendUtils.removeFriend(sender, target);
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_longer_friend", "{player}", target.getName());
-        if (target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "friend.no_longer_friend", "{player}", sender.getName());
         }
@@ -44,7 +44,7 @@ public class FriendsAPI
 
             DesireCore.getLangHandler().sendRenderMessage(sender, "friend.accepted_friend_request", "{player}", target.getName());
 
-            if (target.getOfflinePlayer().isOnline())
+            if (target.isOnline())
             {
                 DesireCore.getLangHandler().sendRenderMessage(target, "friend.are_now_friend", "{player}", sender.getName());
             }
@@ -53,7 +53,7 @@ public class FriendsAPI
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "friend.sent_request", "{player}", target.getName());
 
-            if (target.getOfflinePlayer().isOnline())
+            if (target.isOnline())
             {
                 DesireCore.getLangHandler().sendRenderMessage(target, "friend.received_request", "{player}", sender.getName());
             }

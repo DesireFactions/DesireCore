@@ -46,7 +46,7 @@ public class UnmuteCommand extends ValidCommand
         PunishmentHandler.getInstance().save(p);
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "mute.unmute_target", "{player}", sender.getName());
         }

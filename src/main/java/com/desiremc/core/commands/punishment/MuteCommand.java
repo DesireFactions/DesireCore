@@ -71,7 +71,7 @@ public class MuteCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             DesireCore.getLangHandler().sendRenderMessage(target, "mute.perm_target",
                     "{player}", sender.getName(),

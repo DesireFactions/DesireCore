@@ -68,7 +68,7 @@ public class BanCommand extends ValidCommand
 
         PunishmentHandler.getInstance().refreshPunishments(target);
 
-        if (target.getOfflinePlayer() != null && target.getOfflinePlayer().isOnline())
+        if (target.isOnline())
         {
             target.getPlayer().kickPlayer(("&c&lYou are permanently banned from the network!\n"
                     + "&cReason: &7{reason}\n"

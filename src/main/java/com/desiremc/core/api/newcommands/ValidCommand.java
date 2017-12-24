@@ -179,7 +179,7 @@ public abstract class ValidCommand
             }
         }
 
-        if (rawArguments.length == 0 && blocksConsole() && SessionHandler.isConsole(sender))
+        if (rawArguments.length == 0 && blocksConsole() && sender.isConsole())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
             return;
@@ -197,7 +197,7 @@ public abstract class ValidCommand
                 return;
             }
 
-            if (blocksConsole() && SessionHandler.isConsole(sender) && !argument.allowsConsole())
+            if (blocksConsole() && sender.isConsole() && !argument.allowsConsole())
             {
                 DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
                 return;

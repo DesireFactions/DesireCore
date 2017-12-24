@@ -1,16 +1,14 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -19,10 +17,12 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -86,6 +86,11 @@ public class Session
     @Transient
     private Player player;
 
+    @Transient
+    private boolean online;
+
+    private SessionType sessionType;
+
     public Session()
     {
         activePunishments = new LinkedList<>();
@@ -99,16 +104,20 @@ public class Session
         ignoring = new LinkedList<>();
     }
 
+    /**
+     * @return {@code true} if this {@link Session} represents a {@link Player}.
+     */
     public boolean isPlayer()
     {
-        try
-        {
-            return getPlayer() != null;
-        }
-        catch (IllegalStateException ex)
-        {
-            return false;
-        }
+        return sessionType == SessionType.PLAYER;
+    }
+
+    /**
+     * @return {@code true} if this {@link Session} represents the {@link ConsoleCommandSender}.
+     */
+    public boolean isConsole()
+    {
+        return sessionType == SessionType.CONSOLE;
     }
 
     /**
@@ -119,18 +128,20 @@ public class Session
      */
     public Player getPlayer()
     {
-        if (SessionHandler.isConsole(this))
+        if (!isPlayer())
         {
-            return null;
+            throw new IllegalStateException("Can't retrieve Player of Console.");
         }
+        if (!isOnline())
+        {
+            throw new IllegalStateException("Can't retrieve Player of offline Session.");
+        }
+
         if (player == null)
         {
-            player = PlayerUtils.getPlayer(uuid);
+            player = Bukkit.getPlayer(uuid);
         }
-        if (player == null || !player.isOnline())
-        {
-            throw new IllegalStateException("Session is console or player is offline.");
-        }
+
         return player;
     }
 
@@ -141,33 +152,17 @@ public class Session
      */
     public boolean isOnline()
     {
-        try
-        {
-            getPlayer();
-            return getPlayer() != null && getPlayer().isOnline();
-        }
-        catch (IllegalStateException ex)
-        {
-            return false;
-        }
+        return online;
     }
 
-    public OfflinePlayer getOfflinePlayer()
+    /**
+     * Sets whether this player is online or offline.
+     * 
+     * @param online the online state.
+     */
+    public void setOnline(boolean online)
     {
-        if (player != null)
-        {
-            return player;
-        }
-        OfflinePlayer op = Bukkit.getOfflinePlayer(getUniqueId());
-        if (op == null)
-        {
-            return null;
-        }
-        if (op.isOnline())
-        {
-            player = (Player) op;
-        }
-        return op;
+        this.online = online;
     }
 
     /**
@@ -178,7 +173,7 @@ public class Session
      */
     public CommandSender getSender()
     {
-        if (SessionHandler.isConsole(this))
+        if (isConsole())
         {
             return Bukkit.getConsoleSender();
         }
@@ -190,13 +185,17 @@ public class Session
 
     /**
      * Convenience method for {@link CommandSender#sendMessage(String)}. The message will not be sent if the message is
-     * null.
+     * null or if the session represents a {@link Player} and they are offline.
      * 
      * @param message the message to send to the sender.
      */
     public void sendMessage(String message)
     {
         if (message == null)
+        {
+            return;
+        }
+        if (isPlayer() && !isOnline())
         {
             return;
         }
@@ -214,6 +213,7 @@ public class Session
         this.uuid = uuid;
         this.name = name;
         this.rank = Rank.GUEST;
+        this.sessionType = SessionType.PLAYER;
         this.firstLogin = System.currentTimeMillis();
         this.lastLogin = System.currentTimeMillis();
         this.totalPlayed = 0;
@@ -242,6 +242,7 @@ public class Session
         outgoingFriendRequests = session.outgoingFriendRequests;
         tokens = session.tokens;
         settings = session.settings;
+        sessionType = session.sessionType;
     }
 
     protected void checkDefaults()
@@ -284,6 +285,7 @@ public class Session
         this.uuid = DesireCore.getConsoleUUID();
         this.name = "CONSOLE";
         this.rank = Rank.OWNER;
+        this.sessionType = SessionType.CONSOLE;
     }
 
     protected void setUniqueId(UUID uuid)

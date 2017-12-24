@@ -52,7 +52,7 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
             return null;
         }
 
-        punishments.removeIf(punishment -> ((punishment.getExpirationTime() + punishment.getIssued()) < System.currentTimeMillis()) && !punishment.isPermanent());
+        punishments.removeIf(punishment -> (punishment.getExpirationTime() + punishment.getIssued()) < System.currentTimeMillis() && !punishment.isPermanent());
 
         return punishments.get(0);
     }
