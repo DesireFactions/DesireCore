@@ -149,7 +149,7 @@ public class TabList
             throw new IllegalArgumentException("Name can't be longer than 28 characters.");
         }
 
-        //sendTeamUpdate(tabSlot);
+        sendTeamUpdate(tabSlot);
         return tabSlot;
     }
 
