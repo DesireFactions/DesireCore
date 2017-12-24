@@ -270,7 +270,7 @@ public class FileHandler
         {
             return (ItemStack[]) o;
         }
-        value = ((List<ItemStack>) fileConfig.get(key)).toArray(new ItemStack[0]);
+        value = ((List<?>) fileConfig.get(key)).toArray(new ItemStack[0]);
         history.put(key, value);
         return value;
     }
