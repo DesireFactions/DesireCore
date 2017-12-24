@@ -34,7 +34,7 @@ public class ClicksPerSecondThread extends BukkitRunnable
         {
             case 9:
                 int amount = cps.get(target.getUniqueId()) / 10;
-                DesireCore.getLangHandler().sendRenderMessage(player, "staff.cps-finish", "{player}", target.getName(), "{amount}", amount+"");
+                DesireCore.getLangHandler().sendRenderMessage(player, "staff.cps-finish", true, false, "{player}", target.getName(), "{amount}", amount + "");
                 cps.remove(target.getUniqueId());
                 instance.decreaseNumCPSTests();
                 cancel();

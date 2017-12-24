@@ -9,7 +9,6 @@ import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -35,13 +34,13 @@ public class KickCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
-            DesireCore.getLangHandler().sendRenderMessage(sender, "kick.silent", "{target}", target.getName(), "{reason}", reason);
+            DesireCore.getLangHandler().sendRenderMessage(sender, "kick.silent", true, false, "{target}", target.getName(), "{reason}", reason);
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.broadcast", "{target}", target.getName(), "{reason}", reason, "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.broadcast", true, false, "{target}", target.getName(), "{reason}", reason, "{player}", sender.getName()));
         }
 
-        target.getPlayer().kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kicked", "{player}", sender.getName(), "{reason}", reason));
+        target.getPlayer().kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kicked", true, false, "{player}", sender.getName(), "{reason}", reason));
     }
 }

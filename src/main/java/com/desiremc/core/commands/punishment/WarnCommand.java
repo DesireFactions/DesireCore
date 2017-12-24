@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -17,6 +13,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
 import com.desiremc.core.validators.friends.SenderNotFriendsValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class WarnCommand extends ValidCommand
 {
@@ -52,7 +51,7 @@ public class WarnCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("warn.warn_issued",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("warn.warn_issued", true, false,
                     "{target}", target.getName(),
                     "{reason}", reason,
                     "{player}", sender.getName()));
@@ -68,7 +67,7 @@ public class WarnCommand extends ValidCommand
 
         if (target.isOnline())
         {
-            DesireCore.getLangHandler().sendRenderMessage(target, "warn.warned",
+            DesireCore.getLangHandler().sendRenderMessage(target, "warn.warned", true, false,
                     "{player}", sender.getName(),
                     "{reason}", reason);
         }

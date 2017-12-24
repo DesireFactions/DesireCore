@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -17,6 +13,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class MuteCommand extends ValidCommand
 {
@@ -48,13 +47,13 @@ public class MuteCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
-            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.perm_silent",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.perm_silent", true, false,
                     "{target}", target.getName(),
                     "{reason}", reason);
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.perm_broadcast",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.perm_broadcast", true, false,
                     "{target}", target.getName(),
                     "{reason}", reason,
                     "{player}", sender.getName()));
@@ -73,7 +72,7 @@ public class MuteCommand extends ValidCommand
 
         if (target.isOnline())
         {
-            DesireCore.getLangHandler().sendRenderMessage(target, "mute.perm_target",
+            DesireCore.getLangHandler().sendRenderMessage(target, "mute.perm_target", true, false,
                     "{player}", sender.getName(),
                     "{reason}", reason);
         }

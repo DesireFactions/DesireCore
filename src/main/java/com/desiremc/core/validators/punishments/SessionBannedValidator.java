@@ -13,7 +13,7 @@ public class SessionBannedValidator implements Validator<Session>
 
         if (arg.isBanned() == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_banned",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_banned", true, false,
                     "{player}", arg.getName());
             return false;
         }

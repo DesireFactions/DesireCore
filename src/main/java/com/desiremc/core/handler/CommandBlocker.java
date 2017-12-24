@@ -63,7 +63,7 @@ public class CommandBlocker implements Listener
         {
             if (msg[0].equalsIgnoreCase("/" + s))
             {
-                DesireCore.getLangHandler().sendRenderMessage(session, "no_permissions");
+                DesireCore.getLangHandler().sendRenderMessage(session, "no_permissions", true, false);
                 event.setCancelled(true);
             }
         }

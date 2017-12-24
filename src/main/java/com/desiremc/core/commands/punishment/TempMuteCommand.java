@@ -16,7 +16,6 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -58,14 +57,14 @@ public class TempMuteCommand extends ValidCommand
         {
             reason = reason.replace("-s", "");
 
-            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.temp_silent",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.temp_silent", true, false,
                     "{target}", target.getName(),
                     "{reason}", reason,
                     "{duration}", DateUtils.formatDateDiff(time));
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.temp_broadcast",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.temp_broadcast", true, false,
                     "{target}", target.getName(),
                     "{reason}", reason,
                     "{duration}", DateUtils.formatDateDiff(time),
@@ -83,7 +82,7 @@ public class TempMuteCommand extends ValidCommand
 
         if (target.isOnline())
         {
-            DesireCore.getLangHandler().sendRenderMessage(target, "mute.temp_target",
+            DesireCore.getLangHandler().sendRenderMessage(target, "mute.temp_target", true, false,
                     "{duration}", DateUtils.formatDateDiff(time),
                     "{player}", sender.getName(),
                     "{reason}", reason);

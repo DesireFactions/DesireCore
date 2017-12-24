@@ -20,7 +20,7 @@ public class AuthCodeValidator implements Validator<Integer>
 
         if (!validAuth)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "auth.invalid-code");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "auth.invalid-code", true, false);
         }
 
         return validAuth;

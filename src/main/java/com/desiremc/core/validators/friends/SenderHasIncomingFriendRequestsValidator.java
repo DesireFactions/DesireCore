@@ -12,7 +12,7 @@ public class SenderHasIncomingFriendRequestsValidator implements SenderValidator
     {
         if (sender.getIncomingFriendRequests().size() <= 0)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_incoming");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_incoming", true, false);
             return false;
         }
         return true;

@@ -156,7 +156,7 @@ public class AuthListener implements Listener
             authBlocked.add(session.getUniqueId());
         }
 
-        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login");
+        DesireCore.getLangHandler().sendRenderMessage(session, "auth.must-login", true, false);
     }
 
     private static final String googleFormat = "https://www.google.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=" +

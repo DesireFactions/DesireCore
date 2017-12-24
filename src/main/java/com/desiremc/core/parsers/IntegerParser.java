@@ -18,7 +18,7 @@ public class IntegerParser implements Parser<Integer>
             val = Integer.parseInt(rawArgument);
         } catch (NumberFormatException ex)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number", true, false);
             return null;
         }
         return val;

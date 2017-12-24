@@ -1,15 +1,14 @@
 package com.desiremc.core.parsers;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.CollectionUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class WorldParser implements Parser<World>
 {
@@ -20,7 +19,7 @@ public class WorldParser implements Parser<World>
         World world = Bukkit.getWorld(rawArgument);
         if (world == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_world");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_world", true, false);
             return null;
         }
         return world;

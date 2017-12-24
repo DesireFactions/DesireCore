@@ -17,7 +17,7 @@ public class RankSetValidator implements Validator<Rank>
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "rank_too_high");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "rank_too_high", true, false);
             return false;
         }
     }

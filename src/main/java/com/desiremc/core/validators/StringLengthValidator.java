@@ -23,12 +23,12 @@ public class StringLengthValidator implements Validator<String>
 
         if (length < minLength)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_short");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_short", true, false);
             return false;
         }
         if (length > maxLength)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_long");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_long", true, false);
             return false;
         }
 

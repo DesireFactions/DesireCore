@@ -1,14 +1,14 @@
 package com.desiremc.core.api.newcommands;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class ValidBaseCommand extends ValidCommand
 {
@@ -81,7 +81,7 @@ public abstract class ValidBaseCommand extends ValidCommand
             }
             else
             {
-                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
+                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions", true, false);
             }
         }
     }
@@ -171,7 +171,7 @@ public abstract class ValidBaseCommand extends ValidCommand
      */
     public void help(Session sender, String label[])
     {
-        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", true, false);
 
         for (ValidCommand command : subCommands)
         {

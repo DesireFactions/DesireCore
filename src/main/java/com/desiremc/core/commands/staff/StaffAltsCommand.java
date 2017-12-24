@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.staff;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -15,6 +11,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
+import org.bukkit.ChatColor;
+
+import java.util.List;
 
 public class StaffAltsCommand extends ValidCommand
 {
@@ -38,12 +37,12 @@ public class StaffAltsCommand extends ValidCommand
 
         if (alts.size() == 1)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "alts.none", "{player}", target.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "alts.none", true, false, "{player}", target.getName());
             return;
         }
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "alts.header", "{player}", target.getName());
-        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "alts.spacer");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "alts.header", true, false, "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "alts.spacer", false, false);
 
         alts.removeIf(session -> session.getName().equalsIgnoreCase(target.getName()));
 
@@ -57,7 +56,7 @@ public class StaffAltsCommand extends ValidCommand
                     .send(sender.getSender());
         }
 
-        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "alts.spacer");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "alts.spacer", false, false);
     }
 
     private List<Session> getUUIDFromIP(String ip)

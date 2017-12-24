@@ -12,7 +12,7 @@ public class SessionMutedValidator implements Validator<Session>
     {
         if (arg.isMuted() == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.not_muted", "{target}", arg.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.not_muted", true, false, "{target}", arg.getName());
             return false;
         }
         return true;

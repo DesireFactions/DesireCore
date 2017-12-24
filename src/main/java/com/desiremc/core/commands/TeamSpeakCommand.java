@@ -1,12 +1,12 @@
 package com.desiremc.core.commands;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class TeamSpeakCommand extends ValidCommand
 {
@@ -18,6 +18,6 @@ public class TeamSpeakCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        DesireCore.getLangHandler().sendRenderMessage(sender, "teamspeak");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "teamspeak", true, false);
     }
 }

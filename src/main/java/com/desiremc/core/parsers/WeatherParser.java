@@ -1,16 +1,15 @@
 package com.desiremc.core.parsers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import org.bukkit.WeatherType;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.StringUtils;
+import org.bukkit.WeatherType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class WeatherParser implements Parser<WeatherType>
 {
@@ -34,7 +33,7 @@ public class WeatherParser implements Parser<WeatherType>
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_weather");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_weather", true, false);
             return null;
         }
 

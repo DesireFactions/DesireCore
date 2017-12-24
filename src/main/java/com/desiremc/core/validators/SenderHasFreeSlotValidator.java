@@ -23,7 +23,7 @@ public class SenderHasFreeSlotValidator implements SenderValidator
         }
         if (sender.getPlayer().getInventory().firstEmpty() == -1)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "no_free_slots",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "no_free_slots", true, false,
                     "{target}", "You",
                     "{have/has}", "have");
             return false;

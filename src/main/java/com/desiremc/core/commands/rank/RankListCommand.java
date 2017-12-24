@@ -1,12 +1,12 @@
 package com.desiremc.core.commands.rank;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -24,7 +24,7 @@ public class RankListCommand extends ValidCommand
     {
         for (Rank rank : Rank.values())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "rank.list",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "rank.list", true, false,
                     "{color}", rank.getColor().toString(),
                     "{rank}", rank.getDisplayName());
         }

@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -16,6 +14,8 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+
+import java.util.List;
 
 public class RollbackCommand extends ValidCommand
 {
@@ -50,7 +50,7 @@ public class RollbackCommand extends ValidCommand
             PunishmentHandler.getInstance().save(punishment);
         }
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "rollback.finished",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rollback.finished", true, false,
                 "{player}", target.getName(),
                 "{time}", DateUtils.formatDateDiff(time));
     }

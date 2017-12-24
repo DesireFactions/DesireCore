@@ -1,13 +1,13 @@
 package com.desiremc.core.staff;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.thread.ClicksPerSecondThread;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.TargetBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,15 +22,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.thread.ClicksPerSecondThread;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.TargetBlock;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class StaffHandler
 {
@@ -47,8 +45,6 @@ public class StaffHandler
 
     private boolean chatDisabled = false;
     private boolean chatSlowed = false;
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public StaffHandler()
     {
@@ -124,7 +120,7 @@ public class StaffHandler
         {
             p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
         }
-        LANG.sendRenderMessage(p, "staff.staff_on");
+        DesireCore.getLangHandler().sendRenderMessage(p, "staff.staff_on", true, false);
         p.setGameMode(GameMode.CREATIVE);
         p.setFoodLevel(20);
         toggleInvisibility(p, true);
@@ -160,7 +156,7 @@ public class StaffHandler
             p.getInventory().setContents(staffInventories.get(p.getUniqueId()));
             staffInventories.remove(p.getUniqueId());
             p.setGameMode(GameMode.SURVIVAL);
-            LANG.sendRenderMessage(p, "staff.staff_off");
+            DesireCore.getLangHandler().sendRenderMessage(p, "staff.staff_off", true, false);
         }
     }
 
@@ -198,7 +194,7 @@ public class StaffHandler
 
         if (targetSession.getRank().getId() >= sourceSession.getRank().getId())
         {
-            DesireCore.getLangHandler().sendRenderMessage(source, "sender_doesnt_outrank");
+            DesireCore.getLangHandler().sendRenderMessage(source, "sender_doesnt_outrank", true, false);
             return;
         }
 
@@ -206,16 +202,16 @@ public class StaffHandler
         {
             frozenPlayers.remove(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", "{player}", source.getName());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", "{player}", target
+            DesireCore.getLangHandler().sendRenderMessage(targetSession, "staff.unfrozen", true, false, "{player}", source.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-unfrozen", true, false, "{player}", target
                     .getName());
         }
         else
         {
             frozenPlayers.add(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderList(targetSession, "staff.frozen", "{player}", source.getName());
-            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", "{player}", target.getName());
+            DesireCore.getLangHandler().sendRenderList(targetSession, "staff.frozen", true, false, "{player}", source.getName());
+            DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", true, false, "{player}", target.getName());
         }
     }
 
@@ -229,7 +225,7 @@ public class StaffHandler
 
         if (block == null || block.getY() <= 1)
         {
-            DesireCore.getLangHandler().sendRenderMessage(session, "staff.invalid-block");
+            DesireCore.getLangHandler().sendRenderMessage(session, "staff.invalid-block", true, false);
         }
         else
         {
@@ -239,7 +235,7 @@ public class StaffHandler
             {
                 if (block.getY() <= 1)
                 {
-                    DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space");
+                    DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space", true, false);
                     return;
                 }
 
@@ -262,7 +258,7 @@ public class StaffHandler
 
             if (!passed)
             {
-                DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space");
+                DesireCore.getLangHandler().sendRenderMessage(session, "staff.no-free-space", true, false);
             }
         }
     }
@@ -310,7 +306,7 @@ public class StaffHandler
         {
             hidePlayer(player);
             hiddenPlayers.add(player.getUniqueId());
-            LANG.sendString(player, "staff.set-invisible");
+            DesireCore.getLangHandler().sendRenderMessage(player, "staff.set-invisible", true, false);
 
             if (item)
             {
@@ -324,7 +320,7 @@ public class StaffHandler
         {
             showPlayer(player);
             hiddenPlayers.remove(index);
-            LANG.sendString(player, "staff.set-visible");
+            DesireCore.getLangHandler().sendRenderMessage(player, "staff.set-visible", true, false);
 
             if (item)
             {
@@ -413,7 +409,7 @@ public class StaffHandler
 
     public void openReportsGUI(Player p, int page)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("report.inventory.title"));
+        Inventory inv = Bukkit.createInventory(null, 54, DesireCore.getLangHandler().renderMessage("report.inventory.title", false, false));
 
         List<Report> reports = ReportHandler.getInstance().getAllReports(true);
 
@@ -441,9 +437,9 @@ public class StaffHandler
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("report.inventory.item.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("report.inventory.item.lore"))
             {
-                lore.add(LANG.renderString(loreString, "{issuer}", issuer.getName(), "{date}",
+                lore.add(DesireCore.getLangHandler().renderString(loreString, "{issuer}", issuer.getName(), "{date}",
                         DateUtils.formatDateDiff(time), "{reason}", reason));
             }
 
@@ -455,16 +451,16 @@ public class StaffHandler
 
         if (next)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("report.inventory.next.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("report.inventory.next.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("report.inventory.next.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("report.inventory.next.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("report.inventory.next.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("report.inventory.next.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextMeta.setLore(lore);
@@ -475,16 +471,16 @@ public class StaffHandler
 
         if (page != 1)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("report.inventory.back.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("report.inventory.back.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("report.inventory.back.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("report.inventory.back.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("report.inventory.back.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("report.inventory.back.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextMeta.setLore(lore);
@@ -514,7 +510,7 @@ public class StaffHandler
 
         if (!deathInventories.containsKey(target.getUniqueId()) && !deathArmor.containsKey(target.getUniqueId()))
         {
-            DesireCore.getLangHandler().sendRenderMessage(player, "staff.no-restore", "{player}", target.getName());
+            DesireCore.getLangHandler().sendRenderMessage(player, "staff.no-restore", true, false, "{player}", target.getName());
             return;
         }
 
@@ -524,8 +520,8 @@ public class StaffHandler
         deathArmor.remove(target.getUniqueId());
         target.getPlayer().updateInventory();
 
-        DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", "{player}", target.getName());
-        DesireCore.getLangHandler().sendRenderMessage(target, "staff.restore-target", "{player}", player.getName());
+        DesireCore.getLangHandler().sendRenderMessage(player, "staff.restore", true, false, "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(target, "staff.restore-target", true, false, "{player}", player.getName());
     }
 
     public boolean isChatSlowed()

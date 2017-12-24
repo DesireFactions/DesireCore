@@ -1,12 +1,5 @@
 package com.desiremc.core.commands;
 
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -15,6 +8,12 @@ import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.ItemInHandValidator;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class RenameCommand extends ValidCommand
 {
@@ -39,7 +38,7 @@ public class RenameCommand extends ValidCommand
 
         player.updateInventory();
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "rename",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rename", true, false,
                 "{name}", ChatColor.translateAlternateColorCodes('&', name));
     }
 }

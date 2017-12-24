@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -16,6 +12,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.punishments.SessionBannedValidator;
 import com.desiremc.core.validators.punishments.SessionBlacklistedValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class UnblacklistCommand extends ValidCommand
 {
@@ -56,7 +55,7 @@ public class UnblacklistCommand extends ValidCommand
             return;
         }
 
-        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message",
+        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message", true, false,
                 "{target}", target.getName(),
                 "{player}", sender.getName()));
     }

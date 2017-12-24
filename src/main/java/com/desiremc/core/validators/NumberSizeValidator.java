@@ -1,10 +1,10 @@
 package com.desiremc.core.validators;
 
-import java.text.DecimalFormat;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Validator;
 import com.desiremc.core.session.Session;
+
+import java.text.DecimalFormat;
 
 public class NumberSizeValidator<T extends Number> implements Validator<T>
 {
@@ -72,7 +72,7 @@ public class NumberSizeValidator<T extends Number> implements Validator<T>
 
         if (val < low.doubleValue())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, tooLow,
+            DesireCore.getLangHandler().sendRenderMessage(sender, tooLow, true, false,
                     "{low_end}", format.format(low),
                     "{value}", format.format(arg));
             return false;
@@ -80,7 +80,7 @@ public class NumberSizeValidator<T extends Number> implements Validator<T>
 
         if (val > high.doubleValue())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, tooHigh,
+            DesireCore.getLangHandler().sendRenderMessage(sender, tooHigh, true, false,
                     "{high_end}", format.format(high),
                     "{value}", format.format(arg));
             return false;

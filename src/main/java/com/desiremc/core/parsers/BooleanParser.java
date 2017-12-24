@@ -1,12 +1,12 @@
 package com.desiremc.core.parsers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BooleanParser implements Parser<Boolean>
 {
@@ -25,7 +25,7 @@ public class BooleanParser implements Parser<Boolean>
             return Boolean.FALSE;
         }
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "boolean.invalid");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "boolean.invalid", true, false);
         return null;
     }
 

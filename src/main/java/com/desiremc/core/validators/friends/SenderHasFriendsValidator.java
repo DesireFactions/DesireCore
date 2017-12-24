@@ -16,7 +16,7 @@ public class SenderHasFriendsValidator implements SenderValidator
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_friends");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_friends", true, false);
             return false;
         }
     }

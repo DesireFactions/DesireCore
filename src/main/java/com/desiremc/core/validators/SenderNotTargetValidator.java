@@ -17,7 +17,7 @@ public class SenderNotTargetValidator implements Validator<Session>
     {
         if (sender == arg)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "cant_to_self");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "cant_to_self", true, false);
             return false;
         }
         return true;

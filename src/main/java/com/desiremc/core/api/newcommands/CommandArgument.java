@@ -1,12 +1,12 @@
 package com.desiremc.core.api.newcommands;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -62,7 +62,7 @@ public class CommandArgument<T>
     {
         if (hasRequiredRank() && sender.getRank().getId() < getRequiredRank().getId())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions", true, false);
             return false;
         }
 

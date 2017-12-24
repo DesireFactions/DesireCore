@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.auth;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -9,6 +7,8 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class AuthResetCommand extends ValidCommand
 {
@@ -32,6 +32,6 @@ public class AuthResetCommand extends ValidCommand
         target.setHasAuthorized(false);
         target.save();
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.reset", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.reset", true, false, "{player}", target.getName());
     }
 }

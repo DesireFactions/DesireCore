@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -15,6 +11,9 @@ import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.punishments.SessionMutedValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class UnmuteCommand extends ValidCommand
 {
@@ -48,7 +47,7 @@ public class UnmuteCommand extends ValidCommand
 
         if (target.isOnline())
         {
-            DesireCore.getLangHandler().sendRenderMessage(target, "mute.unmute_target", "{player}", sender.getName());
+            DesireCore.getLangHandler().sendRenderMessage(target, "mute.unmute_target", true, false, "{player}", sender.getName());
         }
 
         boolean broadcast = true;
@@ -63,13 +62,13 @@ public class UnmuteCommand extends ValidCommand
 
         if (broadcast)
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.unmute_broadcast",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("mute.unmute_broadcast", true, false,
                     "{player}", sender.getName(),
                     "{target}", target.getName()));
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.unmute",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "mute.unmute", true, false,
                     "{target}", target.getName());
         }
     }

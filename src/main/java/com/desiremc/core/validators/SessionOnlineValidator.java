@@ -12,7 +12,7 @@ public class SessionOnlineValidator implements Validator<Session>
     {
         if (!arg.getPlayer().isOnline())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_online");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_online", true, false);
             return false;
         }
 

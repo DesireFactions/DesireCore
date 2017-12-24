@@ -12,7 +12,7 @@ public class SessionIPBannedValidator implements Validator<Session>
     {
         if (arg.isIPBanned() == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_ip_banned",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_ip_banned", true, false,
                     "{player}", arg.getName());
             return false;
         }

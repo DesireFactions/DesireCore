@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -20,6 +16,9 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class TempBanCommand extends ValidCommand
 {
@@ -60,7 +59,7 @@ public class TempBanCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.tempban_message",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.tempban_message", true, false,
                     "{duration}", DateUtils.formatDateDiff(time),
                     "{player}", sender.getName(),
                     "{target}", target.getName(),

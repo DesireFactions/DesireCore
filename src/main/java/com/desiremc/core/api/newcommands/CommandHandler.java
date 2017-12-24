@@ -1,15 +1,8 @@
 package com.desiremc.core.api.newcommands;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,9 +15,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The processor that handles all {@link ValidCommand ValidCommands}.
@@ -67,7 +66,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter
             {
                 // The following classes also have this check:
                 // CrateKeyCheckCommand
-                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions");
+                DesireCore.getLangHandler().sendRenderMessage(sender, "no_permissions", true, false);
             }
         }
         else

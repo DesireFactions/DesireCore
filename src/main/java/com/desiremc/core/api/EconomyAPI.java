@@ -1,10 +1,10 @@
 package com.desiremc.core.api;
 
-import java.util.UUID;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+
+import java.util.UUID;
 
 public class EconomyAPI
 {
@@ -21,7 +21,7 @@ public class EconomyAPI
         setTokens(uuid, session.getTokens() - amount);
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.remove", "{tokens}", amount + "");
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.remove", true, false, "{tokens}", amount + "");
         }
     }
 
@@ -31,7 +31,7 @@ public class EconomyAPI
         setTokens(uuid, session.getTokens() + amount);
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.give", "{tokens}", amount + "");
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.give", true, false, "{tokens}", amount + "");
         }
     }
 
@@ -47,7 +47,7 @@ public class EconomyAPI
         session.setTokens(amount);
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.set", "{tokens}", amount + "");
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.set", true, false, "{tokens}", amount + "");
         }
     }
 

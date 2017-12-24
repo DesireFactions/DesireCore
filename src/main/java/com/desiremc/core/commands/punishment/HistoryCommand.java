@@ -1,7 +1,6 @@
 package com.desiremc.core.commands.punishment;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -54,9 +53,7 @@ public class HistoryCommand extends ValidCommand
 
     private void openPunishmentGUI(Player p, Session target)
     {
-        LangHandler LANG = DesireCore.getLangHandler();
-
-        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("history.inventory.title", "{player}", target.getName()));
+        Inventory inv = Bukkit.createInventory(null, 54, DesireCore.getLangHandler().renderMessage("history.inventory.title", false, false, "{player}", target.getName()));
 
         List<Punishment> punishments = PunishmentHandler.getInstance().getPunishments(target.getUniqueId());
 
@@ -83,13 +80,13 @@ public class HistoryCommand extends ValidCommand
             ItemStack item = new ItemStack(Material.PAPER);
 
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(LANG.renderMessageNoPrefix("history.inventory.item.name", "{type}", type));
+            meta.setDisplayName(DesireCore.getLangHandler().renderMessage("history.inventory.item.name", false, false, "{type}", type));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("history.inventory.item.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("history.inventory.item.lore"))
             {
-                lore.add(LANG.renderString(loreString, "{issuer}", issuer, "{date}",
+                lore.add(DesireCore.getLangHandler().renderString(loreString, "{issuer}", issuer, "{date}",
                         DateUtils.formatDateDiff(time), "{reason}", reason, "{repealed}", repealed, "{permanent}", permanent));
             }
 
@@ -101,16 +98,16 @@ public class HistoryCommand extends ValidCommand
 
         if (next)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("history.inventory.next.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("history.inventory.next.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("history.inventory.next.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("history.inventory.next.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("history.inventory.next.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("history.inventory.next.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextMeta.setLore(lore);
@@ -121,16 +118,16 @@ public class HistoryCommand extends ValidCommand
 
         if (pages.getOrDefault(p.getUniqueId(), 1) != 1)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("history.inventory.back.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("history.inventory.back.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("history.inventory.back.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("history.inventory.back.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("history.inventory.back.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("history.inventory.back.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextMeta.setLore(lore);

@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -18,6 +14,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.punishments.SessionIPBannedValidator;
 import com.desiremc.core.validators.punishments.SessionNotBlacklistedValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class UnIpbanCommand extends ValidCommand
 {
@@ -56,6 +55,6 @@ public class UnIpbanCommand extends ValidCommand
             return;
         }
 
-        Bukkit.broadcastMessage(LANG.renderMessage("ipban.unban_message", "{target}", target.getName(), "{player}", sender.getName()));
+        Bukkit.broadcastMessage(LANG.renderMessage("ipban.unban_message", true, false, "{target}", target.getName(), "{player}", sender.getName()));
     }
 }

@@ -31,7 +31,7 @@ public class SettingsAbstractCommand extends ValidCommand
         boolean value = sender.toggleSetting(setting);
         SessionHandler.getInstance().save(sender);
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "settings.toggle",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "settings.toggle", true, false,
                 "{setting}", setting.getDisplayName(),
                 "{status}", (value ? "on" : "off"));
     }

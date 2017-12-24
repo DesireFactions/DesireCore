@@ -441,15 +441,15 @@ public class Session
 
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
-            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.title");
-            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.name", "{name}", achievement.getName());
-            DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.desc", "{desc}", achievement.getDescription());
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, false);
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.title", false, true);
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.name", false, true, "{name}", achievement.getName());
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.desc", false, true, "{desc}", achievement.getDescription());
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(player, "achievement.award.reward", "{reward}", achievement.getReward());
+                DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.reward", false, true, "{reward}", achievement.getReward());
             }
-            DesireCore.getLangHandler().sendRenderMessageNoPrefix(player, "achievement.award.header");
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, false);
         }
 
         if (achievement.getReward() > 0)
@@ -481,7 +481,7 @@ public class Session
         save();
         if (notify)
         {
-            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add", "{tokens}", tokens + "");
+            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add", true, false, "{tokens}", tokens + "");
         }
     }
 
@@ -491,7 +491,7 @@ public class Session
         save();
         if (notify)
         {
-            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.taken", "{tokens}", tokens + "");
+            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.taken", true, false, "{tokens}", tokens + "");
         }
     }
 

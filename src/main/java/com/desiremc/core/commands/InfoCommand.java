@@ -1,7 +1,5 @@
 package com.desiremc.core.commands;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -13,6 +11,8 @@ import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
+
+import java.util.List;
 
 /**
  * Command used to display the player's basic information values.
@@ -32,13 +32,13 @@ public class InfoCommand extends ValidCommand
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Session target = (Session) args.get(0).getValue();
-        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "info.header-footer");
-        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.name", "{player}", target.getName());
-        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.uuid", "{uuid}", target.getUniqueId().toString());
-        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.ip", "{ip}", target.getIp());
-        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.tokens", "{tokens}", target.getTokens() + "");
-        DesireCore.getLangHandler().sendRenderMessageCenteredNoPrefix(sender, "info.status", "{status}", getStatus(target));
-        DesireCore.getLangHandler().sendRenderMessageNoPrefix(sender, "info.header-footer");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.header-footer", false, false);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.name", false, true, "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.uuid", false, true, "{uuid}", target.getUniqueId().toString());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.ip", false, true, "{ip}", target.getIp());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.tokens", false, true, "{tokens}", target.getTokens() + "");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.status", false, true, "{status}", getStatus(target));
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.header-footer", false, true);
     }
 
     /**
@@ -69,13 +69,13 @@ public class InfoCommand extends ValidCommand
         // if they this is still null, they have a normal status
         if (punishment == null)
         {
-            return lang.renderMessageNoPrefix("info.normal");
+            return lang.renderMessage("info.normal", false);
         }
 
         // return ip ban message, it never has a time
         if (punishment.getType() == Type.IP_BAN)
         {
-            return lang.renderMessageNoPrefix("info.ipbanned");
+            return lang.renderMessage("info.ipbanned", false);
         }
 
         // return the ban message, varies by permanence
@@ -83,11 +83,11 @@ public class InfoCommand extends ValidCommand
         {
             if (punishment.isPermanent())
             {
-                return lang.renderMessageNoPrefix("info.permbanned");
+                return lang.renderMessage("info.permbanned", false);
             }
             else
             {
-                return lang.renderMessageNoPrefix("info.banned", "{time}", longToTime(punishment.getExpirationTime()));
+                return lang.renderMessage("info.banned", false, "{time}", longToTime(punishment.getExpirationTime()));
             }
         }
 
@@ -96,11 +96,11 @@ public class InfoCommand extends ValidCommand
         {
             if (punishment.isPermanent())
             {
-                return lang.renderMessageNoPrefix("info.permmuted");
+                return lang.renderMessage("info.permmuted", false);
             }
             else
             {
-                return lang.renderMessageNoPrefix("info.muted", "{time}", longToTime(punishment.getExpirationTime()));
+                return lang.renderMessage("info.muted", false, "{time}", longToTime(punishment.getExpirationTime()));
             }
         }
 

@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.punishment;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -16,6 +12,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class IpbanCommand extends ValidCommand
 {
@@ -50,7 +49,7 @@ public class IpbanCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ipban.ban_message",
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ipban.ban_message", true, false,
                     "{player}", sender.getName(),
                     "{target}", target.getName(),
                     "{reason}", reason));

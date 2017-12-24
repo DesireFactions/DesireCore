@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.report;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -10,6 +8,8 @@ import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class ReportCreateCommand extends ValidCommand
 {
@@ -37,7 +37,7 @@ public class ReportCreateCommand extends ValidCommand
 
         ReportHandler.getInstance().submitReport(target.getUniqueId(), sender.getUniqueId(), reason);
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "report.reported",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "report.reported", true, false,
                 "{player}", target.getName(),
                 "{reason}", reason);
     }

@@ -10,11 +10,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 /**
- * @author Michael Ziluck
+ * @author Michael Ziluck & Christian Tooley.
  */
 public class LangHandler extends FileHandler
 {
@@ -24,7 +23,8 @@ public class LangHandler extends FileHandler
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also loads the prefix.
      *
-     * @param file
+     * @param file   file to retrieve the lang from
+     * @param plugin main file of the plugin.
      */
     public LangHandler(File file, JavaPlugin plugin)
     {
@@ -32,6 +32,11 @@ public class LangHandler extends FileHandler
         prefix = ChatColor.translateAlternateColorCodes('&', "&b&lDesire &8»");
     }
 
+    /**
+     * Gets the prefix from the config file.
+     *
+     * @return the prefix.
+     */
     public String getPrefix()
     {
         return prefix;
@@ -41,7 +46,7 @@ public class LangHandler extends FileHandler
      * Gets a formatted string from the config file. Replaces any color place holders as well. If the string does not
      * exist in the config, returns null.
      *
-     * @param string
+     * @param string key to retrieve from the lang file.
      * @return the formatted string.
      */
     @Override
@@ -56,183 +61,111 @@ public class LangHandler extends FileHandler
     }
 
     /**
-     * Gets a string without a prefix.
-     *
-     * @param string the reference.
-     * @return the formatted string.
-     */
-    public String getStringNoPrefix(String string)
-    {
-        return super.getString(string);
-    }
-
-    /**
      * Render a message using the format rendered in lang.yml
      *
-     * @param string
-     * @param args
-     * @return
+     * @param string key to retrieve from the lang file.
+     * @param args   arguments to replace.
+     * @param prefix to use a prefix or not.
+     * @return formatted message.
      */
-    public String renderMessage(String string, Object... args)
+    public String renderMessage(String string, boolean prefix, Object... args)
     {
-        return renderString(getString(string), args);
+        if (prefix)
+        {
+            return renderString(getString(string), args);
+        }
+        else
+        {
+            return renderString(super.getString(string), args);
+        }
     }
 
-    public void sendRenderList(CommandSender sender, String string, Object... args)
+    public void sendRenderList(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
         List<String> messages = DesireCore.getLangHandler().getStringList(string);
 
         for (String s : messages)
         {
-            sender.sendMessage(renderMessage(s, args));
+            sender.sendMessage(renderMessage(s, prefix, center, args));
         }
     }
 
-    public void sendRenderList(Session session, String string, Object... args)
+    public void sendRenderList(Session sender, String string, boolean prefix, boolean center, Object... args)
     {
-        List<String> messages = DesireCore.getLangHandler().getStringList(string);
-
-        for (String s : messages)
-        {
-            session.getSender().sendMessage(renderMessage(s, args));
-        }
-    }
-
-    public String renderMessageNoPrefix(String string, Object... args)
-    {
-        return renderString(super.getString(string), args);
-    }
-
-    /**
-     * Sends a render message without the prefix being added on.
-     *
-     * @param sender the person to receive the message.
-     * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
-     */
-    public void sendRenderMessageNoPrefix(CommandSender sender, String string, Object... args)
-    {
-        sender.sendMessage(renderString(super.getString(string), args));
-    }
-
-    /**
-     * @param sender the person to receive the message.
-     * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
-     * @see #sendRenderMessageNoPrefix(CommandSender, String, Object...)
-     */
-    public void sendRenderMessageNoPrefix(Session sender, String string, Object... args)
-    {
-        sendRenderMessageNoPrefix(sender.getSender(), string, args);
-    }
-
-    /**
-     * Send a render message that is centered and without a prefix.
-     *
-     * @param sender the person to receive the message.
-     * @param string the message to retrieve from the language file.
-     * @param args the arguments to replace.
-     */
-    public void sendRenderMessageCenteredNoPrefix(CommandSender sender, String string, Object... args)
-    {
-        ChatUtils.sendCenteredMessage(sender, renderString(super.getString(string), args));
-    }
-
-    public void sendRenderMessageCenteredNoPrefix(Session sender, String string, Object... args)
-    {
-        sendRenderMessageCenteredNoPrefix(sender.getSender(), string, args);
-    }
-
-    /**
-     * Shorthand to send getString to {@link CommandSender}
-     *
-     * @param sender
-     * @param string
-     */
-    public void sendString(CommandSender sender, String string)
-    {
-        sender.sendMessage(getString(string));
+        sendRenderList(sender.getSender(), string, prefix, center, args);
     }
 
     /**
      * Shorthand to render a command and send it to a {@link CommandSender}
      *
-     * @param sender
-     * @param string
-     * @param args
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the config file.
+     * @param args   arguments to replace within the message.
      */
-    public void sendRenderMessage(CommandSender sender, String string, Collection<Object> args)
+    public void sendRenderMessage(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
-        sendRenderMessage(sender, string, args.toArray());
+        String message;
+
+        if (prefix)
+        {
+            message = renderMessage(string, true, args);
+        }
+        else
+        {
+            message = renderMessage(string, false, args);
+        }
+
+        if (center)
+        {
+            ChatUtils.sendCenteredMessage(sender, message);
+        }
+        else
+        {
+            sender.sendMessage(message);
+        }
     }
 
     /**
      * Shorthand to render a command and send it to a {@link CommandSender}
      *
-     * @param sender
-     * @param string
-     * @param args
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the config file.
+     * @param args   arguments to replace within the message.
      */
-    public void sendRenderMessage(CommandSender sender, String string, Object... args)
+    public void sendRenderMessage(Session sender, String string, boolean prefix, boolean center, Object... args)
     {
-        sender.sendMessage(renderMessage(string, args));
-    }
-
-    public void sendCenteredRenderMessage(CommandSender sender, String string, Object... args)
-    {
-        ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
-    }
-
-    public void sendRenderMessage(CommandSender sender, String string, boolean center, Object... args)
-    {
-        if (center)
-        {
-        }
-        else
-        {
-            sender.sendMessage(renderMessage(string, args));
-        }
-    }
-
-    public void sendRenderMessage(Session s, String string, Object... args)
-    {
-        sendRenderMessage(s.getSender(), string, args);
-    }
-
-    public void sendRenderMessage(Session s, String string, boolean center, Object... args)
-    {
-        if (center)
-        {
-            ChatUtils.sendCenteredMessage(s.getSender(), renderMessage(string, args));
-        }
-        else
-        {
-            s.getSender().sendMessage(renderMessage(string, args));
-        }
+        sendRenderMessage(sender.getSender(), string, prefix, center, args);
     }
 
     /**
      * Render a usage message using the format specified in lang.yml
      *
-     * @param args
-     * @return
+     * @param label the command label.
+     * @param args  the arguments of the command.
+     * @return the formatted usageMessage
      */
-    public String usageMessage(String label, Object... args)
+    private String usageMessage(String label, Object... args)
     {
-        String argsString = "/" + label;
+        StringBuilder sb = new StringBuilder();
+        sb.append("/");
+        sb.append(label);
 
         for (Object arg : args)
         {
-            argsString += " [" + arg + "]";
+            sb.append(" [");
+            sb.append(arg);
+            sb.append("]");
         }
 
-        return renderMessage("usage-message", "{usage}", argsString);
+        return renderMessage("usage-message", true, false, "{usage}", sb.toString());
     }
 
     /**
      * Shorthand to send a usage message to a {@link CommandSender}
      *
-     * @param sender
+     * @param sender user to send the message to.
+     * @param label  label of the command.
+     * @param args   arguments of the command.
      */
     public void sendUsageMessage(CommandSender sender, String label, Object... args)
     {
@@ -243,7 +176,7 @@ public class LangHandler extends FileHandler
      * Render a string with the proper parameters.
      *
      * @param string the rendered string.
-     * @param args the placeholders and proper content.
+     * @param args   the placeholders and proper content.
      * @return the rendered string.
      */
     public String renderString(String string, Object... args)
@@ -260,5 +193,4 @@ public class LangHandler extends FileHandler
 
         return string;
     }
-
 }

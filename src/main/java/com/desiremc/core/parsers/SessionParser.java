@@ -1,14 +1,13 @@
 package com.desiremc.core.parsers;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class SessionParser implements Parser<Session>
 {
@@ -28,7 +27,7 @@ public class SessionParser implements Parser<Session>
         }
         if (argument == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "player-not-found");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "player-not-found", true, false);
             return null;
         }
 

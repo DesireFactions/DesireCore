@@ -1,11 +1,10 @@
 package com.desiremc.core.validators;
 
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.SenderValidator;
 import com.desiremc.core.session.Session;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import org.bukkit.entity.Player;
 
 /**
  * Assumes the sender is a player. If they are not it fails gracefully, but does not send an error message.
@@ -28,7 +27,7 @@ public class SelectedAreaValidator implements SenderValidator
         {
             return true;
         }
-        DesireCore.getLangHandler().sendRenderMessage(sender, "need_selection");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "need_selection", true, false);
         return false;
     }
 

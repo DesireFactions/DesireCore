@@ -18,7 +18,7 @@ public class RankParser implements Parser<Rank>
 
         if (rank == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "rank.invalid");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "rank.invalid", true, false);
             return null;
         }
 

@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.tokens;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -10,6 +8,8 @@ import com.desiremc.core.parsers.PositiveIntegerParser;
 import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class RemoveTokensCommand extends ValidCommand
 {
@@ -36,7 +36,7 @@ public class RemoveTokensCommand extends ValidCommand
 
         target.takeTokens(amount, true);
 
-        DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.removed",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "tokens.removed", true, false,
                 "{amount}", amount,
                 "{player}", target.getName());
     }

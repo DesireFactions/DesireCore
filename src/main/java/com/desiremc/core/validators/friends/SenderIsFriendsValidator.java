@@ -13,8 +13,8 @@ public class SenderIsFriendsValidator implements Validator<Session>
     {
         if (!FriendUtils.areFriends(sender, arg))
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.not_friends",
-                    "{player}", ((Session) arg).getName());
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.not_friends", true, false,
+                    "{player}", arg.getName());
             return false;
         }
 

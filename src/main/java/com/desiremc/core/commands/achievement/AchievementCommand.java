@@ -1,27 +1,23 @@
 package com.desiremc.core.commands.achievement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.newcommands.CommandArgument;
-import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class AchievementCommand extends ValidCommand
 {
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     private static HashMap<UUID, Integer> pages = new HashMap<>();
 
@@ -38,7 +34,7 @@ public class AchievementCommand extends ValidCommand
 
     private void openAchievementsGUI(Session session)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, LANG.renderMessageNoPrefix("agui.inventory.title"));
+        Inventory inv = Bukkit.createInventory(null, 54, DesireCore.getLangHandler().renderMessage("agui.inventory.title", false, false));
 
         List<Achievement> achievements = Achievement.getAllAchievements();
 
@@ -67,13 +63,13 @@ public class AchievementCommand extends ValidCommand
                 item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
             }
             ItemMeta skull = item.getItemMeta();
-            skull.setDisplayName(LANG.renderMessageNoPrefix("agui.inventory.item.name", "{name}", achievement.getName()));
+            skull.setDisplayName(DesireCore.getLangHandler().renderMessage("agui.inventory.item.name", false, false, "{name}", achievement.getName()));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("agui.inventory.item.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("agui.inventory.item.lore"))
             {
-                lore.add(LANG.renderString(loreString, "{desc}", achievement.getDescription(), "{tokens}", achievement.getReward() + ""));
+                lore.add(DesireCore.getLangHandler().renderString(loreString, "{desc}", achievement.getDescription(), "{tokens}", achievement.getReward() + ""));
             }
 
             skull.setLore(lore);
@@ -83,16 +79,16 @@ public class AchievementCommand extends ValidCommand
 
         if (next)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("agui.inventory.next.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("agui.inventory.next.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("agui.inventory.next.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("agui.inventory.next.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("agui.inventory.next.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("agui.inventory.next.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextItem.setItemMeta(nextMeta);
@@ -101,16 +97,16 @@ public class AchievementCommand extends ValidCommand
 
         if (pages.getOrDefault(session.getUniqueId(), 1) != 1)
         {
-            ItemStack nextItem = new ItemStack(Material.matchMaterial(LANG.getString("agui.inventory.back.item")));
+            ItemStack nextItem = new ItemStack(Material.matchMaterial(DesireCore.getLangHandler().getString("agui.inventory.back.item")));
             ItemMeta nextMeta = nextItem.getItemMeta();
 
-            nextMeta.setDisplayName(LANG.renderString("agui.inventory.back.name"));
+            nextMeta.setDisplayName(DesireCore.getLangHandler().renderString("agui.inventory.back.name"));
 
             List<String> lore = new ArrayList<>();
 
-            for (String loreString : LANG.getStringList("agui.inventory.back.lore"))
+            for (String loreString : DesireCore.getLangHandler().getStringList("agui.inventory.back.lore"))
             {
-                lore.add(LANG.renderString(loreString));
+                lore.add(DesireCore.getLangHandler().renderString(loreString));
             }
 
             nextItem.setItemMeta(nextMeta);

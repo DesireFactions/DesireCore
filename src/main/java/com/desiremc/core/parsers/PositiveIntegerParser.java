@@ -1,10 +1,10 @@
 package com.desiremc.core.parsers;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
+
+import java.util.List;
 
 public class PositiveIntegerParser implements Parser<Integer>
 {
@@ -19,12 +19,12 @@ public class PositiveIntegerParser implements Parser<Integer>
         }
         catch (NumberFormatException ex)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number", true, false);
             return null;
         }
         if (val < 0)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "number.too_large");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "number.too_large", true, false);
             return null;
         }
         return val;

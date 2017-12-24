@@ -17,7 +17,7 @@ public class PlayerAuthBlockedValidator implements SenderValidator
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "auth.already-auth");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "auth.already-auth", true, false);
             return false;
         }
     }

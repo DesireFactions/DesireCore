@@ -1,16 +1,15 @@
 package com.desiremc.core.tickets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
@@ -74,7 +73,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
         for (Session session : SessionHandler.getOnlineStaff())
         {
-            DesireCore.getLangHandler().sendRenderMessage(session, "tickets.open",
+            DesireCore.getLangHandler().sendRenderMessage(session, "tickets.open", true, false,
                     "{number}", String.valueOf(openTickets));
         }
     }

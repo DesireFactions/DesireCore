@@ -15,7 +15,7 @@ public class SessionBlacklistedValidator implements Validator<Session>
         {
             if (punishment.isBlacklisted())
             {
-                DesireCore.getLangHandler().sendRenderMessage(sender, "not_blacklisted");
+                DesireCore.getLangHandler().sendRenderMessage(sender, "not_blacklisted", true, false);
                 return false;
             }
         }

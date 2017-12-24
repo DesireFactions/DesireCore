@@ -38,13 +38,13 @@ public class SpawnCommand extends ValidCommand
 
         if (args.get(0).hasValue())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.target",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.target", true, false,
                     "{target}", player.getName());
-            DesireCore.getLangHandler().sendRenderMessage(player, "spawn.force");
+            DesireCore.getLangHandler().sendRenderMessage(player, "spawn.force", true, false);
         }
         else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.confirm");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "spawn.confirm", true, false);
         }
     }
 

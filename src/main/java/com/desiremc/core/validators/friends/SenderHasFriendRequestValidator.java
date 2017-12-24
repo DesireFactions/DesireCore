@@ -15,8 +15,8 @@ public class SenderHasFriendRequestValidator implements Validator<Session>
         {
             return true;
         }
-        
-        DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_request",
+
+        DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_request", true, false,
                 "{player}", arg.getName());
         
         return false;

@@ -1,13 +1,13 @@
 package com.desiremc.core.commands.chat;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+
+import java.util.List;
 
 public class ChatClearCommand extends ValidCommand
 {
@@ -28,8 +28,8 @@ public class ChatClearCommand extends ValidCommand
                     session.getSender().sendMessage("");
                 }
             }
-            DesireCore.getLangHandler().sendRenderMessage(session, "staff.chat_cleared_broadcast", "{player}", sender.getName());
+            DesireCore.getLangHandler().sendRenderMessage(session, "staff.chat_cleared_broadcast", true, false, "{player}", sender.getName());
         }
-        DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_cleared");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_cleared", true, false);
     }
 }

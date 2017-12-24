@@ -1,13 +1,13 @@
 package com.desiremc.core.parsers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.tickets.Ticket;
 import com.desiremc.core.tickets.TicketHandler;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TicketParser implements Parser<Ticket>
 {
@@ -22,7 +22,7 @@ public class TicketParser implements Parser<Ticket>
         }
         catch (NumberFormatException ex)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.only_id");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.only_id", true, false);
             return null;
         }
 
@@ -30,7 +30,7 @@ public class TicketParser implements Parser<Ticket>
 
         if (ticket == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.not_found",
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ticket.not_found", true, false,
                     "{id}", num);
             return null;
         }

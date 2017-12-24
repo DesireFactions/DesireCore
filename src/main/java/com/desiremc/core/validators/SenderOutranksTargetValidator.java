@@ -12,7 +12,7 @@ public class SenderOutranksTargetValidator implements Validator<Session>
     {
         if (sender.getRank().getId() <= arg.getRank().getId())
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "sender_doesnt_outrank");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "sender_doesnt_outrank", true, false);
             return false;
         }
         return true;

@@ -1,7 +1,5 @@
 package com.desiremc.core.commands.auth;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -12,6 +10,8 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.auth.AuthCodeValidator;
 import com.desiremc.core.validators.auth.PlayerAuthBlockedValidator;
+
+import java.util.List;
 
 public class LoginCommand extends ValidCommand
 {
@@ -36,7 +36,7 @@ public class LoginCommand extends ValidCommand
         sender.setHasAuthorized(true);
         sender.setHasAuthorizedIP(true);
         sender.save();
-        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.authenticated");
+        DesireCore.getLangHandler().sendRenderMessage(sender, "auth.authenticated", true, false);
     }
 
 }

@@ -18,7 +18,7 @@ public class NoPendingFriendRequestValidator implements Validator<Session>
     {
         if (FriendUtils.hasRequest(sender, arg))
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.already_sent_request");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.already_sent_request", true, false);
             return false;
         }
         return true;

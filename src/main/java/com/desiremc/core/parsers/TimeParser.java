@@ -1,11 +1,11 @@
 package com.desiremc.core.parsers;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
+
+import java.util.List;
 
 public class TimeParser implements Parser<Long>
 {
@@ -19,7 +19,7 @@ public class TimeParser implements Parser<Long>
         }
         catch (Exception e)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "not_time");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "not_time", true, false);
             return null;
         }
     }

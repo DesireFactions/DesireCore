@@ -1,10 +1,9 @@
 package com.desiremc.core.api;
 
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
+import org.bukkit.entity.Player;
 
 public class StaffAPI
 {
@@ -26,12 +25,12 @@ public class StaffAPI
     {
         if (STAFF.CPSTest(player))
         {
-            LANG.sendRenderMessage(sender, "staff.cps-already-running", "{player}", player.getDisplayName());
+            LANG.sendRenderMessage(sender, "staff.cps-already-running", true, false, "{player}", player.getDisplayName());
             return;
         }
 
         STAFF.startCPSTestForPlayer((Player) sender, player);
-        LANG.sendRenderMessage(sender, "staff.cps-start", "{player}", player.getDisplayName());
+        LANG.sendRenderMessage(sender, "staff.cps-start", true, false, "{player}", player.getDisplayName());
     }
 
     public static void toggleInvisibility(Player player, boolean item)

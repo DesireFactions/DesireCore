@@ -1,5 +1,15 @@
 package com.desiremc.core.listeners;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.commands.spawn.SpawnCommand;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.events.PlayerChunkMoveEvent;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BukkitUtils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -11,18 +21,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.commands.spawn.SpawnCommand;
-import com.desiremc.core.events.PlayerBlockMoveEvent;
-import com.desiremc.core.events.PlayerChunkMoveEvent;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.BukkitUtils;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener
 {
@@ -93,7 +91,7 @@ public class PlayerListener implements Listener
         if (StaffHandler.getInstance().inStaffChat(player.getUniqueId()))
         {
             event.setCancelled(true);
-            String message = DesireCore.getLangHandler().renderMessageNoPrefix("staff.staff-chat-format", "{name}", player.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+            String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", false, false, "{name}", player.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
             for (Session target : SessionHandler.getOnlineStaff())
             {
                 target.getPlayer().sendMessage(message);
