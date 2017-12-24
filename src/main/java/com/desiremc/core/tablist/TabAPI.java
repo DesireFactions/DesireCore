@@ -16,8 +16,8 @@ public class TabAPI
     public static TabList createTabListForPlayer(Player player)
     {
         TabList list = new TabList(player);
-        list.generate();
         tabLists.put(player.getUniqueId(), list);
+        list.generate();
         return list;
     }
 
