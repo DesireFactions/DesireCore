@@ -1,7 +1,6 @@
 package com.desiremc.core.tablist;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -76,7 +75,7 @@ public class TabList
     {
         slots.clear();
         TabSlot slot;
-        for (int i = 0; i < 36; i++)
+        for (int i = 0; i < 60; i++)
         {
             slot = new TabSlot(this, processName(i));
             slots.put(i, slot);
@@ -101,7 +100,7 @@ public class TabList
         {
             slot.setPrefix(null);
             slot.setSuffix(null);
-            //sendTeamUpdate(slot);
+            sendTeamUpdate(slot);
         }
         slots.clear();
     }
