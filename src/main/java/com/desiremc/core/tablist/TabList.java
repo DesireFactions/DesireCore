@@ -255,7 +255,7 @@ public class TabList
 
     private static String processName(int slot)
     {
-        return "§" + (slot / 10) + "§" + (slot % 10);
+        return "§" + ('a' + (slot / 10)) + "§" + (slot % 10);
     }
 
     public Player getPlayer()
