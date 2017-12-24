@@ -1,14 +1,14 @@
 package com.desiremc.core.scoreboard.common;
 
+import com.desiremc.core.scoreboard.EntryRegistry.PlayerEntry;
+import com.desiremc.core.scoreboard.type.Entry;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import com.desiremc.core.scoreboard.EntryRegistry.PlayerEntry;
-import com.desiremc.core.scoreboard.type.Entry;
 
 /**
  * An utility to make pretty entries for the scoreboards, without calculating the positions by yourself.
@@ -88,7 +88,7 @@ public final class EntryBuilder
 
     private EntryBuilder next(String key, String value, UUID uuid)
     {
-        entries.add(new Entry(key, "§c" + value, uuid, entries.size() + 1));
+        entries.add(new Entry(key, value, uuid, entries.size() + 1));
         return this;
     }
 
