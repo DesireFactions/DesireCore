@@ -2,8 +2,6 @@ package com.desiremc.core.commands.auth;
 
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -34,7 +32,7 @@ public class LoginCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        AuthListener.authBlocked.remove(((Player) sender).getUniqueId());
+        AuthListener.authBlocked.remove(sender.getUniqueId());
         sender.setHasAuthorized(true);
         sender.setHasAuthorizedIP(true);
         sender.save();
