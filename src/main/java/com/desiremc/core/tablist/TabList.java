@@ -79,6 +79,7 @@ public class TabList
         for (int i = 0; i < 60; i++)
         {
             slot = new TabSlot(this, processName(i), "", "");
+            System.out.println(slot.getName().replace('§', '&'));
             slots.put(i, slot);
             send(slot);
             sendTeamCreate(slot);
@@ -189,7 +190,7 @@ public class TabList
         }
     }
 
-    public void sendTeamUpdate(TabSlot slot)
+    private void sendTeamUpdate(TabSlot slot)
     {
         PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
 
@@ -221,7 +222,7 @@ public class TabList
         }
     }
 
-    public void sendTeamCreate(TabSlot slot)
+    private void sendTeamCreate(TabSlot slot)
     {
         PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
 
@@ -230,6 +231,15 @@ public class TabList
         // 2: Display Name
         // 3: Prefix
         // 4: Suffix
+        if (slot.getPrefix() != null)
+        {
+            System.out.println("Prefix: " + slot.getPrefix());
+        }
+        if (slot.getSuffix() != null)
+        {
+            System.out.println("Suffix: " + slot.getSuffix());
+        }
+        System.out.println("=================");
         packet.getStrings().write(0, slot.getName());
         packet.getStrings().write(1, slot.getName());
         packet.getStrings().write(2, slot.getPrefix());
@@ -238,10 +248,6 @@ public class TabList
         // Integers:
         // 0: Mode (0 = create, 2 = update)
         packet.getIntegers().write(0, 2);
-
-        // Specific:
-        // 0: Members
-        packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(slot.getName()));
 
         try
         {
