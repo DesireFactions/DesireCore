@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -270,7 +271,7 @@ public class FileHandler
         {
             return (ItemStack[]) o;
         }
-        value = ((ItemStack[]) fileConfig.getStringList(key).toArray());
+        value = Arrays.stream(fileConfig.getStringList(key).toArray()).toArray(ItemStack[]::new);
         history.put(key, value);
         return value;
     }
