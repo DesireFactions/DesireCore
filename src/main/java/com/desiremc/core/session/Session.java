@@ -22,6 +22,7 @@ import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
@@ -139,7 +140,7 @@ public class Session
 
         if (player == null)
         {
-            player = Bukkit.getPlayer(uuid);
+            player = PlayerUtils.getPlayer(uuid);
         }
 
         return player;

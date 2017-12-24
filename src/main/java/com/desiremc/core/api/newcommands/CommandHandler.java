@@ -1,8 +1,15 @@
 package com.desiremc.core.api.newcommands;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,15 +22,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 
 /**
  * The processor that handles all {@link ValidCommand ValidCommands}.
@@ -32,8 +33,6 @@ import java.util.Map;
  */
 public class CommandHandler implements CommandExecutor, TabCompleter
 {
-
-    private static final boolean DEBUG = true;
 
     private static CommandHandler instance;
 
@@ -57,17 +56,9 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         ValidCommand command = getCommand(label);
         if (command != null)
         {
-            if (DEBUG)
-            {
-                System.out.println("CustomCommandHandler.onCommand() - command not null.");
-            }
             Session session = SessionHandler.getSession(sender);
             if (session.getRank().getId() >= command.getRequiredRank().getId())
             {
-                if (DEBUG)
-                {
-                    System.out.println("CustomCommandHandler.onCommand() - Successfully ran command.");
-                }
                 command.process(session, new String[] { label }, args);
             }
             else
@@ -79,10 +70,6 @@ public class CommandHandler implements CommandExecutor, TabCompleter
         }
         else
         {
-            if (DEBUG)
-            {
-                System.out.println("CustomCommandHandler.onCommand() - command null.");
-            }
             return false;
         }
         return true;
