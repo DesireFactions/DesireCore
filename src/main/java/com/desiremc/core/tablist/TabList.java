@@ -248,6 +248,10 @@ public class TabList
         // 0: Mode (0 = create, 2 = update)
         packet.getIntegers().write(0, 2);
 
+        // Specific:
+        // 0: Members
+        packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(slot.getName()));
+
         try
         {
             TabAPI.getProtocolManager().sendServerPacket(player, packet);

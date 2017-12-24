@@ -39,7 +39,7 @@ public class TabSlot
      */
     public String getPrefix()
     {
-        return prefix;
+        return prefix == null ? "" : prefix;
     }
 
     /**
@@ -71,7 +71,7 @@ public class TabSlot
      */
     public String getSuffix()
     {
-        return suffix;
+        return suffix == null ? "" : suffix;
     }
 
     /**
