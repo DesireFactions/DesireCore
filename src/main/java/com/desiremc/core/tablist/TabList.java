@@ -134,7 +134,6 @@ public class TabList
     public TabSlot setSlot(int slot, String name)
     {
         TabSlot tabSlot = slots.get(slot);
-        System.out.println("\nBefore " + slot + ": '" + tabSlot.getPrefix() + "'");
         if (name.length() < 16)
         {
             tabSlot.setPrefix(name.substring(0, name.length()));
@@ -149,9 +148,8 @@ public class TabList
         {
             throw new IllegalArgumentException("Name can't be longer than 28 characters.");
         }
-        System.out.println("After " + slot + ": '" + tabSlot.getPrefix() + "'");
-        
-        sendTeamUpdate(tabSlot);
+
+        //sendTeamUpdate(tabSlot);
         return tabSlot;
     }
 
@@ -262,7 +260,7 @@ public class TabList
 
     private static String processName(int slot)
     {
-        return "§" + ('a' + (slot / 10)) + "§" + (slot % 10);
+        return "&" + ('a' + (slot / 10)) + "&" + (slot % 10);
     }
 
     public Player getPlayer()
