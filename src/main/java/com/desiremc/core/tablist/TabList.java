@@ -260,7 +260,7 @@ public class TabList
 
     private static String processName(int slot)
     {
-        return "&" + ('a' + (slot / 10)) + "&" + (slot % 10);
+        return "&" + ((char) ('a' + (slot / 10))) + "&" + (slot % 10);
     }
 
     public Player getPlayer()
