@@ -76,7 +76,7 @@ public class TabList
     {
         slots.clear();
         TabSlot slot;
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 36; i++)
         {
             slot = new TabSlot(this, processName(i));
             slots.put(i, slot);
