@@ -81,7 +81,7 @@ public class TabList
             slot = new TabSlot(this, processName(i));
             slots.put(i, slot);
             send(slot);
-            //sendTeamCreate(slot);
+            sendTeamCreate(slot);
         }
     }
 
@@ -260,7 +260,7 @@ public class TabList
 
     private static String processName(int slot)
     {
-        return "&" + ((char) ('a' + (slot / 10))) + "&" + (slot % 10);
+        return "§" + ((char) ('a' + (slot / 10))) + "§" + (slot % 10);
     }
 
     public Player getPlayer()
