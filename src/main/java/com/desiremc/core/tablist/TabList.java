@@ -79,10 +79,9 @@ public class TabList
         for (int i = 0; i < 60; i++)
         {
             slot = new TabSlot(this, processName(i));
-            System.out.println(slot.getName().replace('§', '&'));
             slots.put(i, slot);
             send(slot);
-            sendTeamCreate(slot);
+            //sendTeamCreate(slot);
         }
     }
 
@@ -102,7 +101,7 @@ public class TabList
         {
             slot.setPrefix(null);
             slot.setSuffix(null);
-            sendTeamUpdate(slot);
+            //sendTeamUpdate(slot);
         }
         slots.clear();
     }
@@ -134,8 +133,8 @@ public class TabList
      */
     public TabSlot setSlot(int slot, String name)
     {
-        System.out.println(name);
         TabSlot tabSlot = slots.get(slot);
+        System.out.println("Before " + slot + ": '" + tabSlot.getPrefix() + "'");
         if (name.length() < 16)
         {
             tabSlot.setPrefix(name.substring(0, name.length()));
@@ -150,7 +149,8 @@ public class TabList
         {
             throw new IllegalArgumentException("Name can't be longer than 28 characters.");
         }
-
+        System.out.println("After " + slot + ": '" + tabSlot.getPrefix() + "'");
+        
         sendTeamUpdate(tabSlot);
         return tabSlot;
     }
@@ -206,7 +206,7 @@ public class TabList
         packet.getStrings().write(3, slot.getSuffix());
 
         // Integers:
-        // 0: Mode (0 = create, 2 = update)
+        // 0: Mode (0 = create, 2 = update, 3 = add player, 4 = remove player)
         packet.getIntegers().write(0, 2);
 
         // Specific:
