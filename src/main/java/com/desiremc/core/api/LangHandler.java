@@ -125,16 +125,6 @@ public class LangHandler extends FileHandler
         }
     }
 
-    public void sendRenderMessage(CommandSender sender, String string, Object... args)
-    {
-        sendRenderMessage(sender, string, true, false, args);
-    }
-
-    public void sendRenderMessage(Session sender, String string, Object... args)
-    {
-        sendRenderMessage(sender.getSender(), string, true, false, args);
-    }
-
     /**
      * Shorthand to render a command and send it to a {@link CommandSender}
      *
