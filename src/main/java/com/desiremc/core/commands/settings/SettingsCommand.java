@@ -8,7 +8,7 @@ public class SettingsCommand extends ValidBaseCommand
 
     public SettingsCommand()
     {
-        super("settings", "Change your settings.", new String[] {"options", "prefs", "preferences"});
+        super("settings", "Change your settings.", new String[] {"options", "prefs", "preferences", "setting"});
 
         for (SessionSetting setting : SessionSetting.values())
         {
