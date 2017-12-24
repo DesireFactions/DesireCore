@@ -29,7 +29,10 @@ no_free_slots: '&7{target} {have/has} no free inventory slots.'
 invalid_flag: "That is an invalid punishment flag."
 not_world: "That world does not exist."
 rename: "You have renamed the item in your hand to {name}."
-teamspeak: "Join us on TeamSpeak! ts.desirehcf.com"
+teamspeak: 'Join us on TeamSpeak! ts.desirehcf.com'
+helpop:
+  self: '&7You''ve requested support from the online staff.'
+  target: '[Request] {player}: {message} '
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
