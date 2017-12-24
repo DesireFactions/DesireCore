@@ -164,6 +164,7 @@ public class Session
     public void setOnline(boolean online)
     {
         this.online = online;
+        this.player = null;
     }
 
     /**

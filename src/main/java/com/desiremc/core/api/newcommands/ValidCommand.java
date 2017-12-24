@@ -1,5 +1,12 @@
 package com.desiremc.core.api.newcommands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -9,13 +16,6 @@ import com.desiremc.core.utils.CollectionUtils;
 import com.desiremc.core.utils.StringUtils;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 public abstract class ValidCommand
 {
@@ -171,25 +171,19 @@ public abstract class ValidCommand
             DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
-        // todo
-        System.out.println(1);
         for (SenderValidator senderValidator : senderValidators)
         {
             if (!senderValidator.validate(sender))
             {
-                // TODO
-                System.out.println("Failed a sender validator");
                 return;
             }
         }
-        System.out.println(2);
 
         if (rawArguments.length == 0 && blocksConsole() && sender.isConsole())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "only_players");
             return;
         }
-        System.out.println(3);
         CommandArgument<?> argument;
         for (int i = 0; i < rawArguments.length; i++)
         {
@@ -215,7 +209,6 @@ public abstract class ValidCommand
                 return;
             }
         }
-        System.out.println(4);
         try
         {
             validRun(sender, label, arguments);
@@ -226,7 +219,6 @@ public abstract class ValidCommand
             sender.getSender().sendMessage("§4An error occured. Contact a staff member immediately.");
             TicketHandler.openTicket(SessionHandler.getConsoleSession(), "Error running /" + StringUtils.compile(label) + ". Contact a dev.");
         }
-        System.out.println(5);
         arguments.forEach(arg -> arg.clearValue());
         clearTable();
     }
