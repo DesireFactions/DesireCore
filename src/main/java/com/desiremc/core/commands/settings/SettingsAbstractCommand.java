@@ -1,13 +1,13 @@
 package com.desiremc.core.commands.settings;
 
-import java.util.List;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
+
+import java.util.List;
 
 public class SettingsAbstractCommand extends ValidCommand
 {
@@ -17,7 +17,7 @@ public class SettingsAbstractCommand extends ValidCommand
     public SettingsAbstractCommand(SessionSetting setting)
     {
         super(setting.name().toLowerCase(),                           // name
-                "Turn " + setting.getDisplayName() + " on and off",   // description
+                "Toggle " + setting.getDisplayName() + " on/off",   // description
                 setting.getRank(),                                    // rank                                        
                 true,                                                 // players only
                 setting.getAliases());                                // aliases
