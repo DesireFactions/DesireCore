@@ -76,7 +76,7 @@ public class TabList
     {
         slots.clear();
         TabSlot slot;
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 3; i++)
         {
             slot = new TabSlot(this, processName(i));
             slots.put(i, slot);
@@ -191,25 +191,19 @@ public class TabList
 
     private void sendTeamUpdate(TabSlot slot)
     {
-        PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
+        PacketContainer packet = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 2, slot.getName());
 
         // Strings:
         // 1: Name
         // 2: Display Name
         // 3: Prefix
         // 4: Suffix
-        packet.getStrings().write(0, slot.getName());
-        packet.getStrings().write(1, slot.getName());
-        packet.getStrings().write(2, slot.getPrefix());
-        packet.getStrings().write(3, slot.getSuffix());
 
         // Integers:
         // 0: Mode (0 = create, 2 = update, 3 = add player, 4 = remove player)
-        packet.getIntegers().write(0, 2);
 
         // Specific:
         // 0: Members
-        packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(slot.getName()));
 
         try
         {
@@ -223,34 +217,19 @@ public class TabList
 
     private void sendTeamCreate(TabSlot slot)
     {
-        PacketContainer packet = TabAPI.getProtocolManager().createPacket(PacketType.Play.Server.SCOREBOARD_TEAM);
+        PacketContainer packet = TabAPI.buildTeamPacket(slot.getName(), slot.getName(), slot.getPrefix(), slot.getSuffix(), 0, slot.getName());
 
         // Strings:
         // 1: Name
         // 2: Display Name
         // 3: Prefix
         // 4: Suffix
-        if (slot.getPrefix() != null)
-        {
-            System.out.println("Prefix: " + slot.getPrefix());
-        }
-        if (slot.getSuffix() != null)
-        {
-            System.out.println("Suffix: " + slot.getSuffix());
-        }
-        System.out.println("=================");
-        packet.getStrings().write(0, slot.getName());
-        packet.getStrings().write(1, slot.getName());
-        packet.getStrings().write(2, slot.getPrefix());
-        packet.getStrings().write(3, slot.getSuffix());
 
         // Integers:
         // 0: Mode (0 = create, 2 = update)
-        packet.getIntegers().write(0, 2);
 
         // Specific:
         // 0: Members
-        packet.getSpecificModifier(Collection.class).write(0, Arrays.asList(slot.getName()));
 
         try
         {
