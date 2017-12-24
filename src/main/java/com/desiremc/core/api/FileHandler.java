@@ -4,12 +4,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -247,33 +245,6 @@ public class FileHandler
         {
             e.printStackTrace();
         }
-    }
-
-    public void setContents(String key, ItemStack[] value)
-    {
-        fileConfig.set(key, value);
-        history.put(key, value);
-        try
-        {
-            fileConfig.save(file);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public ItemStack[] getContents(String key)
-    {
-        ItemStack[] value;
-        Object o = history.get(key);
-        if (o != null && o instanceof List<?>)
-        {
-            return (ItemStack[]) o;
-        }
-        value = Arrays.stream(fileConfig.getStringList(key).toArray()).toArray(ItemStack[]::new);
-        history.put(key, value);
-        return value;
     }
 
     public static void reloadAll()
