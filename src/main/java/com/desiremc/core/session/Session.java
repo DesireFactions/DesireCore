@@ -1,10 +1,12 @@
 package com.desiremc.core.session;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -17,13 +19,10 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(value = "sessions", noClassnameStored = true)
 public class Session
@@ -124,7 +123,7 @@ public class Session
     /**
      * Gets the {@link Player} associated with this Session. If this is the console's session, it will throw an
      * {@link IllegalStateException}.
-     * 
+     *
      * @return the {@link Player} of this session.
      */
     public Player getPlayer()
@@ -148,7 +147,7 @@ public class Session
 
     /**
      * Checks if the player is online.
-     * 
+     *
      * @return {@code true} if the player is online. {@code false} otherwise.
      */
     public boolean isOnline()
@@ -158,7 +157,7 @@ public class Session
 
     /**
      * Sets whether this player is online or offline.
-     * 
+     *
      * @param online the online state.
      */
     public void setOnline(boolean online)
@@ -170,7 +169,7 @@ public class Session
     /**
      * Get the CommandSender associated with this Session. Using this instead of getPlayer makes it safe to always use
      * this, even when dealing with the console sending commands.
-     * 
+     *
      * @return the {@link CommandSender} of this session.
      */
     public CommandSender getSender()
@@ -188,7 +187,7 @@ public class Session
     /**
      * Convenience method for {@link CommandSender#sendMessage(String)}. The message will not be sent if the message is
      * null or if the session represents a {@link Player} and they are offline.
-     * 
+     *
      * @param message the message to send to the sender.
      */
     public void sendMessage(String message)
@@ -424,9 +423,9 @@ public class Session
 
     /**
      * Give a player an achievement as well as reward them with the tokens.
-     * 
+     *
      * @param achievement the achievement.
-     * @param inform whether to inform the player or not.
+     * @param inform      whether to inform the player or not.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
@@ -512,6 +511,24 @@ public class Session
     {
         checkDefaults();
         this.settings.put(setting, status);
+
+        if (setting.equals(SessionSetting.PLAYERS))
+        {
+            if (status)
+            {
+                for (Player target : Bukkit.getOnlinePlayers())
+                {
+                    getPlayer().hidePlayer(target);
+                }
+            }
+            else
+            {
+                for (Player target : Bukkit.getOnlinePlayers())
+                {
+                    getPlayer().showPlayer(target);
+                }
+            }
+        }
         save();
     }
 
