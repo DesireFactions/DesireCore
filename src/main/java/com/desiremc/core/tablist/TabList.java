@@ -78,7 +78,7 @@ public class TabList
         TabSlot slot;
         for (int i = 0; i < 60; i++)
         {
-            slot = new TabSlot(this, processName(i), "", "");
+            slot = new TabSlot(this, processName(i));
             System.out.println(slot.getName().replace('§', '&'));
             slots.put(i, slot);
             send(slot);
@@ -134,6 +134,7 @@ public class TabList
      */
     public TabSlot setSlot(int slot, String name)
     {
+        System.out.println(name);
         TabSlot tabSlot = slots.get(slot);
         if (name.length() < 16)
         {

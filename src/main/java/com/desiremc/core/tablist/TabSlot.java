@@ -9,17 +9,6 @@ public class TabSlot
 
     private int ping;
 
-    public TabSlot(TabList list, String prefix, String name, String suffix)
-    {
-        this.list = list;
-
-        this.prefix = prefix;
-        this.name = name;
-        this.suffix = suffix;
-
-        this.ping = list.defaultPing;
-    }
-
     public TabSlot(TabList list, String name)
     {
         this.list = list;
