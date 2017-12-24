@@ -1,9 +1,5 @@
 package com.desiremc.core.commands.staff;
 
-import java.util.List;
-
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.StaffAPI;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -12,6 +8,8 @@ import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
+
+import java.util.List;
 
 public class StaffFreezeCommand extends ValidCommand
 {
@@ -31,7 +29,8 @@ public class StaffFreezeCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        StaffAPI.freeze(sender, (Player) args.get(0).getValue());
+        Session target = (Session) args.get(0).getValue();
+        StaffAPI.freeze(sender, target.getPlayer());
     }
 
 }
