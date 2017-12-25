@@ -127,7 +127,7 @@ public class GUIListener implements Listener
 
         Inventory inv = event.getClickedInventory();
 
-        if (!inv.getTitle().equalsIgnoreCase(DesireCore.getLangHandler().renderMessage("report.inventory.title", false, false)))
+        if (!inv.getTitle().equalsIgnoreCase(DesireCore.getLangHandler().renderMessage("report.inventory.title", false)))
         {
             return;
         }

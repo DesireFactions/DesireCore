@@ -38,9 +38,9 @@ public class KickCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.broadcast", true, false, "{target}", target.getName(), "{reason}", reason, "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("kick.broadcast", true, "{target}", target.getName(), "{reason}", reason, "{player}", sender.getName()));
         }
 
-        target.getPlayer().kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kicked", true, false, "{player}", sender.getName(), "{reason}", reason));
+        target.getPlayer().kickPlayer(DesireCore.getLangHandler().renderMessage("kick.kicked", true, "{player}", sender.getName(), "{reason}", reason));
     }
 }

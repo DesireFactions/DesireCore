@@ -409,7 +409,7 @@ public class StaffHandler
 
     public void openReportsGUI(Player p, int page)
     {
-        Inventory inv = Bukkit.createInventory(null, 54, DesireCore.getLangHandler().renderMessage("report.inventory.title", false, false));
+        Inventory inv = Bukkit.createInventory(null, 54, DesireCore.getLangHandler().renderMessage("report.inventory.title", false));
 
         List<Report> reports = ReportHandler.getInstance().getAllReports(true);
 

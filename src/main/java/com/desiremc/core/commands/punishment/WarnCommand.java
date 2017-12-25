@@ -55,7 +55,7 @@ public class WarnCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("warn.warn_issued", true, false,
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("warn.warn_issued", true,
                     "{target}", target.getName(),
                     "{reason}", reason,
                     "{player}", sender.getName()));

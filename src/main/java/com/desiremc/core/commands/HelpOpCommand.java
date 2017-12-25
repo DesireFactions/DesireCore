@@ -26,7 +26,7 @@ public class HelpOpCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        String message = DesireCore.getLangHandler().renderMessage("helpop.target", false, false, "{player}", sender.getName(), "{message}", arguments.get(0).getValue());
+        String message = DesireCore.getLangHandler().renderMessage("helpop.target", false, "{player}", sender.getName(), "{message}", arguments.get(0).getValue());
 
         for (Session staff : SessionHandler.getOnlineStaff())
         {

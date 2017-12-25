@@ -23,12 +23,12 @@ public class ChatToggleCommand extends ValidCommand
         if (StaffHandler.getInstance().chatDisabled())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_on", true, false);
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_on_broadcast", true, false, "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_on_broadcast", true, "{player}", sender.getName()));
         }
         else
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, "staff.chat_off", true, false);
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_off_broadcast", true, false, "{player}", sender.getName()));
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("staff.chat_off_broadcast", true, "{player}", sender.getName()));
         }
         StaffHandler.getInstance().toggleChat();
     }

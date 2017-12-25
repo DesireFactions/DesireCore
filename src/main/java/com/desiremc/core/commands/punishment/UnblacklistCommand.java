@@ -58,7 +58,7 @@ public class UnblacklistCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message", true, false,
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message", true,
                     "{target}", target.getName(),
                     "{player}", sender.getName()));
         }

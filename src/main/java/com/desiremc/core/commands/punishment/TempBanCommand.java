@@ -64,7 +64,7 @@ public class TempBanCommand extends ValidCommand
         }
         else
         {
-            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.tempban_message", true, false,
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.tempban_message", true,
                     "{duration}", DateUtils.formatDateDiff(time),
                     "{player}", sender.getName(),
                     "{target}", target.getName(),

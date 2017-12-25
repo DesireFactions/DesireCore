@@ -49,7 +49,7 @@ public class StaffChatCommand extends ValidCommand
 
         String message = (String) args.get(0).getValue();
 
-        String parsed = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", false, false,
+        String parsed = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", false,
                 "{name}", sender.getName(),
                 "{message}", ChatColor.translateAlternateColorCodes('&', message));
 
