@@ -68,15 +68,26 @@ public class LangHandler extends FileHandler
      * @param prefix to use a prefix or not.
      * @return formatted message.
      */
-    public String renderMessage(String string, boolean prefix, Object... args)
+    public String renderMessage(String string, boolean prefix, boolean center, Object... args)
     {
+        String message;
+
         if (prefix)
         {
-            return renderString(getString(string), args);
+            message = renderString(getString(string), args);
         }
         else
         {
-            return renderString(super.getString(string), args);
+            message = renderString(super.getString(string), args);
+        }
+
+        if (center)
+        {
+            return ChatUtils.renderCenteredMessage(string);
+        }
+        else
+        {
+            return message;
         }
     }
 
@@ -108,11 +119,11 @@ public class LangHandler extends FileHandler
 
         if (prefix)
         {
-            message = renderMessage(string, true, args);
+            message = renderMessage(string, true, center, args);
         }
         else
         {
-            message = renderMessage(string, false, args);
+            message = renderMessage(string, false, center, args);
         }
 
         if (center)

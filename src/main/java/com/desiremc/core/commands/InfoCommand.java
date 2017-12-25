@@ -69,13 +69,13 @@ public class InfoCommand extends ValidCommand
         // if they this is still null, they have a normal status
         if (punishment == null)
         {
-            return lang.renderMessage("info.normal", false);
+            return lang.renderMessage("info.normal", false, false);
         }
 
         // return ip ban message, it never has a time
         if (punishment.getType() == Type.IP_BAN)
         {
-            return lang.renderMessage("info.ipbanned", false);
+            return lang.renderMessage("info.ipbanned", false, false);
         }
 
         // return the ban message, varies by permanence
@@ -83,11 +83,11 @@ public class InfoCommand extends ValidCommand
         {
             if (punishment.isPermanent())
             {
-                return lang.renderMessage("info.permbanned", false);
+                return lang.renderMessage("info.permbanned", false, false);
             }
             else
             {
-                return lang.renderMessage("info.banned", false, "{time}", longToTime(punishment.getExpirationTime()));
+                return lang.renderMessage("info.banned", false, false, "{time}", longToTime(punishment.getExpirationTime()));
             }
         }
 
@@ -96,11 +96,11 @@ public class InfoCommand extends ValidCommand
         {
             if (punishment.isPermanent())
             {
-                return lang.renderMessage("info.permmuted", false);
+                return lang.renderMessage("info.permmuted", false, false);
             }
             else
             {
-                return lang.renderMessage("info.muted", false, "{time}", longToTime(punishment.getExpirationTime()));
+                return lang.renderMessage("info.muted", false, false, "{time}", longToTime(punishment.getExpirationTime()));
             }
         }
 
