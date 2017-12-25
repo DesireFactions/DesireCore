@@ -46,6 +46,10 @@ public class IpbanCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ipban.ban_message", true, false,
+                    "{player}", sender.getName(),
+                    "{target}", target.getName(),
+                    "{reason}", reason);
         }
         else
         {

@@ -56,6 +56,11 @@ public class TempBanCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ban.tempban_message", true, false,
+                    "{duration}", DateUtils.formatDateDiff(time),
+                    "{player}", sender.getName(),
+                    "{target}", target.getName(),
+                    "{reason}", reason);
         }
         else
         {

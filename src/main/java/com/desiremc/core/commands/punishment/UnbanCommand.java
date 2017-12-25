@@ -49,11 +49,16 @@ public class UnbanCommand extends ValidCommand
 
         if (flag.equals("-s"))
         {
-            return;
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ban.unban_message", true, false,
+                    "{target}", target.getName(),
+                    "{player}", sender.getName());
         }
-        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.unban_message", true, false,
-                "{target}", target.getName(),
-                "{player}", sender.getName()));
+        else
+        {
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ban.unban_message", true, false,
+                    "{target}", target.getName(),
+                    "{player}", sender.getName()));
+        }
     }
 
 }

@@ -48,6 +48,10 @@ public class WarnCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "warn.warn_issued", true, false,
+                    "{target}", target.getName(),
+                    "{reason}", reason,
+                    "{player}", sender.getName());
         }
         else
         {

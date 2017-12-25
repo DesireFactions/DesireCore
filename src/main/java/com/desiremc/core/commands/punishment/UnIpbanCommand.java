@@ -52,9 +52,11 @@ public class UnIpbanCommand extends ValidCommand
 
         if (flag.equals("-s"))
         {
-            return;
+            DesireCore.getLangHandler().sendRenderMessage(sender, "ipban.unban_message", true, false, "{target}", target.getName(), "{player}", sender.getName());
         }
-
-        Bukkit.broadcastMessage(LANG.renderMessage("ipban.unban_message", true, false, "{target}", target.getName(), "{player}", sender.getName()));
+        else
+        {
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("ipban.unban_message", true, false, "{target}", target.getName(), "{player}", sender.getName()));
+        }
     }
 }

@@ -52,11 +52,15 @@ public class UnblacklistCommand extends ValidCommand
 
         if (flag.equals("-s"))
         {
-            return;
+            DesireCore.getLangHandler().sendRenderMessage(sender, "blacklist.unblacklist_message", true, false,
+                    "{target}", target.getName(),
+                    "{player}", sender.getName());
         }
-
-        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message", true, false,
-                "{target}", target.getName(),
-                "{player}", sender.getName()));
+        else
+        {
+            Bukkit.broadcastMessage(DesireCore.getLangHandler().renderMessage("blacklist.unblacklist_message", true, false,
+                    "{target}", target.getName(),
+                    "{player}", sender.getName()));
+        }
     }
 }

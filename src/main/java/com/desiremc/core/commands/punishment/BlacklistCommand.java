@@ -47,6 +47,10 @@ public class BlacklistCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "blacklist.blacklist_message", true, false,
+                    "{player}", sender.getName(),
+                    "target}", target.getName(),
+                    "{reason}", reason);
         }
         else
         {
