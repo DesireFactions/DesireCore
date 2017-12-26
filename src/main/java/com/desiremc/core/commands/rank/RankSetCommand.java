@@ -48,7 +48,7 @@ public class RankSetCommand extends ValidCommand
             SessionHandler.removeStaff(target.getUniqueId());
         }
 
-        PermissionUser user = PermissionsEx.getUser(target.getPlayer());
+        PermissionUser user = PermissionsEx.getUser(target.getName());
 
         user.removeGroup(target.getRank().name());
         user.addGroup(rank.name());
