@@ -39,10 +39,17 @@
 			<artifactId>worldedit-bukkit</artifactId>
 			<version>6.1.5</version>
 		</dependency>
+		<!-- PEX API -->
 		<dependency>
 			<groupId>ru.tehkode</groupId>
 			<artifactId>PermissionsEx</artifactId>
 			<version>1.22.6</version>
+			<exclusions>
+				<exclusion>
+					<groupId>net.gravitydevelopment.updater</groupId>
+					<artifactId>updater</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	<repositories>
