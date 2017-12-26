@@ -44,6 +44,9 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         sessions = new HashMap<>();
         onlineSessions = new HashMap<>();
         onlineStaff = new HashMap<>();
+
+        sessions.put(DesireCore.getConsoleUUID(), console);
+        onlineSessions.put(DesireCore.getConsoleUUID(), console);
     }
 
     private static boolean applyExternalData(Session session)
