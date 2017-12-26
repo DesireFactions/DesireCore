@@ -115,25 +115,7 @@ public class LangHandler extends FileHandler
      */
     public void sendRenderMessage(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
-        String message;
-
-        if (prefix)
-        {
-            message = renderMessage(string, true, center, args);
-        }
-        else
-        {
-            message = renderMessage(string, false, center, args);
-        }
-
-        if (center)
-        {
-            ChatUtils.sendCenteredMessage(sender, message);
-        }
-        else
-        {
-            sender.sendMessage(message);
-        }
+        sender.sendMessage(renderMessage(string, prefix, center, args));
     }
 
     /**

@@ -441,7 +441,7 @@ public class Session
 
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, false);
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, true);
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.title", false, true);
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.name", false, true, "{name}", achievement.getName());
             DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.desc", false, true, "{desc}", achievement.getDescription());
@@ -449,7 +449,7 @@ public class Session
             {
                 DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.reward", false, true, "{reward}", achievement.getReward());
             }
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, false);
+            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, true);
         }
 
         if (achievement.getReward() > 0)
