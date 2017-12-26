@@ -83,7 +83,7 @@ public class LangHandler extends FileHandler
 
         if (center)
         {
-            return ChatUtils.renderCenteredMessage(string);
+            return ChatUtils.renderCenteredMessage(message);
         }
         else
         {
