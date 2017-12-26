@@ -108,7 +108,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
      */
     public static Session getOnlineSession(UUID uuid)
     {
-        if (DesireCore.getConsoleUUID() == uuid)
+        if (DesireCore.getConsoleUUID().equals(uuid))
         {
             return console;
         }
@@ -117,7 +117,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
 
     public static Session getGeneralSession(UUID uuid)
     {
-        if (DesireCore.getConsoleUUID() == uuid)
+        if (DesireCore.getConsoleUUID().equals(uuid))
         {
             return console;
         }
