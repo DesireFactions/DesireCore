@@ -458,7 +458,7 @@ public class Session
         }
 
         FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix())
-                .then(player.getName() + " has earned the achievement ")
+                .then(" " + player.getName() + " has earned the achievement ")
                 .color(ChatColor.WHITE)
                 .then(achievement.getName())
                 .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
