@@ -1,7 +1,10 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -14,14 +17,9 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.punishments.SessionIPBannedValidator;
 import com.desiremc.core.validators.punishments.SessionNotBlacklistedValidator;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 public class UnIpbanCommand extends ValidCommand
 {
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public UnIpbanCommand()
     {
         super("unipban", "Unban a users ip from the server.", Rank.ADMIN);

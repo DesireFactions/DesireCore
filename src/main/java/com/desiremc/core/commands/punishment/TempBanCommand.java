@@ -1,5 +1,9 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -16,9 +20,6 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.core.validators.SenderNotTargetValidator;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 public class TempBanCommand extends ValidCommand
 {

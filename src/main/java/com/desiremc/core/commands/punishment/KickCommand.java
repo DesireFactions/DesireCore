@@ -1,5 +1,9 @@
 package com.desiremc.core.commands.punishment;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -9,9 +13,6 @@ import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.validators.SenderOutranksTargetValidator;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 public class KickCommand extends ValidCommand
 {
@@ -20,8 +21,16 @@ public class KickCommand extends ValidCommand
     {
         super("kick", "Kick a user from the server.", Rank.HELPER);
 
-        addArgument(CommandArgumentBuilder.createBuilder(Session.class).setName("target").setParser(new SessionParser()).addValidator(new SenderOutranksTargetValidator()).build());
-        addArgument(CommandArgumentBuilder.createBuilder(String.class).setName("reason").setParser(new StringParser()).build());
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderOutranksTargetValidator())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
 
     }
 
