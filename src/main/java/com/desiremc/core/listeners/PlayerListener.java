@@ -1,15 +1,5 @@
 package com.desiremc.core.listeners;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.commands.spawn.SpawnCommand;
-import com.desiremc.core.events.PlayerBlockMoveEvent;
-import com.desiremc.core.events.PlayerChunkMoveEvent;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.BukkitUtils;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -22,6 +12,18 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.commands.spawn.SpawnCommand;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.events.PlayerChunkMoveEvent;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BukkitUtils;
+
+import net.md_5.bungee.api.ChatColor;
+
 public class PlayerListener implements Listener
 {
     private static final boolean DEBUG = false;
@@ -30,6 +32,10 @@ public class PlayerListener implements Listener
     public void onBlockChange(PlayerMoveEvent event)
     {
         PlayerBlockMoveEvent blockMoveEvent = null;
+        if (event.getFrom() == null || event.getTo() == null)
+        {
+            return;
+        }
         if (BukkitUtils.differentChunk(event.getFrom(), event.getTo()))
         {
             blockMoveEvent = new PlayerChunkMoveEvent(event.getPlayer(), event.getFrom(), event.getTo());
