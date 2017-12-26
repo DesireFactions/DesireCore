@@ -48,6 +48,10 @@ public class BlockColumn implements Rectangle
         this.world = block.getWorld();
     }
 
+    public BlockColumn()
+    {
+    }
+
     /**
      * @return the x
      */

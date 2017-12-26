@@ -48,6 +48,10 @@ public class BoundedArea implements Rectangle
         this((int) min, (int) min2, (int) max, (int) max2);
     }
 
+    public BoundedArea()
+    {
+    }
+
     /**
      * @return the minX
      */
@@ -260,6 +264,12 @@ public class BoundedArea implements Rectangle
     public float getWidth()
     {
         return x2() - x1() + 1;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "[x1: " + x1 + " x2:" + x2 + " z1:" + z1 + " z2:" + z2 + "]";
     }
 
 }
