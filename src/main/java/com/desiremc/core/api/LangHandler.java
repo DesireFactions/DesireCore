@@ -78,7 +78,7 @@ public class LangHandler extends FileHandler
         }
         else
         {
-            message = renderString(super.getString(string), args);
+            message = renderString(getString(string), args).replace(getPrefix(), "");
         }
 
         if (center)
