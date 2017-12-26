@@ -16,7 +16,6 @@ public class SenderHasFreeSlotValidator implements SenderValidator
     @Override
     public boolean validate(Session sender)
     {
-        System.out.println("Free slot start");
         if (!sender.isPlayer())
         {
             return false;
@@ -28,7 +27,6 @@ public class SenderHasFreeSlotValidator implements SenderValidator
                     "{have/has}", "have");
             return false;
         }
-        System.out.println("Free slot pass");
         return true;
     }
 

@@ -59,8 +59,6 @@ public class CommandHandler implements CommandExecutor, TabCompleter
             if (session.getRank().getId() >= command.getRequiredRank().getId())
             {
                 command.process(session, new String[] { label }, args);
-                // TODO
-                System.out.println("Processed command on onCommand");
             }
             else
             {
