@@ -1,12 +1,10 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
-import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -19,13 +17,17 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.Messageable;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.punishment.Punishment;
+import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
 
 @Entity(value = "sessions", noClassnameStored = true)
-public class Session
+public class Session implements Messageable
 {
 
     @Id
@@ -425,7 +427,7 @@ public class Session
      * Give a player an achievement as well as reward them with the tokens.
      *
      * @param achievement the achievement.
-     * @param inform      whether to inform the player or not.
+     * @param inform whether to inform the player or not.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {

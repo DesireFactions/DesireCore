@@ -1,16 +1,17 @@
 package com.desiremc.core.api;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.core.utils.CollectionUtils;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.Messageable;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.CollectionUtils;
 
 /**
  * @author Michael Ziluck & Christian Tooley.
@@ -23,7 +24,7 @@ public class LangHandler extends FileHandler
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also loads the prefix.
      *
-     * @param file   file to retrieve the lang from
+     * @param file file to retrieve the lang from
      * @param plugin main file of the plugin.
      */
     public LangHandler(File file, JavaPlugin plugin)
@@ -64,8 +65,9 @@ public class LangHandler extends FileHandler
      * Render a message using the format rendered in lang.yml
      *
      * @param string key to retrieve from the lang file.
-     * @param args   arguments to replace.
      * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace.
      * @return formatted message.
      */
     public String renderMessage(String string, boolean prefix, boolean center, Object... args)
@@ -78,7 +80,7 @@ public class LangHandler extends FileHandler
         }
         else
         {
-            message = renderString(getString(string), args).replace(getPrefix(), "");
+            message = renderString(super.getString(string), args);
         }
 
         if (center)
@@ -91,6 +93,15 @@ public class LangHandler extends FileHandler
         }
     }
 
+    /**
+     * Shorthand to render a list of strings and send it to a {@link CommandSender}.
+     *
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
+     */
     public void sendRenderList(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
         List<String> messages = DesireCore.getLangHandler().getStringList(string);
@@ -101,17 +112,33 @@ public class LangHandler extends FileHandler
         }
     }
 
-    public void sendRenderList(Session sender, String string, boolean prefix, boolean center, Object... args)
+    /**
+     * Shorthand to render a list of strings and send it to a {@link Messageable}.
+     *
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
+     */
+    public void sendRenderList(Messageable sender, String string, boolean prefix, boolean center, Object... args)
     {
-        sendRenderList(sender.getSender(), string, prefix, center, args);
+        List<String> messages = DesireCore.getLangHandler().getStringList(string);
+
+        for (String s : messages)
+        {
+            sender.sendMessage(renderMessage(s, prefix, center, args));
+        }
     }
 
     /**
-     * Shorthand to render a command and send it to a {@link CommandSender}
+     * Shorthand to render a message and send it to a {@link CommandSender}.
      *
      * @param sender user to send the message to.
-     * @param string the key to retrieve the message from the config file.
-     * @param args   arguments to replace within the message.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
      */
     public void sendRenderMessage(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
@@ -119,23 +146,25 @@ public class LangHandler extends FileHandler
     }
 
     /**
-     * Shorthand to render a command and send it to a {@link CommandSender}
+     * Shorthand to render a message and send it to a {@link CommandSender}.
      *
      * @param sender user to send the message to.
-     * @param string the key to retrieve the message from the config file.
-     * @param args   arguments to replace within the message.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
      */
-    public void sendRenderMessage(Session sender, String string, boolean prefix, boolean center, Object... args)
+    public void sendRenderMessage(Messageable sender, String string, boolean prefix, boolean center, Object... args)
     {
-        sendRenderMessage(sender.getSender(), string, prefix, center, args);
+        sender.sendMessage(renderMessage(string, prefix, center, args));
     }
 
     /**
      * Render a usage message using the format specified in lang.yml
      *
      * @param label the command label.
-     * @param args  the arguments of the command.
-     * @return the formatted usageMessage
+     * @param args the arguments of the command.
+     * @return the formatted usage message
      */
     private String usageMessage(String label, Object... args)
     {
@@ -157,8 +186,8 @@ public class LangHandler extends FileHandler
      * Shorthand to send a usage message to a {@link CommandSender}
      *
      * @param sender user to send the message to.
-     * @param label  label of the command.
-     * @param args   arguments of the command.
+     * @param label label of the command.
+     * @param args arguments of the command.
      */
     public void sendUsageMessage(CommandSender sender, String label, Object... args)
     {
@@ -169,7 +198,7 @@ public class LangHandler extends FileHandler
      * Render a string with the proper parameters.
      *
      * @param string the rendered string.
-     * @param args   the placeholders and proper content.
+     * @param args the placeholders and proper content.
      * @return the rendered string.
      */
     public String renderString(String string, Object... args)
