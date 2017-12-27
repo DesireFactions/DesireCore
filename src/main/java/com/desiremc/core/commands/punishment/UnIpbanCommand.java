@@ -34,6 +34,7 @@ public class UnIpbanCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("flag")
                 .setParser(new StringParser())
+                .setOptional()
                 .build());
     }
 
