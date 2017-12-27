@@ -51,7 +51,7 @@ public class HelpCommand extends ValidCommand
                 "{command}", StringUtils.compile(label),
                 "{current}", page,
                 "{max}", pages);
-        for (int i = 0 + (page * 6); i < Math.min(usable.size(), 6 + (page * 6)); i++)
+        for (int i = 0 + ((page - 1) * 6); i < Math.min(usable.size(), 6 + ((page - 1) * 6)); i++)
         {
             sender.sendMessage(" §b/" + StringUtils.compile(label) + " " + usable.get(i).getName() + ": §7" + usable.get(i).getDescription());
         }
