@@ -1,13 +1,13 @@
 package com.desiremc.core.staff;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.report.Report;
-import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.thread.ClicksPerSecondThread;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.core.utils.TargetBlock;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,13 +22,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.report.Report;
+import com.desiremc.core.report.ReportHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.thread.ClicksPerSecondThread;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.TargetBlock;
 
 public class StaffHandler
 {
@@ -123,7 +124,11 @@ public class StaffHandler
         DesireCore.getLangHandler().sendRenderMessage(p, "staff.staff_on", true, false);
         p.setGameMode(GameMode.CREATIVE);
         p.setFoodLevel(20);
-        toggleInvisibility(p, true);
+        hidePlayer(p);
+        if (!hiddenPlayers.contains(p.getUniqueId()))
+        {
+            hiddenPlayers.add(p.getUniqueId());
+        }
     }
 
     public boolean inStaffChat(UUID uuid)
