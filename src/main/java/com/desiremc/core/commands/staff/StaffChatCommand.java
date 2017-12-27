@@ -33,7 +33,7 @@ public class StaffChatCommand extends ValidCommand
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
 
-        if (args.get(0).hasValue())
+        if (!args.get(0).hasValue())
         {
             if (StaffHandler.getInstance().inStaffChat(sender.getUniqueId()))
             {
@@ -55,7 +55,7 @@ public class StaffChatCommand extends ValidCommand
 
         for (Session target : SessionHandler.getOnlineStaff())
         {
-            target.getPlayer().sendMessage(parsed);
+            target.sendMessage(parsed);
         }
 
     }
