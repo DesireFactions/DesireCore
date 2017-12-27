@@ -52,9 +52,9 @@ public class ReflectionUtils
         {
             integerValueField.set(original, value);
         }
-        catch (IllegalArgumentException | IllegalAccessException ex)
+        catch (IllegalArgumentException | IllegalAccessException eX)
         {
-            ex.printStackTrace();
+            eX.printStackTrace();
         }
     }
 

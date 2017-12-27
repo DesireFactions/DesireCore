@@ -1,5 +1,15 @@
 package com.desiremc.core;
 
+import java.io.File;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandHandler;
@@ -63,19 +73,11 @@ import com.desiremc.core.staff.GadgetHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tickets.TicketHandler;
+import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.core.utils.ItemDb;
 import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
 import com.desiremc.core.utils.ReflectionUtils.NMSFields;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.SimplePluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.util.UUID;
 
 public class DesireCore extends JavaPlugin
 {
@@ -132,6 +134,7 @@ public class DesireCore extends JavaPlugin
         ReportHandler.initialize();
         GadgetHandler.initialize();
         TabAPI.initialize();
+        BukkitUtils.initialize();
 
         mongoWrapper.getDatastore().ensureIndexes();
 
@@ -179,7 +182,7 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new TimingsCommand());
         commandHandler.registerCommand(new StaffChatCommand("sc"));
         commandHandler.registerCommand(new StaffFreezeCommand());
-        commandHandler.registerCommand(new StaffModeCommand("mod", new String[] {"staff", "v"}));
+        commandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
         commandHandler.registerCommand(new StaffRestoreCommand("inv"));
         commandHandler.registerCommand(new StaffReportsCommand("reports"));
         commandHandler.registerCommand(new StaffAltsCommand("alts"));

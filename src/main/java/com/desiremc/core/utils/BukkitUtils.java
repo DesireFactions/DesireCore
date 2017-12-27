@@ -1,13 +1,20 @@
 package com.desiremc.core.utils;
 
 import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import com.desiremc.core.DesireCore;
+
 public class BukkitUtils
 {
+
+    private static final BlockingDeque<Runnable> syncMethods = new LinkedBlockingDeque<>();
 
     private static DecimalFormat format = new DecimalFormat("#.###");
 
@@ -51,6 +58,33 @@ public class BukkitUtils
     public static boolean differentChunk(Location loc1, Location loc2)
     {
         return loc1.getBlockX() >> 4 != loc2.getBlockX() >> 4 || loc1.getBlockZ() >> 4 != loc2.getBlockZ() >> 4 || loc1.getWorld() != loc2.getWorld();
+    }
+
+    private static int ticks = 0;
+    private static long startTime = System.currentTimeMillis();
+
+    public static void initialize()
+    {
+        Bukkit.getScheduler().runTaskTimer(DesireCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                ticks++;
+                if (ticks == 20)
+                {
+                    System.out.println(System.currentTimeMillis() - startTime);
+                }
+                Iterable<Runnable> tasks = new LinkedList<>();
+                syncMethods.drainTo(syncMethods);
+                tasks.forEach(task -> task.run());
+            }
+        }, 0, 0);
+    }
+
+    public static synchronized void addSyncMethod(Runnable runnable)
+    {
+        syncMethods.add(runnable);
     }
 
 }
