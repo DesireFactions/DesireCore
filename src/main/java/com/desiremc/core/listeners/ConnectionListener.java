@@ -1,5 +1,6 @@
 package com.desiremc.core.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -80,10 +81,10 @@ public class ConnectionListener implements Listener
         PlayerUtils.addPlayer(player);
 
         SessionHandler.initializeSession(player);
-        
+
         if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
         {
-            player.teleport(SpawnCommand.getSpawnLocation());
+            Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), () -> player.teleport(SpawnCommand.getSpawnLocation()), 0);
         }
     }
 
