@@ -1,12 +1,12 @@
 list-header: '&c&m---------------------------------'
-usage-message: '`&7[&6Usage&7] &e{usage}&e'
+usage-message: '`&7[&bUsage&7] &f{usage}&e'
 not_time: '&7Time format used is invalid.'
 never_logged_in: '&7This player has never logged in before.'
 only_players: '&7Only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
-not_banned: '{player} is not banned.'
-not_ip_banned: '{player} is not IP banned.'
-not_blacklisted: '{player} is not blacklisted.'
+not_banned: '&f{player} &7is not banned.'
+not_ip_banned: '&f{player} &7is not IP banned.'
+not_blacklisted: '&f{player} &7is not blacklisted.'
 blacklisted: '{player} is blacklisted. They can''t be unbanned.'
 no_season_data: 'Could not find Season data for &e{faction}'
 could_not_retrieve: '&6Could not retrieve &7{name}'
@@ -20,19 +20,16 @@ not_weather: '&7That is not a valid weather type.'
 item_in_hand: '&7You must have an item in your hand.'
 invalid_item: '&7Enter an item name or ID and data'
 not_block: '&7That is not a block.'
-potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
-cant_to_self: 'You can''t do that to yourself!'
-player-not-found: 'That player does not exist!'
-not_online: "That player is not online."
-rank_too_high: "You can't set a players rank higher than your own."
-no_free_slots: '&7{target} {have/has} no free inventory slots.'
-invalid_flag: "That is an invalid punishment flag."
-not_world: "That world does not exist."
-rename: "You have renamed the item in your hand to {name}."
-teamspeak: 'Join us on TeamSpeak! ts.desirehcf.com'
-helpop:
-  self: '&7You''ve requested support from the online staff.'
-  target: '[Request] {player}: {message} '
+potion-disabled: '&b&lPOTIONS&r&8 » &7This potion effect is &fdisabled&7!'
+cant_to_self: '&7You can''t do that to yourself!'
+player-not-found: '&7That player does not exist!'
+not_online: "&7That player is not online."
+rank_too_high: "&7You can't set a players rank higher than your own."
+no_free_slots: '&f{target} {have/has} &7no free inventory slots.'
+invalid_flag: "&7That is an invalid punishment flag."
+not_world: "&7That world does not exist."
+rename: "&7You have renamed the item in your hand to {name}."
+teamspeak: "&7Join us on &fTeamSpeak&7! &fts&7.&fdesirehcf&7.&fcom"
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
@@ -41,103 +38,101 @@ number:
   too_large: '&c{value}&7 is too large.'
   too_small: '&c{value}&7 is too small.'
 boolean:
-  invalid: '&c{value}&7 is invalid.'
+  invalid: '&f{value}&7 is invalid.'
 set_end:
-  exit: '&8[&c&l*&8]&7 You have set end exit!'
-  spawn: '&8[&c&l*&8]&7 You have set end spawn!'
+  exit: '&8[&b&l*&8]&7 You have set &fend exit&7!'
+  spawn: '&8[&b&l*&8]&7 You have set &fend spawn&7!'
 ping:
-  other: "&9{player} has a ping of &6{ping}ms&9."
-  self: "&9You have a ping of &6{ping}ms&9."
+  other: "&f{player} &7has a ping of &b{ping}ms&7."
+  self: "&7You have a ping of &b{ping}ms&7."
 rank:
   invalid: 'Rank invalid'
-  inform: 'You are now a {rank}.'
+  inform: '&7You are now a &f{rank}&7.'
   list: '{color}{rank}'
   check: 'Your rank is currently {color}{rank}.'
-  set: 'You have set {player}''s rank to &e{rank}.'
+  set: '&7You have set &f{player}''s &7rank to &f{rank}&7.'
 friend:
-  already_friends: 'You are already friends with {player}.'
-  accepted_friend_request: 'You accepted a friend request from {player}.'
-  are_now_friend: 'You are now friends with {player}.'
-  no_longer_friend: 'You are no longer friends with {player}.'
-  sent_request: 'You have sent {player} a friend request.'
-  received_request: 'You have received a friend request from {player}.'
-  both_friend_requested: 'You had a friend request from {player} so we added you both as friends.'
-  denied_friend_request: 'You have denied {player}''s friend request.'
-  no_request: 'You don''t have a friend request from {player}.'
-  no_incoming: 'You don''t have any incoming friend requests.'
-  no_outgoing: 'You don''t have any outgoing friend requests.'
-  no_friends: 'You currently have no friends.'
-  not_friends: 'You are not friends with {player}.'
+  already_friends: 'You are already friends with &f{player}&7.'
+  accepted_friend_request: '&7You accepted a friend request from &f{player}&7.'
+  are_now_friend: '&7You are now friends with {player}&7.'
+  no_longer_friend: '&7You are no longer friends with &f{player}&7.'
+  sent_request: '&7You have sent &f{player} &7a friend request.'
+  received_request: '&7You have received a friend request from {player}&7.'
+  both_friend_requested: '&7You had a friend request from &f{player} &7so we added you both as friends.'
+  denied_friend_request: '&7You have denied &f{player}''s &7friend request.'
+  no_request: 'You don''t have a friend request from &f{player}&7.'
+  no_incoming: '&7You don''t have any incoming friend requests.'
+  no_outgoing: '&7You don''t have any outgoing friend requests.'
+  no_friends: '&7You currently have no friends.'
+  not_friends: '&7You are not friends with &f{player}&7.'
   friends: '&7Current Friends: '
-  incoming_friends: '&7Incoming friend requests: '
-  outgoing_friends: '&7Outgoing friend requests: '
-  already_sent_request: '&7You have already sent &e{player}&7 a friend request.'
+  incoming_friends: '&7Incoming friend requests&f: '
+  outgoing_friends: '&7Outgoing friend requests&f: '
+  already_sent_request: '&7You have already sent &f{player}&7 a friend request.'
 ban:
-  tempban_message: '&7{player} has banned &e{target}&7 for {duration} for &e{reason}&7.'
-  permban_message: '&7{player} has permanently banned &e{target}&7 for &e{reason}&7.'
-  unban_message: '&7{player} has unbanned &e{target}&7.'
+  tempban_message: '&b{player} &7has temp banned &b{target}&7 for &f{duration} &7for &f{reason}&7.'
+  permban_message: '&b{player} &7has permanently banned &b{target}&7 for &f{reason}&7.'
+  unban_message: '&b{player} &7has unbanned &b{target}&7.'
 ipban:
-  ban_message: '&7{player} has permanently IP banned &e{target}&7 for &e{reason}&7.'
-  unban_message: '&7{player} has unbanned &e{target}''s&7 IP.'
+  ban_message: '&b{player} &7has permanently IP banned &b{target}&7 for &f{reason}&7.'
+  unban_message: '&b{player} has unbanned &b{target}''s&7 IP.'
 mute:
-  temp_broadcast: '&7{player} has muted &e{target}&7 for &e{duration} &7for &e{reason}&7.'
-  temp_silent: '&7You have muted &e{target}&7 for &e{duration}&7.'
-  perm_broadcast: '&7{player} has permanently muted &e{target}&7 for &e{reason}&7.'
-  perm_silent: '&7You have permanently muted &e{target}&7 for &e{reason}&7.'
-  temp_target: '&7You have been muted by &e{player}&7 for &e{duration}&7 for &e{reason}&7.'
-  perm_target: '&7You have been permanently muted by &e{player}&7 for &e{reason}&7.'
-  unmute: '&7{player} has unmuted &e{target}&7.'
-  unmute_target: '&7You have been unmuted by &e{player}&7.'
-  unmute_broadcast:  '&7{player} has unmuted &e{target}&7.'
-  not_muted: '&e{target}&7 is not muted.'
+  temp_broadcast: '&b{player} &7has muted &b{target}&7 for &f{duration} &7for &f{reason}&7.'
+  temp_silent: '&7You have muted &b{target}&7 for &f{duration}&7.'
+  perm_broadcast: '&b{player} &7has permanently muted &b{target}&7 for &f{reason}&7.'
+  perm_silent: '&7You have permanently muted &b{target}&7 for &f{reason}&7.'
+  temp_target: '&7You have been muted by &b{player}&7 for &f{duration}&7 for &f{reason}&7.'
+  perm_target: '&7You have been permanently muted by &b{player}&7 for &f{reason}&7.'
+  unmute: '&b{player} &7has unmuted &b{target}&7.'
+  unmute_target: '&7You have been unmuted by &b{player}&7.'
+  unmute_broadcast:  '&b{player} &7has unmuted &b{target}&7.'
+  not_muted: '&b{target}&7 is not muted.'
 blacklist:
-  blacklist_message: '&7{player} has blacklisted &e{target}&7 for &e{reason}&7.'
-  unblacklist_message: '&7{player} has unblacklisted &e{target}&7.'
+  blacklist_message: '&b{player} &7has &nblacklisted&r &b{target}&7 for &f{reason}&7.'
+  unblacklist_message: '&b{player} &7has &nunblacklisted&r &b{target}&7.'
 warn:
-  warn_issued: '&7{player} has warned &e{target}&7 for &e{reason}&7.'
-  warned: 'You have been warned by {player} for {reason}.'
+  warn_issued: '&b{player} &7has warned &b{target}&7 for &f{reason}&7.'
+  warned: 'You have been warned by &b{player} &7for &f{reason}&7.'
 kick:
-  silent: '&7You have kicked &e{player} &7for &e{reason}&7.'
-  kicked: '&7You have been kicked by &e{player}&7 for &e{reason}&7.'
-  broadcast: '&e{player} &7has kicked &e{target}&7 for &e{reason}&7.'
+  silent: '&7You have kicked &b{player} &7for &f{reason}&7.'
+  kicked: '&7You have been kicked by &b{player}&7 for &f{reason}&7.'
+  broadcast: '&b{player} &7has kicked &b{target}&7 for &f{reason}&7.'
 staff:
-  cps-start: 'Starting clicks per second test for {player}. Result in 10 seconds.'
-  cps-finish: '{player} had a CPS of {amount} over 10 seconds.'
-  cps-already-running: 'There is already a clicks per second test for {player} running.'
-  froze-target: 'You have frozen {player}.'
-  staff_on: 'You have toggled staff mode on.'
-  staff_off: 'You have toggled staff mode off.'
-  staff-chat-on: 'You are now in staff chat.'
-  staff-chat-off: 'You have left staff chat.'
-  staff-chat-format: '&c[SC] &f{name}&7: {message}'
+  cps-start: '&7Starting clicks per second test for &f{player}&7. Result in &f10 seconds&7.'
+  cps-finish: '&f{player} &7had a CPS of &f{amount} &7over 10 seconds.'
+  cps-already-running: '&7There is already a clicks per second test for &f{player} &7running.'
+  froze-target: '&&You have frozen &f{player}&7.'
+  staff_on: '&7You have toggled staff mode &fon&7.'
+  staff_off: 'You have toggled staff mode &foff&7.'
+  staff-chat-on: '&7You are now in staff chat.'
+  staff-chat-off: '&7You have left staff chat.'
+  staff-chat-format: '&b[SC] &f{name}&7: &b{message}'
   chat_cleared: '&7You have cleared chat.'
-  chat_cleared_broadcast: '&7{player} has cleared chat.'
-  chat_on: 'You have turned chat back on.'
-  chat_off: 'You have turned chat off.'
-  chat_on_broadcast: '{player} has turned chat on.'
-  chat_off_broadcast: '{player} has turned chat off.'
-  set-invisible: 'You are now invisible.'
-  set-visible: 'You are now visible.'
-  target-frozen: 'You have froze {player}.'
-  target-unfrozen: 'You have unfroze {player}.'
+  chat_cleared_broadcast: '&f{player} &7has cleared chat.'
+  chat-on: '&7You have turned chat back on.'
+  chat-off: '&7You have turned chat off.'
+  set-invisible: '&7You are now invisible.'
+  set-visible: '&7You are now visible.'
+  target-frozen: '&7You have froze &f{player}&7.'
+  target-unfrozen: '&7You have unfroze &f{player}&7.'
   frozen:
+    - "&b&l&m---------------------------------------"
+    - '&7You have been frozen by a &fstaff member&7.'
+    - '&7If you disconnect you will be &cBANNED&7.'
+    - '&7Please connect to our Teamspeak.'
+    - '&fts&7.&fdesirehcf&7.&fcom'
     - "&c&l&m---------------------------------------"
-    - 'You have been frozen by a staff member.'
-    - 'If you disconnect you will be BANNED.'
-    - 'Please connect to our Teamspeak.'
-    - 'ts.desirehcf.com'
-    - "&c&l&m---------------------------------------"
-  unfrozen: 'You have been unfrozen by {player}.'
-  no-restore: '{player} does not have an inventory to restore.'
-  restore: 'You have restored {player}''s inventory.'
-  restore-target: '{player} has restored your inventory.'
-  invalid-block: "You are not pointing to a valid block"
-  no-free-space: "There is no free space available for teleport."
-  chat_slow_on: "Chat has been slowed."
-  chat_slow_off: "Chat is no longer slowed."
+  unfrozen: '&7You have been unfrozen by &f{player}&7.'
+  no-restore: '&f{player} &7does not have an inventory to restore.'
+  restore: '&7You have restored &f{player}''s &7inventory.'
+  restore-target: '&f{player} &7has restored your inventory.'
+  invalid-block: "&7You are not pointing to a valid block"
+  no-free-space: "&7There is no free space available for teleport."
+  chat_slow_on: "&7Chat has been &fslowed&7."
+  chat_slow_off: "&7Chat is no longer &fslowed&7."
   chat_slowed: "Warning! Chat has been slowed, please wait {time}."
 report:
-  reported: 'You have reported {player} for {reason}.'
+  reported: '&7You have reported &f{player} &7for &f{reason}&7.'
   getreport:
   - 'Reported on {date}.'
   - 'Reported by {player}.'
@@ -161,55 +156,55 @@ report:
       - 'Go to the next page!'
       item: 'IRON_BLOCK'
 alts:
-  header: "&9Scanning {player} for alts..."
-  spacer: "&c&l&m---------------------------------------"
+  header: "&7Scanning &f{player} &7for alts..."
+  spacer: "&b&l&m---------------------------------------"
   info: "&9{player} &cLast Active: {date}"
-  info_online: "&6{player} &2Currently Online"
-  none: "&c{player} does not have any alts."
+  info_online: "&f{player} &7Currently Online"
+  none: "&f{player} &7does not have any alts."
 rollback:
-  finished: "You have rolled back all punishments from {player} within the last {time}."
+  finished: "&7You have rolled back all punishments from &f{player} &7within the last &f{time}&7."
 settings:
-  toggle: '&7You have turned {setting} &a{status}&7.'
+  toggle: '&7You have turned &f{setting} &f{status}&7.'
 tokens:
   add: '&7You have been awarded &e{tokens}&7 tokens!'
   taken: "&7You have lost &e{tokens}&7 tokens."
   remove: 'Your token amount is now {tokens}.'
-  give: 'You have gained {tokens} tokens.'
-  set: 'Your token amount is now {tokens}'
-  added: "You have added {amount} tokens to {player)'s tokens."
-  removed: "You have removed {amount} tokens from {player}'s tokens."
-  check: "{player} has {amount} tokens."
+  give: '&7You have gained &e{tokens} &7tokens.'
+  set: '&7Your token amount is now &e{tokens}&7.'
+  added: "&7You have added &f{amount} &7tokens to &f{player)'s &7tokens."
+  removed: "&7You have removed &f{amount} &7tokens from &f{player}'s &7tokens."
+  check: "&f{player} &7has &f{amount} &7tokens."
 achievement:
   award:
     header: '&8&m----------------------------------------------------'
-    title: '&4&lDesireHCF &7Achievement unlocked!'
-    name: '&7Name: &e{name}'
-    desc: '&7Desc: &e{desc}'
-    reward: '&7Reward: &e{reward} tokens!'
+    title: '&7Achievement unlocked!'
+    name: '&7Name: &b{name}'
+    desc: '&7Desc: &b{desc}'
+    reward: '&7Reward: &b{reward} &7tokens!'
     footer: '&8&m----------------------------------------------------'
 info:
-  header-footer: "&c&l&m---------------------------------------"
-  name: '&9{player}'
-  uuid: '&9UUID: &c{uuid}'
-  ip: '&9IP: &c{ip}'
-  tokens: '&9Tokens: &c{tokens}'
-  status: '&9Status: &c{status}'
+  header-footer: "&b&l&m---------------------------------------"
+  name: '&b{player}'
+  uuid: '&7UUID: &f{uuid}'
+  ip: '&7IP: &7{ip}'
+  tokens: '&7Tokens: &f{tokens}'
+  status: '&7Status: &f{status}'
   ipbanned: '&cIP Banned'
-  permbanned: '&cPermanently Banned'
-  banned: '&cBanned for {time}'
-  permmuted: '&cPermanently Muted'
-  muted: '&cMuted for {time}'
-  normal: '&cNormal'
+  permbanned: '&7Permanently &fBanned'
+  banned: '&7Banned for &f{time}'
+  permmuted: '&7Permanently &fMuted'
+  muted: '&7Muted for &f{time}'
+  normal: '&fNormal'
 ticket:
   only_id: '&7You can only reference tickets by number.'
   open: '&7You have opened a new ticket. Staff will get to it soon.'
-  delete: '&7You have deleted ticket #{id}.'
-  close: '&7You have closed ticket #{id}.'
-  not_found: '&7Ticket #{id} does not exist.'
+  delete: '&7You have deleted ticket &f#{id}&7.'
+  close: '&7You have closed ticket &f#{id}&7.'
+  not_found: '&7Ticket &f#{id} &7does not exist.'
   header_footer: '&8&m----------------------------------------------------'
-  list: '&6{id}: &eOpened by: &7{player} &eReason: &7{reason}'
+  list: '&7{id}&f: &7Opened by&f: &b{player} &7Reason: &f{reason}'
 tickets:
-  open: 'There are {number} tickets open.'
+  open: '&7There are &f{number} &7tickets open.'
 agui:
   open: 'You have opened the Achievement GUI.'
   inventory:
@@ -238,19 +233,19 @@ auth:
   reset: 'You have reset {player}''s auth key. They will get another when they log in next.'
   allow: 'Allowed {player} to join the server.'
 chat:
-  ignoring: '&7You are ignoring &c{target}&7.'
-  ignored: '&c{target} &7is ignoring you.'
+  ignoring: '&7You are ignoring &f{target}&7.'
+  ignored: '&f{target} &7is ignoring you.'
 history:
   inventory:
-    title: '&cDesireHCF Reports GUI'
+    title: '&b&lDesire &8» &7Reports GUI'
     item:
-      name: '&6{type}'
+      name: '&7{type}'
       lore:
-      - '&cReported by: &6{issuer}'
-      - '&cReported: &6{date}&c ago'
-      - '&cReason: &6{reason}'
-      - '&cPermanent: &6{permanent}'
-      - '&cRepealed: &6{repealed}'
+      - '&7Reported by: &f{issuer}'
+      - '&7Reported: &f{date}&7 ago'
+      - '&7Reason: &f{reason}'
+      - '&7Permanent: &f{permanent}'
+      - '&7Repealed: &f{repealed}'
     next:
       name: '&6Next Item'
       lore:
@@ -262,7 +257,7 @@ history:
       - '&cGo to the last page!'
       item: 'IRON_BLOCK'
 spawn:
-  target: '&7Teleported {target} to spawn.'
+  target: '&7Teleported &f{player} &7to spawn.'
   force: '&7You have been teleported to spawn by a staff member.'
   confirm: '&7You have teleported to spawn.'
   set: '&7You have set the spawn to your location.'
