@@ -168,6 +168,9 @@ public abstract class ValidCommand
     {
         if (rawArguments.length < getMinimumLength() || rawArguments.length > getMaximumLength())
         {
+            System.out.println("raw: " + rawArguments.length);
+            System.out.println("min: " + getMinimumLength());
+            System.out.println("max: " + getMaximumLength());
             DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
