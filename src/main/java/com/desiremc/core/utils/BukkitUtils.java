@@ -75,6 +75,7 @@ public class BukkitUtils
                 if (ticks == 20)
                 {
                     System.out.println(System.currentTimeMillis() - startTime);
+                    ticks = 0;
                 }
                 List<Runnable> tasks = new LinkedList<>();
                 syncMethods.drainTo(tasks);
