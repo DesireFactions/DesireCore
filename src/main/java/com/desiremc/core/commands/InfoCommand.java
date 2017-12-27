@@ -1,5 +1,7 @@
 package com.desiremc.core.commands;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -11,8 +13,6 @@ import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.DateUtils;
-
-import java.util.List;
 
 /**
  * Command used to display the player's basic information values.
@@ -38,7 +38,7 @@ public class InfoCommand extends ValidCommand
         DesireCore.getLangHandler().sendRenderMessage(sender, "info.ip", false, true, "{ip}", target.getIp());
         DesireCore.getLangHandler().sendRenderMessage(sender, "info.tokens", false, true, "{tokens}", target.getTokens() + "");
         DesireCore.getLangHandler().sendRenderMessage(sender, "info.status", false, true, "{status}", getStatus(target));
-        DesireCore.getLangHandler().sendRenderMessage(sender, "info.header-footer", false, true);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "info.header-footer", false, false);
     }
 
     /**

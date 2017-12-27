@@ -170,10 +170,6 @@ rollback:
   finished: "You have rolled back all punishments from {player} within the last {time}."
 settings:
   toggle: '&7You have turned {setting} &a{status}&7.'
-enderpearl:
-  ended: '&7You may now use an &5EnderPearl&7.'
-  message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
-  scoreboard: '&7Enderpearl Timer&7: '
 tokens:
   add: '&7You have been awarded &e{tokens}&7 tokens!'
   taken: "&7You have lost &e{tokens}&7 tokens."
@@ -191,12 +187,6 @@ achievement:
     desc: '&7Desc: &e{desc}'
     reward: '&7Reward: &e{reward} tokens!'
     footer: '&8&m----------------------------------------------------'
-punishment:
-  found: '[DesireHCF] Found punishment document for: {player}'
-  type: '[DesireHCF] Punishment Type: {reason}'
-  notfound: '[DesireHCF] Punishment document was not found for: {player}'
-  too_short: '&7You have to give a punishment time.'
-  too_long: '&7You can''t punish someone for that long.'
 info:
   header-footer: "&c&l&m---------------------------------------"
   name: '&9{player}'
