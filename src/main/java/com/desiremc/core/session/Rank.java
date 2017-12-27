@@ -1,11 +1,12 @@
 package com.desiremc.core.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.utils.StringUtils;
-import org.bukkit.ChatColor;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.ChatColor;
+
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.StringUtils;
 
 public enum Rank
 {
@@ -15,9 +16,9 @@ public enum Rank
     COMMODORE(3, "Commodore", "§b❂", ChatColor.WHITE, ChatColor.AQUA),
     GRANDMASTER(4, "Grandmaster", "§d✹", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
-    HELPER(6, "Helper", "§e§lHELPER", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
+    HELPER(6, "Helper", "§d§lHELPER", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
     MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
-    SRMOD(8, "Senior_Mod", "§e§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
+    SRMOD(8, "Senior_Mod", "§6§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
     ADMIN(9, "Admin", "§c§lADMIN", ChatColor.GREEN, ChatColor.RED),
     MANAGER(10, "Manager", "§4§lMANAGER", ChatColor.GREEN, ChatColor.RED),
     DEVELOPER(11, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
