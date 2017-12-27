@@ -23,8 +23,8 @@ public class StaffChatCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("message")
                 .setParser(new StringParser())
-                .setOptional()
                 .setVariableLength()
+                .setOptional()
                 .build());
 
     }

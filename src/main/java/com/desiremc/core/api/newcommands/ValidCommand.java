@@ -335,6 +335,9 @@ public abstract class ValidCommand
         {
             return 0;
         }
+        System.out.println(arguments.size());
+        System.out.println(CollectionUtils.getLast(arguments).hasVariableLength());
+        System.out.println(CollectionUtils.getLast(arguments).getName());
         if (CollectionUtils.getLast(arguments).hasVariableLength())
         {
             return Integer.MAX_VALUE;
