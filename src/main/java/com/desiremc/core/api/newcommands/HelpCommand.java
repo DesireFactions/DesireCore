@@ -41,13 +41,14 @@ public class HelpCommand extends ValidCommand
         int pages = (baseCommand.getUsableCommands(sender).size() + 5) / 6;
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "help_pages", false, false,
+                "{command}", StringUtils.compile(label),
+                "{current}", page,
+                "{max}", pages);
         for (int i = 0 + (page * 6); i < Math.min(usable.size(), 6 + (page * 6)); i++)
         {
             sender.sendMessage(" §b/" + StringUtils.compile(label) + " " + usable.get(i).getName() + ": §7" + usable.get(i).getDescription());
         }
-        DesireCore.getLangHandler().sendRenderMessage(sender, "help_pages", false, false,
-                "{current}", page,
-                "{max}", pages);
     }
 
 }
