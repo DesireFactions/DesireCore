@@ -49,6 +49,7 @@ public class HelpCommand extends ValidCommand
         {
             sender.sendMessage(" §b/" + StringUtils.compile(label) + " " + usable.get(i).getName() + ": §7" + usable.get(i).getDescription());
         }
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
     }
 
 }
