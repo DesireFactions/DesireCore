@@ -166,11 +166,16 @@ public abstract class ValidCommand
      */
     protected void process(Session sender, String[] label, String[] rawArguments)
     {
+        System.out.println("====");
+        System.out.println(rawArguments.length);
+        System.out.println(getMinimumLength());
+        System.out.println(getMaximumLength());
         if (rawArguments.length < getMinimumLength() || rawArguments.length > getMaximumLength())
         {
             DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
+        System.out.println("you can't read code for shit.");
         for (SenderValidator senderValidator : senderValidators)
         {
             if (!senderValidator.validate(sender))
@@ -335,9 +340,6 @@ public abstract class ValidCommand
         {
             return 0;
         }
-        System.out.println(arguments.size());
-        System.out.println(CollectionUtils.getLast(arguments).hasVariableLength());
-        System.out.println(CollectionUtils.getLast(arguments).getName());
         if (CollectionUtils.getLast(arguments).hasVariableLength())
         {
             return Integer.MAX_VALUE;
