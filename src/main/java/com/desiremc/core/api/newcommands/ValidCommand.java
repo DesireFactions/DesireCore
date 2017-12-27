@@ -166,16 +166,11 @@ public abstract class ValidCommand
      */
     protected void process(Session sender, String[] label, String[] rawArguments)
     {
-        System.out.println("====");
-        System.out.println(rawArguments.length);
-        System.out.println(getMinimumLength());
-        System.out.println(getMaximumLength());
         if (rawArguments.length < getMinimumLength() || rawArguments.length > getMaximumLength())
         {
             DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
             return;
         }
-        System.out.println("you can't read code for shit.");
         for (SenderValidator senderValidator : senderValidators)
         {
             if (!senderValidator.validate(sender))
@@ -212,6 +207,12 @@ public abstract class ValidCommand
                 // TODO 
                 System.out.println("argument process failed");
                 return;
+            }
+
+            // terminate if the argument had variable length.
+            if (argument.hasVariableLength())
+            {
+                i = rawArguments.length;
             }
         }
         try
