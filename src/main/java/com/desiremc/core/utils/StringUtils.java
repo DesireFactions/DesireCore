@@ -102,9 +102,9 @@ public class StringUtils
         {
             return false;
         }
-        for (CharSequence searchCharSequence : strings)
+        for (String string : strings)
         {
-            if (net.minecraft.util.org.apache.commons.lang3.StringUtils.contains(search, searchCharSequence))
+            if (net.minecraft.util.org.apache.commons.lang3.StringUtils.contains(search, string))
             {
                 return true;
             }
