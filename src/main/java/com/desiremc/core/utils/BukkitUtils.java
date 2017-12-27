@@ -64,6 +64,8 @@ public class BukkitUtils
     private static int ticks = 0;
     private static long startTime = System.currentTimeMillis();
 
+    private static double tps = 20;
+
     public static void initialize()
     {
         Bukkit.getScheduler().runTaskTimer(DesireCore.getInstance(), new Runnable()
@@ -74,7 +76,8 @@ public class BukkitUtils
                 ticks++;
                 if (ticks == 20)
                 {
-                    System.out.println(System.currentTimeMillis() - startTime);
+                    tps = ((System.currentTimeMillis() - startTime) / 1000.0) * 20.0;
+                    startTime = System.currentTimeMillis();
                     ticks = 0;
                 }
                 List<Runnable> tasks = new LinkedList<>();
@@ -82,6 +85,11 @@ public class BukkitUtils
                 tasks.forEach(task -> task.run());
             }
         }, 0, 0);
+    }
+
+    public static double getTPS()
+    {
+        return tps;
     }
 
     public static synchronized void addSyncMethod(Runnable runnable)
