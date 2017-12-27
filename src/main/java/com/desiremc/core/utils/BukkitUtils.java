@@ -2,6 +2,7 @@ package com.desiremc.core.utils;
 
 import java.text.DecimalFormat;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -75,8 +76,8 @@ public class BukkitUtils
                 {
                     System.out.println(System.currentTimeMillis() - startTime);
                 }
-                Iterable<Runnable> tasks = new LinkedList<>();
-                syncMethods.drainTo(syncMethods);
+                List<Runnable> tasks = new LinkedList<>();
+                syncMethods.drainTo(tasks);
                 tasks.forEach(task -> task.run());
             }
         }, 0, 0);
