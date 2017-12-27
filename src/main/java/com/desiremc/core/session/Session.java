@@ -439,19 +439,17 @@ public class Session implements Messageable
         getAchievements().add(achievement);
         save();
 
-        Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
-
         if (inform)
         {
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, true);
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.title", false, true);
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.name", false, true, "{name}", achievement.getName());
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.desc", false, true, "{desc}", achievement.getDescription());
+            DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.header", false, true);
+            DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.title", false, true);
+            DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.name", false, true, "{name}", achievement.getName());
+            DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.desc", false, true, "{desc}", achievement.getDescription());
             if (achievement.getReward() > 0)
             {
-                DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.reward", false, true, "{reward}", achievement.getReward());
+                DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.reward", false, true, "{reward}", achievement.getReward());
             }
-            DesireCore.getLangHandler().sendRenderMessage(player, "achievement.award.header", false, true);
+            DesireCore.getLangHandler().sendRenderMessage(this, "achievement.award.header", false, true);
         }
 
         if (achievement.getReward() > 0)
@@ -459,17 +457,14 @@ public class Session implements Messageable
             addTokens(achievement.getReward(), false);
         }
 
-        FancyMessage nessage = new FancyMessage(DesireCore.getLangHandler().getPrefix())
+        FancyMessage message = new FancyMessage(DesireCore.getLangHandler().getPrefix())
                 .then(" " + player.getName() + " has earned the achievement ")
                 .color(ChatColor.WHITE)
                 .then(achievement.getName())
                 .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
                 .color(ChatColor.LIGHT_PURPLE);
 
-        for (Player target : Bukkit.getOnlinePlayers())
-        {
-            nessage.send(target);
-        }
+        message.send(Bukkit.getOnlinePlayers());
     }
 
     public int getTokens()
