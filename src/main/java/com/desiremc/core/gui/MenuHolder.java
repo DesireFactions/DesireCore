@@ -137,6 +137,11 @@ public abstract class MenuHolder extends MenuBase implements InventoryHolder
         }
     }
 
+    public boolean hasMenu(Player player)
+    {
+        return this.getInventory().getViewers().contains(player);
+    }
+
     public void updateInventory()
     {
         this.getInventory().clear();
