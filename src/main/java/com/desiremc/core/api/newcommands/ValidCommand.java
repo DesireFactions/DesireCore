@@ -192,6 +192,7 @@ public abstract class ValidCommand
             // this should never happen, it is here exclusively to prevent potential errors that were not caught with exceptions earlier
             if (argument == null)
             {
+                System.out.println("i: " + i + " argument: " + rawArguments[i]);
                 DesireCore.getLangHandler().sendUsageMessage(sender.getSender(), StringUtils.compile(label), (Object[]) getArgumentNames());
                 return;
             }
@@ -204,8 +205,6 @@ public abstract class ValidCommand
 
             if (!argument.process(sender, label, !argument.hasVariableLength() ? rawArguments[i] : StringUtils.compile(Arrays.copyOfRange(rawArguments, i, rawArguments.length))))
             {
-                // TODO 
-                System.out.println("argument process failed");
                 return;
             }
 
