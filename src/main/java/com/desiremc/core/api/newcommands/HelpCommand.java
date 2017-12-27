@@ -1,5 +1,6 @@
 package com.desiremc.core.api.newcommands;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.desiremc.core.DesireCore;
@@ -39,6 +40,11 @@ public class HelpCommand extends ValidCommand
 
         int page = arguments.get(0).hasValue() ? (Integer) arguments.get(0).getValue() : 1;
         int pages = (baseCommand.getUsableCommands(sender).size() + 5) / 6;
+
+        if (label[label.length - 1].equals("help"))
+        {
+            label = Arrays.copyOfRange(label, 0, label.length - 1);
+        }
 
         DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
         DesireCore.getLangHandler().sendRenderMessage(sender, "help_pages", false, false,
