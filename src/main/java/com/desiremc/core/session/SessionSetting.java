@@ -8,7 +8,8 @@ public enum SessionSetting
     DEATH("death messages", true, Rank.GUEST),
     ACHIEVEMENTS("achievment messages", true, Rank.GUEST),
     PLAYERS("hide players", false, Rank.GUEST),
-    CLASSICTAB("classic tab list", false, Rank.GUEST);
+    CLASSICTAB("classic tab list", false, Rank.GUEST),
+    MESSAGES("private messages", true, Rank.GUEST);
 
     private String displayName;
     private Rank rank;
