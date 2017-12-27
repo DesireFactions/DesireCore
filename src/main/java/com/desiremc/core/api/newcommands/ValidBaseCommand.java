@@ -1,17 +1,20 @@
 package com.desiremc.core.api.newcommands;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.utils.StringUtils;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.StringUtils;
+
 public abstract class ValidBaseCommand extends ValidCommand
 {
+
+    protected HelpCommand helpCommand;
 
     protected List<ValidCommand> subCommands;
 
@@ -28,6 +31,8 @@ public abstract class ValidBaseCommand extends ValidCommand
         super(name, description, requiredRank, aliases);
 
         subCommands = new LinkedList<>();
+        helpCommand = new HelpCommand(this);
+        addSubCommand(helpCommand);
     }
 
     /**
@@ -71,7 +76,7 @@ public abstract class ValidBaseCommand extends ValidCommand
         ValidCommand sub;
         if (rawArguments.length == 0 || (sub = getSubCommand(rawArguments[0])) == null)
         {
-            help(sender, label);
+            helpCommand.process(sender, label, new String[0]);
         }
         else
         {
@@ -163,23 +168,17 @@ public abstract class ValidBaseCommand extends ValidCommand
         return Collections.unmodifiableList(subCommands);
     }
 
-    /**
-     * Sends the help content to the player.
-     * 
-     * @param sender
-     * @param label
-     */
-    public void help(Session sender, String label[])
+    protected List<ValidCommand> getUsableCommands(Session sender)
     {
-        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", true, false);
-
+        List<ValidCommand> usable = new ArrayList<>();
         for (ValidCommand command : subCommands)
         {
             if (command.getRequiredRank().getId() <= sender.getRank().getId())
             {
-                sender.getSender().sendMessage(" §b/" + StringUtils.compile(label) + " " + command.getName() + ": §7" + command.getDescription());
+                usable.add(command);
             }
         }
+        return usable;
     }
 
     @Override

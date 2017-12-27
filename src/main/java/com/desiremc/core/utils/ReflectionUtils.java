@@ -10,6 +10,9 @@ public class ReflectionUtils
     private static Class<?> stringClass = String.class;
     private static Field stringValueField;
 
+    private static Class<Integer> integerClass = Integer.class;
+    private static Field integerValueField;
+
     public static void setStringConents(String original, String content)
     {
         if (stringClass == null || stringValueField == null)
@@ -24,6 +27,34 @@ public class ReflectionUtils
             {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public static void setIntegerValue(Integer original, int value)
+    {
+        if (integerValueField == null)
+        {
+            try
+            {
+                integerValueField = integerClass.getDeclaredField("value");
+                integerValueField.setAccessible(true);
+            }
+            catch (NoSuchFieldException | SecurityException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+        if (integerValueField == null)
+        {
+            return;
+        }
+        try
+        {
+            integerValueField.set(original, value);
+        }
+        catch (IllegalArgumentException | IllegalAccessException ex)
+        {
+            ex.printStackTrace();
         }
     }
 
