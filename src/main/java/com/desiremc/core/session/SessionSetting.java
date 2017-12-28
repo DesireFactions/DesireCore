@@ -16,7 +16,7 @@ public enum SessionSetting
     PLAYERS("Hide Players", false, true, Rank.GUEST),
     CLASSICTAB("Classic tablist", false, false, Rank.GUEST),
     MESSAGES("Pivate Messages", true, true, Rank.GUEST),
-    COBBLE("Autosmelt Cobblestone.", true, true, Rank.GUEST);
+    COBBLE("Pickup Cobblestone.", false, true, Rank.GUEST);
 
     private String displayName;
     private Rank rank;
