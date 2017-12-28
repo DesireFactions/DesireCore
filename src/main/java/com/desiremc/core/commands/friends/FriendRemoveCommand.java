@@ -1,34 +1,36 @@
 package com.desiremc.core.commands.friends;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.api.FriendsAPI;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderIsFriendsValidator;
+import com.desiremc.core.validators.friends.SenderIsFriendsValidator;
 
 public class FriendRemoveCommand extends ValidCommand
 {
 
     public FriendRemoveCommand()
     {
-        super("remove", "Remove a friend.", Rank.GUEST, new String[] { "target" }, new String[] { "unfriend", "delete" });
-        addParser(new PlayerSessionParser(), "target");
+        super("remove", "Remove a friend.", Rank.GUEST, true, new String[] { "unfriend", "delete" });
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderIsFriendsValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderIsFriendsValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
-        FriendsAPI.removeFriend(SessionHandler.getSession(sender), target);
+        FriendsAPI.removeFriend(sender, target);
     }
 
 }

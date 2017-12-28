@@ -1,12 +1,18 @@
 package com.desiremc.core.punishment;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment.Type;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
+import org.bukkit.ChatColor;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class PunishmentHandler extends BasicDAO<Punishment, Long>
 {
@@ -24,47 +30,126 @@ public class PunishmentHandler extends BasicDAO<Punishment, Long>
         instance = new PunishmentHandler();
     }
 
-    public void issuePunishment(Type type, UUID punished, UUID issuer, long time, String reason)
+    public void refreshPunishments(Session session)
     {
-        Punishment punishment = new Punishment();
-        punishment.setIssued(System.currentTimeMillis());
-        punishment.setType(type);
-        punishment.setPunished(punished);
-        punishment.setIssuer(issuer);
-        punishment.setExpirationTime(time + System.currentTimeMillis());
-        punishment.setReason(reason);
-        save(punishment);
-
-        if (Bukkit.getPlayer(punished) != null)
-        {
-            if (type == Punishment.Type.BAN)
-            {
-                Bukkit.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().renderMessage("punishment.ban"));
-            }
-            else if (type == Punishment.Type.MUTE)
-            {
-                Bukkit.getPlayer(punished).sendMessage(DesireCore.getLangHandler().renderMessage("punishment.mute"));
-            }
-        }
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("punished").equal(session.getUniqueId())
+                .field("repealed").equal(false)
+                .field("expirationTime").greaterThan(System.currentTimeMillis())
+                .asList();
+        session.setActivePunishments(punishments);
     }
 
-    public Punishment getPunishment(UUID uuid)
+    public Punishment getPunishment(UUID uuid, Punishment.Type type)
     {
-        Punishment punishment = findOne("uuid", uuid);
-        if (punishment != null)
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("punished").equal(uuid)
+                .field("repealed").equal(false)
+                .field("type").equal(type).asList();
+
+        if (punishments == null || punishments.size() == 0)
         {
-            System.out.println(DesireCore.getLangHandler().renderMessage("punishment.found", "{player}", uuid + ""));
-            System.out.println(DesireCore.getLangHandler().renderMessage("punishment.type", "{reason}", punishment.getReason()));
-            return punishment;
+            return null;
         }
 
-        System.out.println(DesireCore.getLangHandler().renderMessage("punishment.notfound", "{player}", uuid + ""));
+        punishments.removeIf(punishment -> (punishment.getExpirationTime() + punishment.getIssued()) < System.currentTimeMillis() && !punishment.isPermanent());
+
+        return punishments.get(0);
+    }
+
+    public List<Punishment> getPunishments(UUID uuid)
+    {
+        return PunishmentHandler.getInstance().createQuery().field("punished").equal(uuid).asList();
+    }
+
+    public List<String> getAllIpBans()
+    {
+        List<String> ips = new ArrayList<>();
+
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("repealed").equal(false)
+                .field("type").equal(Type.IP_BAN).asList();
+
+        for (Punishment p : punishments)
+        {
+            Session session = SessionHandler.getGeneralSession(p.getPunished());
+            ips.add(session.getIp());
+        }
+
+        return ips;
+    }
+
+    public Punishment getPunishment(String ip)
+    {
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("repealed").equal(false)
+                .field("type").equal(Type.IP_BAN).asList();
+
+        for (Punishment p : punishments)
+        {
+            Session session = SessionHandler.getGeneralSession(p.getPunished());
+            if (session.getIp().equalsIgnoreCase(ip))
+            {
+                return p;
+            }
+        }
         return null;
+    }
+
+    public List<Punishment> getAllPunishments(UUID issuer, long time)
+    {
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("repealed").equal(false)
+                .field("issuer").equal(issuer)
+                .asList();
+
+        punishments.removeIf(punishment -> punishment.getIssued() < time);
+
+        return punishments;
     }
 
     public static PunishmentHandler getInstance()
     {
         return instance;
+    }
+
+    public String[] getMouseOverDetails(Session session)
+    {
+        Punishment punishment;
+
+        if (session.isIPBanned() != null)
+        {
+            punishment = session.isIPBanned();
+        }
+        else if (session.isBanned() != null)
+        {
+            punishment = session.isBanned();
+        }
+        else if (session.isMuted() != null)
+        {
+            punishment = session.isMuted();
+        }
+        else
+        {
+            punishment = null;
+        }
+
+
+        if (punishment == null)
+        {
+            return new String[] {
+                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO PUNISHMENT"
+            };
+        }
+        else
+        {
+            return new String[] {
+                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "Punishment Info",
+                    ChatColor.GRAY + "Type: " + ChatColor.YELLOW + StringUtils.capitalize(punishment.getType().name().replace("_", " ").toLowerCase()),
+                    ChatColor.GRAY + "Expires in: " + ChatColor.YELLOW + (punishment.isPermanent() ? "Permanent" : DateUtils.formatDateDiff(punishment.getExpirationTime())),
+                    ChatColor.GRAY + "Punished by: " + ChatColor.YELLOW + PlayerUtils.getPlayer(punishment.getIssuer()).getName()
+            };
+        }
     }
 
 }

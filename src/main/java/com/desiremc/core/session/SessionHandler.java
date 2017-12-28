@@ -1,9 +1,11 @@
 package com.desiremc.core.session;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -11,44 +13,84 @@ import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
-import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
-import com.desiremc.core.utils.RedBlackTree;
+import com.desiremc.core.utils.PlayerUtils;
 
 public class SessionHandler extends BasicDAO<Session, UUID>
 {
 
-    private static Session console;
+    private static final Session console;
+
+    static
+    {
+        console = new Session();
+        console.assignConsole();
+    }
 
     private static SessionHandler instance;
 
-    private RedBlackTree<UUID, Session> sessions;
+    private static HashMap<UUID, Session> sessions;
 
-    private RedBlackTree<UUID, Session> staff;
+    private static HashMap<UUID, Session> onlineSessions;
+
+    private static HashMap<UUID, Session> onlineStaff;
 
     public SessionHandler()
     {
         super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(Session.class);
-        
-        sessions = new RedBlackTree<>();
-        staff = new RedBlackTree<>();
 
-        startConsoleSession();
+        sessions = new HashMap<>();
+        onlineSessions = new HashMap<>();
+        onlineStaff = new HashMap<>();
     }
 
-    private static void startConsoleSession()
+    private static boolean applyExternalData(Session session)
     {
-        console = new Session();
-        console.assignConsole();
+        boolean needSave = false;
+        if (session.getSettings() == null)
+        {
+            session.assignDefaultSettings();
+            needSave = true;
+        }
+        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
+                .field("punished").equal(session.getUniqueId())
+                .field("repealed").notEqual(true)
+                .field("expirationTime").greaterThan(System.currentTimeMillis())
+                .asList();
+        session.setActivePunishments(punishments);
+        return needSave;
     }
 
+    public static boolean updateSessionFromDatabase(Session session)
+    {
+        Session database = getInstance().findOne("_id", session.getUniqueId());
+
+        session.applyValues(database);
+
+        return applyExternalData(session);
+    }
+
+    /**
+     * @return the console's session instance.
+     */
+    public static Session getConsoleSession()
+    {
+        return console;
+    }
+
+    /**
+     * Get the session by the given CommandSender. Will return null if the sender is neither a player or the console.
+     * 
+     * @param sender the command sender.
+     * @return the session.
+     */
     public static Session getSession(CommandSender sender)
     {
         if (sender instanceof Player)
         {
-            return getSession(((Player) sender).getUniqueId());
+            return getOnlineSession(((Player) sender).getUniqueId());
         }
         else if (sender instanceof ConsoleCommandSender)
         {
@@ -60,161 +102,135 @@ public class SessionHandler extends BasicDAO<Session, UUID>
         }
     }
 
-    public static Session getSession(UUID uuid)
+    /**
+     * @param uuid the uuid of the player
+     * @return the online session.
+     */
+    public static Session getOnlineSession(UUID uuid)
     {
-        if (DesireCore.DEBUG)
+        if (DesireCore.getConsoleUUID().equals(uuid))
         {
-            System.out.println("getSession(UUID) called with value " + uuid.toString() + ".");
+            return console;
         }
-        Session session = instance.sessions.get(uuid);
-
-        if (session != null)
-        {
-            if (DesireCore.DEBUG)
-            {
-                System.out.println("getSession(UUID) found a logged in user.");
-            }
-            return session;
-        }
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("getSession(UUID) did not find a logged in user.");
-        }
-        return initializeSession(uuid, false);
+        return onlineSessions.get(uuid);
     }
 
-    public static Session initializeSession(UUID uuid, boolean cache)
+    public static Session getGeneralSession(UUID uuid)
     {
-        if (DesireCore.DEBUG)
+        if (DesireCore.getConsoleUUID().equals(uuid))
         {
-            System.out.println("initializeSession(UUID, boolean) called with values " + uuid.toString() + " and " + cache + ".");
+            return console;
         }
-        Session session = instance.findOne("_id", uuid);
+        return sessions.get(uuid);
+    }
+
+    public static Session initializeSession(Player player)
+    {
+        Session session = sessions.get(player.getUniqueId());
+
+        boolean needSave = false;
+
         if (session == null)
         {
-            if (DesireCore.DEBUG)
-            {
-                System.out.println("initializeSession(UUID, boolean) non-existing player.");
-            }
-            session = createSession(uuid);
+            session = createSession(player.getUniqueId());
         }
-        if (cache)
+        else
         {
-            if (DesireCore.DEBUG)
-            {
-                System.out.println("initializeSession(UUID, boolean) cached player in sessions.");
-            }
-            instance.sessions.put(uuid, session);
-            if (session.getRank().isStaff())
-            {
-                if (DesireCore.DEBUG)
-                {
-                    System.out.println("initializeSession(UUID, boolean) is staff member.");
-                }
-                instance.staff.put(uuid, session);
-            }
+            needSave = updateSessionFromDatabase(session);
         }
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(session.getUniqueId())
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
-                .asList();
-        session.setActivePunishments(punishments);
-        if (DesireCore.DEBUG)
+
+        String ip = player.getAddress().getAddress().getHostAddress();
+        if (!session.getIp().equalsIgnoreCase(ip))
         {
-            System.out.println("initializeSession(UUID, boolean) set punishments and returned.");
+            session.getIpList().add(ip);
+            session.setIp(ip);
+            needSave = true;
         }
+
+        if (!session.getName().equalsIgnoreCase(player.getName()))
+        {
+            session.getNameList().add(player.getName());
+            session.setName(player.getName());
+            needSave = true;
+        }
+
+        if (needSave)
+        {
+            session.save();
+        }
+
+        session.setOnline(true);
+
+        if (session.getRank().isStaff())
+        {
+            onlineStaff.put(session.getUniqueId(), session);
+        }
+
+        onlineSessions.put(session.getUniqueId(), session);
+
         return session;
-    }
-    
-    public static Punishment getBan(UUID uuid)
-    {
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(uuid)
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
-                .field("type").equal(Type.BAN).asList();
-        if (punishments == null || punishments.size() == 0)
-        {
-            return null;
-        }
-        return punishments.get(0);
     }
 
     public static Session findOfflinePlayerByName(String name)
     {
-        Session session = instance.findOne("name", name);
-        if (session == null)
+        for (Session session : sessions.values())
         {
-            return null;
+            if (session.getName().equals(name))
+            {
+                return session;
+            }
         }
-
-        List<Punishment> punishments = PunishmentHandler.getInstance().createQuery()
-                .field("punished").equal(session.getUniqueId())
-                .field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis()))
-                .asList();
-
-        session.setActivePunishments(punishments);
-
-        return session;
+        return null;
     }
 
     private static Session createSession(UUID uuid)
     {
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("createSession(UUID) called with value " + uuid.toString() + ".");
-        }
-        Player p = Bukkit.getPlayer(uuid);
+        Player p = PlayerUtils.getPlayer(uuid);
         if (p == null)
         {
-            if (DesireCore.DEBUG)
-            {
-                System.out.println("createSession(UUID) could not find player.");
-            }
             return null;
         }
 
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("createSession(UUID) set defaults.");
-        }
         Session session = new Session();
         session.assignDefaults(uuid, p.getName(), p.getAddress().getAddress().getHostAddress());
+        session.save();
 
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("createSession(UUID) saved to database.");
-        }
-        instance.save(session);
+        sessions.put(uuid, session);
 
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("createSession(UUID) returned.");
-        }
         return session;
     }
 
-    public Iterable<Session> getSessions()
+    /**
+     * @return all connected sessions.
+     */
+    public static Collection<Session> getOnlineSessions()
     {
-        return sessions.values();
+        return Collections.unmodifiableCollection(onlineSessions.values());
     }
 
-    public Iterable<Session> getStaff()
+    /**
+     * @return all online staff sessions excluding console.
+     */
+    public static Collection<Session> getOnlineStaff()
     {
-        return staff.values();
+        return onlineStaff.values();
     }
 
-    public void removeStaff(UUID uuid)
+    public static void removeStaff(UUID uuid)
     {
-        staff.delete(uuid);
+        onlineStaff.remove(uuid);
     }
 
-    public static boolean endSession(Session s)
+    public static boolean endSession(Session session)
     {
-        s.setTotalPlayed(s.getTotalPlayed() + System.currentTimeMillis() - s.getLastLogin());
-        s.setLastLogin(System.currentTimeMillis());
-        instance.save(s);
-        instance.sessions.delete(s.getUniqueId());
-        // TODO change this return type
+        session.setTotalPlayed(session.getTotalPlayed() + System.currentTimeMillis() - session.getLastLogin());
+        session.setLastLogin(System.currentTimeMillis());
+        session.setOnline(false);
+        session.save();
+
+        onlineStaff.remove(session.getUniqueId());
+        onlineSessions.remove(session.getUniqueId());
+        // TODO change return type
         return true;
     }
 
@@ -226,6 +242,12 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     public static void initialize()
     {
         instance = new SessionHandler();
+
+        sessions.clear();
+        for (Session session : instance.find())
+        {
+            sessions.put(session.getUniqueId(), session);
+        }
     }
 
 }

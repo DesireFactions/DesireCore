@@ -1,18 +1,15 @@
 package com.desiremc.core.tickets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 {
@@ -30,7 +27,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         instance = this;
 
         tickets = new HashMap<>();
-        
+
         List<Ticket> query = find(createQuery().where("status='OPEN'")).asList();
         for (Ticket t : query)
         {
@@ -38,49 +35,55 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
         }
     }
 
-    public static void openTicket(CommandSender sender, String text)
+    public static void openTicket(Session sender, String text)
     {
-        Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : DesireCore.getConsoleUUID(), text);
+        Ticket ticket = new Ticket(sender.getUniqueId(), text);
+
         ticket.setId(instance.getNextId());
-        instance.save(ticket);
+        ticket.save();
+
         tickets.put(ticket.getId(), ticket);
     }
 
-    public static void closeTicket(CommandSender closer, Ticket ticket, String response)
+    public static void closeTicket(Session closer, Ticket ticket, String response)
     {
-        ticket.setClosed(System.currentTimeMillis());
-        ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
-        ticket.setResponse(response);
         ticket.setStatus(Ticket.Status.CLOSED);
+        processClose(closer, ticket, response);
     }
 
-    public static void deleteTicket(CommandSender closer, Ticket ticket, String response)
+    public static void deleteTicket(Session closer, Ticket ticket, String response)
+    {
+        ticket.setStatus(Ticket.Status.DELETED);
+        processClose(closer, ticket, response);
+    }
+
+    private static void processClose(Session closer, Ticket ticket, String response)
     {
         ticket.setClosed(System.currentTimeMillis());
         ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
         ticket.setResponse(response);
-        ticket.setStatus(Ticket.Status.DELETED);
+        ticket.save();
+
+        tickets.remove(ticket.getId());
     }
 
     @Override
     public void run()
     {
         Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
-        for (Session s : SessionHandler.getInstance().getSessions())
+        for (Session session : SessionHandler.getOnlineStaff())
         {
-            if (s.getRank().getId() >= Rank.MODERATOR.getId())
-            {
-                DesireCore.getLangHandler().sendRenderMessage(s, "tickets.open", "{number}", String.valueOf(openTickets));
-            }
+            DesireCore.getLangHandler().sendRenderMessage(session, "tickets.open", true, false,
+                    "{number}", String.valueOf(openTickets));
         }
     }
 
     private int getNextId()
     {
-        Ticket t = createQuery().order("-id").get();
-        if (t != null)
+        Ticket ticket = createQuery().order("-id").get();
+        if (ticket != null)
         {
-            return t.getId() + 1;
+            return ticket.getId() + 1;
         }
         else
         {

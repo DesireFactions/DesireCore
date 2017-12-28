@@ -1,29 +1,28 @@
 package com.desiremc.core.commands.friends;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.api.FriendsAPI;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderHasFriendsValidator;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.validators.friends.SenderHasFriendsValidator;
 
 public class FriendListCommand extends ValidCommand
 {
 
     public FriendListCommand()
     {
-        super("list", "List all of your friends", Rank.GUEST, new String[] {}, "show");
+        super("list", "List all of your friends", Rank.GUEST, true, new String[] { "show" });
 
-        addValidator(new PlayerValidator());
-        addValidator(new SenderHasFriendsValidator());
+        addSenderValidator(new SenderHasFriendsValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        FriendsAPI.list(sender, SessionHandler.getSession(sender));
+        FriendsAPI.list(sender);
     }
 
 }

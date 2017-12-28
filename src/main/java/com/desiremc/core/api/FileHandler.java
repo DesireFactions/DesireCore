@@ -1,16 +1,16 @@
 package com.desiremc.core.api;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Michael Ziluck
@@ -55,16 +55,15 @@ public class FileHandler
     }
 
     /**
-     * Gets a formatted string from the config file. Replaces any color
-     * placeholders as well. If the string does not exist in the config, returns
-     * null.
+     * Gets a formatted string from the config file. Replaces any color placeholders as well. If the string does not
+     * exist in the config, returns null.
      *
      * @param key
      * @return the formatted string.
      */
     public String getString(String key)
     {
-        String message = null;
+        String message;
         Object o = history.get(key);
         if (o != null && o instanceof String)
         {
@@ -73,7 +72,8 @@ public class FileHandler
         message = fileConfig.getString(key);
         if (message != null)
         {
-            message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
+            message = message.replaceAll("\\{nl\\}", "\n");
+            message = ChatColor.translateAlternateColorCodes('&', message);
             history.put(key, message);
             return message;
         }
@@ -84,8 +84,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a double value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a double value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -104,8 +103,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a long value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a long value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -124,8 +122,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a integer value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a integer value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -149,8 +146,7 @@ public class FileHandler
     }
 
     /**
-     * Gets a boolean value from history or the config. If it does not exist,
-     * returns 0.
+     * Gets a boolean value from history or the config. If it does not exist, returns 0.
      *
      * @param key
      * @return the value.
@@ -169,9 +165,8 @@ public class FileHandler
     }
 
     /**
-     * Gets a formatted string list from the config file. Replaces any color
-     * placeholders as well. If the string list does not exist in the config,
-     * returns null.
+     * Gets a formatted string list from the config file. Replaces any color placeholders as well. If the string list
+     * does not exist in the config, returns null.
      *
      * @param key
      * @return the formatted string list.
@@ -197,6 +192,34 @@ public class FileHandler
     }
 
     public void setString(String key, String value)
+    {
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void setInt(String key, int value)
+    {
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void setDouble(String key, double value)
     {
         fileConfig.set(key, value);
         history.put(key, value);

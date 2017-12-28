@@ -15,8 +15,8 @@ public class FriendUtils
      */
     public static void removeFriend(Session player, Session target)
     {
-        player.getFriends().remove(target);
-        target.getFriends().remove(player);
+        player.getFriends().remove(target.getUniqueId());
+        target.getFriends().remove(player.getUniqueId());
 
         saveRequests(player, target);
     }
@@ -28,18 +28,17 @@ public class FriendUtils
      *            the player sending the request.
      * @param target
      *            the player recieving the request.
-     * @param incoming
      */
     public static void addFriendRequest(Session player, Session target)
     {
-        if (target.hasOutgoingFriendRequest(target))
+        if (target.hasOutgoingFriendRequest(target.getUniqueId()))
         {
             acceptFriendRequest(player, target);
         }
         else
         {
-            target.getIncomingFriendRequests().add(player);
-            player.getOutgoingFriendRequests().add(target);
+            target.getIncomingFriendRequests().add(player.getUniqueId());
+            player.getOutgoingFriendRequests().add(target.getUniqueId());
             saveRequests(player, target);
         }
     }
@@ -54,10 +53,23 @@ public class FriendUtils
      */
     public static void acceptFriendRequest(Session player, Session target)
     {
-        player.getIncomingFriendRequests().remove(target);
-        target.getOutgoingFriendRequests().remove(player);
+        player.getIncomingFriendRequests().remove(target.getUniqueId());
+        target.getOutgoingFriendRequests().remove(player.getUniqueId());
+
+        player.getOutgoingFriendRequests().remove(target.getUniqueId());
+        target.getIncomingFriendRequests().remove(player.getUniqueId());
 
         addFriend(player, target);
+
+        if (!target.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            target.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
+
+        if (!player.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            player.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
 
         saveRequests(player, target);
     }
@@ -72,8 +84,8 @@ public class FriendUtils
      */
     public static void denyFriendRequest(Session player, Session target)
     {
-        player.getIncomingFriendRequests().remove(target);
-        target.getOutgoingFriendRequests().remove(player);
+        player.getIncomingFriendRequests().remove(target.getUniqueId());
+        target.getOutgoingFriendRequests().remove(player.getUniqueId());
 
         saveRequests(player, target);
     }
@@ -89,8 +101,8 @@ public class FriendUtils
      */
     public static boolean hasRequest(Session player, Session target)
     {
-        boolean receiving = player.getIncomingFriendRequests().contains(target);
-        boolean sending = target.getOutgoingFriendRequests().contains(player);
+        boolean receiving = player.getIncomingFriendRequests().contains(target.getUniqueId());
+        boolean sending = target.getOutgoingFriendRequests().contains(player.getUniqueId());
 
         if (receiving && sending)
         {
@@ -117,8 +129,8 @@ public class FriendUtils
      */
     public static boolean areFriends(Session first, Session second)
     {
-        boolean firstCheck = first.getFriends().contains(second);
-        boolean secondCheck = second.getFriends().contains(first);
+        boolean firstCheck = first.getFriends().contains(second.getUniqueId());
+        boolean secondCheck = second.getFriends().contains(first.getUniqueId());
 
         if (firstCheck && secondCheck)
         {
@@ -142,12 +154,17 @@ public class FriendUtils
 
     private static void addFriend(Session player, Session target)
     {
-        player.getFriends().add(target);
-        target.getFriends().add(player);
+        player.getFriends().add(target.getUniqueId());
+        target.getFriends().add(player.getUniqueId());
 
         if (!player.hasAchievement(Achievement.FIRST_FRIEND))
         {
             player.awardAchievement(Achievement.FIRST_FRIEND, true);
+        }
+
+        if (!target.hasAchievement(Achievement.FIRST_FRIEND))
+        {
+            target.awardAchievement(Achievement.FIRST_FRIEND, true);
         }
     }
 

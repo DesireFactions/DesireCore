@@ -1,37 +1,80 @@
 package com.desiremc.core.listeners;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.commands.spawn.SpawnCommand;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.events.PlayerChunkMoveEvent;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BukkitUtils;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class PlayerListener implements Listener
 {
-    @EventHandler
-    public void onFrozenPlayerMove(PlayerMoveEvent event)
+    private static final boolean DEBUG = false;
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockChange(PlayerMoveEvent event)
+    {
+        PlayerBlockMoveEvent blockMoveEvent = null;
+        if (event.getFrom() == null || event.getTo() == null)
+        {
+            return;
+        }
+        if (BukkitUtils.differentChunk(event.getFrom(), event.getTo()))
+        {
+            blockMoveEvent = new PlayerChunkMoveEvent(event.getPlayer(), event.getFrom(), event.getTo());
+        }
+        else if (BukkitUtils.differentBlock(event.getFrom(), event.getTo()))
+        {
+            blockMoveEvent = new PlayerBlockMoveEvent(event.getPlayer(), event.getFrom(), event.getTo());
+        }
+        if (blockMoveEvent != null)
+        {
+            Bukkit.getPluginManager().callEvent(blockMoveEvent);
+            if (blockMoveEvent.isCancelled())
+            {
+                event.setCancelled(true);
+            }
+            event.setFrom(blockMoveEvent.getFrom());
+            event.setTo(blockMoveEvent.getTo());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFrozenPlayerMove(PlayerBlockMoveEvent event)
     {
         if (StaffHandler.getInstance().isFrozen(event.getPlayer()))
         {
-            Player p = event.getPlayer();
+            event.getPlayer().teleport(event.getFrom());
+        }
+    }
 
-            p.teleport(event.getFrom());
+    @EventHandler
+    public void onFrozenCommand(PlayerCommandPreprocessEvent event)
+    {
+        if (StaffHandler.getInstance().isFrozen(event.getPlayer()))
+        {
+            String command = event.getMessage();
+            if (!command.startsWith("/msg") && !command.startsWith("/r"))
+            {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -41,87 +84,46 @@ public class PlayerListener implements Listener
         StaffHandler.getInstance().handleCPSTest(event);
     }
 
-    @EventHandler(priority=EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
-        Player p = event.getPlayer();
-        Session session = SessionHandler.getSession(p);
+        if (DEBUG)
+        {
+            System.out.println("PlayerListener.onChat() called.");
+        }
+        Player player = event.getPlayer();
+        Session session = SessionHandler.getSession(player);
 
-        if (StaffHandler.getInstance().inStaffChat(p))
+        if (StaffHandler.getInstance().inStaffChat(player.getUniqueId()))
         {
             event.setCancelled(true);
-            for (UUID target : StaffHandler.getInstance().getAllInStaffChat())
+            String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", false, false, "{name}", player.getName(), "{message}", ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+            for (Session target : SessionHandler.getOnlineStaff())
             {
-                String message = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", "{prefix}", session.getRank().getPrefix(), "{name}", p.getName(), "{message}", event.getMessage());
-                Bukkit.getPlayer(target).sendMessage(message);
+                target.getPlayer().sendMessage(message);
             }
             return;
         }
 
-        if (!StaffHandler.getInstance().isChatEnabled() && !session.getRank().isStaff())
+        if (StaffHandler.getInstance().chatDisabled() && !session.getRank().isStaff())
         {
             event.setCancelled(true);
             return;
         }
 
-        for (Session s : SessionHandler.getInstance().getStaff())
+        for (Session s : SessionHandler.getOnlineStaff())
         {
-            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSettings().hasMentionsEnabled())
+            if (s.getRank().isStaff() && event.getMessage().contains(s.getName()) && s.getSetting(SessionSetting.MENTIONS))
             {
-                s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+                s.getPlayer().playSound(s.getPlayer().getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
             }
         }
     }
 
     @EventHandler
-    public void onOreBreak(BlockBreakEvent event)
+    public void onRespawn(PlayerRespawnEvent event)
     {
-        Player p = event.getPlayer();
-
-        String name = StringUtils.capitalize(event.getBlock().getType().name().toLowerCase().replace("_", ""));
-
-        if (!DesireCore.getConfigHandler().getStringList("xray-ores").contains(event.getBlock().getType().name()))
-        {
-            return;
-        }
-
-        Set<Block> vein = getVein(event.getBlock());
-
-        for (Session session : SessionHandler.getInstance().getStaff())
-        {
-            if (session.getSettings().hasXrayNotification())
-            {
-                DesireCore.getLangHandler().sendRenderMessage(session, "alerts.xray.message", "{player}", p.getName(), "{count}", vein.size() + "", "{oreName}", name);
-            }
-        }
+        event.setRespawnLocation(SpawnCommand.getSpawnLocation());
     }
 
-    private Set<Block> getVein(Block block)
-    {
-        Set<Block> vein = new HashSet<>();
-        vein.add(block);
-        getVein(block, vein);
-        return vein;
-    }
-
-    private void getVein(Block block, Set<Block> vein)
-    {
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                for (int k = -1; k < 2; k++)
-                {
-                    Block relative = block.getRelative(i, j, k);
-                    if (!vein.contains(relative) &&
-                            block.equals(relative) &&
-                            (i != 0 || j != 0 || k != 0))
-                    {
-                        vein.add(relative);
-                        getVein(relative, vein);
-                    }
-                }
-            }
-        }
-    }
 }

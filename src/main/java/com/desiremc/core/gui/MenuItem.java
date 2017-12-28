@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import com.desiremc.core.utils.ItemNames;
 
 public abstract class MenuItem extends MenuClickBehavior
 {
 
-    private MenuBase menu;
+    private MenuHolder menu;
     private int quantity;
     private MaterialData icon;
     private String text;
@@ -32,17 +31,36 @@ public abstract class MenuItem extends MenuClickBehavior
         this(text, new MaterialData(Material.PAPER));
     }
 
-    public MenuItem(String name, ItemStack is)
+    @SuppressWarnings("deprecation")
+    public MenuItem(String text, ItemStack is)
     {
-        item = is;
-        if (item != null)
+        this.text = text;
+        this.icon = is.getData();
+        this.quantity = is.getAmount();
+        this.data = is.getData().getData();
+        if (is.hasItemMeta() && is.getItemMeta().hasLore())
         {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null)
-            {
-                meta.setDisplayName(name);
-                item.setItemMeta(meta);
-            }
+            descriptions = is.getItemMeta().getLore();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public MenuItem(ItemStack is)
+    {
+        if (is.hasItemMeta() && is.getItemMeta().hasDisplayName())
+        {
+            this.text = is.getItemMeta().getDisplayName();
+        }
+        else
+        {
+            this.text = "§r" + ItemNames.lookup(is);
+        }
+        this.icon = is.getData();
+        this.quantity = is.getAmount();
+        this.data = is.getData().getData();
+        if (is.hasItemMeta() && is.getItemMeta().hasLore())
+        {
+            descriptions = is.getItemMeta().getLore();
         }
     }
 
@@ -76,7 +94,7 @@ public abstract class MenuItem extends MenuClickBehavior
         this.data = data;
     }
 
-    public void addToMenu(MenuBase menu)
+    public void addToMenu(MenuHolder menu)
     {
         this.menu = menu;
     }
@@ -89,7 +107,7 @@ public abstract class MenuItem extends MenuClickBehavior
         }
     }
 
-    public MenuBase getMenu()
+    public MenuHolder getMenu()
     {
         return this.menu;
     }
@@ -107,6 +125,13 @@ public abstract class MenuItem extends MenuClickBehavior
     public MaterialData getIcon()
     {
         return this.icon;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setIcon(MaterialData data)
+    {
+        this.icon = data;
+        this.data = data.getData();
     }
 
     public String getText()
@@ -132,38 +157,19 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         if (item != null)
         {
-            net.minecraft.server.v1_12_R1.ItemStack itemStack = CraftItemStack.asNMSCopy(item);
-            NBTTagCompound tagCompound = itemStack.getTag();
-            if (tagCompound == null)
-            {
-                tagCompound = new NBTTagCompound();
-            }
-            tagCompound.setInt("Unbreakable", 1);
-            tagCompound.setInt("HideFlags", 6);
-            itemStack.setTag(tagCompound);
-            return CraftItemStack.asBukkitCopy(itemStack);
+            return item;
         }
-
-        ItemStack slot = new ItemStack(this.getIcon().getItemType(), this.getQuantity(), this.data);
-        ItemMeta meta = slot.getItemMeta();
+        item = new ItemStack(this.getIcon().getItemType(), this.getQuantity(), this.data);
+        ItemMeta meta = item.getItemMeta();
 
         if (meta != null)
         {
             meta.setDisplayName(this.getText());
             meta.setLore(this.descriptions);
-            slot.setItemMeta(meta);
+            item.setItemMeta(meta);
         }
 
-        net.minecraft.server.v1_12_R1.ItemStack itemStack = CraftItemStack.asNMSCopy(slot);
-        NBTTagCompound tagCompound = itemStack.getTag();
-        if (tagCompound == null)
-        {
-            tagCompound = new NBTTagCompound();
-        }
-        tagCompound.setInt("Unbreakable", 1);
-        tagCompound.setInt("HideFlags", 6);
-        itemStack.setTag(tagCompound);
-        return CraftItemStack.asBukkitCopy(itemStack);
+        return item;
     }
 
     public void setData(short data)
@@ -193,5 +199,32 @@ public abstract class MenuItem extends MenuClickBehavior
     {
         this.onClick(player);
         return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static MenuItem empty(String name, Material type, short data, int count)
+    {
+        MenuItem item = new MenuItem(name, new MaterialData(type, (byte) data), count, data)
+        {
+
+            @Override
+            public void onClick(Player player)
+            {
+            }
+        };
+        return item;
+    }
+
+    public static MenuItem empty(ItemStack is)
+    {
+        MenuItem item = new MenuItem(is)
+        {
+
+            @Override
+            public void onClick(Player player)
+            {
+            }
+        };
+        return item;
     }
 }

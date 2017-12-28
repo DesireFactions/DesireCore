@@ -1,28 +1,46 @@
 package com.desiremc.core.parsers;
 
-import com.desiremc.core.api.LangHandler;
-import org.bukkit.command.CommandSender;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ArgumentParser;
+import com.desiremc.core.api.newcommands.Parser;
+import com.desiremc.core.session.Session;
 
-public class MaterialDataParser implements ArgumentParser
+public class MaterialDataParser implements Parser<MaterialData>
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     @Override
-    public Object parseArgument(CommandSender sender, String label, String arg)
+    public MaterialData parseArgument(Session sender, String[] label, String rawArgument)
     {
-        ItemStack is = DesireCore.getItemHandler().get(arg);
+        ItemStack is = DesireCore.getItemHandler().get(rawArgument);
+
         if (is == null)
         {
-            sender.sendMessage(LANG.getString("invalid_item"));
+            sender.sendMessage(DesireCore.getLangHandler().getString("invalid_item"));
             return null;
         }
-        
+
         return is.getData();
+    }
+
+    @Override
+    public List<String> getRecommendations(Session sender, String lastWord)
+    {
+        lastWord = lastWord.toLowerCase();
+        List<String> materials = new LinkedList<>();
+        for (Material material : Material.values())
+        {
+            if (material.name().toLowerCase().startsWith(lastWord))
+            {
+                materials.add(material.name());
+            }
+        }
+        return materials;
     }
 
 }

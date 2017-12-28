@@ -1,33 +1,36 @@
 package com.desiremc.core.commands.report;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import org.bukkit.command.CommandSender;
 
 public class ReportGetCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public ReportGetCommand()
     {
-        super("get", "Get a players reports.", Rank.GUEST, new String[] { "target" });
-        addParser(new PlayerSessionParser(), "target");
+        super("get", "Get a players reports.", Rank.HELPER);
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
         for (Report report : ReportHandler.getInstance().getAllReports(true))
         {
@@ -36,11 +39,11 @@ public class ReportGetCommand extends ValidCommand
                 continue;
             }
 
-            for (String msg : LANG.getStringList("report.getreport"))
+            for (String msg : DesireCore.getLangHandler().getStringList("report.getreport"))
             {
-                session.getPlayer().sendMessage(LANG.renderString(msg,
+                sender.sendMessage(DesireCore.getLangHandler().renderString(msg,
                         "{date}", DateUtils.formatDateDiff(report.getIssued()),
-                        "{player}", SessionHandler.getSession(report.getIssuer()).getName(),
+                        "{player}", SessionHandler.getGeneralSession(report.getIssuer()).getName(),
                         "{reason}", report.getReason()));
             }
         }

@@ -1,33 +1,40 @@
 package com.desiremc.core.commands.friends;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
 import com.desiremc.core.api.FriendsAPI;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.core.validators.SenderNotFriendsValidator;
+import com.desiremc.core.validators.SenderNotTargetValidator;
+import com.desiremc.core.validators.friends.NoPendingFriendRequestValidator;
+import com.desiremc.core.validators.friends.SenderNotFriendsValidator;
 
 public class FriendAddCommand extends ValidCommand
 {
 
     public FriendAddCommand()
     {
-        super("add", "Add a friend.", Rank.GUEST, new String[] { "target" }, new String[] { "invite", "befriend" });
-        addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerValidator());
-        addValidator(new SenderNotFriendsValidator(), "target");
+        super("add", "Add a friend.", Rank.GUEST, true, new String[] { "invite", "befriend" });
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .addValidator(new SenderNotFriendsValidator())
+                .addValidator(new SenderNotTargetValidator())
+                .addValidator(new NoPendingFriendRequestValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
+        Session target = (Session) args.get(0).getValue();
 
-        FriendsAPI.addFriend(SessionHandler.getSession(sender), target);
+        FriendsAPI.addFriend(sender, target);
     }
 
 }

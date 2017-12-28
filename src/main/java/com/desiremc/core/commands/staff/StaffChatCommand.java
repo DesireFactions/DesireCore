@@ -1,38 +1,62 @@
 package com.desiremc.core.commands.staff;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.StaffHandler;
-import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.staff.StaffHandler;
+import net.md_5.bungee.api.ChatColor;
+
+import java.util.List;
 
 public class StaffChatCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
-    public StaffChatCommand()
+    public StaffChatCommand(String name, String... aliases)
     {
-        super("chat", "Join or leave Staff chat", Rank.JRMOD, new String[]{});
-        addValidator(new PlayerValidator());
+        super(name, "Join or leave staff chat.", Rank.HELPER, true, aliases);
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("message")
+                .setParser(new StringParser())
+                .setVariableLength()
+                .setOptional()
+                .build());
+
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player p = (Player) sender;
 
-        if(StaffHandler.getInstance().inStaffChat(p))
+        if (!args.get(0).hasValue())
         {
-            LANG.sendRenderMessage(p, "staff-chat-off");
+            if (StaffHandler.getInstance().inStaffChat(sender.getUniqueId()))
+            {
+                DesireCore.getLangHandler().sendRenderMessage(sender, "staff.staff-chat-off", true, false);
+            }
+            else
+            {
+                DesireCore.getLangHandler().sendRenderMessage(sender, "staff.staff-chat-on", true, false);
+            }
+            StaffHandler.getInstance().toggleStaffChat(sender.getUniqueId());
+            return;
         }
-        else{
-            LANG.sendRenderMessage(p, "staff-chat-on");
+
+        String message = (String) args.get(0).getValue();
+
+        String parsed = DesireCore.getLangHandler().renderMessage("staff.staff-chat-format", false, false,
+                "{name}", sender.getName(),
+                "{message}", ChatColor.translateAlternateColorCodes('&', message));
+
+        for (Session target : SessionHandler.getOnlineStaff())
+        {
+            target.sendMessage(parsed);
         }
-        StaffHandler.getInstance().toggleStaffChat(p);
+
     }
 }

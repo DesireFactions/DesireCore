@@ -1,3 +1,4 @@
+timings: true
 database:
   host: localhost
   port: 27017
@@ -8,6 +9,7 @@ logout:
   time: 10
 staff:
   launch_velocity: 5.0
+  chat_slow: 20
 timers:
   pvp:
     time: 1800
@@ -30,3 +32,57 @@ deathban:
     brigadier: 90
     commodore: 75
     grandmaster: 60
+gadgets:
+  launcher:
+    enabled: true
+    slot: 1
+    item: COMPASS:-1
+    name: "&4Launcher"
+    lore:
+      - "&7Launches you towards the"
+      - "&7location you are facing."
+  carpet:
+    enabled: true
+    slot: 6
+    item: CARPET:14
+    name: "&6Carpet"
+    lore:
+      - "&7I can see clearly now"
+      - "&7that the rain is gone."
+  vanish:
+    enabled: true
+    slot: 8
+    item: INK_SACK:1
+    name: "&6Vanish"
+    lore:
+      - "&7Toggles your player vanish."
+    item-on: INK_SACK:10
+  teleporter:
+    enabled: true
+    slot: 4
+    item: EYE_OF_ENDER:-1
+    name: "&6Random Teleporter"
+    lore:
+      - "&7Teleports you to a random player."
+  freezer:
+    enabled: true
+    slot: 2
+    item: BLAZE_ROD:-1
+    name: "&2Freeze"
+    lore:
+      - "&7Toggles freeze for the clicked player."
+  examine:
+    enabled: true
+    slot: 9
+    item: BOOK:-1
+    name: "&bExamine"
+    lore:
+      - "&7Inspects the inventory of the player that was clicked."
+spawn:
+  x: 0
+  y: 100
+  z: 0
+  yaw: 0
+  pitch: 0
+  world: world
+spawn-on-join: false

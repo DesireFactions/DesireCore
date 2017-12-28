@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 public abstract class MenuBase
 {
 
-    private final int max_items;
-    MenuItem[] items;
-    boolean exitOnClickOutside = true;
-    MenuCloseBehavior menuCloseBehavior;
+    protected final int max_items;
+    protected MenuItem[] items;
+    protected boolean exitOnClickOutside = true;
+    protected MenuCloseBehavior menuCloseBehavior;
 
     MenuBase(int max_items)
     {

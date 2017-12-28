@@ -1,11 +1,10 @@
 package com.desiremc.core.validators;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.CommandValidator;
+import com.desiremc.core.api.newcommands.Validator;
+import com.desiremc.core.session.Session;
 
-public class StringLengthValidator extends CommandValidator
+public class StringLengthValidator implements Validator<String>
 {
 
     private int minLength;
@@ -18,18 +17,18 @@ public class StringLengthValidator extends CommandValidator
     }
 
     @Override
-    public boolean validateArgument(CommandSender sender, String label, Object arg)
+    public boolean validateArgument(Session sender, String[] label, String arg)
     {
         int length = ((String) arg).length();
 
         if (length < minLength)
         {
-            DesireCore.getLangHandler().sendString(sender, "string.too_short");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_short", true, false);
             return false;
         }
         if (length > maxLength)
         {
-            DesireCore.getLangHandler().sendString(sender, "string.too_long");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "string.too_long", true, false);
             return false;
         }
 

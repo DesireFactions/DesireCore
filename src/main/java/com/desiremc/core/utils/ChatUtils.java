@@ -1,12 +1,8 @@
 package com.desiremc.core.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.tickets.TicketHandler;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,9 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.tickets.TicketHandler;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class ChatUtils
 {
@@ -35,11 +34,11 @@ public class ChatUtils
 
     private static void sendCenteredMessageFinal(Session session, String message)
     {
-        Player sender = session.getPlayer();
-        if (message == null || message.equals(""))
-        {
-            sender.sendMessage("");
-        }
+        session.sendMessage(renderCenteredMessage(message));
+    }
+
+    public static String renderCenteredMessage(String message)
+    {
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         int messagePxSize = 0;
@@ -55,14 +54,7 @@ public class ChatUtils
             else if (previousCode)
             {
                 previousCode = false;
-                if (c == 'l' || c == 'L')
-                {
-                    isBold = true;
-                }
-                else
-                {
-                    isBold = false;
-                }
+                isBold = (c == 'l' || c == 'L');
             }
             else
             {
@@ -82,12 +74,12 @@ public class ChatUtils
             sb.append(" ");
             compensated += spaceLength;
         }
-        sender.sendMessage(sb.toString() + message);
+        return sb.toString() + message;
     }
 
     public static String getNameWithRankColor(UUID uuid, boolean prefix)
     {
-        Session session = SessionHandler.getSession(uuid);
+        Session session = SessionHandler.getGeneralSession(uuid);
         if (prefix)
         {
             return session.getRank().getMain() + session.getRank().getPrefix() + ChatColor.GRAY + session.getName() + ChatColor.RESET;
@@ -101,11 +93,11 @@ public class ChatUtils
     public static void sendStaffMessage(Exception ex, JavaPlugin plugin)
     {
         String error = processException(ex, plugin);
-        for (Session s : SessionHandler.getInstance().getStaff())
+        for (Session s : SessionHandler.getOnlineStaff())
         {
             s.getPlayer().sendMessage(error);
         }
-        TicketHandler.openTicket(Bukkit.getConsoleSender(), error.split("\n")[1]);
+        TicketHandler.openTicket(SessionHandler.getConsoleSession(), error.split("\n")[1]);
         Bukkit.getLogger().severe("===========================================");
         Bukkit.getLogger().severe("CATASTROPHIC FAILURE IN " + plugin.getName());
         Bukkit.getLogger().severe("CHECK TICKET OR ERRORS FOLDER WITHIN PLUGIN");

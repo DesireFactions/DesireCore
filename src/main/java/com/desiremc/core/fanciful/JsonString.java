@@ -6,12 +6,11 @@ import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import com.google.gson.stream.JsonWriter;
+import net.minecraft.util.com.google.gson.stream.JsonWriter;
 
 /**
- * Represents a JSON string value. Writes by this object will not write name
- * values nor begin/end objects in the JSON stream. All writes merely write the
- * represented string value.
+ * Represents a JSON string value. Writes by this object will not write name values nor begin/end objects in the JSON
+ * stream. All writes merely write the represented string value.
  */
 final class JsonString implements JsonRepresentedObject, ConfigurationSerializable
 {

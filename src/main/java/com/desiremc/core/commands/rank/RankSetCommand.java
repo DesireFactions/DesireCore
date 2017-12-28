@@ -1,65 +1,71 @@
 package com.desiremc.core.commands.rank;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.RankParser;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.validators.rank.RankSetValidator;
+import org.bukkit.entity.Player;
+import ru.tehkode.permissions.PermissionUser;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
+import java.util.List;
 
 public class RankSetCommand extends ValidCommand
 {
 
     public RankSetCommand()
     {
-        super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "target", "rank" }, "update");
-        addParser(new PlayerSessionParser(), "target");
-        addParser(new RankParser(), "rank");
+        super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "update" });
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(Rank.class)
+                .setName("rank")
+                .setParser(new RankParser())
+                .addValidator(new RankSetValidator())
+                .build());
+
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() called in RankSetCommand.");
-        }
-
-        Session target = (Session) args[0];
-        Rank rank = (Rank) args[1];
+        Session target = (Session) args.get(0).getValue();
+        Rank rank = (Rank) args.get(1).getValue();
 
         if (target.getRank().isStaff() && !rank.isStaff())
         {
-            SessionHandler.getInstance().removeStaff(target.getUniqueId());
+            SessionHandler.removeStaff(target.getUniqueId());
         }
 
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() rank before: " + target.getRank().getDisplayName());
-        }
+        PermissionUser user = PermissionsEx.getUser(target.getName());
+
+        user.removeGroup(target.getRank().name());
+        user.addGroup(rank.name());
+
         target.setRank(rank);
-        if (DesireCore.DEBUG)
+        target.save();
+
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", true, false,
+                "{player}", target.getName(),
+                "{rank}", target.getRank().getDisplayName());
+
+        Player player = PlayerUtils.getPlayer(target.getUniqueId());
+
+        if (player != null)
         {
-            System.out.println("validRun() rank after: " + target.getRank().getDisplayName());
-        }
-
-        if (DesireCore.DEBUG)
-        {
-            System.out.println("validRun() query after save: " + SessionHandler.getSession(target.getUniqueId()).getRank().getDisplayName());
-        }
-
-        PlayerUtils.setPrefix(target.getRank().getPrefix(), Bukkit.getPlayer(target.getUniqueId()));
-
-        DesireCore.getLangHandler().sendRenderMessage(sender, "rank.set", "{player}", target.getName(), "{rank}", target.getRank().getDisplayName());
-
-        if (Bukkit.getPlayer(target.getUniqueId()) != null)
-        {
-            DesireCore.getLangHandler().sendRenderMessage(Bukkit.getPlayer(target.getUniqueId()), "rank.inform", "{rank}", target.getRank().getDisplayName());
+            DesireCore.getLangHandler().sendRenderMessage(player, "rank.inform", true, false,
+                    "{rank}", target.getRank().getDisplayName());
         }
     }
 }

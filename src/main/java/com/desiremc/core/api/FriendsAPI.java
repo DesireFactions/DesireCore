@@ -1,73 +1,135 @@
 package com.desiremc.core.api;
 
-import java.util.List;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.FriendUtils;
+import com.desiremc.core.utils.PlayerUtils;
+
+import java.util.List;
+import java.util.UUID;
 
 public class FriendsAPI
 {
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public static void acceptRequest(Session sender, Session target)
     {
         FriendUtils.acceptFriendRequest(sender, target);
 
-        LANG.sendRenderMessage(sender, "accepted_friend_request", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "friend.accepted_friend_request", true, false, "{player}", target.getName());
+
+        if (target.isOnline())
+        {
+            DesireCore.getLangHandler().sendRenderMessage(target, "friend.are_now_friend", true, false, "{player}", sender.getName());
+        }
     }
 
     public static void removeFriend(Session sender, Session target)
     {
-        FriendUtils.removeFriend(target, sender);
+        FriendUtils.removeFriend(sender, target);
 
-        LANG.sendRenderMessage(sender, "friend.no_longer_friend", "{player}", sender.getName());
-        LANG.sendRenderMessage(sender, "friend.no_longer_friend", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "friend.no_longer_friend", true, false, "{player}", target.getName());
+        if (target.isOnline())
+        {
+            DesireCore.getLangHandler().sendRenderMessage(target, "friend.no_longer_friend", true, false, "{player}", sender.getName());
+        }
     }
 
     public static void addFriend(Session sender, Session target)
     {
-        FriendUtils.addFriendRequest(target, sender);
+        FriendUtils.addFriendRequest(sender, target);
 
-        LANG.sendRenderMessage(sender, "friend.are_now_friend", "{player}", sender.getName());
-        LANG.sendRenderMessage(sender, "friend.are_now_friend", "{player}", target.getName());
+        if (FriendUtils.hasRequest(sender, target))
+        {
+            FriendUtils.acceptFriendRequest(sender, target);
+
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.accepted_friend_request", true, false, "{player}", target.getName());
+
+            if (target.isOnline())
+            {
+                DesireCore.getLangHandler().sendRenderMessage(target, "friend.are_now_friend", true, false, "{player}", sender.getName());
+            }
+        }
+        else
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "friend.sent_request", true, false, "{player}", target.getName());
+
+            if (target.isOnline())
+            {
+                DesireCore.getLangHandler().sendRenderMessage(target, "friend.received_request", true, false, "{player}", sender.getName());
+            }
+        }
     }
 
     public static void denyFriend(Session sender, Session target)
     {
-        FriendUtils.denyFriendRequest(target, sender);
+        FriendUtils.denyFriendRequest(sender, target);
 
-        LANG.sendRenderMessage(sender, "friend.denied_friend_request", "{player}", sender.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "friend.denied_friend_request", true, false, "{player}", target.getName());
     }
 
-    public static void list(CommandSender sender, Session session)
+    public static void list(Session sender)
     {
-        listPlayers(sender, session.getFriends());
-    }
+        List<UUID> friends = sender.getFriends();
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+        StringBuilder sb = new StringBuilder();
+        sb.append(DesireCore.getLangHandler().renderMessage("friend.friends", false, false));
 
-    public static void listIncomming(Player sender)
-    {
-        listPlayers(sender, SessionHandler.getSession(sender).getIncomingFriendRequests());
-    }
-
-    public static void listOutgoing(Player sender)
-    {
-        listPlayers(sender, SessionHandler.getSession(sender).getIncomingFriendRequests());
-    }
-
-    private static void listPlayers(CommandSender sender, List<Session> sessions)
-    {
-        LANG.sendString(sender, "list-header");
-
-        for (Session s : sessions)
+        for (int i = 0; i < friends.size(); i++)
         {
-            LANG.sendRenderMessage(sender, "player", "{player}", s.getName());
+            if (i == (friends.size() - 1))
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)));
+            }
+            else
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)) + "§8, §r");
+            }
         }
+        DesireCore.getLangHandler().sendRenderMessage(sender, sb.toString().trim(), false, false);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
     }
 
+    public static void listIncomming(Session sender)
+    {
+        List<UUID> friends = sender.getIncomingFriendRequests();
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+        StringBuilder sb = new StringBuilder();
+        sb.append(DesireCore.getLangHandler().renderMessage("friend.incoming_friends", false, false));
+
+        for (int i = 0; i < friends.size(); i++)
+        {
+            if (i == (friends.size() - 1))
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)));
+            }
+            else
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)) + "&8, &r");
+            }
+        }
+        DesireCore.getLangHandler().sendRenderMessage(sender, sb.toString().trim(), false, false);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+    }
+
+    public static void listOutgoing(Session sender)
+    {
+        List<UUID> friends = sender.getOutgoingFriendRequests();
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+        StringBuilder sb = new StringBuilder();
+        sb.append(DesireCore.getLangHandler().renderMessage("friend.outgoing_friends", false, false));
+
+        for (int i = 0; i < friends.size(); i++)
+        {
+            if (i == (friends.size() - 1))
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)));
+            }
+            else
+            {
+                sb.append(PlayerUtils.getName(friends.get(i)) + "&8, &r");
+            }
+        }
+        DesireCore.getLangHandler().sendRenderMessage(sender, sb.toString().trim(), false, false);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "list-header", false, false);
+    }
 }

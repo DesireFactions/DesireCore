@@ -3,48 +3,87 @@ package com.desiremc.core;
 import java.io.File;
 import java.util.UUID;
 
-import com.desiremc.core.commands.auth.AuthLoginCommand;
-import com.desiremc.core.commands.ticket.TicketCommand;
-import com.desiremc.core.listeners.AuthListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.CustomCommandHandler;
+import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.bungee.StatusManager;
-import com.desiremc.core.commands.AchievementCommand;
-import com.desiremc.core.commands.BanCommand;
+import com.desiremc.core.commands.HelpOpCommand;
+import com.desiremc.core.commands.HubCommand;
 import com.desiremc.core.commands.InfoCommand;
-import com.desiremc.core.commands.TempBanCommand;
-import com.desiremc.core.commands.UnbanCommand;
-import com.desiremc.core.commands.WarnCommand;
-import com.desiremc.core.commands.alerts.AlertsCommand;
+import com.desiremc.core.commands.PingCommand;
+import com.desiremc.core.commands.RenameCommand;
+import com.desiremc.core.commands.TeamSpeakCommand;
+import com.desiremc.core.commands.achievement.AchievementCommand;
+import com.desiremc.core.commands.auth.AuthCommand;
+import com.desiremc.core.commands.auth.LoginCommand;
+import com.desiremc.core.commands.chat.ChatCommand;
 import com.desiremc.core.commands.friends.FriendsCommand;
+import com.desiremc.core.commands.punishment.BanCommand;
+import com.desiremc.core.commands.punishment.BlacklistCommand;
+import com.desiremc.core.commands.punishment.HistoryCommand;
+import com.desiremc.core.commands.punishment.IpbanCommand;
+import com.desiremc.core.commands.punishment.KickCommand;
+import com.desiremc.core.commands.punishment.MuteCommand;
+import com.desiremc.core.commands.punishment.RollbackCommand;
+import com.desiremc.core.commands.punishment.TempBanCommand;
+import com.desiremc.core.commands.punishment.TempMuteCommand;
+import com.desiremc.core.commands.punishment.UnIpbanCommand;
+import com.desiremc.core.commands.punishment.UnbanCommand;
+import com.desiremc.core.commands.punishment.UnblacklistCommand;
+import com.desiremc.core.commands.punishment.UnmuteCommand;
+import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
+import com.desiremc.core.commands.settings.SettingsCommand;
+import com.desiremc.core.commands.spawn.SetSpawnCommand;
+import com.desiremc.core.commands.spawn.SpawnCommand;
+import com.desiremc.core.commands.staff.StaffAltsCommand;
+import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
+import com.desiremc.core.commands.staff.StaffFreezeCommand;
+import com.desiremc.core.commands.staff.StaffModeCommand;
+import com.desiremc.core.commands.staff.StaffReportsCommand;
+import com.desiremc.core.commands.staff.StaffRestoreCommand;
+import com.desiremc.core.commands.ticket.TicketCommand;
+import com.desiremc.core.commands.timings.TimingsCommand;
+import com.desiremc.core.commands.tokens.TokensCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
+import com.desiremc.core.handler.CommandBlocker;
+import com.desiremc.core.handler.SlowChatHandler;
+import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
-import com.desiremc.core.listeners.InventoryListener;
+import com.desiremc.core.listeners.GUIListener;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.listeners.PlayerListener;
+import com.desiremc.core.listeners.StaffListener;
 import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.scoreboard.ScoreboardRegistry;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.GadgetHandler;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tickets.TicketHandler;
+import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.core.utils.ItemDb;
+import com.desiremc.core.utils.ReflectionUtils.NMSClasses;
+import com.desiremc.core.utils.ReflectionUtils.NMSFields;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 public class DesireCore extends JavaPlugin
 {
-    
+
     public static final boolean DEBUG = false;
-    
+
     private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     private static String SERVER;
@@ -57,6 +96,8 @@ public class DesireCore extends JavaPlugin
     private static FileHandler config;
     private static ItemDb itemHandler;
 
+    private static boolean useTimings;
+
     @Override
     public void onEnable()
     {
@@ -68,6 +109,10 @@ public class DesireCore extends JavaPlugin
 
         config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
         lang = new LangHandler(new File(getDataFolder(), "lang.yml"), this);
+
+        useTimings = config.getBoolean("timings");
+        ((SimplePluginManager) Bukkit.getPluginManager()).useTimings(useTimings);
+
         itemHandler = new ItemDb();
 
         SERVER = config.getString("SERVER");
@@ -75,26 +120,41 @@ public class DesireCore extends JavaPlugin
         mongoWrapper = new MongoWrapper();
 
         PunishmentHandler.initialize();
+        SessionHandler.initialize();
+        NMSClasses.initialize();
+        NMSFields.initialize();
         ScoreboardRegistry.initialize();
         EntryRegistry.initialize();
         MenuAPI.initialize();
         ListenerManager.initialize();
-        CustomCommandHandler.initialize();
-        SessionHandler.initialize();
+        CommandHandler.initialize();
         StaffHandler.initialize();
         TicketHandler.initialize();
         StatusManager.startPingTask();
-        
+        ReportHandler.initialize();
+        GadgetHandler.initialize();
+        TabAPI.initialize();
+        BukkitUtils.initialize();
+
         mongoWrapper.getDatastore().ensureIndexes();
-        
+
         registerCommands();
         registerListeners();
 
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        
+
         for (Player p : Bukkit.getOnlinePlayers())
         {
             Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
+        }
+    }
+
+    @Override
+    public void onDisable()
+    {
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            StaffHandler.getInstance().disableStaffMode(p);
         }
     }
 
@@ -102,23 +162,50 @@ public class DesireCore extends JavaPlugin
     {
         return instance.getClassLoader();
     }
-    
+
     private void registerCommands()
     {
-        CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new AlertsCommand());
-        customCommandHandler.registerCommand(new FriendsCommand());
-        customCommandHandler.registerCommand(new ReportCommand());
-        customCommandHandler.registerCommand(new InfoCommand());
-        customCommandHandler.registerCommand(new RankCommand());
-        customCommandHandler.registerCommand(new StaffCommand());
-        customCommandHandler.registerCommand(new TempBanCommand());
-        customCommandHandler.registerCommand(new BanCommand());
-        customCommandHandler.registerCommand(new UnbanCommand());
-        customCommandHandler.registerCommand(new WarnCommand());
-        customCommandHandler.registerCommand(new AchievementCommand());
-        customCommandHandler.registerCommand(new AuthLoginCommand());
-        customCommandHandler.registerCommand(new TicketCommand());
+        CommandHandler commandHandler = CommandHandler.getInstance();
+        commandHandler.registerCommand(new SettingsCommand());
+        commandHandler.registerCommand(new ReportCommand());
+        commandHandler.registerCommand(new RankCommand());
+        commandHandler.registerCommand(new BlacklistCommand());
+        commandHandler.registerCommand(new UnblacklistCommand());
+        commandHandler.registerCommand(new StaffCommand());
+        commandHandler.registerCommand(new TempBanCommand());
+        commandHandler.registerCommand(new BanCommand());
+        commandHandler.registerCommand(new UnbanCommand());
+        commandHandler.registerCommand(new WarnCommand());
+        commandHandler.registerCommand(new AchievementCommand());
+        commandHandler.registerCommand(new LoginCommand());
+        commandHandler.registerCommand(new AuthCommand());
+        commandHandler.registerCommand(new TimingsCommand());
+        commandHandler.registerCommand(new StaffChatCommand("sc"));
+        commandHandler.registerCommand(new StaffFreezeCommand());
+        commandHandler.registerCommand(new StaffModeCommand("mod", new String[] { "staff", "v" }));
+        commandHandler.registerCommand(new StaffRestoreCommand("inv"));
+        commandHandler.registerCommand(new StaffReportsCommand("reports"));
+        commandHandler.registerCommand(new StaffAltsCommand("alts"));
+        commandHandler.registerCommand(new IpbanCommand());
+        commandHandler.registerCommand(new UnIpbanCommand());
+        commandHandler.registerCommand(new RollbackCommand());
+        commandHandler.registerCommand(new KickCommand());
+        commandHandler.registerCommand(new InfoCommand());
+        commandHandler.registerCommand(new TicketCommand());
+        commandHandler.registerCommand(new PingCommand());
+        commandHandler.registerCommand(new RenameCommand());
+        commandHandler.registerCommand(new TeamSpeakCommand());
+        commandHandler.registerCommand(new TokensCommand());
+        commandHandler.registerCommand(new MuteCommand());
+        commandHandler.registerCommand(new UnmuteCommand());
+        commandHandler.registerCommand(new TempMuteCommand());
+        commandHandler.registerCommand(new ChatCommand());
+        commandHandler.registerCommand(new FriendsCommand());
+        commandHandler.registerCommand(new HistoryCommand());
+        commandHandler.registerCommand(new SpawnCommand());
+        commandHandler.registerCommand(new SetSpawnCommand());
+        commandHandler.registerCommand(new HubCommand());
+        commandHandler.registerCommand(new HelpOpCommand());
     }
 
     private void registerListeners()
@@ -126,8 +213,13 @@ public class DesireCore extends JavaPlugin
         ListenerManager listenerManager = ListenerManager.getInstace();
         listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new PlayerListener());
-        listenerManager.addListener(new InventoryListener());
         listenerManager.addListener(new AuthListener());
+        //listenerManager.addListener(new TabList());
+        listenerManager.addListener(new StaffListener());
+        listenerManager.addListener(new GUIListener());
+
+        listenerManager.addListener(new SlowChatHandler());
+        listenerManager.addListener(new CommandBlocker());
     }
 
     public MongoWrapper getMongoWrapper()
@@ -163,6 +255,24 @@ public class DesireCore extends JavaPlugin
     public static String getCurrentServer()
     {
         return SERVER;
+    }
+
+    public static WorldEditPlugin getWorldEdit()
+    {
+        Plugin p = Bukkit.getPluginManager().getPlugin("WorldEdit");
+        if (p == null)
+        {
+            System.out.println("This could would crash if that were to happen.");
+            return null;
+        }
+        return (WorldEditPlugin) p;
+    }
+
+    public static boolean toggleTimings()
+    {
+        useTimings = !useTimings;
+        config.setBoolean("timings", useTimings);
+        return useTimings;
     }
 
 }

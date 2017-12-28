@@ -1,35 +1,37 @@
 package com.desiremc.core.commands.report;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerSessionParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+
+import java.util.List;
 
 public class ReportClearCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public ReportClearCommand()
     {
-        super("clear", "Clear a players reports", Rank.ADMIN, new String[] { "target" });
-        addParser(new PlayerSessionParser(), "target");
+        super("clear", "Clear a players reports", Rank.ADMIN);
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session target = (Session) args[0];
-        Session player = SessionHandler.getSession(sender);
+        Session target = (Session) args.get(0).getValue();
 
         ReportHandler.getInstance().clearReports(target.getUniqueId());
 
-        LANG.sendRenderMessage(player, "report.clear", "{player}", target.getName());
+        DesireCore.getLangHandler().sendRenderMessage(sender, "report.clear", true, false,
+                "{player}", target.getName());
     }
 }

@@ -1,25 +1,26 @@
 package com.desiremc.core.commands.rank;
 
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.session.Session;
 
-import com.desiremc.core.api.RankAPI;
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
+import java.util.List;
 
 public class RankCheckCommand extends ValidCommand
 {
 
     public RankCheckCommand()
     {
-        super("check", "Check your rank.", Rank.GUEST, new String[] {}, "show");
-        addValidator(new PlayerValidator());
+        super("check", "Check your rank.", true, new String[] { "show" });
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> args)
     {
-        RankAPI.checkRank(sender, label);
+        DesireCore.getLangHandler().sendRenderMessage(sender, "rank.check", true, false,
+                "{color}", sender.getRank().getColor().toString(),
+                "{rank}", sender.getRank().getDisplayName());
     }
 
 }

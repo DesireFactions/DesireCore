@@ -1,11 +1,9 @@
 package com.desiremc.core.api;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.StaffHandler;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.staff.StaffHandler;
+import org.bukkit.entity.Player;
 
 public class StaffAPI
 {
@@ -13,12 +11,9 @@ public class StaffAPI
     private static final LangHandler LANG = DesireCore.getLangHandler();
     private static final StaffHandler STAFF = StaffHandler.getInstance();
 
-    public static void freeze(CommandSender sender, Player player)
+    public static void freeze(Session sender, Player player)
     {
-        if (STAFF.toggleFreeze(player))
-        {
-            LANG.sendRenderMessage(sender, "staff.froze-target", "{player}", player.getDisplayName());
-        }
+        STAFF.toggleFreeze(player, sender);
     }
 
     public static void toggleStaffMode(Player sender)
@@ -26,21 +21,21 @@ public class StaffAPI
         STAFF.toggleStaffMode(sender);
     }
 
-    public static void clicksPerSecondTest(CommandSender sender, Player player)
+    public static void clicksPerSecondTest(Session sender, Player player)
     {
         if (STAFF.CPSTest(player))
         {
-            LANG.sendRenderMessage(sender, "staff.cps-already-running", "{player}", player.getDisplayName());
+            LANG.sendRenderMessage(sender, "staff.cps-already-running", true, false, "{player}", player.getDisplayName());
             return;
         }
 
         STAFF.startCPSTestForPlayer((Player) sender, player);
-        LANG.sendRenderMessage(sender, "staff.cps-start", "{player}", player.getDisplayName());
+        LANG.sendRenderMessage(sender, "staff.cps-start", true, false, "{player}", player.getDisplayName());
     }
 
-    public static void toggleInvisibility(Player player)
+    public static void toggleInvisibility(Player player, boolean item)
     {
-        STAFF.toggleInvisibility(player);
+        STAFF.toggleInvisibility(player, item);
     }
 
     public static void mount(Player passenger, Player target)

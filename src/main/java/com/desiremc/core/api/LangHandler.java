@@ -2,46 +2,52 @@ package com.desiremc.core.api;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.core.session.Session;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.Messageable;
 import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.CollectionUtils;
 
 /**
- * @author Michael Ziluck
+ * @author Michael Ziluck & Christian Tooley.
  */
 public class LangHandler extends FileHandler
 {
 
     private String prefix;
-    private boolean usePrefix;
 
     /**
-     * Create a new {@link LangHandler} based on the {@link FileHandler}. Also
-     * loads the prefix.
+     * Create a new {@link LangHandler} based on the {@link FileHandler}. Also loads the prefix.
      *
-     * @param file
+     * @param file file to retrieve the lang from
+     * @param plugin main file of the plugin.
      */
     public LangHandler(File file, JavaPlugin plugin)
     {
         super(file, plugin);
-        usePrefix = super.getBoolean("prefix.use");
-        if (usePrefix)
-        {
-            prefix = super.getString("prefix.text");
-        }
-
+        prefix = ChatColor.translateAlternateColorCodes('&', "&b&lDesire &8»");
     }
 
     /**
-     * Gets a formatted string from the config file. Replaces any color place
-     * holders as well. If the string does not exist in the config, returns
-     * null.
+     * Gets the prefix from the config file.
      *
-     * @param string
+     * @return the prefix.
+     */
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
+    /**
+     * Gets a formatted string from the config file. Replaces any color place holders as well. If the string does not
+     * exist in the config, returns null.
+     *
+     * @param string key to retrieve from the lang file.
      * @return the formatted string.
      */
     @Override
@@ -56,128 +62,157 @@ public class LangHandler extends FileHandler
     }
 
     /**
-     * Shorthand to send getString to {@link CommandSender}
-     *
-     * @param sender
-     * @param string
-     */
-    public void sendString(CommandSender sender, String string)
-    {
-        sender.sendMessage(getString(string));
-    }
-
-    /**
      * Render a message using the format rendered in lang.yml
      *
-     * @param string
-     * @param args
-     * @return
+     * @param string key to retrieve from the lang file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace.
+     * @return formatted message.
      */
-    public String renderMessage(String string, String... args)
+    public String renderMessage(String string, boolean prefix, boolean center, Object... args)
     {
-        if (args.length % 2 != 0)
+        String message;
+
+        if (prefix)
         {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+            message = renderString(getString(string), args);
+        }
+        else
+        {
+            message = renderString(super.getString(string), args);
         }
 
-        String message = getString(string);
-        for (int i = 0; i < args.length; i += 2)
+        if (center)
         {
-            message = message.replace(args[i], args[i + 1]);
+            return ChatUtils.renderCenteredMessage(message);
         }
-
-        return message;
-    }
-
-    public String renderString(String string, String... args)
-    {
-        if (args.length % 2 != 0)
+        else
         {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+            return message;
         }
-
-        for (int i = 0; i < args.length; i += 2)
-        {
-            string = string.replace(args[i], args[i + 1]);
-        }
-
-        return string;
     }
 
     /**
-     * Shorthand to render a command and send it to a {@link CommandSender}
+     * Shorthand to render a list of strings and send it to a {@link CommandSender}.
      *
-     * @param sender
-     * @param string
-     * @param args
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
      */
-    public void sendRenderMessage(CommandSender sender, String string, String... args)
+    public void sendRenderList(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
     {
-        sender.sendMessage(renderMessage(string, args));
-    }
+        List<String> messages = DesireCore.getLangHandler().getStringList(string);
 
-    public void sendRenderMessage(Session s, String string, String... args)
-    {
-        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
-        sendRenderMessage(sender, string, args);
-    }
-
-    public void sendRenderMessage(CommandSender sender, String string, boolean center, String... args)
-    {
-        if (center)
+        for (String s : messages)
         {
-            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
-        }
-        else
-        {
-            sender.sendMessage(renderMessage(string, args));
+            sender.sendMessage(renderMessage(s, prefix, center, args));
         }
     }
 
-    public void sendRenderMessage(Session s, String string, boolean center, String... args)
+    /**
+     * Shorthand to render a list of strings and send it to a {@link Messageable}.
+     *
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
+     */
+    public void sendRenderList(Messageable sender, String string, boolean prefix, boolean center, Object... args)
     {
-        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
-        if (center)
+        List<String> messages = DesireCore.getLangHandler().getStringList(string);
+
+        for (String s : messages)
         {
-            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
+            sender.sendMessage(renderMessage(s, prefix, center, args));
         }
-        else
-        {
-            sender.sendMessage(renderMessage(string, args));
-        }
+    }
+
+    /**
+     * Shorthand to render a message and send it to a {@link CommandSender}.
+     *
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
+     */
+    public void sendRenderMessage(CommandSender sender, String string, boolean prefix, boolean center, Object... args)
+    {
+        sender.sendMessage(renderMessage(string, prefix, center, args));
+    }
+
+    /**
+     * Shorthand to render a message and send it to a {@link CommandSender}.
+     *
+     * @param sender user to send the message to.
+     * @param string the key to retrieve the message from the file.
+     * @param prefix to use a prefix or not.
+     * @param center to center the message or not.
+     * @param args arguments to replace within the message.
+     */
+    public void sendRenderMessage(Messageable sender, String string, boolean prefix, boolean center, Object... args)
+    {
+        sender.sendMessage(renderMessage(string, prefix, center, args));
     }
 
     /**
      * Render a usage message using the format specified in lang.yml
      *
-     * @param args
-     * @return
+     * @param label the command label.
+     * @param args the arguments of the command.
+     * @return the formatted usage message
      */
-    public String usageMessage(String label, String... args)
+    private String usageMessage(String label, Object... args)
     {
-        String argsString = "/" + label;
+        StringBuilder sb = new StringBuilder();
+        sb.append("/");
+        sb.append(label);
 
-        for (String arg : args)
+        for (Object arg : args)
         {
-            argsString += " [" + arg + "]";
+            sb.append(" [");
+            sb.append(arg);
+            sb.append("]");
         }
 
-        return renderMessage("usage-message", "{usage}", argsString);
+        return renderMessage("usage-message", true, false, "{usage}", sb.toString());
     }
 
     /**
      * Shorthand to send a usage message to a {@link CommandSender}
      *
-     * @param sender
+     * @param sender user to send the message to.
+     * @param label label of the command.
+     * @param args arguments of the command.
      */
-    public void sendUsageMessage(CommandSender sender, String label, String... args)
+    public void sendUsageMessage(CommandSender sender, String label, Object... args)
     {
         sender.sendMessage(usageMessage(label, args));
     }
 
-    public String getPrefix()
+    /**
+     * Render a string with the proper parameters.
+     *
+     * @param string the rendered string.
+     * @param args the placeholders and proper content.
+     * @return the rendered string.
+     */
+    public String renderString(String string, Object... args)
     {
-        return prefix;
-    }
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
 
+        for (int i = 0; i < args.length; i += 2)
+        {
+            string = string.replace(args[i].toString(), CollectionUtils.firstNonNull(args[i + 1], "").toString());
+        }
+
+        return string;
+    }
 }

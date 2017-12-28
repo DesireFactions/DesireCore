@@ -1,44 +1,44 @@
 package com.desiremc.core.commands.report;
 
-import com.desiremc.core.api.LangHandler;
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.SessionParser;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.report.ReportHandler;
-import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+
+import java.util.List;
 
 public class ReportCreateCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     public ReportCreateCommand()
     {
-        super("create", "Create a new report.", Rank.GUEST, new String[] { "target", "reason" });
+        super("create", "Create a new report.");
+
+        addArgument(CommandArgumentBuilder.createBuilder(Session.class)
+                .setName("target")
+                .setParser(new SessionParser())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Session session = SessionHandler.getSession(sender);
-        Session target = (Session) args[0];
-        StringBuilder sb = new StringBuilder();
+        Session target = (Session) args.get(0).getValue();
+        String reason = (String) args.get(1).getValue();
 
-        if (args.length >= 2)
-        {
-            for (int i = 2; i < args.length; i++)
-            {
-                sb.append(args[i] + " ");
-            }
-        }
+        ReportHandler.getInstance().submitReport(target.getUniqueId(), sender.getUniqueId(), reason);
 
-        ReportHandler.getInstance().submitReport(target.getUniqueId(), session != null ? session.getUniqueId() : DesireCore.getConsoleUUID(), sb.toString().trim());
-
-        LANG.sendRenderMessage(session, "report.reported",
+        DesireCore.getLangHandler().sendRenderMessage(sender, "report.reported", true, false,
                 "{player}", target.getName(),
-                "{reason}", sb.toString().trim());
+                "{reason}", reason);
     }
 }

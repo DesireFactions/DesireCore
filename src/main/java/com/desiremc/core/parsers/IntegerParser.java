@@ -1,23 +1,33 @@
 package com.desiremc.core.parsers;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
-import org.bukkit.command.CommandSender;
+import com.desiremc.core.api.newcommands.Parser;
+import com.desiremc.core.session.Session;
 
-import com.desiremc.core.api.command.ArgumentParser;
+import java.util.List;
 
-public class IntegerParser implements ArgumentParser {
-
-    private static final LangHandler LANG = DesireCore.getLangHandler();
+public class IntegerParser implements Parser<Integer>
+{
 
     @Override
-    public Integer parseArgument(CommandSender sender, String label, String arg) {
-        if (!arg.matches("\\d+")) {
-            LANG.sendString(sender, "arg_not_number");
+    public Integer parseArgument(Session sender, String[] label, String rawArgument)
+    {
+        int val;
+        try
+        {
+            val = Integer.parseInt(rawArgument);
+        } catch (NumberFormatException ex)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(sender, "arg_not_number", true, false);
             return null;
         }
+        return val;
+    }
 
-        return Integer.parseInt(arg);
+    @Override
+    public List<String> getRecommendations(Session sender, String lastWord)
+    {
+        return null;
     }
 
 }

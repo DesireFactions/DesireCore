@@ -9,7 +9,8 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.stream.JsonWriter;
+
+import net.minecraft.util.com.google.gson.stream.JsonWriter;
 
 /**
  * Represents a textual component of a message part. This can be used to not
