@@ -10,12 +10,13 @@ public enum SessionSetting
 {
 
     MENTIONS("Mentions", true, true, Rank.GUEST),
-    FINDORE("FindOre Notifications", true, true, Rank.GUEST, "foundore", "fo", "xray"),
+    FINDORE("Find Ore Notifications", true, true, Rank.GUEST, "foundore", "fo", "xray"),
     DEATH("Death Messages", true, true, Rank.GUEST),
     ACHIEVEMENTS("Achievement Messages", true, true, Rank.GUEST),
     PLAYERS("Hide Players", false, true, Rank.GUEST),
     CLASSICTAB("Classic tablist", false, false, Rank.GUEST),
-    MESSAGES("Pivate Messages", true, true, Rank.GUEST);
+    MESSAGES("Pivate Messages", true, true, Rank.GUEST),
+    COBBLE("Autosmelt Cobblestone.", true, true, Rank.GUEST);
 
     private String displayName;
     private Rank rank;
