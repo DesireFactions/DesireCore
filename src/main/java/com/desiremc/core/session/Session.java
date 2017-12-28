@@ -257,7 +257,9 @@ public class Session implements Messageable
         {
             this.settings = EnumSet.noneOf(SessionSetting.class);
         }
-        this.settings.addAll(SessionSetting.enabledValues());
+        List<SessionSetting> settings = SessionSetting.enabledValues();
+        settings.removeIf(setting -> !setting.getDefaultValue());
+        this.settings.addAll(settings);
     }
 
     protected void assignConsole()

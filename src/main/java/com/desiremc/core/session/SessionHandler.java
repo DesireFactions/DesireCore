@@ -49,7 +49,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     private static boolean applyExternalData(Session session)
     {
         boolean needSave = false;
-        if (session.getSettings() == null || session.getSettings().size() == 0)
+        if (session.getSettings() == null)
         {
             session.assignDefaultSettings();
             needSave = true;

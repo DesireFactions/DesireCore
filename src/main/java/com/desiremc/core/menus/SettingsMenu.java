@@ -22,7 +22,7 @@ public class SettingsMenu extends Menu
         {
             if (setting.getRank().getId() < session.getRank().getId())
             {
-                addMenuItem(new MenuItem(setting.getDisplayName(), new MaterialData(Material.WOOL), (short) (session.getSetting(setting) ? 5 : 14))
+                addMenuItem(new MenuItem((session.getSetting(setting) ? "§a" : "§c") + setting.getDisplayName(), new MaterialData(Material.WOOL), (short) (session.getSetting(setting) ? 5 : 14))
                 {
 
                     @Override
@@ -41,6 +41,20 @@ public class SettingsMenu extends Menu
                     }
                 }, 10 + count);
                 count++;
+            }
+        }
+        for (int i = 0; i < 6 * 9; i++)
+        {
+            if (items[i] == null)
+            {
+                addMenuItem(new MenuItem(" ", new MaterialData(Material.STAINED_GLASS_PANE), (short) 15)
+                {
+
+                    @Override
+                    public void onClick(Player player)
+                    {
+                    }
+                }, i);
             }
         }
     }

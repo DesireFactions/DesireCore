@@ -9,13 +9,13 @@ import com.desiremc.core.utils.StringUtils;
 public enum SessionSetting
 {
 
-    MENTIONS("mentions", true, true, Rank.GUEST),
-    FINDORE("find ore notifications", true, true, Rank.GUEST, "foundore", "fo", "xray"),
-    DEATH("death messages", true, true, Rank.GUEST),
-    ACHIEVEMENTS("achievment messages", true, true, Rank.GUEST),
-    PLAYERS("hide players", false, true, Rank.GUEST),
-    CLASSICTAB("classic tab list", false, false, Rank.GUEST),
-    MESSAGES("private messages", true, true, Rank.GUEST);
+    MENTIONS("Mentions", true, true, Rank.GUEST),
+    FINDORE("FindOre Notifications", true, true, Rank.GUEST, "foundore", "fo", "xray"),
+    DEATH("Death Messages", true, true, Rank.GUEST),
+    ACHIEVEMENTS("Achievement Messages", true, true, Rank.GUEST),
+    PLAYERS("Hide Players", false, true, Rank.GUEST),
+    CLASSICTAB("Classic tablist", false, false, Rank.GUEST),
+    MESSAGES("Pivate Messages", true, true, Rank.GUEST);
 
     private String displayName;
     private Rank rank;
@@ -69,7 +69,7 @@ public enum SessionSetting
         }
         return null;
     }
-    
+
     public static List<SessionSetting> enabledValues()
     {
         List<SessionSetting> enabled = new LinkedList<>(Arrays.asList(values()));
