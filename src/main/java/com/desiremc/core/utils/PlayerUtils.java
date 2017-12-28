@@ -1,8 +1,10 @@
 package com.desiremc.core.utils;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -10,10 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 
 public class PlayerUtils
 {
@@ -136,6 +137,72 @@ public class PlayerUtils
             }
         }
         return null;
+    }
+
+    /**
+     * Get the cardinal compass direction of a player.
+     *
+     * @param player Player to get the direction from.
+     * @return The cardinal direction.
+     */
+    public static String getCardinalDirection(Player player)
+    {
+        double rot = (player.getLocation().getYaw() - 90) % 360;
+        if (rot < 0)
+        {
+            rot += 360.0;
+        }
+        return getDirection(rot);
+    }
+
+    /**
+     * Converts a rotation to a cardinal direction name.
+     *
+     * @param rot Rotation to get the direction from
+     * @return Formatted Cardinal direction string.
+     */
+    private static String getDirection(double rot)
+    {
+        if (0 <= rot && rot < 22.5)
+        {
+            return "N";
+        }
+        else if (22.5 <= rot && rot < 67.5)
+        {
+            return "NE";
+        }
+        else if (67.5 <= rot && rot < 112.5)
+        {
+            return "E";
+        }
+        else if (112.5 <= rot && rot < 157.5)
+        {
+            return "SE";
+        }
+        else if (157.5 <= rot && rot < 202.5)
+        {
+            return "S";
+        }
+        else if (202.5 <= rot && rot < 247.5)
+        {
+            return "SW";
+        }
+        else if (247.5 <= rot && rot < 292.5)
+        {
+            return "W";
+        }
+        else if (292.5 <= rot && rot < 337.5)
+        {
+            return "NW";
+        }
+        else if (337.5 <= rot && rot < 360.0)
+        {
+            return "N";
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }
