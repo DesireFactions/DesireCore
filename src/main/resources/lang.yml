@@ -168,6 +168,7 @@ rollback:
   finished: "&7You have rolled back all punishments from &f{player} &7within the last &f{time}&7."
 settings:
   toggle: '&7You have turned &f{setting} &f{status}&7.'
+  not_found: '&7Setting not found.'
 tokens:
   add: '&7You have been awarded &e{tokens}&7 tokens!'
   taken: "&7You have lost &e{tokens}&7 tokens."

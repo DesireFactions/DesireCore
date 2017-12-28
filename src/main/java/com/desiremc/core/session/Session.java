@@ -1,8 +1,9 @@
 package com.desiremc.core.session;
 
-import java.util.HashMap;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -80,7 +81,7 @@ public class Session implements Messageable
 
     private int tokens;
 
-    private HashMap<SessionSetting, Boolean> settings;
+    private Set<SessionSetting> settings;
 
     @Transient
     private List<Punishment> activePunishments;
@@ -100,7 +101,7 @@ public class Session implements Messageable
         incomingFriendRequests = new LinkedList<>();
         outgoingFriendRequests = new LinkedList<>();
         achievements = new LinkedList<>();
-        settings = new HashMap<>();
+        settings = EnumSet.noneOf(SessionSetting.class);
         ipList = new LinkedList<>();
         nameList = new LinkedList<>();
         ignoring = new LinkedList<>();
@@ -220,7 +221,6 @@ public class Session implements Messageable
         this.firstLogin = System.currentTimeMillis();
         this.lastLogin = System.currentTimeMillis();
         this.totalPlayed = 0;
-        this.settings = new HashMap<>();
         this.assignDefaultSettings();
         this.ip = ip;
     }
@@ -248,39 +248,16 @@ public class Session implements Messageable
         sessionType = session.sessionType;
     }
 
-    protected void checkDefaults()
-    {
-        if (settings == null || settings.size() == 0)
-        {
-            assignDefaultSettings();
-        }
-        else if (settings.size() != SessionSetting.values().length)
-        {
-            for (SessionSetting setting : SessionSetting.values())
-            {
-                if (!settings.containsKey(setting))
-                {
-                    settings.put(setting, setting.getDefaultValue());
-                }
-            }
-        }
-        else
-        {
-            return;
-        }
-        save();
-    }
-
+    /**
+     * Set all the default settings. This will clear the old settings. Do not use on an existing session.
+     */
     protected void assignDefaultSettings()
     {
-        if (settings == null || settings.size() == 0)
+        if (settings == null || settings.size() != 0)
         {
-            this.settings = new HashMap<>();
+            this.settings = EnumSet.noneOf(SessionSetting.class);
         }
-        for (SessionSetting setting : SessionSetting.values())
-        {
-            this.settings.put(setting, setting.getDefaultValue());
-        }
+        this.settings.addAll(SessionSetting.enabledValues());
     }
 
     protected void assignConsole()
@@ -498,58 +475,48 @@ public class Session implements Messageable
         save();
     }
 
-    public HashMap<SessionSetting, Boolean> getSettings()
+    public Set<SessionSetting> getSettings()
     {
-        checkDefaults();
         return settings;
     }
 
     public void setSetting(SessionSetting setting, boolean status)
     {
-        checkDefaults();
-        this.settings.put(setting, status);
-
-        if (setting.equals(SessionSetting.PLAYERS))
+        if (status)
         {
-            if (status)
-            {
-                for (Player target : Bukkit.getOnlinePlayers())
-                {
-                    getPlayer().hidePlayer(target);
-                }
-            }
-            else
-            {
-                for (Player target : Bukkit.getOnlinePlayers())
-                {
-                    getPlayer().showPlayer(target);
-                }
-            }
-        }
-        save();
-    }
-
-    public boolean toggleSetting(SessionSetting setting)
-    {
-        checkDefaults();
-        Boolean status = this.settings.get(setting);
-        if (status == null || !status)
-        {
-            this.settings.put(setting, true);
+            settings.add(setting);
         }
         else
         {
-
-            this.settings.put(setting, false);
+            settings.remove(setting);
         }
-        save();
-        return !status;
     }
 
+    /**
+     * @param setting the setting to check.
+     * @return the new value of the setting.
+     */
+    public boolean toggleSetting(SessionSetting setting)
+    {
+        if (settings.contains(setting))
+        {
+            this.settings.remove(setting);
+            return false;
+        }
+        else
+        {
+            this.settings.add(setting);
+            return true;
+        }
+    }
+
+    /**
+     * @param setting the setting to check.
+     * @return {@code true} if the setting is enabled.
+     */
     public boolean getSetting(SessionSetting setting)
     {
-        checkDefaults();
-        return this.settings.get(setting);
+        return settings.contains(setting);
     }
 
     public void setAuthKey(String key)
