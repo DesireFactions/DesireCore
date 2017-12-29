@@ -27,6 +27,7 @@ import com.desiremc.core.report.Report;
 import com.desiremc.core.report.ReportHandler;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.tasks.FrozenTask;
 import com.desiremc.core.thread.ClicksPerSecondThread;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.TargetBlock;
@@ -215,8 +216,8 @@ public class StaffHandler
         {
             frozenPlayers.add(target.getUniqueId());
 
-            DesireCore.getLangHandler().sendRenderList(targetSession, "staff.frozen", true, false, "{player}", source.getName());
             DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", true, false, "{player}", target.getName());
+            new FrozenTask(target, source.getPlayer());
         }
     }
 
