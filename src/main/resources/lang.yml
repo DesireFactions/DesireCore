@@ -113,6 +113,8 @@ staff:
   chat_cleared_broadcast: '&f{player} &7has cleared chat.'
   chat-on: '&7You have turned chat back on.'
   chat-off: '&7You have turned chat off.'
+  chat_off_broadcast: '&b{player} &7has deactivated chat.'
+  chat_on_broadcast: '&b{player} &7has activated chat.'
   set-invisible: '&7You are now invisible.'
   set-visible: '&7You are now visible.'
   target-frozen: '&7You have frozen &f{player}&7.'
