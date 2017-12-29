@@ -104,7 +104,6 @@ staff:
   cps-start: '&7Starting clicks per second test for &f{player}&7. Result in &f10 seconds&7.'
   cps-finish: '&f{player} &7had a CPS of &f{amount} &7over 10 seconds.'
   cps-already-running: '&7There is already a clicks per second test for &f{player} &7running.'
-  froze-target: '&&You have frozen &f{player}&7.'
   staff_on: '&7You have toggled staff mode &fon&7.'
   staff_off: 'You have toggled staff mode &foff&7.'
   staff-chat-on: '&7You are now in staff chat.'
@@ -116,8 +115,8 @@ staff:
   chat-off: '&7You have turned chat off.'
   set-invisible: '&7You are now invisible.'
   set-visible: '&7You are now visible.'
-  target-frozen: '&7You have froze &f{player}&7.'
-  target-unfrozen: '&7You have unfroze &f{player}&7.'
+  target-frozen: '&7You have frozen &f{player}&7.'
+  target-unfrozen: '&7You have unfrozez &f{player}&7.'
   frozen:
     - "&b&l&m---------------------------------------"
     - '&7You have been frozen by a &fstaff member&7.'
