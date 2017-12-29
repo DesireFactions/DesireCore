@@ -12,31 +12,33 @@ public enum Rank
 {
 
     GUEST(1, "Guest", "", ChatColor.WHITE, ChatColor.GRAY),
-    BRIGADIER(2, "Brigadier", "§a✯", ChatColor.WHITE, ChatColor.GREEN),
-    COMMODORE(3, "Commodore", "§b❂", ChatColor.WHITE, ChatColor.AQUA),
-    GRANDMASTER(4, "Grandmaster", "§d✹", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    YOUTUBER(5, "YouTuber", "§6§lYT", ChatColor.WHITE, ChatColor.GOLD),
-    HELPER(6, "Helper", "§d§lHELPER", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
-    MODERATOR(7, "Moderator", "§2§lMOD", ChatColor.WHITE, ChatColor.BLUE, "mod"),
-    SRMOD(8, "Senior_Mod", "§6§lSR.MOD", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "sr", "srmod", "sr_mod"),
-    ADMIN(9, "Admin", "§c§lADMIN", ChatColor.GREEN, ChatColor.RED),
-    MANAGER(10, "Manager", "§4§lMANAGER", ChatColor.GREEN, ChatColor.RED),
-    DEVELOPER(11, "Developer", "§9§lDEV", ChatColor.GREEN, ChatColor.RED, "dev"),
-    OWNER(12, "Owner", "§3§lOWNER", ChatColor.GREEN, ChatColor.RED);
+    COMMODORE(2, "Commodore", "§8[&aCommodore&§]", ChatColor.WHITE, ChatColor.GREEN),
+    PREMIER(3, "Brigadier", "§8[§dPremier§8]", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    GRANDMASTER(4, "Grandmaster", "§8[§eGM§8]", ChatColor.WHITE, ChatColor.YELLOW),
+    BETA(5, "Beta", "§8[§bBeta§8]", ChatColor.WHITE, ChatColor.AQUA),
+    YOUTUBER(6, "YouTuber", "§8[§cYou§fTube§8]", ChatColor.WHITE, ChatColor.RED),
+    PARTNER(7, "Partner", "§8[§2Partner§8]", ChatColor.WHITE, ChatColor.DARK_GREEN),
+    HELPER(8, "Helper", "§8[§dHelper§8]", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
+    MODERATOR(9, "Moderator", "§8[§2Mod§8]", ChatColor.WHITE, ChatColor.DARK_GREEN, "mod"),
+    SRMOD(10, "Senior_Mod", "§8[§6SrMod§8]", ChatColor.WHITE, ChatColor.GOLD, "sr", "srmod", "sr_mod"),
+    ADMIN(11, "Admin", "§8[§cAdmin§8]", ChatColor.GREEN, ChatColor.RED),
+    MANAGER(12, "Manager", "§8[§4Manager§8]", ChatColor.GREEN, ChatColor.DARK_RED),
+    DEVELOPER(13, "Developer", "§8[§9Developer§8]", ChatColor.GREEN, ChatColor.BLUE, "dev"),
+    OWNER(14, "Owner", "§8[§bOwner§8]", ChatColor.GREEN, ChatColor.AQUA);
 
     private final int id;
     private final String displayName;
     private final String prefix;
-    private final ChatColor color;
+    private final ChatColor chatColor;
     private final ChatColor main;
     private final String[] aliases;
 
-    Rank(int id, String displayName, String prefix, ChatColor color, ChatColor main, String... aliases)
+    Rank(int id, String displayName, String prefix, ChatColor chatColor, ChatColor main, String... aliases)
     {
         this.id = id;
         this.displayName = displayName;
         this.prefix = prefix;
-        this.color = color;
+        this.chatColor = chatColor;
         this.main = main;
         this.aliases = aliases;
     }
@@ -53,7 +55,7 @@ public enum Rank
 
     public ChatColor getColor()
     {
-        return color;
+        return chatColor;
     }
 
     public ChatColor getMain()
