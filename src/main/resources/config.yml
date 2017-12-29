@@ -10,9 +10,6 @@ logout:
 staff:
   launch_velocity: 5.0
   chat_slow: 20
-timers:
-  pvp:
-    time: 1800
 deathban:
   times:
     default: 7200
