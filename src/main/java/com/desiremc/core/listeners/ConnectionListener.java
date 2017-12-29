@@ -79,6 +79,8 @@ public class ConnectionListener implements Listener
         event.setJoinMessage(null);
         Player player = event.getPlayer();
 
+        Bukkit.broadcastMessage(player.isOnline() + "");
+
         SessionHandler.initializeSession(player);
 
         PlayerUtils.addPlayer(player);
