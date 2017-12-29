@@ -171,7 +171,10 @@ public class Session implements Messageable
     public void setOnline(boolean online)
     {
         this.online = online;
-        this.player = null;
+        if (!online)
+        {
+            this.player = null;
+        }
     }
 
     /**
