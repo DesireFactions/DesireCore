@@ -147,7 +147,7 @@ public class Session implements Messageable
 
         if (isOnline() && !player.isOnline())
         {
-            player = PlayerUtils.getPlayer(uuid);
+            throw new IllegalStateException("Trying to get player before the player has logged in.");
         }
 
         return player;
