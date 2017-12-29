@@ -2,6 +2,7 @@ package com.desiremc.core.listeners;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -94,6 +95,9 @@ public class GUIListener implements Listener
             return;
         }
         Inventory inv = event.getClickedInventory();
+
+        Bukkit.broadcastMessage(inv.getTitle());
+        Bukkit.broadcastMessage(DesireCore.getLangHandler().renderString("history.inventory.title"));
 
         if (inv.getTitle().equalsIgnoreCase(DesireCore.getLangHandler().renderString("history.inventory.title")))
         {
