@@ -243,7 +243,7 @@ chat:
   ignored: '&f{target} &7is ignoring you.'
 history:
   inventory:
-    title: '&b&lDesire &8» &7Reports GUI'
+    title: '&7Reports GUI'
     item:
       name: '&7{type}'
       lore:
