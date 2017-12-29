@@ -165,39 +165,39 @@ public class PlayerUtils
     {
         if (0 <= rot && rot < 22.5)
         {
-            return "N";
+            return "North";
         }
         else if (22.5 <= rot && rot < 67.5)
         {
-            return "NE";
+            return "Northeast";
         }
         else if (67.5 <= rot && rot < 112.5)
         {
-            return "E";
+            return "East";
         }
         else if (112.5 <= rot && rot < 157.5)
         {
-            return "SE";
+            return "Southeast";
         }
         else if (157.5 <= rot && rot < 202.5)
         {
-            return "S";
+            return "South";
         }
         else if (202.5 <= rot && rot < 247.5)
         {
-            return "SW";
+            return "Southwest";
         }
         else if (247.5 <= rot && rot < 292.5)
         {
-            return "W";
+            return "West";
         }
         else if (292.5 <= rot && rot < 337.5)
         {
-            return "NW";
+            return "Northwest";
         }
         else if (337.5 <= rot && rot < 360.0)
         {
-            return "N";
+            return "North";
         }
         else
         {
