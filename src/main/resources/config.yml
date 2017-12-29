@@ -16,6 +16,10 @@ timers:
 deathban:
   times:
     default: 7200
+    commodore: 5400
+    premier: 4500
+    grandmaster: 2700
+    beta: 1800
 glass-protected-regions:
    - 'test1'
    - 'test2'
