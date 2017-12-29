@@ -105,7 +105,7 @@ staff:
   cps-finish: '&f{player} &7had a CPS of &f{amount} &7over 10 seconds.'
   cps-already-running: '&7There is already a clicks per second test for &f{player} &7running.'
   staff_on: '&7You have toggled staff mode &fon&7.'
-  staff_off: 'You have toggled staff mode &foff&7.'
+  staff_off: '&7You have toggled staff mode &foff&7.'
   staff-chat-on: '&7You are now in staff chat.'
   staff-chat-off: '&7You have left staff chat.'
   staff-chat-format: '&b[SC] &f{name}&7: &b{message}'
