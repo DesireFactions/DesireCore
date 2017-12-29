@@ -140,6 +140,11 @@ public class Session implements Messageable
             throw new IllegalStateException("Can't retrieve Player of offline Session.");
         }
 
+        if (isOnline() && !player.isOnline())
+        {
+            player = PlayerUtils.getPlayer(uuid);
+        }
+
         if (player == null)
         {
             player = PlayerUtils.getPlayer(uuid);
