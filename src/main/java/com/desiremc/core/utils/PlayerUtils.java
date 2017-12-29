@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -20,6 +21,8 @@ public class PlayerUtils
 {
 
     private static final boolean DEBUG = false;
+
+    private static final BlockFace[] radial = {BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST};
 
     private static HashMap<UUID, Player> playerCache = new HashMap<>();
 
@@ -147,62 +150,8 @@ public class PlayerUtils
      */
     public static String getCardinalDirection(Player player)
     {
-        double rot = (player.getLocation().getYaw() - 90) % 360;
-        if (rot < 0)
-        {
-            rot += 360.0;
-        }
-        return getDirection(rot);
-    }
+        float yaw = player.getLocation().getYaw();
 
-    /**
-     * Converts a rotation to a cardinal direction name.
-     *
-     * @param rot Rotation to get the direction from
-     * @return Formatted Cardinal direction string.
-     */
-    private static String getDirection(double rot)
-    {
-        if (0 <= rot && rot < 22.5)
-        {
-            return "North";
-        }
-        else if (22.5 <= rot && rot < 67.5)
-        {
-            return "Northeast";
-        }
-        else if (67.5 <= rot && rot < 112.5)
-        {
-            return "East";
-        }
-        else if (112.5 <= rot && rot < 157.5)
-        {
-            return "Southeast";
-        }
-        else if (157.5 <= rot && rot < 202.5)
-        {
-            return "South";
-        }
-        else if (202.5 <= rot && rot < 247.5)
-        {
-            return "Southwest";
-        }
-        else if (247.5 <= rot && rot < 292.5)
-        {
-            return "West";
-        }
-        else if (292.5 <= rot && rot < 337.5)
-        {
-            return "Northwest";
-        }
-        else if (337.5 <= rot && rot < 360.0)
-        {
-            return "North";
-        }
-        else
-        {
-            return null;
-        }
+        return StringUtils.capitalize(radial[Math.round(yaw / 45f) & 0x7].getOppositeFace().name().replace("_", "").toLowerCase());
     }
-
 }
