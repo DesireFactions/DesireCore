@@ -12,19 +12,19 @@ public enum Rank
 {
 
     GUEST(1, "Guest", "", ChatColor.WHITE, ChatColor.GRAY),
-    COMMODORE(2, "Commodore", "§8[§aCommodore§8]", ChatColor.WHITE, ChatColor.GREEN),
-    PREMIER(3, "Brigadier", "§8[§dPremier§8]", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    GRANDMASTER(4, "Grandmaster", "§8[§eGM§8]", ChatColor.WHITE, ChatColor.YELLOW),
+    COMMODORE(2, "Commodore", "§8[§aCommodore§8] ", ChatColor.WHITE, ChatColor.GREEN),
+    PREMIER(3, "Brigadier", "§8[§dPremier§8] ", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    GRANDMASTER(4, "Grandmaster", "§8[§eGM§8] ", ChatColor.WHITE, ChatColor.YELLOW),
     BETA(5, "Beta", "§8[§bBeta§8]", ChatColor.WHITE, ChatColor.AQUA),
-    YOUTUBER(6, "YouTuber", "§8[§cYou§fTube§8]", ChatColor.WHITE, ChatColor.RED),
-    PARTNER(7, "Partner", "§8[§2Partner§8]", ChatColor.WHITE, ChatColor.DARK_GREEN),
-    HELPER(8, "Helper", "§8[§dHelper§8]", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
-    MODERATOR(9, "Moderator", "§8[§2Mod§8]", ChatColor.WHITE, ChatColor.DARK_GREEN, "mod"),
-    SRMOD(10, "Senior_Mod", "§8[§6SrMod§8]", ChatColor.WHITE, ChatColor.GOLD, "sr", "srmod", "sr_mod"),
-    ADMIN(11, "Admin", "§8[§cAdmin§8]", ChatColor.GREEN, ChatColor.RED),
-    MANAGER(12, "Manager", "§8[§4Manager§8]", ChatColor.GREEN, ChatColor.DARK_RED),
-    DEVELOPER(13, "Developer", "§8[§9Developer§8]", ChatColor.GREEN, ChatColor.BLUE, "dev"),
-    OWNER(14, "Owner", "§8[§bOwner§8]", ChatColor.GREEN, ChatColor.AQUA);
+    YOUTUBER(6, "YouTuber", "§8[§cYou§fTube§8] ", ChatColor.WHITE, ChatColor.RED),
+    PARTNER(7, "Partner", "§8[§2Partner§8] ", ChatColor.WHITE, ChatColor.DARK_GREEN),
+    HELPER(8, "Helper", "§8[§dHelper§8] ", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
+    MODERATOR(9, "Moderator", "§8[§2Mod§8] ", ChatColor.WHITE, ChatColor.DARK_GREEN, "mod"),
+    SRMOD(10, "Senior_Mod", "§8[§6SrMod§8] ", ChatColor.WHITE, ChatColor.GOLD, "sr", "srmod", "sr_mod"),
+    ADMIN(11, "Admin", "§8[§cAdmin§8] ", ChatColor.GREEN, ChatColor.RED),
+    MANAGER(12, "Manager", "§8[§4Manager§8] ", ChatColor.GREEN, ChatColor.DARK_RED),
+    DEVELOPER(13, "Developer", "§8[§9Developer§8] ", ChatColor.GREEN, ChatColor.BLUE, "dev"),
+    OWNER(14, "Owner", "§8[§bOwner§8] ", ChatColor.GREEN, ChatColor.AQUA);
 
     private final int id;
     private final String displayName;
@@ -65,7 +65,7 @@ public enum Rank
 
     public String getPrefix()
     {
-        return prefix + " ";
+        return prefix;
     }
 
     public boolean isStaff()
