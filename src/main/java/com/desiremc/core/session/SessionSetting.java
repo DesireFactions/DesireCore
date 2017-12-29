@@ -15,7 +15,7 @@ public enum SessionSetting
     ACHIEVEMENTS("Achievement Messages", true, true, Rank.GUEST),
     PLAYERS("Hide Players", false, true, Rank.GUEST),
     CLASSICTAB("Classic tablist", false, false, Rank.GUEST),
-    MESSAGES("Pivate Messages", true, true, Rank.GUEST),
+    MESSAGES("Private Messages", true, true, Rank.GUEST),
     COBBLE("Pickup Cobblestone.", false, true, Rank.GUEST);
 
     private String displayName;
