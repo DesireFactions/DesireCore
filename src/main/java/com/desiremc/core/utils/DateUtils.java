@@ -196,4 +196,22 @@ public class DateUtils
 
         return DayOfWeek.of(dow);
     }
+
+    public static int longToHour(long time)
+    {
+        GregorianCalendar cal = new GregorianCalendar();
+
+        cal.setTime(new Date(time));
+
+        return cal.get(Calendar.HOUR);
+    }
+
+    public static int longToMinute(long time)
+    {
+        GregorianCalendar cal = new GregorianCalendar();
+
+        cal.setTime(new Date(time));
+
+        return cal.get(Calendar.MINUTE);
+    }
 }
