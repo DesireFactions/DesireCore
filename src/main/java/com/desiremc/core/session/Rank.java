@@ -13,9 +13,9 @@ public enum Rank
 
     GUEST(1, "Guest", "", ChatColor.WHITE, ChatColor.GRAY),
     COMMODORE(2, "Commodore", "§8[§aCommodore§8] ", ChatColor.WHITE, ChatColor.GREEN),
-    PREMIER(3, "Brigadier", "§8[§dPremier§8] ", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    PREMIER(3, "Premier", "§8[§dPremier§8] ", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     GRANDMASTER(4, "Grandmaster", "§8[§eGM§8] ", ChatColor.WHITE, ChatColor.YELLOW),
-    BETA(5, "Beta", "§8[§bBeta§8]", ChatColor.WHITE, ChatColor.AQUA),
+    BETA(5, "Beta", "§8[§bBeta§8] ", ChatColor.WHITE, ChatColor.AQUA),
     YOUTUBER(6, "YouTuber", "§8[§cYou§fTube§8] ", ChatColor.WHITE, ChatColor.RED),
     PARTNER(7, "Partner", "§8[§2Partner§8] ", ChatColor.WHITE, ChatColor.DARK_GREEN),
     HELPER(8, "Helper", "§8[§dHelper§8] ", ChatColor.WHITE, ChatColor.LIGHT_PURPLE, "helper", "help"),
