@@ -78,12 +78,9 @@ public class ConnectionListener implements Listener
     {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
-
-        Bukkit.broadcastMessage(player.isOnline() + "");
+        PlayerUtils.addPlayer(player);
 
         SessionHandler.initializeSession(player);
-
-        PlayerUtils.addPlayer(player);
 
         if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
         {
