@@ -1,5 +1,14 @@
 package com.desiremc.core.handler;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -8,13 +17,6 @@ import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class SlowChatHandler implements Listener
 {
@@ -35,7 +37,7 @@ public class SlowChatHandler implements Listener
         }, DesireCore.getInstance());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(AsyncPlayerChatEvent event)
     {
         if (!StaffHandler.getInstance().isChatSlowed())
