@@ -192,7 +192,7 @@ public class DateUtils
 
         cal.setTime(new Date(time));
 
-        int dow = cal.get(Calendar.DAY_OF_WEEK);
+        int dow = (cal.get(Calendar.DAY_OF_WEEK) - 1);
 
         return DayOfWeek.of(dow);
     }
