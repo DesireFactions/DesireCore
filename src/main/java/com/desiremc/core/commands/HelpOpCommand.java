@@ -1,5 +1,7 @@
 package com.desiremc.core.commands;
 
+import java.util.List;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -7,8 +9,6 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-
-import java.util.List;
 
 public class HelpOpCommand extends ValidCommand
 {
@@ -20,6 +20,7 @@ public class HelpOpCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("message")
                 .setParser(new StringParser())
+                .setVariableLength()
                 .build());
     }
 
