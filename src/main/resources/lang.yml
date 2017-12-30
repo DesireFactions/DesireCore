@@ -119,7 +119,7 @@ staff:
   set-invisible: '&7You are now invisible.'
   set-visible: '&7You are now visible.'
   target-frozen: '&7You have frozen &f{player}&7.'
-  target-unfrozen: '&7You have unfrozez &f{player}&7.'
+  target-unfrozen: '&7You have unfrozen &f{player}&7.'
   frozen:
     - "&b&l&m---------------------------------------"
     - '&7You have been frozen by a &fstaff member&7.'

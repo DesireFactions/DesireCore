@@ -16,19 +16,20 @@ public class FrozenTask extends BukkitRunnable
     {
         this.player = player;
         this.target = target;
+
+        run();
     }
 
     @Override
     public void run()
     {
-
-        DesireCore.getLangHandler().sendRenderList(player, "staff.frozen", true, false, "{player}", target.getName());
-
         if (!StaffHandler.getInstance().isFrozen(player))
         {
             cancel();
             return;
         }
+
+        DesireCore.getLangHandler().sendRenderList(player, "staff.frozen", true, false, "{player}", target.getName());
 
         runTaskLater(DesireCore.getInstance(), 140L);
     }

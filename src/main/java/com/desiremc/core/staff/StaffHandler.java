@@ -215,7 +215,6 @@ public class StaffHandler
         else
         {
             frozenPlayers.add(target.getUniqueId());
-
             DesireCore.getLangHandler().sendRenderMessage(sourceSession, "staff.target-frozen", true, false, "{player}", target.getName());
             new FrozenTask(target, source.getPlayer());
         }
