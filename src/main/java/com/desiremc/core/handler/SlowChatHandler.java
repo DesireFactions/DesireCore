@@ -37,7 +37,7 @@ public class SlowChatHandler implements Listener
         }, DesireCore.getInstance());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onInteract(AsyncPlayerChatEvent event)
     {
         if (!StaffHandler.getInstance().isChatSlowed())
