@@ -57,7 +57,6 @@ import com.desiremc.core.commands.tokens.TokensCommand;
 import com.desiremc.core.connection.MongoWrapper;
 import com.desiremc.core.gui.MenuAPI;
 import com.desiremc.core.handler.CommandBlocker;
-import com.desiremc.core.handler.SlowChatHandler;
 import com.desiremc.core.listeners.AuthListener;
 import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.GUIListener;
@@ -218,7 +217,6 @@ public class DesireCore extends JavaPlugin
         listenerManager.addListener(new StaffListener());
         listenerManager.addListener(new GUIListener());
 
-        listenerManager.addListener(new SlowChatHandler());
         listenerManager.addListener(new CommandBlocker());
     }
 
