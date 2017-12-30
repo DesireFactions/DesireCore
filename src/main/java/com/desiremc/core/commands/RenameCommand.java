@@ -22,7 +22,12 @@ public class RenameCommand extends ValidCommand
     {
         super("rename", "Rename an item in your hand.", Rank.PREMIER, true);
 
-        addArgument(CommandArgumentBuilder.createBuilder(String.class).setName("name").setParser(new StringParser()).addSenderValidator(new ItemInHandValidator()).build());
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("name")
+                .setParser(new StringParser())
+                .setVariableLength()
+                .addSenderValidator(new ItemInHandValidator())
+                .build());
     }
 
     @Override
