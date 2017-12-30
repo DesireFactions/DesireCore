@@ -1,5 +1,11 @@
 package com.desiremc.core.commands.spawn;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.newcommands.CommandArgument;
@@ -8,24 +14,18 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.PlayerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class SpawnCommand extends ValidCommand
 {
 
     public SpawnCommand()
     {
-        super("spawn", "Teleport to the server spawn.", Rank.GUEST, true);
+        super("spawn", "Teleport to the server spawn.", Rank.HELPER, true);
 
         addArgument(CommandArgumentBuilder.createBuilder(Player.class)
                 .setName("target")
                 .setParser(new PlayerParser())
                 .setOptional()
-                .setRequiredRank(Rank.HELPER)
                 .build());
     }
 
