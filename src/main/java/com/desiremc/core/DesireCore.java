@@ -14,7 +14,6 @@ import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.bungee.StatusManager;
-import com.desiremc.core.commands.HelpOpCommand;
 import com.desiremc.core.commands.HubCommand;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
@@ -204,7 +203,6 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new SpawnCommand());
         commandHandler.registerCommand(new SetSpawnCommand());
         commandHandler.registerCommand(new HubCommand());
-        commandHandler.registerCommand(new HelpOpCommand());
     }
 
     private void registerListeners()
