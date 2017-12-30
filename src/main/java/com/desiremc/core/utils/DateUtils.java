@@ -1,7 +1,9 @@
 package com.desiremc.core.utils;
 
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
@@ -182,5 +184,16 @@ public class DateUtils
     public static ZoneId getZoneId()
     {
         return TimeZone.getTimeZone("EST").toZoneId();
+    }
+
+    public static DayOfWeek longToDay(long time)
+    {
+        GregorianCalendar cal = new GregorianCalendar();
+
+        cal.setTime(new Date(time));
+
+        int dow = cal.get(Calendar.DAY_OF_WEEK);
+
+        return DayOfWeek.of(dow);
     }
 }
