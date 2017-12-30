@@ -33,7 +33,7 @@ public class GUIListener implements Listener
         }
         Inventory inv = event.getClickedInventory();
 
-        if (!DesireCore.getLangHandler().renderString(inv.getTitle()).equalsIgnoreCase(DesireCore.getLangHandler().renderString("agui.inventory.title")))
+        if (!inv.getTitle().equalsIgnoreCase(DesireCore.getLangHandler().renderMessage("agui.inventory.title", false, false)))
         {
             return;
         }
