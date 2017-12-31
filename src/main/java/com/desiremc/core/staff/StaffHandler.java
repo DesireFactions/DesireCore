@@ -120,7 +120,14 @@ public class StaffHandler
 
         for (Gadget gadget : GadgetHandler.getInstance().gadgets.values())
         {
-            p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
+            if (gadget.getName().equalsIgnoreCase("vanish"))
+            {
+                p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, true));
+            }
+            else
+            {
+                p.getInventory().setItem(gadget.getSlot(), GadgetHandler.getInstance().buildGadget(gadget, false));
+            }
         }
         DesireCore.getLangHandler().sendRenderMessage(p, "staff.staff_on", true, false);
         p.setGameMode(GameMode.CREATIVE);
