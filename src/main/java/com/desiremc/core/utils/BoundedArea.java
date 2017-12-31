@@ -29,6 +29,8 @@ public class BoundedArea implements Rectangle
         this.x2 = Math.max(x1, x2);
         this.z1 = Math.min(z1, z2);
         this.z2 = Math.max(z1, z2);
+        this.parsedWorld = world;
+        this.world = world.getName();
     }
 
     public BoundedArea(BlockColumn pointOne, BlockColumn pointTwo, World world)
@@ -41,6 +43,8 @@ public class BoundedArea implements Rectangle
         this.x2 = Math.max(pointOne.getX(), pointTwo.getX());
         this.z1 = Math.min(pointOne.getZ(), pointTwo.getZ());
         this.z2 = Math.max(pointOne.getZ(), pointTwo.getZ());
+        this.parsedWorld = world;
+        this.world = world.getName();
     }
 
     public BoundedArea(float min, float min2, float max, float max2, World world)

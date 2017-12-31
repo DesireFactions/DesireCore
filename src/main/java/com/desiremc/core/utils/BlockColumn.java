@@ -3,11 +3,13 @@ package com.desiremc.core.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Transient;
 
 import com.github.davidmoten.rtree.geometry.Geometry;
 import com.github.davidmoten.rtree.geometry.Rectangle;
@@ -26,7 +28,10 @@ public class BlockColumn implements Rectangle
 
     private int z;
 
-    private World world;
+    private String world;
+
+    @Transient
+    private World parsedWorld;
 
     /**
      * @param x
@@ -37,7 +42,8 @@ public class BlockColumn implements Rectangle
     {
         this.x = x;
         this.z = z;
-        this.world = world;
+        this.parsedWorld = world;
+        this.world = world.getName();
     }
 
     /**
@@ -47,14 +53,16 @@ public class BlockColumn implements Rectangle
     {
         this.x = block.getX();
         this.z = block.getZ();
-        this.world = block.getWorld();
+        this.parsedWorld = block.getWorld();
+        this.world = block.getWorld().getName();
     }
 
     public BlockColumn(Location location)
     {
         this.x = location.getBlockX();
         this.z = location.getBlockZ();
-        this.world = location.getWorld();
+        this.parsedWorld = location.getWorld();
+        this.world = location.getWorld().getName();
     }
 
     public BlockColumn()
@@ -98,7 +106,11 @@ public class BlockColumn implements Rectangle
      */
     public World getWorld()
     {
-        return world;
+        if (parsedWorld == null)
+        {
+            this.parsedWorld = Bukkit.getWorld(world);
+        }
+        return parsedWorld;
     }
 
     /**
@@ -106,7 +118,8 @@ public class BlockColumn implements Rectangle
      */
     public void setWorld(World world)
     {
-        this.world = world;
+        this.parsedWorld = world;
+        this.world = world.getName();
     }
 
     /**
@@ -117,7 +130,7 @@ public class BlockColumn implements Rectangle
         List<Block> blocks = new ArrayList<>(257);
         for (int i = 0; i < 256; i++)
         {
-            blocks.add(world.getBlockAt(x, i, z));
+            blocks.add(getWorld().getBlockAt(x, i, z));
         }
         return blocks;
     }
@@ -135,7 +148,7 @@ public class BlockColumn implements Rectangle
     @Override
     public BlockColumn clone()
     {
-        return new BlockColumn(x, z, world);
+        return new BlockColumn(x, z, getWorld());
     }
 
     @Override
