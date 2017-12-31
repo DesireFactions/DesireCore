@@ -68,7 +68,7 @@ public class NumberSizeValidator<T extends Number> implements Validator<T>
     @Override
     public boolean validateArgument(Session sender, String[] label, T arg)
     {
-        double val = arg.doubleValue();
+        double val = arg.doubleValue() - System.currentTimeMillis();
 
         System.out.println("Entered: " + val + " Low end: " + low.doubleValue() + " High end: " + high.doubleValue());
 
