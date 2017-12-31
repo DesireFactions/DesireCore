@@ -10,10 +10,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.events.PlayerChunkMoveEvent;
 import com.desiremc.core.session.Session;
@@ -119,11 +117,4 @@ public class PlayerListener implements Listener
             }
         }
     }
-
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event)
-    {
-        event.setRespawnLocation(SpawnCommand.getSpawnLocation());
-    }
-
 }

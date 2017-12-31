@@ -1,6 +1,5 @@
 package com.desiremc.core.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,7 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
@@ -81,11 +79,6 @@ public class ConnectionListener implements Listener
         PlayerUtils.addPlayer(player);
 
         SessionHandler.initializeSession(player);
-
-        if (DesireCore.getConfigHandler().getBoolean("spawn-on-join"))
-        {
-            Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), () -> player.teleport(SpawnCommand.getSpawnLocation()), 0);
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
