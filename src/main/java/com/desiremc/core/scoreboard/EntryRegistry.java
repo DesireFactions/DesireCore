@@ -49,14 +49,10 @@ public class EntryRegistry implements ScoreboardHandler
     {
         PlayerEntry entry = entries.get(player);
 
-        if (entry == null)
-        {
-            return false;
-        }
-        return entry.hasEntries();
+        return entry != null && entry.hasEntries();
     }
 
-    public PlayerEntry getEntry(Player player)
+    private PlayerEntry getEntry(Player player)
     {
         return entries.get(player);
     }
@@ -75,7 +71,7 @@ public class EntryRegistry implements ScoreboardHandler
         {
             entry = new PlayerEntry();
             entries.put(player, entry);
-            Scoreboard board = new SimpleScoreboard(player).setHandler(instance).setUpdateInterval(2l);
+            Scoreboard board = new SimpleScoreboard(player).setHandler(instance).setUpdateInterval(2L);
             board.activate();
         }
         if (DEBUG)
