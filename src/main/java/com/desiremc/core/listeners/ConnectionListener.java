@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
@@ -92,5 +93,22 @@ public class ConnectionListener implements Listener
 
         StaffHandler.getInstance().disableStaffMode(player);
         PlayerUtils.removePlayer(player);
+    }
+
+
+    @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event)
+    {
+        if (!event.getResult().equals(PlayerLoginEvent.Result.KICK_FULL))
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+
+        if (player.hasPermission("desirehcf.joinfull"))
+        {
+            event.allow();
+        }
     }
 }
