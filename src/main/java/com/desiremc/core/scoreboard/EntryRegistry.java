@@ -18,7 +18,7 @@ import com.desiremc.core.scoreboard.type.SimpleScoreboard;
 public class EntryRegistry implements ScoreboardHandler
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static EntryRegistry instance;
 
