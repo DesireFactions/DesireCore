@@ -75,8 +75,6 @@ public class NumberSizeValidator<T extends Number> implements Validator<T>
             val -= System.currentTimeMillis();
         }
 
-        System.out.println("Entered: " + val + " Low end: " + low.doubleValue() + " High end: " + high.doubleValue());
-
         if (val < low.doubleValue())
         {
             DesireCore.getLangHandler().sendRenderMessage(sender, tooLow, true, false,
