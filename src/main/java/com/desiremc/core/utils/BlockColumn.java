@@ -3,6 +3,8 @@ package com.desiremc.core.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.mongodb.morphia.annotations.Embedded;
@@ -46,6 +48,13 @@ public class BlockColumn implements Rectangle
         this.x = block.getX();
         this.z = block.getZ();
         this.world = block.getWorld();
+    }
+
+    public BlockColumn(Location location)
+    {
+        this.x = location.getBlockX();
+        this.z = location.getBlockZ();
+        this.world = location.getWorld();
     }
 
     public BlockColumn()
@@ -110,6 +119,16 @@ public class BlockColumn implements Rectangle
         {
             blocks.add(world.getBlockAt(x, i, z));
         }
+        return blocks;
+    }
+
+    /**
+     * @return all blocks that are air in the column
+     */
+    public List<Block> getAirBlocks()
+    {
+        List<Block> blocks = getAllBlocks();
+        blocks.removeIf(block -> block.getType() == Material.AIR);
         return blocks;
     }
 

@@ -266,6 +266,16 @@ public class BoundedArea implements Rectangle
         return x2() - x1() + 1;
     }
 
+    public BlockColumn[] corners()
+    {
+        return new BlockColumn[] {
+                new BlockColumn(x1, z1, getWorld()),
+                new BlockColumn(x2, z1, getWorld()),
+                new BlockColumn(x1, z2, getWorld()),
+                new BlockColumn(x2, z2, getWorld())
+        };
+    }
+
     @Override
     public String toString()
     {
