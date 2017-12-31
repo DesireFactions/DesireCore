@@ -23,7 +23,7 @@ public class BlacklistCommand extends ValidCommand
 
     public BlacklistCommand()
     {
-        super("blacklist", "Blacklist a user from the server.", Rank.ADMIN);
+        super("blacklist", "Blacklist a user from the server.", Rank.MANAGER);
 
         addArgument(CommandArgumentBuilder.createBuilder(Session.class)
                 .setName("target")

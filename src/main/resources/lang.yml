@@ -136,6 +136,9 @@ staff:
   chat_slow_on: "&7Chat has been &fslowed&7."
   chat_slow_off: "&7Chat is no longer &fslowed&7."
   chat_slowed: "Warning! Chat has been slowed, please wait {time}."
+punishment:
+  too_low: '&7Invalid punishment time, must be greater than &b{low_end}&7, you had &b{value}&7.'
+  too_high: '&7Invalid punishment time, must be lower than &b{high_end}&7, you had &b{value}&7.'
 report:
   reported: '&7You have reported &f{player} &7for &f{reason}&7.'
   getreport:

@@ -38,7 +38,7 @@ public class TempBanCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(Long.class)
                 .setName("time")
                 .setParser(new TimeParser())
-                .addValidator(new NumberSizeValidator<>(0l, 1209600000l, "punishment.too_low", "punishment.too_high"))
+                .addValidator(new NumberSizeValidator<>(0L, 1209600000L, "punishment.too_low", "punishment.too_high"))
                 .build());
 
         addArgument(CommandArgumentBuilder.createBuilder(String.class)

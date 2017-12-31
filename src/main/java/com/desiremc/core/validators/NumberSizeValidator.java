@@ -1,10 +1,10 @@
 package com.desiremc.core.validators;
 
+import java.text.DecimalFormat;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Validator;
 import com.desiremc.core.session.Session;
-
-import java.text.DecimalFormat;
 
 public class NumberSizeValidator<T extends Number> implements Validator<T>
 {
@@ -69,6 +69,8 @@ public class NumberSizeValidator<T extends Number> implements Validator<T>
     public boolean validateArgument(Session sender, String[] label, T arg)
     {
         double val = arg.doubleValue();
+
+        System.out.println("Entered: " + val + " Low end: " + low.doubleValue() + " High end: " + high.doubleValue());
 
         if (val < low.doubleValue())
         {
