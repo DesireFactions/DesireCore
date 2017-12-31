@@ -53,12 +53,12 @@ public class GeometryUtils
 
     public static int getArea(BlockColumn pointOne, BlockColumn pointTwo)
     {
-        return (int) new BoundedArea(pointOne, pointTwo).area();
+        return (int) new BoundedArea(pointOne, pointTwo, pointOne.getWorld()).area();
     }
 
     public static BoundedArea getBoundedArea(BlockColumn pointOne, BlockColumn pointTwo)
     {
-        return new BoundedArea(pointOne, pointTwo);
+        return new BoundedArea(pointOne, pointTwo, pointOne.getWorld());
     }
 
 }

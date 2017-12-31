@@ -23,7 +23,7 @@ public class BoundedArea implements Rectangle
     @Transient
     private World parsedWorld;
 
-    public BoundedArea(int x1, int x2, int z1, int z2)
+    public BoundedArea(int x1, int x2, int z1, int z2, World world)
     {
         this.x1 = Math.min(x1, x2);
         this.x2 = Math.max(x1, x2);
@@ -31,7 +31,7 @@ public class BoundedArea implements Rectangle
         this.z2 = Math.max(z1, z2);
     }
 
-    public BoundedArea(BlockColumn pointOne, BlockColumn pointTwo)
+    public BoundedArea(BlockColumn pointOne, BlockColumn pointTwo, World world)
     {
         if (pointOne == null || pointTwo == null)
         {
@@ -43,9 +43,9 @@ public class BoundedArea implements Rectangle
         this.z2 = Math.max(pointOne.getZ(), pointTwo.getZ());
     }
 
-    public BoundedArea(float min, float min2, float max, float max2)
+    public BoundedArea(float min, float min2, float max, float max2, World world)
     {
-        this((int) min, (int) min2, (int) max, (int) max2);
+        this((int) min, (int) min2, (int) max, (int) max2, world);
     }
 
     public BoundedArea()
@@ -202,7 +202,7 @@ public class BoundedArea implements Rectangle
     @Override
     public Rectangle add(Rectangle r)
     {
-        return new BoundedArea(Math.min(x1(), r.x1()), Math.min(y1(), r.y1()), Math.max(x2(), r.x2()), Math.max(y2(), r.y2()));
+        return new BoundedArea(Math.min(x1(), r.x1()), Math.min(y1(), r.y1()), Math.max(x2(), r.x2()), Math.max(y2(), r.y2()), getWorld());
     }
 
     @Override
