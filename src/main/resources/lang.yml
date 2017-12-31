@@ -79,7 +79,7 @@ ban:
   unban_message: '&b{player} &7has unbanned &b{target}&7.'
 ipban:
   ban_message: '&b{player} &7has permanently IP banned &b{target}&7 for &f{reason}&7.'
-  unban_message: '&b{player} has unbanned &b{target}''s&7 IP.'
+  unban_message: '&b{player} &7has unbanned &b{target}''s&7 IP.'
 mute:
   temp_broadcast: '&b{player} &7has muted &b{target}&7 for &f{duration} &7for &f{reason}&7.'
   temp_silent: '&7You have muted &b{target}&7 for &f{duration}&7.'

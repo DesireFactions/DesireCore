@@ -1,23 +1,24 @@
 package com.desiremc.core.scoreboard;
 
-import com.desiremc.core.scoreboard.common.EntryBuilder;
-import com.desiremc.core.scoreboard.type.Entry;
-import com.desiremc.core.scoreboard.type.Scoreboard;
-import com.desiremc.core.scoreboard.type.ScoreboardHandler;
-import com.desiremc.core.scoreboard.type.SimpleScoreboard;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import com.desiremc.core.scoreboard.common.EntryBuilder;
+import com.desiremc.core.scoreboard.type.Entry;
+import com.desiremc.core.scoreboard.type.Scoreboard;
+import com.desiremc.core.scoreboard.type.ScoreboardHandler;
+import com.desiremc.core.scoreboard.type.SimpleScoreboard;
+
 public class EntryRegistry implements ScoreboardHandler
 {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static EntryRegistry instance;
 
