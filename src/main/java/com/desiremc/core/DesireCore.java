@@ -41,8 +41,6 @@ import com.desiremc.core.commands.punishment.WarnCommand;
 import com.desiremc.core.commands.rank.RankCommand;
 import com.desiremc.core.commands.report.ReportCommand;
 import com.desiremc.core.commands.settings.SettingsCommand;
-import com.desiremc.core.commands.spawn.SetSpawnCommand;
-import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.commands.staff.StaffAltsCommand;
 import com.desiremc.core.commands.staff.StaffChatCommand;
 import com.desiremc.core.commands.staff.StaffCommand;
@@ -200,8 +198,6 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new ChatCommand());
         commandHandler.registerCommand(new FriendsCommand());
         commandHandler.registerCommand(new HistoryCommand());
-        commandHandler.registerCommand(new SpawnCommand());
-        commandHandler.registerCommand(new SetSpawnCommand());
         commandHandler.registerCommand(new HubCommand());
     }
 

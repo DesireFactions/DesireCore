@@ -262,8 +262,3 @@ history:
       lore:
       - '&cGo to the last page!'
       item: 'IRON_BLOCK'
-spawn:
-  target: '&7Teleported &f{player} &7to spawn.'
-  force: '&7You have been teleported to spawn by a staff member.'
-  confirm: '&7You have teleported to spawn.'
-  set: '&7You have set the spawn to your location.'
