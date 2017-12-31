@@ -101,7 +101,7 @@ public class EntryRegistry implements ScoreboardHandler
      * @param player the player to target.
      * @param key the key used as a reference.
      */
-    private void removeValue(Player player, String key)
+    public void removeValue(Player player, String key)
     {
         PlayerEntry entry = getEntry(player);
         if (entry != null)
