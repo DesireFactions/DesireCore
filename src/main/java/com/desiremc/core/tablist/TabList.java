@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -146,6 +147,9 @@ public class TabList
                 tabSlot.setPrefix(name.substring(0, 15));
             }
             tabSlot.setSuffix(ChatColor.getLastColors(tabSlot.getPrefix()) + name.substring(16, name.length()));
+            Bukkit.broadcastMessage("Actual: " + name);
+            Bukkit.broadcastMessage("Prefix: " + name.substring(0, 15));
+            Bukkit.broadcastMessage("Suffix: " + ChatColor.getLastColors(tabSlot.getPrefix()) + name.substring(16, name.length()));
         }
         else
         {
