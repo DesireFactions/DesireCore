@@ -1,9 +1,10 @@
 package com.desiremc.core.api;
 
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
-import org.bukkit.entity.Player;
 
 public class StaffAPI
 {
@@ -29,7 +30,7 @@ public class StaffAPI
             return;
         }
 
-        STAFF.startCPSTestForPlayer((Player) sender, player);
+        STAFF.startCPSTestForPlayer(sender.getPlayer(), player);
         LANG.sendRenderMessage(sender, "staff.cps-start", true, false, "{player}", player.getDisplayName());
     }
 
