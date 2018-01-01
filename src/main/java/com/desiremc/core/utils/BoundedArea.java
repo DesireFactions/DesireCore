@@ -1,8 +1,12 @@
 package com.desiremc.core.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Transient;
 
@@ -278,6 +282,30 @@ public class BoundedArea implements Rectangle
                 new BlockColumn(x1, z2, getWorld()),
                 new BlockColumn(x2, z2, getWorld())
         };
+    }
+
+    public Set<Block> getWalls()
+    {
+        HashSet<Block> walls = new HashSet<>();
+
+        for (int x = x1; x < x2; x++)
+        {
+            for (int y = 0; y < 257; y++)
+            {
+                walls.add(getWorld().getBlockAt(x, y, getMinZ()));
+                walls.add(getWorld().getBlockAt(x, y, getMaxZ()));
+            }
+        }
+        for (int z = z1; z < z2; z++)
+        {
+            for (int y = 0; y < 257; y++)
+            {
+                walls.add(getWorld().getBlockAt(getMinX(), y, z));
+                walls.add(getWorld().getBlockAt(getMaxX(), y, z));
+            }
+        }
+
+        return walls;
     }
 
     @Override
