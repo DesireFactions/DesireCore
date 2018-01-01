@@ -284,7 +284,7 @@ public class BoundedArea implements Rectangle
         };
     }
 
-    public Set<Block> getWalls()
+    public Set<Block> getWalls(World world)
     {
         HashSet<Block> walls = new HashSet<>();
 
@@ -292,16 +292,16 @@ public class BoundedArea implements Rectangle
         {
             for (int y = 0; y < 257; y++)
             {
-                walls.add(getWorld().getBlockAt(x, y, getMinZ()));
-                walls.add(getWorld().getBlockAt(x, y, getMaxZ()));
+                walls.add(world.getBlockAt(x, y, getMinZ()));
+                walls.add(world.getBlockAt(x, y, getMaxZ()));
             }
         }
         for (int z = z1; z < z2; z++)
         {
             for (int y = 0; y < 257; y++)
             {
-                walls.add(getWorld().getBlockAt(getMinX(), y, z));
-                walls.add(getWorld().getBlockAt(getMaxX(), y, z));
+                walls.add(world.getBlockAt(getMinX(), y, z));
+                walls.add(world.getBlockAt(getMaxX(), y, z));
             }
         }
 
