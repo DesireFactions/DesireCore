@@ -1,9 +1,11 @@
 package com.desiremc.core.gui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +23,7 @@ public abstract class MenuItem extends MenuClickBehavior
     private String text;
     private List<String> descriptions = new ArrayList<>();
     private ItemStack item;
+    private HashMap<Enchantment, Integer> enchantment;
 
     // Additional Values
     private short data = 0;
@@ -38,6 +41,7 @@ public abstract class MenuItem extends MenuClickBehavior
         this.icon = is.getData();
         this.quantity = is.getAmount();
         this.data = is.getData().getData();
+        enchantment = new HashMap<>(is.getEnchantments());
         if (is.hasItemMeta() && is.getItemMeta().hasLore())
         {
             descriptions = is.getItemMeta().getLore();
@@ -58,6 +62,7 @@ public abstract class MenuItem extends MenuClickBehavior
         this.icon = is.getData();
         this.quantity = is.getAmount();
         this.data = is.getData().getData();
+        enchantment = new HashMap<>(is.getEnchantments());
         if (is.hasItemMeta() && is.getItemMeta().hasLore())
         {
             descriptions = is.getItemMeta().getLore();
@@ -167,6 +172,11 @@ public abstract class MenuItem extends MenuClickBehavior
             meta.setDisplayName(this.getText());
             meta.setLore(this.descriptions);
             item.setItemMeta(meta);
+        }
+
+        for (Enchantment ench : this.enchantment.keySet())
+        {
+            item.addEnchantment(ench, this.enchantment.get(ench));
         }
 
         return item;
