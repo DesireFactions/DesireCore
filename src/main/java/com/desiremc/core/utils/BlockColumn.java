@@ -229,4 +229,21 @@ public class BlockColumn implements Rectangle
         return z;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof BlockColumn)
+        {
+            return ((BlockColumn) obj).getX() == getX() && ((BlockColumn) obj).getZ() == getZ() && ((BlockColumn) obj).getWorld() == getWorld();
+        }
+        else if (obj instanceof Rectangle)
+        {
+            return ((Rectangle) obj).x1() == x1() && ((Rectangle) obj).x2() == x2() && ((Rectangle) obj).y1() == y1() && ((Rectangle) obj).y2() == y2();
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
