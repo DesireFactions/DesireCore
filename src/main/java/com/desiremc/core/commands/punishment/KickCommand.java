@@ -44,7 +44,7 @@ public class KickCommand extends ValidCommand
         if (reason.contains("-s"))
         {
             reason = reason.replace("-s", "");
-            DesireCore.getLangHandler().sendRenderMessage(sender, "kick.silent", true, false, "{target}", target.getName(), "{reason}", reason);
+            DesireCore.getLangHandler().sendRenderMessage(sender, "kick.silent", true, false, "{player}", target.getName(), "{reason}", reason);
         }
         else
         {
