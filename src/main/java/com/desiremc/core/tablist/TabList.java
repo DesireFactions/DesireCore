@@ -141,7 +141,14 @@ public class TabList
         else if (name.length() <= 28)
         {
             tabSlot.setPrefix(name.substring(0, 16));
-            tabSlot.setSuffix(ChatColor.getLastColors(tabSlot.getPrefix()) + (tabSlot.getPrefix().endsWith("&") ? "&" : "") + name.substring(16, name.length()));
+
+            String prefix = tabSlot.getPrefix();
+
+            if (tabSlot.getPrefix().endsWith("§"))
+            {
+                tabSlot.setPrefix(name.substring(0, 16));
+            }
+            tabSlot.setSuffix(ChatColor.getLastColors(tabSlot.getPrefix()) + (prefix.endsWith("§") ? "§" : "") + name.substring(16, name.length()));
         }
         else
         {
