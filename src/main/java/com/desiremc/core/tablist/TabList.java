@@ -146,7 +146,7 @@ public class TabList
 
             if (tabSlot.getPrefix().endsWith("§"))
             {
-                tabSlot.setPrefix(name.substring(0, 16));
+                tabSlot.setPrefix(name.substring(0, 15));
             }
             tabSlot.setSuffix(ChatColor.getLastColors(tabSlot.getPrefix()) + (prefix.endsWith("§") ? "§" : "") + name.substring(16, name.length()));
         }
