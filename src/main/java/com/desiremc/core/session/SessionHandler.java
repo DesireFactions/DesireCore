@@ -175,7 +175,7 @@ public class SessionHandler extends BasicDAO<Session, UUID>
     {
         for (Session session : sessions.values())
         {
-            if (session.getName().equals(name))
+            if (session.getName().equalsIgnoreCase(name))
             {
                 return session;
             }
