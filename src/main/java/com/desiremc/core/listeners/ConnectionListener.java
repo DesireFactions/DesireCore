@@ -14,6 +14,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.punishment.Punishment;
 import com.desiremc.core.punishment.Punishment.Type;
 import com.desiremc.core.punishment.PunishmentHandler;
+import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
@@ -106,7 +107,15 @@ public class ConnectionListener implements Listener
 
         Player player = event.getPlayer();
 
-        if (player.hasPermission("desirehcf.joinfull"))
+        Session session = SessionHandler.getGeneralSession(player.getUniqueId());
+
+        if (session == null)
+        {
+            return;
+        }
+
+        if (session.getRank().isStaff() || session.getRank() == Rank.GRANDMASTER ||
+                session.getRank() == Rank.BETA || session.getRank() == Rank.YOUTUBER || session.getRank() == Rank.PARTNER)
         {
             event.allow();
         }
