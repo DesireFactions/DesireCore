@@ -174,9 +174,12 @@ public abstract class MenuItem extends MenuClickBehavior
             item.setItemMeta(meta);
         }
 
-        for (Enchantment ench : this.enchantment.keySet())
+        if (this.enchantment != null)
         {
-            item.addEnchantment(ench, this.enchantment.get(ench));
+            for (Enchantment ench : this.enchantment.keySet())
+            {
+                item.addEnchantment(ench, this.enchantment.get(ench));
+            }
         }
 
         return item;
