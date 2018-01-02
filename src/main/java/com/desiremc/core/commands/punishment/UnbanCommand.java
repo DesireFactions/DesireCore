@@ -22,7 +22,7 @@ public class UnbanCommand extends ValidCommand
 
     public UnbanCommand()
     {
-        super("unban", "Unban a user from the server.", Rank.SRMOD);
+        super("unban", "Unban a user from the server.", Rank.MODERATOR);
 
         addArgument(CommandArgumentBuilder.createBuilder(Session.class)
                 .setName("target")
