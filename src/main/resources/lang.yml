@@ -126,7 +126,7 @@ staff:
     - '&7If you disconnect you will be &cBANNED&7.'
     - '&7Please connect to our Teamspeak.'
     - '&fts&7.&fdesirehcf&7.&fcom'
-    - "&c&l&m---------------------------------------"
+    - "&b&l&m---------------------------------------"
   unfrozen: '&7You have been unfrozen by &f{player}&7.'
   no-restore: '&f{player} &7does not have an inventory to restore.'
   restore: '&7You have restored &f{player}''s &7inventory.'
