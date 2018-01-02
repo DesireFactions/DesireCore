@@ -17,7 +17,7 @@ import com.github.davidmoten.rtree.geometry.Rectangle;
 /**
  * Used to wrap a column of blocks. It is an easy to use wrapper for whenever a chunk is not wanted. This can be easily
  * stored in the database as it has the {@link Embedded} attribute.
- * 
+ *
  * @author Michael Ziluck
  */
 @Embedded
@@ -154,12 +154,44 @@ public class BlockColumn implements Rectangle
     @Override
     public double distance(Rectangle r)
     {
+        if (r instanceof BoundedArea)
+        {
+            BoundedArea area = (BoundedArea) r;
+            if (area.getWorld() != getWorld())
+            {
+                return Integer.MAX_VALUE;
+            }
+        }
+        else if (r instanceof BlockColumn)
+        {
+            BlockColumn area = (BlockColumn) r;
+            if (area.getWorld() != getWorld())
+            {
+                return Integer.MAX_VALUE;
+            }
+        }
         return GeometryUtils.distance(x, z, x, z, r.x1(), r.y1(), r.x2(), r.y2());
     }
 
     @Override
     public boolean intersects(Rectangle r)
     {
+        if (r instanceof BoundedArea)
+        {
+            BoundedArea area = (BoundedArea) r;
+            if (area.getWorld() != getWorld())
+            {
+                return false;
+            }
+        }
+        else if (r instanceof BlockColumn)
+        {
+            BlockColumn area = (BlockColumn) r;
+            if (area.getWorld() != getWorld())
+            {
+                return false;
+            }
+        }
         return r.x1() <= x && x <= r.x2() && r.y1() <= z && z <= r.y2();
     }
 

@@ -126,7 +126,7 @@ public class BoundedArea implements Rectangle
 
     /**
      * Check if the given location is within the bounded area.
-     * 
+     *
      * @param location the location to check.
      * @return {@code true} if this location is within the bounded area.
      */
@@ -136,17 +136,13 @@ public class BoundedArea implements Rectangle
         {
             return false;
         }
-        if (location.getX() >= getMinX() && location.getX() <= getMaxX() && location.getZ() >= getMinZ() && location.getZ() <= getMaxZ())
-        {
-            return true;
-        }
-        return false;
+        return location.getX() >= getMinX() && location.getX() <= getMaxX() && location.getZ() >= getMinZ() && location.getZ() <= getMaxZ();
     }
 
     /**
      * Check if the given block column is within the bounded area.
-     * 
-     * @param location the block column to check.
+     *
+     * @param blockColumn the block column to check.
      * @return {@code true} if this block column is within the bounded area.
      */
     public boolean contains(BlockColumn blockColumn)
@@ -175,7 +171,7 @@ public class BoundedArea implements Rectangle
     }
 
     /**
-     * @param world the world to set
+     * @param parsedWorld the world to set
      */
     public void setWorld(World parsedWorld)
     {
@@ -186,12 +182,44 @@ public class BoundedArea implements Rectangle
     @Override
     public double distance(Rectangle r)
     {
+        if (r instanceof BoundedArea)
+        {
+            BoundedArea area = (BoundedArea) r;
+            if (area.getWorld() != getWorld())
+            {
+                return Integer.MAX_VALUE;
+            }
+        }
+        else if (r instanceof BlockColumn)
+        {
+            BlockColumn area = (BlockColumn) r;
+            if (area.getWorld() != getWorld())
+            {
+                return Integer.MAX_VALUE;
+            }
+        }
         return GeometryUtils.distance(x1(), y1(), x2(), y2(), r.x1(), r.y1(), r.x2(), r.y2());
     }
 
     @Override
     public boolean intersects(Rectangle r)
     {
+        if (r instanceof BoundedArea)
+        {
+            BoundedArea area = (BoundedArea) r;
+            if (area.getWorld() != getWorld())
+            {
+                return false;
+            }
+        }
+        else if (r instanceof BlockColumn)
+        {
+            BlockColumn area = (BlockColumn) r;
+            if (area.getWorld() != getWorld())
+            {
+                return false;
+            }
+        }
         return GeometryUtils.intersects(x1(), y1(), x2(), y2(), r.x1(), r.y1(), r.x2(), r.y2());
     }
 
