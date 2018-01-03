@@ -500,6 +500,8 @@ public class Session implements Messageable
         {
             settings.remove(setting);
         }
+
+        awardAchievement(Achievement.FIRST_SETTING, true);
     }
 
     /**
@@ -508,6 +510,7 @@ public class Session implements Messageable
      */
     public boolean toggleSetting(SessionSetting setting)
     {
+        awardAchievement(Achievement.FIRST_SETTING, true);
         if (settings.contains(setting))
         {
             this.settings.remove(setting);

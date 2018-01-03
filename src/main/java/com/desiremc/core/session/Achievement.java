@@ -36,6 +36,7 @@ public enum Achievement
     FIRST_CRATE("Upgrade time", "Open your first Crate", 25),
     FIRST_SHOP("Merchant", "Use the shop for the first time", 25),
     PLAYTIME_48("Determination", "Hit 48 hours of playtime", 50),
+    HELLO_WORLD("Hello world!", "Speak in chat for the first time", 10),
     RAIDABLE_10("Population None", "Make 10 factions raidable", 25),
     FIRST_SETTING("Personalize", "Change your first setting", 5),
     NEW_LOOK("New look", "Rename your faction for the first time", 15),
