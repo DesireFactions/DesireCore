@@ -78,6 +78,11 @@ public enum Rank
         return getId() < YOUTUBER.getId() && getId() > GUEST.getId();
     }
 
+    public boolean canAutoLogin()
+    {
+        return getId() >= GRANDMASTER.getId();
+    }
+
     public boolean isManager()
     {
         return getId() >= ADMIN.getId();
