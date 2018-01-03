@@ -25,7 +25,25 @@ public enum Achievement
     FIRST_ENDERMAN("Don't stare at me.", "Kill an enderman", 5),
     FIRST_CREEPER("Premature explosion", "Kill a creeper.", 5),
     FIRST_CROWBAR_USE("Crackin'", "Use your first Crowbar", 5),
-    FIRST_POTION_USE("Bubbles!", "Use your first potion.", 10);
+    FIRST_POTION_USE("Bubbles!", "Use your first potion.", 10),
+
+    PLAYTIME_24("You must like us or something", "Hit 24 hours of playtime", 20),
+    DIAMONDS_1000("My shinys", "Mine 1000 diamonds", 45),
+    KILLS_25("Exterminator", "Reach 25 kills", 50),
+    FINAL_PUSH("Final Push", "Make another faction raidable, while raidable", 100),
+    FIRST_SPAWNER("Fancy", "Place your first Spawner", 25),
+    RAIDABLE_5("ALl your base are belong to us", "Make 5 factions raidable", 100),
+    FIRST_CRATE("Upgrade time", "Open your first Crate", 25),
+    FIRST_SHOP("Merchant", "Use the shop for the first time", 25),
+    PLAYTIME_48("Determination", "Hit 48 hours of playtime", 50),
+    RAIDABLE_10("Population None", "Make 10 factions raidable", 25),
+    FIRST_SETTING("Personalize", "Change your first setting", 5),
+    NEW_LOOK("New look", "Rename your faction for the first time", 15),
+    WEALTHY("Wealthy", "Reach 30k in your faction balance", 50),
+    NEW_LEADER("Switching it up?", "Change your faction leader", 10),
+    KILLS_100("Unstoppable force", "Reach 100 kills", 100),
+    PLAYTIME_100("VIP", "Hit 100 hours of playtime", 100);
+
 
     private String name;
     private String description;
