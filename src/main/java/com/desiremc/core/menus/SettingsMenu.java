@@ -28,7 +28,7 @@ public class SettingsMenu extends Menu
                     @Override
                     public void onClick(Player player)
                     {
-                        if (setting.getRank().getId() < session.getRank().getId())
+                        if (setting.getRank().getId() <= session.getRank().getId())
                         {
                             closeMenu(player);
                             boolean value = session.toggleSetting(setting);
