@@ -39,7 +39,7 @@ public class SettingsMenu extends Menu
                                     "{status}", (value ? "on" : "off"));
                         }
                     }
-                }, 10 + count % 8 == 0 ? count + 1 : count);
+                }, 10 + (count % 8 == 0 ? count + 1 : count));
                 count++;
             }
         }
