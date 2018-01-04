@@ -30,9 +30,10 @@ hubs:
 deathban:
   times:
     default: 120
-    brigadier: 90
-    commodore: 75
-    grandmaster: 60
+    commodore: 90
+    premier: 75
+    grandmaster: 45
+    beta: 30
 gadgets:
   launcher:
     enabled: true
