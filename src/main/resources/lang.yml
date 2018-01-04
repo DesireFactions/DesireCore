@@ -215,23 +215,22 @@ ticket:
 tickets:
   open: '&7There are &f{number} &7tickets open.'
 agui:
-  open: 'You have opened the Achievement GUI.'
   inventory:
-    title: 'Achievement'
+    title: '&bAchievements'
     item:
       name: '&9{name}'
       lore:
-      - '&a{desc}'
-      - '&aTokens: {tokens}'
+      - '&7{desc}'
+      - '&7Tokens: &b{tokens}'
     next:
-      name: 'Next Item'
+      name: '&bNext Item'
       lore:
-      - 'Go to the next page!'
+      - '&bGo to the next page!'
       item: 'IRON_BLOCK'
     back:
-      name: 'Back Item'
+      name: '&bBack Item'
       lore:
-      - 'Go to the last page!'
+      - '&bGo to the last page!'
       item: 'IRON_BLOCK'
 auth:
   setup: 'Your Google Auth Code is {code}. Click it for a QR code.'
