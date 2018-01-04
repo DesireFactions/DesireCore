@@ -32,7 +32,7 @@ public enum Achievement
     KILLS_25("Exterminator", "Reach 25 kills", 50),
     FINAL_PUSH("Final Push", "Make another faction raidable, while raidable", 100),
     FIRST_SPAWNER("Fancy", "Place your first Spawner", 25),
-    RAIDABLE_5("ALl your base are belong to us", "Make 5 factions raidable", 100),
+    RAIDABLE_5("All your base are belong to us", "Make 5 factions raidable", 100),
     FIRST_CRATE("Upgrade time", "Open your first Crate", 25),
     FIRST_SHOP("Merchant", "Use the shop for the first time", 25),
     PLAYTIME_48("Determination", "Hit 48 hours of playtime", 50),
