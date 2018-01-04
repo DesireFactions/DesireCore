@@ -5,8 +5,6 @@ database:
   username: admin
   password: odEylO2Xeh84JLfcu5
   database: hcf
-logout:
-  time: 10
 staff:
   launch_velocity: 5.0
   chat_slow: 10
@@ -17,12 +15,6 @@ deathban:
     premier: 4500
     grandmaster: 2700
     beta: 1800
-glass-protected-regions:
-   - 'test1'
-   - 'test2'
-   - 'test3'
-   - 'test4'
-spawn-mobs: false
 SERVER: first
 hubs:
   lobby: 'localhost:25467'
