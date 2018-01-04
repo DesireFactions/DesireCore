@@ -16,8 +16,6 @@ public class FrozenTask extends BukkitRunnable
     {
         this.player = player;
         this.target = target;
-
-        run();
     }
 
     @Override
@@ -30,7 +28,5 @@ public class FrozenTask extends BukkitRunnable
         }
 
         DesireCore.getLangHandler().sendRenderList(player, "staff.frozen", true, false, "{player}", target.getName());
-
-        runTaskLater(DesireCore.getInstance(), 140L);
     }
 }
