@@ -20,7 +20,7 @@ public class SettingsMenu extends Menu
         int count = 0;
         for (SessionSetting setting : SessionSetting.enabledValues())
         {
-            int slot = 10 + (count % 8 == 0 ? count : count + 1);
+            int slot = 10 + (count % 8 == 0 ? count + 2 : count);
             if (setting.getRank().getId() <= session.getRank().getId())
             {
                 addMenuItem(new MenuItem((session.getSetting(setting) ? "§a" : "§c") + setting.getDisplayName(), new MaterialData(Material.WOOL), (short) (session.getSetting(setting) ? 5 : 14))
