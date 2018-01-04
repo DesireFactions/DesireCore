@@ -31,7 +31,6 @@ rank_too_high: "&7You can't set a players rank higher than your own."
 no_free_slots: '&f{target} {have/has} &7no free inventory slots.'
 invalid_flag: "&7That is an invalid punishment flag."
 not_world: "&7That world does not exist."
-rename: "&7You have renamed the item in your hand to {name}."
 teamspeak: "&7Join us on &fTeamSpeak&7! &fts&7.&fdesirehcf&7.&fcom"
 string:
   too_long: '&7That string is too long.'

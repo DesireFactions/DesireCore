@@ -17,7 +17,6 @@ import com.desiremc.core.bungee.StatusManager;
 import com.desiremc.core.commands.HubCommand;
 import com.desiremc.core.commands.InfoCommand;
 import com.desiremc.core.commands.PingCommand;
-import com.desiremc.core.commands.RenameCommand;
 import com.desiremc.core.commands.TeamSpeakCommand;
 import com.desiremc.core.commands.achievement.AchievementCommand;
 import com.desiremc.core.commands.auth.AuthCommand;
@@ -189,7 +188,6 @@ public class DesireCore extends JavaPlugin
         commandHandler.registerCommand(new InfoCommand());
         commandHandler.registerCommand(new TicketCommand());
         commandHandler.registerCommand(new PingCommand());
-        commandHandler.registerCommand(new RenameCommand());
         commandHandler.registerCommand(new TeamSpeakCommand());
         commandHandler.registerCommand(new TokensCommand());
         commandHandler.registerCommand(new MuteCommand());
