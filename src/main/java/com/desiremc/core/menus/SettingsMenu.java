@@ -22,19 +22,19 @@ public class SettingsMenu extends Menu
         {
             int slot = 10 + count;
 
-            if (slot == 16)
+            if (slot == 17)
             {
                 slot += 2;
             }
-            else if (slot == 24)
+            else if (slot == 25)
             {
                 slot += 2;
             }
-            else if (slot == 32)
+            else if (slot == 33)
             {
                 slot += 2;
             }
-            else if (slot == 40)
+            else if (slot == 41)
             {
                 slot += 2;
             }
