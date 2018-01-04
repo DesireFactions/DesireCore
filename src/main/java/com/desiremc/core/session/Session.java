@@ -414,7 +414,7 @@ public class Session implements Messageable
      * Give a player an achievement as well as reward them with the tokens.
      *
      * @param achievement the achievement.
-     * @param inform whether to inform the player or not.
+     * @param inform      whether to inform the player or not.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
@@ -451,7 +451,13 @@ public class Session implements Messageable
                 .tooltip(achievement.getName(), achievement.getDescription(), "Tokens: " + achievement.getReward())
                 .color(ChatColor.LIGHT_PURPLE);
 
-        message.send(Bukkit.getOnlinePlayers());
+        for (Session session : SessionHandler.getOnlineSessions())
+        {
+            if (session.getSetting(SessionSetting.ACHIEVEMENTS))
+            {
+                message.send(session.getPlayer());
+            }
+        }
     }
 
     public int getTokens()
