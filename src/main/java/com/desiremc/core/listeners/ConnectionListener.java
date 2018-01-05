@@ -18,6 +18,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.tasks.FrozenTask;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.PlayerUtils;
 
@@ -81,6 +82,11 @@ public class ConnectionListener implements Listener
         PlayerUtils.addPlayer(player);
 
         SessionHandler.initializeSession(player);
+
+        if (StaffHandler.getInstance().isFrozen(player))
+        {
+            new FrozenTask(player).runTaskTimer(DesireCore.getInstance(), 0L, 140L);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
