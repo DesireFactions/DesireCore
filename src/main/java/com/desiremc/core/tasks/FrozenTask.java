@@ -4,18 +4,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
 import com.desiremc.core.staff.StaffHandler;
 
 public class FrozenTask extends BukkitRunnable
 {
 
     private Player target;
-    private Session player;
 
-    public FrozenTask(Player target, Session player)
+    public FrozenTask(Player target)
     {
-        this.player = player;
         this.target = target;
     }
 
@@ -28,6 +25,6 @@ public class FrozenTask extends BukkitRunnable
             return;
         }
 
-        DesireCore.getLangHandler().sendRenderList(target, "staff.frozen", true, false, "{player}", player.getName());
+        DesireCore.getLangHandler().sendRenderList(target, "staff.frozen", false, false);
     }
 }
