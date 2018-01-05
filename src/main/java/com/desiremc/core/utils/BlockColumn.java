@@ -1,8 +1,7 @@
 package com.desiremc.core.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.github.davidmoten.rtree.geometry.Geometry;
+import com.github.davidmoten.rtree.geometry.Rectangle;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,8 +10,8 @@ import org.bukkit.block.Block;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.github.davidmoten.rtree.geometry.Geometry;
-import com.github.davidmoten.rtree.geometry.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used to wrap a column of blocks. It is an easy to use wrapper for whenever a chunk is not wanted. This can be easily
@@ -141,8 +140,20 @@ public class BlockColumn implements Rectangle
     public List<Block> getAirBlocks()
     {
         List<Block> blocks = getAllBlocks();
-        blocks.removeIf(block -> block.getType() == Material.AIR);
+        blocks.removeIf(block -> block.getType() != Material.AIR);
         return blocks;
+    }
+
+    /**
+     * @return Get the first safe teleport location in the column.
+     */
+    public Location getSafeLocation(Location location) {
+        try {
+            return LocationUtils.getSafeDestination(location);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
