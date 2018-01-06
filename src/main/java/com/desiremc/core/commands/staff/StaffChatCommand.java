@@ -25,6 +25,7 @@ public class StaffChatCommand extends ValidCommand
                 .setParser(new StringParser())
                 .setVariableLength()
                 .setOptional()
+                .setAllowsConsole()
                 .build());
 
     }
